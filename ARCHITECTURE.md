@@ -1,3 +1,3 @@
 # Architecture
 
-TODO: This file will be updated once the project architecture is defined
+WIP: This file will be updated once the project architecture is defined
