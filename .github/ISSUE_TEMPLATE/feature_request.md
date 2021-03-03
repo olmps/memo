@@ -8,9 +8,11 @@ assignees: ''
 ---
 
 **Caso de Uso/Use Case:**
-<-- Quais casos de uso essa nova funcionalidade cobre?. E quais problemas ela resolve? / What use cases this feature
-impacts on? What problems does it solve? -->
+
+<-- Quais casos de uso são impactados por essa nova funcionalidade? Quais problemas ela resolve? / What use cases this
+have direct impact by this new feature? What problems does it solve? -->
 
 **Proposta/Proposal:**
-<-- Faça uma breve porém informativa descrição da sua proposta. Se possível, ilustre ela com imagens / Do a brief but 
+
+<-- Faça uma breve porém informativa descrição da sua proposta. Se possível, ilustre ela com imagens / Do a brief and 
 complete description about your proposal. If applicable, illustrate it with images. -->
