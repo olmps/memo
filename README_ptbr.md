@@ -13,28 +13,24 @@ decisões tomadas no andamento do projeto. Embora estas regras possam - e provav
 ser levantadas sobre os motivos para tais mudanças, de maneira que essas discussões e decisões sejam transparentes para 
 todos.
 
-- [Setup](#-setup): how the application environment works;
+- [Setup](#-setup): como estruturar o ambiente da aplicação;
 - [Arquitetura](#-arquitetura): como a aplicação está estruturada no ponto de vista arquitetural;
 - [Contribuição & Boas Práticas](#-contribuição--boas-práticas): recomendações sobre contribuições;
 - [Licença](#-licença): como essa aplicação esta licenciada e como você pode utilizá-la.
 
 ## Setup
----
 
 WIP
 
 ## Arquitetura
----
 
 Como essa aplicação foi estruturada e como ela interaje com dependência externas - escrito em detalhes em 
 [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Contribuição & Boas Práticas
----
 
 Veja o documento [CONTRIBUTING](CONTRIBUTING.md) para mais detalhes sobre como contribuir com este projeto.
 
 ## Licença
----
 
 Memo está licenciado sobre a licença [BSD 3-Clause](LICENSE).

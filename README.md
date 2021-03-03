@@ -19,22 +19,18 @@ application;
 - [License](#-license): how this software is licensed and how you may use it.
 
 ## Setup
----
 
 WIP
 
 ## Architecture
----
 
 WIP - How this application works from inside and how it interacts with external dependencies - written in details in 
 [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Contributing & Good Practices
----
 
 See [CONTRIBUTING](CONTRIBUTING.md) for details about how to contribute with this project.
 
 ## License
----
 
 Memo is published under [BSD 3-Clause](LICENSE).
