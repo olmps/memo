@@ -1,3 +1,5 @@
+[English](README.MD) | [Portuguese](README_ptbr.md)
+
 # Memo
 
 Memo is a programming-oriented Anki hybrid application, written in Flutter
@@ -7,8 +9,8 @@ Memo is a programming-oriented Anki hybrid application, written in Flutter
 > Windows) & Web, but they are currently not targeted by the project.
 
 This README is meant to guide how this project is structured and should serve as a guide to help the project scale with 
-the current and future requirements. Think of it like a flexible set of rules that guides the project's decisions. While 
-they can (and probably will) change over the time, discussions must be raised to trigger such changes: this means that 
+the current and future requirements. Think of it as a flexible set of rules that guides the project's decisions. While 
+they can (and probably will) change over time, discussions must be raised to trigger such changes: this means that 
 we will think/question ourselves before taking an action that breaks any rational decision taken here. It is also 
 effective to guide PR discussions.
 
@@ -29,7 +31,7 @@ WIP - How this application works from inside and how it interacts with external 
 
 ## Contributing & Good Practices
 
-See [CONTRIBUTING](CONTRIBUTING.md) for details about how to contribute with this project.
+See [CONTRIBUTING](CONTRIBUTING.md) for details about how to contribute to the project.
 
 ## License
 

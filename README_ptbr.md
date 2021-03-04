@@ -1,6 +1,8 @@
+[Inglês](README.MD) | [Português](README_ptbr.md)
+
 # Memo
 
-Memo é um aplicativo híbrido de Anki voltado ao tema de programção escrito em Flutter.
+Memo é um aplicativo híbrido de Anki voltado ao tema de programação escrito em Flutter.
 
 > Embora a SDK do Flutter em conjunto com a linguagem Dart estejam a poucos passos de suportar aplicações Web e nativas
 > para desktop (Linux, Mac & Windows), o projeto só suporta as plataformas iOS & Android, ainda sem previsão para 
@@ -16,7 +18,7 @@ todos.
 - [Setup](#-setup): como estruturar o ambiente da aplicação;
 - [Arquitetura](#-arquitetura): como a aplicação está estruturada no ponto de vista arquitetural;
 - [Contribuição & Boas Práticas](#-contribuição--boas-práticas): recomendações sobre contribuições;
-- [Licença](#-licença): como essa aplicação esta licenciada e como você pode utilizá-la.
+- [Licença](#-licença): como essa aplicação está licenciada e como você pode utilizá-la.
 
 ## Setup
 
@@ -24,7 +26,7 @@ WIP
 
 ## Arquitetura
 
-Como essa aplicação foi estruturada e como ela interaje com dependência externas - escrito em detalhes em 
+Como essa aplicação foi estruturada e como ela interage com dependência externas - escrito em detalhes em 
 [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Contribuição & Boas Práticas

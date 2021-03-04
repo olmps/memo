@@ -9,7 +9,7 @@ assignees: ''
 
 **Descreva o Bug/Describe the bug:**
 
-<-- Faça uma clara e breve descrição do problema / Provide us a brief and clear description about the problem -->
+<-- Faça uma clara e breve descrição do problema / Provide us a brief and clear description of the problem -->
 
 **Passos para Reproduzir/Steps to Reproduce:**
 
@@ -21,7 +21,7 @@ Exemplo/Example:
 
 **Resultado Esperado/Expected Result:**
 
-<-- Qual resultado você esperava? / What you expected to achieve? -->
+<-- Qual resultado você esperava? / What did you expect to achieve? -->
 
 **Resultado Obtido/Actual Result:**
 
