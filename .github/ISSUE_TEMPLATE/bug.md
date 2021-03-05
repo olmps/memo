@@ -2,7 +2,7 @@
 name: Algo não está funcionando/Something is not working
 about: Eu encontrei algum bug na aplicação/I found a bug in the app
 title: ''
-labels: ''
+labels: 'needs triage'
 assignees: ''
 
 ---

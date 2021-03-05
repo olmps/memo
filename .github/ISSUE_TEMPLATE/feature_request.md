@@ -2,7 +2,7 @@
 name: Nova Funcionalidade/New Feature
 about: Eu quero sugerir uma nova funcionalidade para o app/I want to suggest a new feature
 title: ''
-labels: ''
+labels: 'needs triage'
 assignees: ''
 
 ---
