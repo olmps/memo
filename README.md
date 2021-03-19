@@ -1,4 +1,4 @@
-[English](README.MD) | [Portuguese](README_ptbr.md)
+English | [Portuguese](/README_ptBR.md)
 
 # Memo
 
@@ -14,11 +14,12 @@ they can (and probably will) change over time, discussions must be raised to tri
 we will think/question ourselves before taking an action that breaks any rational decision taken here. It is also 
 effective to guide PR discussions.
 
-- [Setup](#-setup): how the application environment works;
-- [Architecture](#-architecture): how this application works from inside;
-- [Contributing & Good Practices](#-contributing--good-practices): recommendation on how to write good code for this 
+- [Setup](#setup): how the application environment works;
+- [Architecture](#architecture): how this application works from inside;
+- [Background](#background): some background story about this project;
+- [Contributing & Good Practices](#contributing--good-practices): recommendation on how to write good code for this 
 application;
-- [License](#-license): how this software is licensed and how you may use it.
+- [License](#license): how this software is licensed and how you may use it.
 
 ## Setup
 
@@ -28,6 +29,16 @@ WIP
 
 WIP - How this application works from inside and how it interacts with external dependencies - written in details in 
 [ARCHITECTURE.md](ARCHITECTURE.md)
+
+
+## Background
+
+This project was built with the help of the sponsors below:
+
+WIP(sponsors)
+
+If you're interested in checking out an overview about how we dealt with this project's software process (inside our team),
+check out [PROCESS](.process/PROCESS_ptBR.md) (sorry, for now only in ptBR).
 
 ## Contributing & Good Practices
 

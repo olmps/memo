@@ -1,4 +1,4 @@
-[Inglês](README.MD) | [Português](README_ptbr.md)
+[Inglês](/README.md) | Português
 
 # Memo
 
@@ -15,10 +15,11 @@ decisões tomadas no andamento do projeto. Embora estas regras possam - e provav
 ser levantadas sobre os motivos para tais mudanças, de maneira que essas discussões e decisões sejam transparentes para 
 todos.
 
-- [Setup](#-setup): como estruturar o ambiente da aplicação;
-- [Arquitetura](#-arquitetura): como a aplicação está estruturada no ponto de vista arquitetural;
-- [Contribuição & Boas Práticas](#-contribuição--boas-práticas): recomendações sobre contribuições;
-- [Licença](#-licença): como essa aplicação está licenciada e como você pode utilizá-la.
+- [Setup](#setup): como estruturar o ambiente da aplicação;
+- [Arquitetura](#arquitetura): como a aplicação está estruturada no ponto de vista arquitetural;
+- [Background](#background): um pouco do *background* sobre este projeto;
+- [Contribuição & Boas Práticas](#contribuição--boas-práticas): recomendações sobre contribuições;
+- [Licença](#licença): como essa aplicação está licenciada e como você pode utilizá-la.
 
 ## Setup
 
@@ -27,7 +28,16 @@ WIP
 ## Arquitetura
 
 Como essa aplicação foi estruturada e como ela interage com dependência externas - escrito em detalhes em 
-[ARCHITECTURE.md](ARCHITECTURE.md)
+[ARCHITECTURE](ARCHITECTURE.md)
+
+## Background
+
+Este projeto foi construído com a ajuda dos patrocinadores abaixo:
+
+WIP(sponsors)
+
+Se você está interessado em dar uma olhadinha sobre como acabamos lidando com o processo de software deste projeto (dentro
+da nossa equipe), dê uma olhada no [PROCESS](.process/PROCESS_ptBR.md).
 
 ## Contribuição & Boas Práticas
 
