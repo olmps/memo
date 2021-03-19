@@ -4,9 +4,9 @@
 
 Memo is a programming-oriented [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition) software (SRS) written in Flutter.
 
-> As of now, this project is designed to only output builds for Android and iOS. Even though, given the current steps of
-> the Flutter SDK & Dart language, there is a high possibility of compiling builds for Native desktop (Linux, Mac & 
-> Windows) & Web, but they are currently not targeted by the project.
+> As of now, this project is designed to only output builds for Android and iOS. Even though, given the current *stability* of
+> Flutter SDK for desktop (Windows, Linux and macOS) and web, there is a high probability that this project will also support
+> builds for all plaftorms.
 
 This README is meant to guide how this project is structured and should serve as a guide to help the project scale with 
 the current and future requirements. Think of it as a flexible set of rules that guides the project's decisions. While 

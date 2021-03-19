@@ -4,9 +4,9 @@
 
 Memo é um software (escrito em Flutter) de [repetição espaçada](https://en.wikipedia.org/wiki/Spaced_repetition) (SRS, em inglês) voltado ao tema de programação.
 
-> Embora a SDK do Flutter em conjunto com a linguagem Dart estejam a poucos passos de suportar aplicações Web e nativas
-> para desktop (Linux, Mac & Windows), o projeto só suporta as plataformas iOS & Android, ainda sem previsão para 
-> suportar tais plataformas.
+> Atualmente, este projeto está construído apenas para gerar *builds* para Android e iOS. Embora o fato de que, dado a estabilidade
+> da SDK do Flutter para desktop (Windows, Linux e macOS) e web, existe uma alta probabilidade que estej projeto também suportará 
+> *builds* para todas as plataformas.
 
 Este README e todos os sub-documentos presentes aqui (CONTRIBUTING, ARCHITECTURE & CHANGELOG) tem como objetivo guiar a 
 estrutura deste projeto e devem auxiliar na escalabilidade das funcionalidades existentes hoje e nas que serão criadas
