@@ -2,7 +2,7 @@
 
 # Memo
 
-Memo is a programming-oriented Anki hybrid application, written in Flutter
+Memo is a programming-oriented [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition) software (SRS) written in Flutter.
 
 > As of now, this project is designed to only output builds for Android and iOS. Even though, given the current steps of
 > the Flutter SDK & Dart language, there is a high possibility of compiling builds for Native desktop (Linux, Mac & 
