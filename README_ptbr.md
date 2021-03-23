@@ -2,11 +2,21 @@
 
 # Memo
 
-Memo é um software (escrito em Flutter) de [repetição espaçada](https://en.wikipedia.org/wiki/Spaced_repetition) (SRS, em inglês) voltado ao tema de programação.
+Monorepo do Memo.
 
-> Atualmente, este projeto está construído apenas para gerar *builds* para Android e iOS. Embora o fato de que, dado a estabilidade
-> da SDK do Flutter para desktop (Windows, Linux e macOS) e web, existe uma alta probabilidade que estej projeto também suportará 
-> *builds* para todas as plataformas.
+Memo é um software de código aberto (escrito em Flutter) de
+[repetição espaçada](https://en.wikipedia.org/wiki/Spaced_repetition) (SRS, em inglês) voltado ao tema de programação.
+
+<!--
+You can use the latest beta features through TestFlight / Google Play, or download through:
+
+AppStore (badge)
+Google Play (badge)
+-->
+
+> Atualmente, este projeto está construído apenas para gerar *builds* para Android e iOS. Embora o fato de que, dado a 
+> estabilidade da SDK do Flutter para desktop (Windows, Linux e macOS) e web, existe uma alta probabilidade que este
+> projeto eventualmente suportará *builds* para todas as plataformas.
 
 Este README e todos os sub-documentos presentes aqui (CONTRIBUTING, ARCHITECTURE & CHANGELOG) tem como objetivo guiar a 
 estrutura deste projeto e devem auxiliar na escalabilidade das funcionalidades existentes hoje e nas que serão criadas
@@ -15,20 +25,24 @@ decisões tomadas no andamento do projeto. Embora estas regras possam - e provav
 ser levantadas sobre os motivos para tais mudanças, de maneira que essas discussões e decisões sejam transparentes para 
 todos.
 
-- [Setup](#setup): como estruturar o ambiente da aplicação;
-- [Arquitetura](#arquitetura): como a aplicação está estruturada no ponto de vista arquitetural;
+- [Setup](#setup): como configurar seu projeto localmente;
+- [Arquitetura](#arquitetura): como está estruturada a arquitetura da aplicação;
 - [Background](#background): um pouco do *background* sobre este projeto;
 - [Contribuição & Boas Práticas](#contribuição--boas-práticas): recomendações sobre contribuições;
 - [Licença](#licença): como essa aplicação está licenciada e como você pode utilizá-la.
 
 ## Setup
 
-WIP
+Se você não tem ideia de como instalar o Flutter e rodá-lo localmente, dê uma olhada nesse
+[_Get started_ (em inglês)](https://flutter.dev/docs/get-started/install)
+
+Agora, se você já tem o Flutter configurado localmente, na pasta raíz do projeto, instale as dependencias através do
+comando `flutter pub get`.
 
 ## Arquitetura
 
 Como essa aplicação foi estruturada e como ela interage com dependência externas - escrito em detalhes em 
-[ARCHITECTURE](ARCHITECTURE.md)
+[ARCHITECTURE](ARCHITECTURE.md) (em inglês).
 
 ## Background
 
@@ -37,7 +51,7 @@ Este projeto foi construído com a ajuda dos patrocinadores abaixo:
 WIP(sponsors)
 
 Se você está interessado em dar uma olhadinha sobre como acabamos lidando com o processo de software deste projeto (dentro
-da nossa equipe), dê uma olhada no [PROCESS](.process/PROCESS_ptBR.md).
+da nossa equipe), dê uma olhada no [.process/](.process/README.md).
 
 ## Contribuição & Boas Práticas
 

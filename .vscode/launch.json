@@ -1,0 +1,33 @@
+{
+  "version": "0.3.0",
+  "configurations": [
+    {
+      "name": "DEV - App",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define=ENV=DEV"
+      ]
+    },
+    {
+      "name": "PROFILE - App",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "profile",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define=ENV=DEV"
+      ]
+    },
+    {
+      "name": "PROD - App",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define=ENV=PROD"
+      ]
+    }
+  ]
+}
