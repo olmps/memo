@@ -1,4 +1,4 @@
-English | [Portuguese](/README_ptBR.md)
+English | [Portuguese](README_ptbr.md)
 
 # Memo
 
