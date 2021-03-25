@@ -14,6 +14,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  ###
+  # Core
+  ###
+  meta: ^1.3.0
+  equatable: ^2.0.0
+
 dev_dependencies:
   strict: ^1.0.0
   flutter_test:
