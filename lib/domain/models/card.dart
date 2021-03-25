@@ -91,18 +91,18 @@ class CardExecution extends Equatable {
   List<Object?> get props => [started, finished, question, answer, answeredDifficulty];
 }
 
-/// Association of a `Deck.id` and all executions for a card with this particular `cardId`
+/// Associates a `Deck.id` and all executions for a card with its particular `cardId`
 @immutable
-class DeckCardExecutions extends KeyStorable {
-  DeckCardExecutions({required String cardId, required this.deckId, required this.answers})
-      : assert(answers.isNotEmpty),
+class CardExecutions extends KeyStorable {
+  CardExecutions({required String cardId, required this.deckId, required this.executions})
+      : assert(executions.isNotEmpty),
         super(id: cardId);
 
   final String deckId;
-  final List<CardExecution> answers;
+  final List<CardExecution> executions;
 
   // TODO(matuella): Does `equatable` unwraps `List` properties for me, or will it always fail?
   // https://github.com/felangel/equatable/pull/103
   @override
-  List<Object?> get props => [id, answers];
+  List<Object?> get props => [id, executions];
 }
