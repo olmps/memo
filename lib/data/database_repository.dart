@@ -1,8 +1,9 @@
-import 'package:equatable/equatable.dart';
+import 'dart:async';
 
-/// Handles the local persistence to a database
-///
-/// To store primitives values, use `StorageRepository`.
+import 'package:equatable/equatable.dart';
+import 'package:sembast/sembast.dart';
+
+/// Handles the local persistence to the database
 abstract class DatabaseRepository {
   /// Adds an [object] to the [store], using a [serializer]
   ///
@@ -56,4 +57,97 @@ abstract class JsonSerializer<T extends Object> {
 abstract class KeyStorable extends Equatable {
   const KeyStorable({required this.id});
   final String id;
+}
+
+//
+// DatabaseRepository implementation using `sembast`
+//
+class DatabaseRepositoryImpl implements DatabaseRepository {
+  DatabaseRepositoryImpl(this._db);
+
+  // `sembast` database instance
+  final Database _db;
+
+  @override
+  Future<void> put<T extends KeyStorable>({
+    required T object,
+    required JsonSerializer<T> serializer,
+    required DatabaseStore store,
+  }) async {
+    final storeMap = stringMapStoreFactory.store(store.key);
+    final deserializedObject = serializer.mapOf(object);
+
+    await storeMap.record(object.id).put(_db, deserializedObject, merge: true);
+  }
+
+  @override
+  Future<void> removeObject<T extends KeyStorable>({required String key, required DatabaseStore store}) async {
+    final storeMap = stringMapStoreFactory.store(store.key);
+    await storeMap.record(key).delete(_db);
+  }
+
+  @override
+  Future<T?> getObject<T extends KeyStorable>({
+    required String key,
+    required JsonSerializer<T> serializer,
+    required DatabaseStore store,
+  }) async {
+    final storeMap = stringMapStoreFactory.store(store.key);
+    final rawObject = await storeMap.record(key).get(_db);
+
+    if (rawObject != null) {
+      return serializer.fromMap(rawObject);
+    }
+
+    return null;
+  }
+
+  @override
+  Future<List<T>> getAll<T extends KeyStorable>({
+    required JsonSerializer<T> serializer,
+    required DatabaseStore store,
+  }) async {
+    final storeMap = stringMapStoreFactory.store(store.key);
+
+    final allRecords = await storeMap.find(_db);
+
+    return allRecords.map((record) => serializer.fromMap(record.value)).toList();
+  }
+
+  @override
+  Future<Stream<List<T>>> listenAll<T extends KeyStorable>({
+    required JsonSerializer<T> serializer,
+    required DatabaseStore store,
+  }) async {
+    final storeMap = stringMapStoreFactory.store(store.key);
+
+    final transformer = _snapshotSerializerTransformer(serializer);
+    return storeMap.query().onSnapshots(_db).transform(transformer);
+  }
+
+  /// Transforms a list of `sembast` snapshot records into a list of objects parsed by [serializer]
+  StreamTransformer<List<RecordSnapshot<String, Map<String, Object?>>>, List<T>>
+      _snapshotSerializerTransformer<T extends Object>(JsonSerializer<T> serializer) {
+    return StreamTransformer.fromHandlers(
+      handleData: (snapshots, sink) {
+        final transformedRecords = snapshots.map((record) => serializer.fromMap(record.value)).toList();
+        sink.add(transformedRecords);
+      },
+    );
+  }
+}
+
+extension on DatabaseStore {
+  String get key {
+    switch (this) {
+      case DatabaseStore.decks:
+        return 'decks';
+      case DatabaseStore.cards:
+        return 'cards';
+      case DatabaseStore.executions:
+        return 'card_executions';
+      case DatabaseStore.resources:
+        return 'resources';
+    }
+  }
 }
