@@ -19,11 +19,23 @@ dependencies:
   ###
   meta: ^1.3.0
   equatable: ^2.0.0
+  path: ^1.8.0
+  path_provider: ^2.0.0
+
+  ###
+  # Database & Storage
+  ###
+  sembast: ^3.0.0
+  uuid: ^3.0.0
 
 dev_dependencies:
-  strict: ^1.0.0
   flutter_test:
     sdk: flutter
+
+  ###
+  # Lint
+  ###
+  strict: ^1.0.0
 
 flutter:
   # The following line ensures that the Material Icons font is
