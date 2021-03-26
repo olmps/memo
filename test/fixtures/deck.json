@@ -1,0 +1,11 @@
+{
+  "id": "1",
+  "name": "My Deck",
+  "description": "This deck represents a deck.",
+  "category": "Category",
+  "tags": ["Tag 1", "Tag 2"],
+  "timeSpentInMillis": 0,
+  "easyCardsAmount": 0,
+  "mediumCardsAmount": 0,
+  "hardCardsAmount": 0
+}
