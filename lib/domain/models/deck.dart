@@ -23,7 +23,7 @@ class Deck extends KeyStorable {
   final String description;
   final String category;
 
-  /// List of tags that can associate with this [Resource]
+  /// List of tags that can associate with this `Resource`
   ///
   /// This is useful in cases where we must match a `Deck.tags` with each available resources
   final List<String> tags;

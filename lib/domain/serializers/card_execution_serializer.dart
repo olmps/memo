@@ -1,7 +1,7 @@
 import 'package:memo/core/faults/errors/serialization_error.dart';
 import 'package:memo/data/database_repository.dart';
 import 'package:memo/domain/enums/card_difficulty.dart';
-import 'package:memo/domain/models/card.dart';
+import 'package:memo/domain/models/card_execution.dart';
 import 'package:memo/domain/serializers/card_block_serializer.dart';
 
 class CardExecutionSerializer implements JsonSerializer<CardExecution> {
@@ -22,7 +22,7 @@ class CardExecutionSerializer implements JsonSerializer<CardExecution> {
     final answer = rawAnswer.cast<Map<String, dynamic>>().map(blockSerializer.fromMap).toList();
     final question = rawQuestion.cast<Map<String, dynamic>>().map(blockSerializer.fromMap).toList();
 
-    final rawDifficulty = json['type'] as int;
+    final rawDifficulty = json['answeredDifficulty'] as int;
     final answeredDifficulty = _typeFromRaw(rawDifficulty);
 
     return CardExecution(

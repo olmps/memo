@@ -1,10 +1,3 @@
-// {
-// 	'id': string,
-// 	'tags': [string],
-// 	'description': string,
-// 	'url': string,
-// }
-
 import 'package:memo/data/database_repository.dart';
 import 'package:meta/meta.dart';
 

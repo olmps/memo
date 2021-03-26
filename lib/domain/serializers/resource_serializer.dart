@@ -1,7 +1,7 @@
 import 'package:memo/data/database_repository.dart';
 import 'package:memo/domain/models/resource.dart';
 
-class DeckSerializer implements JsonSerializer<Resource> {
+class ResourceSerializer implements JsonSerializer<Resource> {
   @override
   Resource fromMap(Map<String, dynamic> json) {
     final id = json['id'] as String;
