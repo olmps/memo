@@ -7,16 +7,17 @@ import 'package:sembast/sembast.dart';
 abstract class DatabaseRepository {
   /// Adds an [object] to the [store], using a [serializer]
   ///
-  /// If there is already an object with the same [KeyStorable.id], the default behavior should be merging all of its
-  /// fields
+  /// If there is already an object with the same [KeyStorable.id], the default behavior is to merge all of its fields.
+  /// [shouldMerge] should be `false` if pre-existing fields should not be merged.
   Future<void> put<T extends KeyStorable>({
     required T object,
     required JsonSerializer<T> serializer,
     required DatabaseStore store,
+    bool shouldMerge = true,
   });
 
   /// Deletes the value with [key] from the [store]
-  Future<void> removeObject<T extends KeyStorable>({required String key, required DatabaseStore store});
+  Future<void> removeObject({required String key, required DatabaseStore store});
 
   /// Retrieves an object with [key] from the [store]
   ///
@@ -73,15 +74,16 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
     required T object,
     required JsonSerializer<T> serializer,
     required DatabaseStore store,
+    bool shouldMerge = true,
   }) async {
     final storeMap = stringMapStoreFactory.store(store.key);
     final deserializedObject = serializer.mapOf(object);
 
-    await storeMap.record(object.id).put(_db, deserializedObject, merge: true);
+    await storeMap.record(object.id).put(_db, deserializedObject, merge: shouldMerge);
   }
 
   @override
-  Future<void> removeObject<T extends KeyStorable>({required String key, required DatabaseStore store}) async {
+  Future<void> removeObject({required String key, required DatabaseStore store}) async {
     final storeMap = stringMapStoreFactory.store(store.key);
     await storeMap.record(key).delete(_db);
   }
