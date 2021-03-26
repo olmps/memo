@@ -37,6 +37,11 @@ dev_dependencies:
   ###
   strict: ^1.0.0
 
+  ###
+  # Testing
+  ###
+  mocktail: ^0.1.0
+
 flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
