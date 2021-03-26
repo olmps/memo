@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:sembast/sembast.dart';
 
 /// Handles the local persistence to the database
@@ -139,7 +140,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   }
 }
 
-extension on DatabaseStore {
+extension StoreKeys on DatabaseStore {
+  @visibleForTesting
   String get key {
     switch (this) {
       case DatabaseStore.decks:
