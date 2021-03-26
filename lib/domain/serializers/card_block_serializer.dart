@@ -1,7 +1,7 @@
 import 'package:memo/core/faults/errors/serialization_error.dart';
 import 'package:memo/data/database_repository.dart';
 import 'package:memo/domain/enums/card_block_type.dart';
-import 'package:memo/domain/models/card.dart';
+import 'package:memo/domain/models/card_block.dart';
 
 class CardBlockSerializer implements JsonSerializer<CardBlock> {
   @override

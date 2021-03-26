@@ -1,9 +1,10 @@
 import 'package:memo/data/database_repository.dart';
 import 'package:memo/domain/models/card.dart';
+import 'package:memo/domain/models/card_execution.dart';
 import 'package:memo/domain/serializers/card_block_serializer.dart';
 import 'package:memo/domain/serializers/card_execution_serializer.dart';
 
-class HabitSerializer implements JsonSerializer<Card> {
+class CardSerializer implements JsonSerializer<Card> {
   final blockSerializer = CardBlockSerializer();
   final executionSerializer = CardExecutionSerializer();
 
@@ -23,7 +24,7 @@ class HabitSerializer implements JsonSerializer<Card> {
 
     CardExecution? lastExecution;
     if (json.containsKey('lastExecution')) {
-      final rawLastExecution = json['executionsAmount'] as Map<String, dynamic>;
+      final rawLastExecution = json['lastExecution'] as Map<String, dynamic>;
       lastExecution = executionSerializer.fromMap(rawLastExecution);
     }
 
