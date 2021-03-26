@@ -4,11 +4,6 @@ import 'package:memo/data/database_repository.dart';
 import 'package:memo/data/sembast_database.dart' as sembast_db;
 import 'package:sembast/sembast.dart';
 
-class AppState {
-  // const AppState({required this.exampleServices});
-  // final ExampleServices exampleServices;
-}
-
 /// Manages all app asynchronous dependencies
 ///
 /// This is where we glue all nested interdependencies that will be used through the whole application's lifecycle.
@@ -18,8 +13,12 @@ class AppState {
 /// [ValueNotifier], provided by the `flutter/foundation` library.
 ///
 /// When resolving the future, returns all required dependencies as a [AppState] instance
-class AppVM extends ValueNotifier<AsyncValue<AppState>> {
-  AppVM() : super(const AsyncValue.loading()) {
+abstract class AppVM extends ValueNotifier<AsyncValue<AppState>> {
+  AppVM(AsyncValue<AppState> value) : super(value);
+}
+
+class AppVMImpl extends AppVM {
+  AppVMImpl() : super(const AsyncValue.loading()) {
     _loadAppVM();
   }
 
@@ -47,4 +46,9 @@ class AppVM extends ValueNotifier<AsyncValue<AppState>> {
     // return AppState(exampleServices: exampleServices);
     value = AsyncValue.data(AppState());
   }
+}
+
+class AppState {
+  // const AppState({required this.exampleServices});
+  // final ExampleServices exampleServices;
 }

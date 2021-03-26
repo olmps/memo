@@ -5,6 +5,6 @@ import 'package:memo/application/view-models/app_vm.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final appVM = AppVM();
+  final appVM = AppVMImpl();
   runApp(AppRoot(appVM));
 }
