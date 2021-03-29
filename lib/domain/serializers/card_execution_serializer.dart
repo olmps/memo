@@ -46,7 +46,7 @@ class CardExecutionSerializer implements JsonSerializer<CardExecution> {
   CardDifficulty _typeFromRaw(int raw) => CardDifficulty.values.firstWhere(
         (type) => type.raw == raw,
         orElse: () {
-          throw SerializationError("Failed to find a CardDifficulty with the raw vale of '$raw'");
+          throw SerializationError("Failed to find a CardDifficulty with the raw value of '$raw'");
         },
       );
 }
