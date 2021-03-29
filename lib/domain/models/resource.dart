@@ -1,4 +1,5 @@
 import 'package:memo/data/database_repository.dart';
+import 'package:memo/domain/enums/resource_type.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -17,7 +18,7 @@ class Resource extends KeyStorable {
   /// Metadata that describes which type of [url] this resource refers to
   ///
   /// Example types: "video", "article", etctera.
-  final String type;
+  final ResourceType type;
 
   /// URL that links to this particular [Resource]
   final String url;
