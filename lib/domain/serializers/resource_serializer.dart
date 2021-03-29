@@ -6,6 +6,7 @@ class ResourceSerializer implements JsonSerializer<Resource> {
   Resource fromMap(Map<String, dynamic> json) {
     final id = json['id'] as String;
     final description = json['description'] as String;
+    final type = json['type'] as String;
     final url = json['url'] as String;
 
     final rawTags = json['tags'] as List;
@@ -16,6 +17,7 @@ class ResourceSerializer implements JsonSerializer<Resource> {
       id: id,
       description: description,
       tags: tags,
+      type: type,
       url: url,
     );
   }
@@ -24,7 +26,8 @@ class ResourceSerializer implements JsonSerializer<Resource> {
   Map<String, dynamic> mapOf(Resource resource) => <String, dynamic>{
         'id': resource.id,
         'description': resource.description,
-        'url': resource.url,
         'tags': resource.tags,
+        'type': resource.type,
+        'url': resource.url,
       };
 }
