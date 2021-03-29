@@ -40,8 +40,6 @@ class CardExecutions extends KeyStorable {
   final String deckId;
   final List<CardExecution> executions;
 
-  // TODO(matuella): Does `equatable` unwraps `List` properties for me, or will it always fail?
-  // https://github.com/felangel/equatable/pull/103
   @override
   List<Object?> get props => [id, executions];
 }
