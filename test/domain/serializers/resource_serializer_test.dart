@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/domain/enums/resource_type.dart';
 import 'package:memo/domain/models/resource.dart';
 import 'package:memo/domain/serializers/resource_serializer.dart';
 
@@ -11,7 +12,7 @@ void main() {
     id: '1',
     description: 'This is a good article!',
     tags: const ['Tag 1', 'Tag 2'],
-    type: 'article',
+    type: ResourceType.article,
     url: 'https://google.com/',
   );
 
