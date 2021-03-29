@@ -14,7 +14,7 @@ void main() {
     url: 'https://google.com/',
   );
 
-  test('ResourcSerializer should correctly encode/decode a Resource', () {
+  test('ResourceSerializer should correctly encode/decode a Resource', () {
     final rawResource = fixtures.resource();
 
     final decodedResource = serializer.fromMap(rawResource);
@@ -24,7 +24,7 @@ void main() {
     expect(encodedResource, rawResource);
   });
 
-  test('ResourcSerializer should fail to decode without required properties', () {
+  test('ResourceSerializer should fail to decode without required properties', () {
     expect(() {
       final rawBlock = fixtures.resource()..remove('id');
       serializer.fromMap(rawBlock);

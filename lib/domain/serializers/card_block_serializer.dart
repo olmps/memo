@@ -23,7 +23,7 @@ class CardBlockSerializer implements JsonSerializer<CardBlock> {
   CardBlockType _typeFromRaw(String raw) => CardBlockType.values.firstWhere(
         (type) => type.raw == raw,
         orElse: () {
-          throw SerializationError("Failed to find a CardBlockType with the raw vale of '$raw'");
+          throw SerializationError("Failed to find a CardBlockType with the raw value of '$raw'");
         },
       );
 }
