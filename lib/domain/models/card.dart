@@ -46,8 +46,6 @@ class Card extends KeyStorable {
   /// `true` if this [Card] was never executed
   bool get isPristine => lastExecution == null;
 
-  // TODO(matuella): Does `equatable` unwraps `List` properties for me, or will it always fail?
-  // https://github.com/felangel/equatable/pull/103
   @override
   List<Object?> get props => [id, deckId, question, answer, executionsAmount, lastExecuted, lastExecution, dueDate];
 }
