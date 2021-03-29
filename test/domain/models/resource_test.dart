@@ -5,7 +5,7 @@ void main() {
   test('Deck should not allow empty tags', () {
     expect(
       () {
-        Resource(id: 'id', description: 'description', tags: const [], url: 'url');
+        Resource(id: 'id', description: 'description', tags: const [], type: 'type', url: 'url');
       },
       throwsA(isA<AssertionError>()),
     );

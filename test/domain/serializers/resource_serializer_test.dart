@@ -11,6 +11,7 @@ void main() {
     id: '1',
     description: 'This is a good article!',
     tags: const ['Tag 1', 'Tag 2'],
+    type: 'article',
     url: 'https://google.com/',
   );
 
@@ -39,6 +40,10 @@ void main() {
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawBlock = fixtures.resource()..remove('tags');
+      serializer.fromMap(rawBlock);
+    }, throwsA(isA<TypeError>()));
+    expect(() {
+      final rawBlock = fixtures.resource()..remove('type');
       serializer.fromMap(rawBlock);
     }, throwsA(isA<TypeError>()));
   });

@@ -1,6 +1,7 @@
 {
   "id": "1",
   "description": "This is a good article!",
-  "url": "https://google.com/",
-  "tags": ["Tag 1", "Tag 2"]
+  "tags": ["Tag 1", "Tag 2"],
+  "type": "article",
+  "url": "https://google.com/"
 }
