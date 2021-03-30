@@ -5,7 +5,7 @@ Table of contents
   - [`.vscode/`](#vscode)
     - [Useful vscode extensions](#useful-vscode-extensions)
   - [`android/` - Android required files](#android---android-required-files)
-  - [`ios/` - iOS required files- Architecture](#ios---ios-required-files--architecture)
+  - [`ios/` - iOS required files](#ios---ios-required-files)
   - [`lib/` - Flutter application](#lib---flutter-application)
     - [Why](#why)
     - [Overview](#overview)
@@ -66,7 +66,7 @@ Stores all required (and generated) files to output builds for the Android platf
 
 This is where native Android (Kotlin) code also lives, if there is a need to implement native-specific features.
 
-## `ios/` - iOS required files- [Architecture](#architecture)
+## `ios/` - iOS required files
 
 Stores all required (and generated) files to output builds for the iOS/iPadOS platforms.
 
