@@ -1,0 +1,7 @@
+{
+  "id": "1",
+  "description": "This is a good article!",
+  "tags": ["Tag 1", "Tag 2"],
+  "type": "article",
+  "url": "https://google.com/"
+}

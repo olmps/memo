@@ -1,0 +1,17 @@
+{
+  "started": 1616747007347,
+  "finished": 1616747027347,
+  "question": [
+    { 
+      "type": "text",
+      "rawContents": "This is my simple string question"
+    }
+  ],
+  "answer": [
+    { 
+      "type": "text",
+      "rawContents": "This is my simple string answer"
+    }
+  ],
+  "answeredDifficulty": 2
+} 
