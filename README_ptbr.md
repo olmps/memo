@@ -29,14 +29,14 @@ todos.
 - [Arquitetura](#arquitetura): como está estruturada a arquitetura da aplicação;
 - [Background](#background): um pouco do *background* sobre este projeto;
 - [Contribuição & Boas Práticas](#contribuição--boas-práticas): recomendações sobre contribuições;
-- [Licença](#licença): como essa aplicação está licenciada e como você pode utilizá-la.
+- [Licença](#licença): como essa aplicação está licenciada e como você pode utilizá-la;
 
 ## Setup
 
 Se você não tem ideia de como instalar o Flutter e rodá-lo localmente, dê uma olhada nesse
 [_Get started_ (em inglês)](https://flutter.dev/docs/get-started/install)
 
-Agora, se você já tem o Flutter configurado localmente, na pasta raíz do projeto, instale as dependencias através do
+Agora, se você já tem o Flutter configurado localmente, na pasta raíz do projeto, instale as dependências através do
 comando `flutter pub get`.
 
 ## Arquitetura
