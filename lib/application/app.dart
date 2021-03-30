@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
-import 'package:memo/application/coordinator.dart';
+import 'package:memo/application/coordinator/coordinator_information_parser.dart';
+import 'package:memo/application/coordinator/coordinator_router_delegate.dart';
+import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/layout_provider.dart';
 import 'package:memo/application/pages/splash_page.dart';
 import 'package:memo/application/view-models/app_vm.dart';
