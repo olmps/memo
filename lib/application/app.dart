@@ -8,7 +8,7 @@ import 'package:memo/application/view-models/app_vm.dart';
 
 /// "Pre-load" root widget for the application
 ///
-/// This widget is a wrapper to provide (and load) a [AppState], while showing a splash screen while it's
+/// This widget is a wrapper to provide (and load) an instance of [AppState], while showing a splash screen while it's
 /// loading for any external/internal dependencies.
 class AppRoot extends StatelessWidget {
   const AppRoot(this.vm);
@@ -66,7 +66,7 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
     );
 
     return MaterialApp.router(
-      title: 'Blazing Habits',
+      title: 'Memo',
       debugShowCheckedModeBanner: false,
       routerDelegate: CoordinatorRouterDelegate(coordinator),
       routeInformationParser: CoordinatorInformationParser(),

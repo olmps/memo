@@ -12,7 +12,7 @@ import 'package:sembast/sembast.dart';
 /// [ScopedProvider]) that aren't in a root [ProviderScope], we fall back to a more vanilla implementation, using the
 /// [ValueNotifier], provided by the `flutter/foundation` library.
 ///
-/// When resolving the future, returns all required dependencies as a [AppState] instance
+/// When resolving the future, returns all required dependencies through an [AppState] instance
 abstract class AppVM extends ValueNotifier<AsyncValue<AppState>> {
   AppVM(AsyncValue<AppState> value) : super(value);
 }
