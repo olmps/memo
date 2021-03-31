@@ -29,7 +29,7 @@ todos.
 - [Arquitetura](#arquitetura): como está estruturada a arquitetura da aplicação;
 - [Background](#background): um pouco do *background* sobre este projeto;
 - [Contribuição & Boas Práticas](#contribuição--boas-práticas): recomendações sobre contribuições;
-- [Licença](#licença): como essa aplicação está licenciada e como você pode utilizá-la;
+- [Licença](#licença): como essa aplicação está licenciada e como você pode utilizá-la.
 
 ## Setup
 
