@@ -3,9 +3,9 @@ import 'package:sembast/sembast.dart';
 
 /// Handles the local persistence to the database
 abstract class DocumentDatabaseGateway {
-  /// Adds an [object] to the [store], using a [serializer]
+  /// Adds an [object] to the [store], using a [id]
   ///
-  /// If there is already an object with the same [KeyStorable.id], the default behavior is to merge all of its fields.
+  /// If there is already an object with the same [id], the default behavior is to merge all of its fields.
   /// [shouldMerge] should be `false` if pre-existing fields should not be merged.
   Future<void> put({
     required String id,
@@ -14,10 +14,10 @@ abstract class DocumentDatabaseGateway {
     bool shouldMerge = true,
   });
 
-  /// Deletes the value with [key] from the [store]
+  /// Deletes the value with [id] from the [store]
   Future<void> remove({required String id, required String store});
 
-  /// Retrieves an object with [key] from the [store]
+  /// Retrieves an object with [id] from the [store]
   ///
   /// Returns `null` if the key doesn't exist
   Future<Map<String, dynamic>?> get({required String id, required String store});
@@ -79,7 +79,7 @@ class SembastGateway implements DocumentDatabaseGateway {
     return storeMap.query().onSnapshots(_db).transform(snapshotTransformer);
   }
 
-  /// Transforms a list of `sembast` snapshot records into a list of objects parsed by [serializer]
+  /// Transforms a list of `sembast` snapshot records into a list of objects
   final snapshotTransformer =
       StreamTransformer<List<RecordSnapshot<String, Map<String, Object?>>>, List<Map<String, Object?>>>.fromHandlers(
     handleData: (snapshots, sink) {
