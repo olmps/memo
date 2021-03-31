@@ -36,7 +36,7 @@ todos.
 Se você não tem ideia de como instalar o Flutter e rodá-lo localmente, dê uma olhada nesse
 [_Get started_ (em inglês)](https://flutter.dev/docs/get-started/install)
 
-Agora, se você já tem o Flutter configurado localmente, na pasta raíz do projeto, instale as dependencias através do
+Agora, se você já tem o Flutter configurado localmente, na pasta raíz do projeto, instale as dependências através do
 comando `flutter pub get`.
 
 ## Arquitetura
