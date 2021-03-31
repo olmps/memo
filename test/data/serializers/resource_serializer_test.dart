@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/data/serializers/resource_serializer.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 import 'package:memo/domain/models/resource.dart';
-import 'package:memo/domain/serializers/resource_serializer.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
 
@@ -19,33 +19,33 @@ void main() {
   test('ResourceSerializer should correctly encode/decode a Resource', () {
     final rawResource = fixtures.resource();
 
-    final decodedResource = serializer.fromMap(rawResource);
+    final decodedResource = serializer.from(rawResource);
     expect(decodedResource, testResource);
 
-    final encodedResource = serializer.mapOf(decodedResource);
+    final encodedResource = serializer.to(decodedResource);
     expect(encodedResource, rawResource);
   });
 
   test('ResourceSerializer should fail to decode without required properties', () {
     expect(() {
       final rawBlock = fixtures.resource()..remove('id');
-      serializer.fromMap(rawBlock);
+      serializer.from(rawBlock);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawBlock = fixtures.resource()..remove('description');
-      serializer.fromMap(rawBlock);
+      serializer.from(rawBlock);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawBlock = fixtures.resource()..remove('url');
-      serializer.fromMap(rawBlock);
+      serializer.from(rawBlock);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawBlock = fixtures.resource()..remove('tags');
-      serializer.fromMap(rawBlock);
+      serializer.from(rawBlock);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawBlock = fixtures.resource()..remove('type');
-      serializer.fromMap(rawBlock);
+      serializer.from(rawBlock);
     }, throwsA(isA<TypeError>()));
   });
 }

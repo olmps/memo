@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/data/serializers/card_serializer.dart';
 import 'package:memo/domain/enums/card_block_type.dart';
 import 'package:memo/domain/enums/card_difficulty.dart';
 import 'package:memo/domain/models/card.dart';
 import 'package:memo/domain/models/card_block.dart';
 import 'package:memo/domain/models/card_execution.dart';
-import 'package:memo/domain/serializers/card_serializer.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
 
@@ -20,37 +20,37 @@ void main() {
   test('CardSerializer should correctly encode/decode a Card', () {
     final rawCard = fixtures.card();
 
-    final decodedCard = serializer.fromMap(rawCard);
+    final decodedCard = serializer.from(rawCard);
     expect(decodedCard, testCard);
 
-    final encodedCard = serializer.mapOf(decodedCard);
+    final encodedCard = serializer.to(decodedCard);
     expect(encodedCard, rawCard);
   });
 
   test('CardSerializer should fail to decode without required properties', () {
     expect(() {
       final rawCard = fixtures.card()..remove('id');
-      serializer.fromMap(rawCard);
+      serializer.from(rawCard);
     }, throwsA(isA<TypeError>()));
 
     expect(() {
       final rawCard = fixtures.card()..remove('deckId');
-      serializer.fromMap(rawCard);
+      serializer.from(rawCard);
     }, throwsA(isA<TypeError>()));
 
     expect(() {
       final rawCard = fixtures.card()..remove('question');
-      serializer.fromMap(rawCard);
+      serializer.from(rawCard);
     }, throwsA(isA<TypeError>()));
 
     expect(() {
       final rawCard = fixtures.card()..remove('answer');
-      serializer.fromMap(rawCard);
+      serializer.from(rawCard);
     }, throwsA(isA<TypeError>()));
 
     expect(() {
       final rawCard = fixtures.card()..remove('executionsAmount');
-      serializer.fromMap(rawCard);
+      serializer.from(rawCard);
     }, throwsA(isA<TypeError>()));
   });
 
@@ -60,7 +60,7 @@ void main() {
       ..['lastExecution'] = fixtures.cardExecution() // Use the existing `CardExecution` fixture
       ..['dueDate'] = 1616757292509; // Fake date in millis
 
-    final decodedCard = serializer.fromMap(rawCard);
+    final decodedCard = serializer.from(rawCard);
 
     final allPropsCard = Card(
       id: testCard.id,
