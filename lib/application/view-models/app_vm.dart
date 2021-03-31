@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:memo/data/database_repository.dart';
-import 'package:memo/data/sembast_database.dart' as sembast_db;
+import 'package:memo/data/repositories/deck_repository.dart';
+import 'package:memo/domain/services/deck_services.dart';
+import 'package:memo/data/gateways/document_database_gateway.dart';
+import 'package:memo/data/gateways/sembast_database.dart' as sembast_db;
 import 'package:sembast/sembast.dart';
 
 /// Manages all app asynchronous dependencies
@@ -41,14 +43,16 @@ class AppVMImpl extends AppVM {
     //
     // All of these needs a late initialization due to runtime dependencies, which we will only know after some async
     // initialization.
-    final dbRepo = DatabaseRepositoryImpl(dependencies[0] as Database);
-    // final exampleServices = HabitsServicesImpl(dbRepo: dbRepo);
-    // return AppState(exampleServices: exampleServices);
-    value = AsyncValue.data(AppState());
+
+    final dbRepo = SembastGateway(dependencies[0] as Database);
+    final decksRepo = DeckRepositoryImpl(dbRepo);
+    final deckServices = DeckServicesImpl(decksRepo);
+
+    value = AsyncValue.data(AppState(deckServices: deckServices));
   }
 }
 
 class AppState {
-  // const AppState({required this.exampleServices});
-  // final ExampleServices exampleServices;
+  const AppState({required this.deckServices});
+  final DeckServices deckServices;
 }

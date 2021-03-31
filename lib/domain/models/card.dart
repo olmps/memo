@@ -1,12 +1,12 @@
-import 'package:memo/data/database_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:memo/domain/models/card_block.dart';
 import 'package:memo/domain/models/card_execution.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class Card extends KeyStorable {
+class Card extends Equatable {
   Card({
-    required String id,
+    required this.id,
     required this.deckId,
     required this.question,
     required this.answer,
@@ -23,8 +23,9 @@ class Card extends KeyStorable {
         assert(
           (lastExecution == null && dueDate == null) || (lastExecution != null && dueDate != null),
           'Both lastExecution and dueDate must be simultaneously null or not null',
-        ),
-        super(id: id);
+        );
+
+  final String id;
 
   final String deckId;
 

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:memo/data/database_repository.dart';
 import 'package:memo/domain/enums/card_difficulty.dart';
 import 'package:memo/domain/models/card_block.dart';
 import 'package:meta/meta.dart';
@@ -32,14 +31,14 @@ class CardExecution extends Equatable {
 
 /// Associates a `Deck.id` and all executions for a card with its particular `cardId`
 @immutable
-class CardExecutions extends KeyStorable {
-  CardExecutions({required String cardId, required this.deckId, required this.executions})
-      : assert(executions.isNotEmpty),
-        super(id: cardId);
+class CardExecutions extends Equatable {
+  CardExecutions({required this.cardId, required this.deckId, required this.executions})
+      : assert(executions.isNotEmpty);
 
+  final String cardId;
   final String deckId;
   final List<CardExecution> executions;
 
   @override
-  List<Object?> get props => [id, executions];
+  List<Object?> get props => [cardId, deckId, executions];
 }

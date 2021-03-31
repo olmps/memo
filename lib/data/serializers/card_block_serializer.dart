@@ -1,11 +1,11 @@
 import 'package:memo/core/faults/errors/serialization_error.dart';
-import 'package:memo/data/database_repository.dart';
+import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/enums/card_block_type.dart';
 import 'package:memo/domain/models/card_block.dart';
 
-class CardBlockSerializer implements JsonSerializer<CardBlock> {
+class CardBlockSerializer implements Serializer<CardBlock, Map<String, dynamic>> {
   @override
-  CardBlock fromMap(Map<String, dynamic> json) {
+  CardBlock from(Map<String, dynamic> json) {
     final rawType = json['type'] as String;
     final type = _typeFromRaw(rawType);
 
@@ -15,7 +15,7 @@ class CardBlockSerializer implements JsonSerializer<CardBlock> {
   }
 
   @override
-  Map<String, dynamic> mapOf(CardBlock block) => <String, dynamic>{
+  Map<String, dynamic> to(CardBlock block) => <String, dynamic>{
         'type': block.type.raw,
         'rawContents': block.rawContents,
       };

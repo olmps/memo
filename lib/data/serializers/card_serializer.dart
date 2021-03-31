@@ -1,15 +1,15 @@
-import 'package:memo/data/database_repository.dart';
+import 'package:memo/data/serializers/card_block_serializer.dart';
+import 'package:memo/data/serializers/card_execution_serializer.dart';
+import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/card.dart';
 import 'package:memo/domain/models/card_execution.dart';
-import 'package:memo/domain/serializers/card_block_serializer.dart';
-import 'package:memo/domain/serializers/card_execution_serializer.dart';
 
-class CardSerializer implements JsonSerializer<Card> {
+class CardSerializer implements Serializer<Card, Map<String, dynamic>> {
   final blockSerializer = CardBlockSerializer();
   final executionSerializer = CardExecutionSerializer();
 
   @override
-  Card fromMap(Map<String, dynamic> json) {
+  Card from(Map<String, dynamic> json) {
     final id = json['id'] as String;
     final deckId = json['deckId'] as String;
 
@@ -17,15 +17,15 @@ class CardSerializer implements JsonSerializer<Card> {
     final rawQuestion = json['question'] as List;
 
     // Casting just to make sure, because sembast returns an ImmutableList<dynamic>
-    final answer = rawAnswer.cast<Map<String, dynamic>>().map(blockSerializer.fromMap).toList();
-    final question = rawQuestion.cast<Map<String, dynamic>>().map(blockSerializer.fromMap).toList();
+    final answer = rawAnswer.cast<Map<String, dynamic>>().map(blockSerializer.from).toList();
+    final question = rawQuestion.cast<Map<String, dynamic>>().map(blockSerializer.from).toList();
 
     final executionsAmount = json['executionsAmount'] as int;
 
     CardExecution? lastExecution;
     if (json.containsKey('lastExecution')) {
       final rawLastExecution = json['lastExecution'] as Map<String, dynamic>;
-      lastExecution = executionSerializer.fromMap(rawLastExecution);
+      lastExecution = executionSerializer.from(rawLastExecution);
     }
 
     DateTime? dueDate;
@@ -46,13 +46,13 @@ class CardSerializer implements JsonSerializer<Card> {
   }
 
   @override
-  Map<String, dynamic> mapOf(Card card) => <String, dynamic>{
+  Map<String, dynamic> to(Card card) => <String, dynamic>{
         'id': card.id,
         'deckId': card.deckId,
-        'answer': card.answer.map(blockSerializer.mapOf),
-        'question': card.question.map(blockSerializer.mapOf),
+        'answer': card.answer.map(blockSerializer.to),
+        'question': card.question.map(blockSerializer.to),
         'executionsAmount': card.executionsAmount,
-        if (card.lastExecution != null) 'lastExecution': executionSerializer.mapOf(card.lastExecution!),
+        if (card.lastExecution != null) 'lastExecution': executionSerializer.to(card.lastExecution!),
         if (card.dueDate != null) 'dueDate': card.dueDate!.toUtc().millisecondsSinceEpoch,
       };
 }

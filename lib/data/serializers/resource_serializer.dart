@@ -1,10 +1,10 @@
-import 'package:memo/data/database_repository.dart';
+import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 import 'package:memo/domain/models/resource.dart';
 
-class ResourceSerializer implements JsonSerializer<Resource> {
+class ResourceSerializer implements Serializer<Resource, Map<String, dynamic>> {
   @override
-  Resource fromMap(Map<String, dynamic> json) {
+  Resource from(Map<String, dynamic> json) {
     final id = json['id'] as String;
     final description = json['description'] as String;
     final rawType = json['type'] as String;
@@ -26,7 +26,7 @@ class ResourceSerializer implements JsonSerializer<Resource> {
   }
 
   @override
-  Map<String, dynamic> mapOf(Resource resource) => <String, dynamic>{
+  Map<String, dynamic> to(Resource resource) => <String, dynamic>{
         'id': resource.id,
         'description': resource.description,
         'tags': resource.tags,

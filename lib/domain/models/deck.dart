@@ -1,10 +1,10 @@
-import 'package:memo/data/database_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class Deck extends KeyStorable {
+class Deck extends Equatable {
   const Deck({
-    required String id,
+    required this.id,
     required this.name,
     required this.description,
     required this.category,
@@ -16,9 +16,9 @@ class Deck extends KeyStorable {
   })  : assert(timeSpentInMillis >= 0, 'timeSpentInMillis must be a positive (or zero) integer'),
         assert(easyCardsAmount >= 0, 'easyCardsAmount must be a positive (or zero) integer'),
         assert(mediumCardsAmount >= 0, 'mediumCardsAmount must be a positive (or zero) integer'),
-        assert(hardCardsAmount >= 0, 'hardCardsAmount must be a positive (or zero) integer'),
-        super(id: id);
+        assert(hardCardsAmount >= 0, 'hardCardsAmount must be a positive (or zero) integer');
 
+  final String id;
   final String name;
   final String description;
   final String category;
