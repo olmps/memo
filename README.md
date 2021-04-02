@@ -16,7 +16,7 @@ Google Play (badge)
 
 > As of now, this project is designed to only output builds for Android and iOS. Even though, given the current
 > *stability* of Flutter SDK for desktop (Windows, Linux and macOS) and web, there is a high probability that this
-> project will eventually support builds for all plaftorms.
+> project will eventually support builds for all platforms.
 
 This README is meant to guide how this project is structured and should serve as a guide to help the project scale with 
 the current and future requirements. Think of it as a flexible set of rules that guides the project's decisions. While 
