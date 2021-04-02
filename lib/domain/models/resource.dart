@@ -1,12 +1,13 @@
-import 'package:memo/data/database_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class Resource extends KeyStorable {
-  Resource({required String id, required this.description, required this.tags, required this.type, required this.url})
-      : assert(tags.isNotEmpty, 'tags must have at least one element'),
-        super(id: id);
+class Resource extends Equatable {
+  Resource({required this.id, required this.description, required this.tags, required this.type, required this.url})
+      : assert(tags.isNotEmpty, 'tags must have at least one element');
+
+  final String id;
 
   final String description;
 

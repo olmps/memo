@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Releases here should only be made whenever there is a build available for them in the respective stores (even if it's
 a beta or production release, they must be documented here).
 
-## Unreleased
+## [Unreleased]
 
 > Android build: ?
 > iOS build: ?
+
+## [0.1.0-dev.1] - 2021-04-01
+
+Initial release, defines core architecture.
+The application is unusable on this version.

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/data/serializers/card_execution_serializer.dart';
 import 'package:memo/domain/enums/card_block_type.dart';
 import 'package:memo/domain/enums/card_difficulty.dart';
 import 'package:memo/domain/models/card_block.dart';
 import 'package:memo/domain/models/card_execution.dart';
-import 'package:memo/domain/serializers/card_execution_serializer.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
 
@@ -22,33 +22,33 @@ void main() {
     test('CardExecutionSerializer should correctly encode/decode a CardExecution', () {
       final rawExecution = fixtures.cardExecution();
 
-      final decodedExecution = serializer.fromMap(rawExecution);
+      final decodedExecution = serializer.from(rawExecution);
       expect(decodedExecution, testExecution);
 
-      final encodedExecution = serializer.mapOf(decodedExecution);
+      final encodedExecution = serializer.to(decodedExecution);
       expect(encodedExecution, rawExecution);
     });
 
     test('CardExecutionSerializer should fail to decode without required properties', () {
       expect(() {
         final rawExecution = fixtures.cardExecution()..remove('started');
-        serializer.fromMap(rawExecution);
+        serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
         final rawExecution = fixtures.cardExecution()..remove('finished');
-        serializer.fromMap(rawExecution);
+        serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
         final rawExecution = fixtures.cardExecution()..remove('question');
-        serializer.fromMap(rawExecution);
+        serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
         final rawExecution = fixtures.cardExecution()..remove('answer');
-        serializer.fromMap(rawExecution);
+        serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
         final rawExecution = fixtures.cardExecution()..remove('answeredDifficulty');
-        serializer.fromMap(rawExecution);
+        serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
     });
   });
@@ -66,25 +66,25 @@ void main() {
     test('CardExecutionsSerializer should correctly encode/decode a CardExecutions', () {
       final rawExecutions = createRawExecutions();
 
-      final decodedExecutions = serializer.fromMap(rawExecutions);
+      final decodedExecutions = serializer.from(rawExecutions);
       expect(decodedExecutions, testExecutions);
 
-      final encodedExecution = serializer.mapOf(decodedExecutions);
+      final encodedExecution = serializer.to(decodedExecutions);
       expect(encodedExecution, rawExecutions);
     });
 
     test('CardExecutionsSerializer should fail to decode without required properties', () {
       expect(() {
         final rawExecutions = createRawExecutions()..remove('cardId');
-        serializer.fromMap(rawExecutions);
+        serializer.from(rawExecutions);
       }, throwsA(isA<TypeError>()));
       expect(() {
         final rawExecutions = createRawExecutions()..remove('deckId');
-        serializer.fromMap(rawExecutions);
+        serializer.from(rawExecutions);
       }, throwsA(isA<TypeError>()));
       expect(() {
         final rawExecutions = createRawExecutions()..remove('executions');
-        serializer.fromMap(rawExecutions);
+        serializer.from(rawExecutions);
       }, throwsA(isA<TypeError>()));
     });
   });

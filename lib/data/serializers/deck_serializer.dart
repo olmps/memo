@@ -1,9 +1,9 @@
-import 'package:memo/data/database_repository.dart';
+import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/deck.dart';
 
-class DeckSerializer implements JsonSerializer<Deck> {
+class DeckSerializer implements Serializer<Deck, Map<String, dynamic>> {
   @override
-  Deck fromMap(Map<String, dynamic> json) {
+  Deck from(Map<String, dynamic> json) {
     final id = json['id'] as String;
     final name = json['name'] as String;
     final description = json['description'] as String;
@@ -32,7 +32,7 @@ class DeckSerializer implements JsonSerializer<Deck> {
   }
 
   @override
-  Map<String, dynamic> mapOf(Deck deck) => <String, dynamic>{
+  Map<String, dynamic> to(Deck deck) => <String, dynamic>{
         'id': deck.id,
         'name': deck.name,
         'description': deck.description,

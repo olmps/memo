@@ -11,18 +11,21 @@ Table of contents
     - [Overview](#overview)
     - [`application/`](#application)
       - [`constants/`](#constants)
+      - [`coordinator/`](#coordinator)
       - [`pages/` (views)](#pages-views)
       - [`utils/`](#utils)
       - [`widgets/`](#widgets)
       - [`view_models/`](#view_models)
-    - [`core/`](#core)
-      - [`faults/`](#faults)
-    - [`data/`](#data)
     - [`domain/`](#domain)
       - [`enums/`](#enums)
       - [`models/`](#models)
-      - [`serializers/`](#serializers)
       - [`services/`](#services)
+    - [`data/`](#data)
+      - [`gateways/`](#gateways)
+      - [`repositories/`](#repositories)
+      - [`serializers/`](#serializers)
+    - [`core/`](#core)
+      - [`faults/`](#faults)
   - [`test/` - Unit and UI testing](#test---unit-and-ui-testing)
     - [`utils/`](#utils-1)
     - [`fixtures/`](#fixtures)
@@ -104,11 +107,11 @@ enforce such standards.
 
 No, we won't remove the classic separation of "View <-> Business Logic <-> Data" relationship, it's just that, in this
 case, **we think that following every nook and cranny of part of these architectures would be overengineering**, thus
-making things slower just to follow some principles that don't necessarily applies to this case. This approach will
-surely not make sense (or even be completely dumb) for some, but may be good for others.
+making things slower just to follow some principles that don't necessarily apply to this case. This approach will surely
+not make sense (or even be completely dumb) for some, but may be good for others.
 [Relevant xkcd](https://xkcd.com/927/).
 
-One extra thing: this is heavily influenced by a bunch personal opinions and experiences in some production projects
+One extra thing: this is heavily influenced by a bunch personal opinion and experiences in some production projects
 that the team has worked on. This project's external dependencies will keep changing as the time goes on, Flutter will
 also keep evolving, and we have to adapt in a way to maintain consistency, integrity and scalability of our solution.
 So, it's probable that there is (or will be) better ways to achieve the same goals/objectives, and for this, we look
@@ -117,37 +120,61 @@ update old ones and keep those nasty bugs away.
 
 ### Overview
 
-![Architecture Overview](.resources/00arch_overview.png "Architecture Overview")
+![Simple Architecture Overview](.resources/00arch_overview_simple.png "Architecture Overview")
 
-The picture above gives us an overview of each abstraction layer that gives shape to this application - alongside its
-interactions/dependencies. Keep in mind that this is a simplified version, so most of the dependency arrows (those
-connecting elements, like *view models -> services*) should follow the dependency inversion principle.
+The picture above gives us a really simplified overview of each major layer that gives shape to this application.
 
 If you don't want to dig in on what each part is responsible of (and why), here is a TLDR:
   - `application`: all interface elements alongside its view models (may contain validation and such business logic), 
   the latter which communicates with the `domain`;
-  - `domain`: handles most of the business logic and, if necessary, make the respective calls to the `data` layer;
+  - `domain`: handles most of the business logic and if necessary, make the respective calls to the `data` layer;
   - `data`: retrieves and modifies any data, without the knowledge of any other layers whatsoever. This is the
   lower-boundary of our application that communicates with external frameworks and libraries;
   - `core`: shared functionality to all layers.
 
+Now, if you want to take a closer inspection on each interaction of each layer, the image below might be more suited to
+comprehend exactly how each layer (and its exceptions) interacts/depends on others. 
+
+![Complex Architecture Overview](.resources/01arch_overview_complex.png "Architecture Overview")
+
+- The dotted arrow means a direct dependency, such as the connection between *View Models -> Services*. These
+connections require that the communication should always be made through an interface and following the
+[dependency inversion principle (DiP)](https://en.wikipedia.org/wiki/Dependency_inversion_principle);
+- The straight line means a direct association or usage, such as the connection between *View Models -> Models*;
+- The smaller straight line also means a direct association or usage, such as the connection between *Pages -> Enums*.
+The difference from the bigger ones is that these "cross-boundaries" between layers in a non-traditional way - through
+interactors like *View Models* (that connects the `application` with `domain`), *Services* (that connects the `domain`
+with `data`) and *Gateways* (that connects `data` with external dependencies).
+
+All of the interactions above are explained in their respective sections below.
+
 ### `application/`
 
-Our topmost layer, the entry point of all user interactions, which depends directly on Flutter to function properly.
+The topmost layer, the entry point of all user interactions, which depends directly on Flutter to function properly.
 The `application` should be responsible only for rendering elements and capturing inputs, touches, and any interaction
 that comes directly from the user, alongside the interface's capabilities, like scroll, navigation, responsivity,
 etcetera.
 
-Rules about each `application/` file's responsibilities:
-- It should never interact with any layer other than its own sub-folders;
-- It should never access any other layer classes (not even indirectly), unless it's a [`domain/enums`](#enums), which
-we consider to be acceptable.
+Rules about each `application/` structure's responsibilities:
+- It should never **interact** with any layer other than its own sub-folders;
+- It should never **access** any other layer classes (not even indirectly).
 
-The only structures which this doesn't apply, are the **[ViewModels (VMs)](#view_models)**.
+Two exceptions for the above:
+- These structures can **access** the [`domain/enums`](#enums) - while it exposes a piece of the `domain` layer, we 
+consider this to be an acceptable exception (explained in [`data/`](#data));
+- The **[ViewModels (VMs)](#view_models)** can **interact** with the `domain/` because they are the structure that
+allows us to, in only *one-way*, cross boundaries from the `application` to the `domain`.
 
 #### `constants/`
 
 Stores any kind of constant, like images, strings, themes, etcetera.
+
+#### `coordinator/`
+
+Allows us to take control over our routing and navigation, in close contact with the `Flutter` framework to do so.
+
+The responsibility of the coordinator is to make all of those pesky deep-linking and navigation stack problems become
+easier to deal with.
 
 #### `pages/` (views)
 
@@ -169,62 +196,92 @@ anything other than `application/utils` and `application/constants`. They should
 #### `view_models/`
 
 The boundary between the [`application/`](#application) and [`domain/`](#domain). The ViewModels, (suffixed with `VM`
-in each class), always should be built upon an interface (for testability) and should never - ever - know anything about
-the UI, meaning, the `flutter` framework, other than some constant stuff like `Platform` and core meta-functionality,
-but never anything related to the layout per-se.
+in each class), always should be built upon an interface (following the DiP) and should never - ever - know anything
+about the UI, meaning the `flutter` framework - but maybe some constant stuff like `Platform` and core
+meta-functionality, but never anything related to the layout per-se.
 
-The `VM`s are the only pieces in [`application/`](#application) that communicates with inner layers, more specifically,
-with the [`domain/`](#domain) and, in the process of achieving this, it will inevitably leak some of the core business
-logic (things like input validation) that should be mostly contained in the [`domain/`](#domain) layer.
-
-### `core/`
-
-Fundamental functionality to all the layers, being accessed by any of them, but doesn't know about their existance.
-In terms of knowledge, they are similar to the [`data`](#data) layer, other than the fact that the `data` layer itself
-can access the `core`.
-
-The core shares functionality like [`faults/`](#faults), environment management, project-wide constants, etcetera.
-
-#### `faults/`
-
-Has all the project's custom `Error`s and `Exception`s classes.
-
-### `data/`
-
-Our bottom layer, communicates with raw libraries and frameworks to consume its raw data and expose it to its consumer.
-These libraries and frameworks are abstractions (interfaces) to access things like remote servers, hardware capabilities
-(audio, video, geo), databases, etcetera. Each of these "accessors" are suffixed with `Repository`.
-
-Rules about each `data/` file's responsibilities:
-- It should never interact with any layer other than its own sub-folders.
+The `VM`s are the only structures in [`application/`](#application) that communicates with inner layers, more
+specifically, with the [`domain/`](#domain). In the process of achieving this, it will inevitably leak some of the core
+business logic (things like input validation) that should be mostly contained in the [`domain/`](#domain) layer.
 
 ### `domain/`
 
-Our middle layer. Using the core structures (models, entities and enums), the domain is where all the business logic
-should be contained, by accessing the repositories to achieve its goals.
+The intermediate layer. Using the core structures (models, entities and enums), the domain is where all the business logic
+should be contained, by accessing the [`repositories`](#repositories) to achieve its goals.
 
-Rules about each `domain/` file's responsibilities:
-- It should never interact with any layer other than its own sub-folders.
+Rules about each `domain/` structure's responsibilities:
+- It should never **interact** with any layer other than its own sub-folders;
+- It should never **access** any other layer classes (not even indirectly).
 
-The only structures which this doesn't apply, are the **[Services](#services)**.
+One exception for the above:
+- The **[Services](#services)** can **interact** with the `data/` (through the [`repositories`](#repositories)) because 
+they are the structure that allows us to, in only *one-way*, cross boundaries from the `domain` to the `data`.
 
 #### `enums/`
 
-They are just like our [`models`](#models), they are a data structure that represent part of our business, but with the
-difference that it can be described statically (they are constant).
+They are just like our [`models`](#models) - a data structure that represent part of our business, but with the
+difference that it can be *described* statically (they are constant).
 
 > These are the only structures that can be accessed (or leaked) to the views due to its constant nature. It provides a
-> type-safety when dealing with these cases and, if we don't actually leak it, normally what we have is a duplication of
-> this same enumerator behavior in the UI, but less type-safe.
+> type-safety when dealing with these cases and if we don't actually leak it, normally what we have is a duplication of
+> this same enumerator behavior in the UI, but less type-safe (or just replicating the exact same behavior).
 
 #### `models/`
 
 A domain model - a set of structures that represent a business object.
 
-> Point of possible failure for future changes: These models are dependant on the interface of a class in the
-> `data` layer, more specifically the `KeyStorable` class. This is intended because it benefits us to have a single
-> generic `DatabaseRepository` at the cost of needing to refactor all models if all of the `DatabaseRepository`
-> structure also changes (like a really big change, not a common one).
+#### `services/`
+
+The boundary between the [`domain/`](#domain) and [`data/`](#data). Each service (suffixed with `Service` in each
+class) should always be built upon an interface (following the DiP).
+
+The `services/` should contain all the heavy business logic associated with each `model` in our project. They are
+usually split to represent each [`models/`](#models) related business logic, but this could be split in even smaller
+structures (called Use Cases in the clean architecture) if proven necessary.
+
+They are the only structures in [`domain/`](#domain) that communicates with the [`data/`](#data) layer, more
+specifically, through the [`repositories/`](#repositories).
+
+### `data/`
+
+The bottom layer. Communicates with raw libraries and frameworks to consume its raw data and expose it to its consumer.
+These libraries and frameworks are abstractions (interfaces, following the DiP) to access things like remote servers,
+hardware capabilities (audio, video, geo), databases, etcetera.
+
+Rules about each `data/` structure's responsibilities:
+- It should never **interact** with any layer other than its own sub-folders;
+- It should never **access** any other layer classes (not even indirectly).
+
+One exception for the above:
+- Both [`serializers/`](#serializers) and [`repositories/`](#repositories) can **access** the [`enums/`](#enums) and
+[`models/`](#models) - while it exposes a piece of the `domain` layer, we consider this to be an acceptable exception
+(explained below).
+
+Just like we have decided to expose the `enums/` to the interface, we also agreed to expose both `enums/` and
+`models/` to the [`serializers`](#serializers) and [`repositories`](#repositories). The alternative here was to 
+[create intermediate data models (DTOs)](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html#what-data-crosses-the-boundaries),
+but *separating the domain model from this exact copy (DTO) doesn't provide any meaningful solution to this
+architecture* (I like [this answer in StackExchange](https://softwareengineering.stackexchange.com/a/388545) about the
+same exact issue).
+
+#### `gateways/`
+
+Raw access to libraries, databases and all external dependency that crosses the boundary of our application to anything
+that lives outside of the project.
+
+These should be built like any other major structure, through interfaces and following the DiP.
+
+Also, because gateways are "rare naming" occurrence in most architectures,
+[here is the reference of why](https://martinfowler.com/eaaCatalog/gateway.html).
+
+#### `repositories/`
+
+Interfaces the implementation of a [`gateway`](#gateways) to not expose the particularities of such external
+dependencies to the [`services`](#services). The `repositories` can be considered like *interface adapters*, allowing
+an independency when making changes to the implemented technologies, affecting only this layer (and obviously the
+technology implementation itself).
+
+Each of these *adapters* are suffixed with `Repository` and are built upon interfaces (following the DiP).
 
 #### `serializers/`
 
@@ -232,19 +289,17 @@ Instead of a codegen approach (due to the drawbacks of being dependent of auto-g
 models), we decided to go with the manual serialization. The `serializers/` exist with the sole purpose of translating
 [`models/`](#models) to/from a raw structure.
 
-> Point of possible failure for future changes: These serializers are dependant on the interface of a class in the
-> `data` layer, more specifically the `JsonSerializer` class. This is intended because it benefits us to have a single
-> generic `DatabaseRepository` at the cost of needing to refactor all serializers if all of the `DatabaseRepository`
-> structure also changes (like a really big change, not a common one).
+### `core/`
 
-#### `services/`
+Fundamental functionality to all the layers (being accessed by any of them), but doesn't know about their existance.
+In terms of knowledge, they are similar to the [`data/`](#data) layer, other than the fact that the `data/` layer itself
+can access `core/`.
 
-The boundary between the [`domain/`](#domain) and [`data/`](#data). Each service (suffixed with `Service` in each
-class) should always be built upon an interface (for testability).
+The `core/` shares functionality like [`faults/`](#faults), environment management, project-wide constants, etcetera.
 
-The `services/` should contain all the heavy business logic associated with each `model` in our project. They are
-usually split to represent each [`models/`](#models) related business logic, but this could be split in even smaller
-pieces (called Use Cases in the clean architecture) if proven necessary.
+#### `faults/`
+
+Has all the project's custom `Error`s and `Exception`s classes.
 
 ## `test/` - Unit and UI testing
 
@@ -279,19 +334,45 @@ permeates the knowledge required to fully understand this architecture.
 
 ## Why `river_pod` and not "x" state management library?
 
-WIP
+With the past experiences with libraries like the native `InheritedWidget`, `Provider` and `Bloc`, we had found that
+they tend to be quite verbose (thus bloating the code) and limited in some scenarios. Diving into each of these
+particularities would be a long discussion, but
+[`river_pod` has a brief explanation](https://github.com/rrousselGit/river_pod#why-another-project-when-provider-already-exists)
+on why it solves such problems and why it's better to use it.
 
 ## Why `sembast` and not "x" database?
 
-WIP
+[`sembast`](https://github.com/tekartik/sembast.dart) is one of the few NoSQL databases that are really easy to use,
+supports web (in a parallel package) and provides a decent amount of functionality like reactivity and complex queries,
+with the addition of built-in support for migration. The library has its limitations due to its inherent nature, but we
+don't think that it will be an issue for this project.
 
 ## Why `mocktail` and not `mockito`?
 
-WIP
+After NNBD, `mockito` is using a codegen approach to deal with mocks, which we quite dislike given that there is no
+clear benefit when comparing to `mocktail`. There is an [open issue](https://github.com/dart-lang/mockito/issues/347) to
+merge mocktail into `mockito`, but until then (assuming it will be merged), we think that the same functionalities will
+continue to work using `mocktail` only.
 
 ## `CoordinatorRouter` and `Router` (or Navigator 2.0)
 
-WIP
+This was probably one of the decisions that we still are somewhat unsure about. To not go into a lot of the details,
+instead of using external libraries routing libraries (like `vrouter`, `auto_route` and `beamer`), we decided to take a
+shot on doing our own implementation of the Navigator 2.0 (or Router), because we believed that it could give us a much
+more fine-grained (and less bloated) implementation of what we consider a coordinator pattern (name more frequent in the
+iOS development ecosystem, but what we consider our router).
+
+While we are quite content with the result, that the solution matched our preference (personal opinion) of splitting the
+application pages in a complete separate class from the router/coordinator (contrary to what most of the routing
+libraries do), and access it call navigatons, we are not so sure about the future of the Navigator 2.0 and how
+hard/verbose it can become. We didn't quite like the API and it may be a point of difficult fixes/updates in the future.
+
+There is an [research](https://github.com/flutter/uxr/wiki/Navigator-2.0-API-Usability-Research) going on to improve
+Flutter's Navigator API, so we should keep track of its evolution and how it may improve our solution.
+
+While the Flutter framework doesn't provide an improved version of the current Navigator 2.0 state **AND IF** the
+current coordinator proves to be more of a burden than a help, we should migrate to one of the libraries mentioned
+above.
 
 ## Environment
 

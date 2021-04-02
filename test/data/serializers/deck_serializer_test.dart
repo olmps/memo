@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/data/serializers/deck_serializer.dart';
 import 'package:memo/domain/models/deck.dart';
-import 'package:memo/domain/serializers/deck_serializer.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
 
@@ -17,49 +17,49 @@ void main() {
   test('DeckSerializer should correctly encode/decode a Deck', () {
     final rawDeck = fixtures.deck();
 
-    final decodedDeck = serializer.fromMap(rawDeck);
+    final decodedDeck = serializer.from(rawDeck);
     expect(decodedDeck, testDeck);
 
-    final encodedDeck = serializer.mapOf(decodedDeck);
+    final encodedDeck = serializer.to(decodedDeck);
     expect(encodedDeck, rawDeck);
   });
 
   test('DeckSerializer should fail to decode without required properties', () {
     expect(() {
       final rawDeck = fixtures.deck()..remove('id');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('name');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('description');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('category');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('tags');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('timeSpentInMillis');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('easyCardsAmount');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('mediumCardsAmount');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
     expect(() {
       final rawDeck = fixtures.deck()..remove('hardCardsAmount');
-      serializer.fromMap(rawDeck);
+      serializer.from(rawDeck);
     }, throwsA(isA<TypeError>()));
   });
 }
