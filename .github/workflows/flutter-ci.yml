@@ -18,5 +18,7 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze .
       - run: flutter test
-      - run: flutter build appbundle
-      - run: flutter build ios --release --no-codesign
+      - run: flutter build appbundle --dart-define=ENV=${{env.FLUTTER_ENV}}
+      - run: flutter build ios --release --no-codesign --dart-define=ENV=${{env.FLUTTER_ENV}}
+        env:
+          FLUTTER_ENV: ${{ secrets.FLUTTER_ENV || 'PROD' }}
