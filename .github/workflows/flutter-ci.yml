@@ -6,19 +6,34 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
         with:
           java-version: '12.x'
 
-      - uses: subosito/flutter-action@v1
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
 
-      - run: flutter pub get
-      - run: flutter analyze .
-      - run: flutter test
-      - run: flutter build appbundle --dart-define=ENV=${{env.FLUTTER_ENV}}
-      - run: flutter build ios --release --no-codesign --dart-define=ENV=${{env.FLUTTER_ENV}}
+      - name: Installing dependences
+        run: flutter pub get
+
+      - name: Analysing code
+        run: flutter analyze .
+
+      - name: Running tests
+        run: flutter test
+
+      - name: Building for android
+        run: flutter build appbundle --dart-define=ENV=${{env.FLUTTER_ENV}}
+        env:
+          FLUTTER_ENV: ${{ secrets.FLUTTER_ENV || 'PROD' }}
+
+      - name: Building for ios
+        run: flutter build ios --release --no-codesign --dart-define=ENV=${{env.FLUTTER_ENV}}
         env:
           FLUTTER_ENV: ${{ secrets.FLUTTER_ENV || 'PROD' }}
