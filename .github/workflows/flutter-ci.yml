@@ -31,9 +31,9 @@ jobs:
       - name: Building for android
         run: flutter build appbundle --dart-define=ENV=${{env.FLUTTER_ENV}}
         env:
-          FLUTTER_ENV: ${{ secrets.FLUTTER_ENV || 'PROD' }}
+          FLUTTER_ENV: ${{ github.event.pull_request.base.ref == 'main' && 'PROD' || 'DEV' }}
 
       - name: Building for ios
         run: flutter build ios --release --no-codesign --dart-define=ENV=${{env.FLUTTER_ENV}}
         env:
-          FLUTTER_ENV: ${{ secrets.FLUTTER_ENV || 'PROD' }}
+          FLUTTER_ENV: ${{ github.event.pull_request.base.ref == 'main' && 'PROD' || 'DEV' }}
