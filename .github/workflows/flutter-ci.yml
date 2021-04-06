@@ -1,0 +1,39 @@
+name: Flutter CI
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - name: Installing dependences
+        run: flutter pub get
+
+      - name: Analysing code
+        run: flutter analyze .
+
+      - name: Running tests
+        run: flutter test
+
+      - name: Building for android
+        run: flutter build appbundle --dart-define=ENV=${{env.FLUTTER_ENV}}
+        env:
+          FLUTTER_ENV: ${{ github.event.pull_request.base.ref == 'main' && 'PROD' || 'DEV' }}
+
+      - name: Building for ios
+        run: flutter build ios --release --no-codesign --dart-define=ENV=${{env.FLUTTER_ENV}}
+        env:
+          FLUTTER_ENV: ${{ github.event.pull_request.base.ref == 'main' && 'PROD' || 'DEV' }}
