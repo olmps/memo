@@ -107,6 +107,7 @@ class RoutesCoordinator extends ChangeNotifier {
   }
 
   /// Inserts a page in any position of the stack ([_pages] list)
+  // ignore: unused_element
   void _insertPage(Widget widget, {required int index, required String name}) {
     _pages.insert(
       index,
