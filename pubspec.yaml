@@ -48,7 +48,7 @@ dev_dependencies:
   ###
   # Lint
   ###
-  strict: ^1.0.0
+  strict: ^1.1.0
 
   ###
   # Testing
