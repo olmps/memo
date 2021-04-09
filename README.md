@@ -2,6 +2,13 @@ English | [Portuguese](README_ptbr.md)
 
 # Memo
 
+<p align="center">
+<a href="https://github.com/olmps/memo/actions"><img src="https://github.com/olmps/memo/actions/workflows/flutter-ci.yml/badge.svg" alt="Build Status"></a>
+<a href="https://codecov.io/gh/olmps/memo">
+  <img src="https://codecov.io/gh/olmps/memo/branch/main/graph/badge.svg?token=CYE2JL0X4N"/>
+</a>
+</p>
+
 Monorepo for Memo.
 
 Memo is an open-source, programming-oriented [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)
@@ -15,20 +22,20 @@ Google Play (badge)
 -->
 
 > As of now, this project is designed to only output builds for Android and iOS. Even though, given the current
-> *stability* of Flutter SDK for desktop (Windows, Linux and macOS) and web, there is a high probability that this
+> _stability_ of Flutter SDK for desktop (Windows, Linux and macOS) and web, there is a high probability that this
 > project will eventually support builds for all platforms.
 
-This README is meant to guide how this project is structured and should serve as a guide to help the project scale with 
-the current and future requirements. Think of it as a flexible set of rules that guides the project's decisions. While 
-they can (and probably will) change over time, discussions must be raised to trigger such changes: this means that 
-we will think/question ourselves before taking an action that breaks any rational decision taken here. It is also 
+This README is meant to guide how this project is structured and should serve as a guide to help the project scale with
+the current and future requirements. Think of it as a flexible set of rules that guides the project's decisions. While
+they can (and probably will) change over time, discussions must be raised to trigger such changes: this means that
+we will think/question ourselves before taking an action that breaks any rational decision taken here. It is also
 effective to guide PR discussions.
 
 - [Setup](#setup): how the configure your local project;
 - [Architecture](#architecture): how this application works from inside;
 - [Background](#background): some background story about this project;
-- [Contributing & Good Practices](#contributing--good-practices): recommendation on how to write good code for this 
-application;
+- [Contributing & Good Practices](#contributing--good-practices): recommendation on how to write good code for this
+  application;
 - [License](#license): how this software is licensed and how you may use it.
 
 ## Setup
@@ -41,7 +48,7 @@ If you have Flutter setup locally, on the project's root folder, install pubspec
 
 ## Architecture
 
-How this application works from inside and how it interacts with external dependencies - written in details in 
+How this application works from inside and how it interacts with external dependencies - written in details in
 [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Background

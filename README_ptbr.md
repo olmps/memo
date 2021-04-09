@@ -2,6 +2,13 @@
 
 # Memo
 
+<p align="center">
+<a href="https://github.com/olmps/memo/actions"><img src="https://github.com/olmps/memo/actions/workflows/flutter-ci.yml/badge.svg" alt="Build Status"></a>
+<a href="https://codecov.io/gh/olmps/memo">
+  <img src="https://codecov.io/gh/olmps/memo/branch/main/graph/badge.svg?token=CYE2JL0X4N"/>
+</a>
+</p>
+
 Monorepo do Memo.
 
 Memo é um software de código aberto (escrito em Flutter) de
@@ -14,20 +21,20 @@ AppStore (badge)
 Google Play (badge)
 -->
 
-> Atualmente, este projeto está construído apenas para gerar *builds* para Android e iOS. Embora o fato de que, dado a 
+> Atualmente, este projeto está construído apenas para gerar _builds_ para Android e iOS. Embora o fato de que, dado a
 > estabilidade da SDK do Flutter para desktop (Windows, Linux e macOS) e web, existe uma alta probabilidade que este
-> projeto eventualmente suportará *builds* para todas as plataformas.
+> projeto eventualmente suportará _builds_ para todas as plataformas.
 
-Este README e todos os sub-documentos presentes aqui (CONTRIBUTING, ARCHITECTURE & CHANGELOG) tem como objetivo guiar a 
+Este README e todos os sub-documentos presentes aqui (CONTRIBUTING, ARCHITECTURE & CHANGELOG) tem como objetivo guiar a
 estrutura deste projeto e devem auxiliar na escalabilidade das funcionalidades existentes hoje e nas que serão criadas
-com o decorrer do andamento do projeto. Estes documentos servem como um conjunto flexível de regras que guiam as 
+com o decorrer do andamento do projeto. Estes documentos servem como um conjunto flexível de regras que guiam as
 decisões tomadas no andamento do projeto. Embora estas regras possam - e provavelmente irão - mudar, discussões devem
-ser levantadas sobre os motivos para tais mudanças, de maneira que essas discussões e decisões sejam transparentes para 
+ser levantadas sobre os motivos para tais mudanças, de maneira que essas discussões e decisões sejam transparentes para
 todos.
 
 - [Setup](#setup): como configurar seu projeto localmente;
 - [Arquitetura](#arquitetura): como está estruturada a arquitetura da aplicação;
-- [Background](#background): um pouco do *background* sobre este projeto;
+- [Background](#background): um pouco do _background_ sobre este projeto;
 - [Contribuição & Boas Práticas](#contribuição--boas-práticas): recomendações sobre contribuições;
 - [Licença](#licença): como essa aplicação está licenciada e como você pode utilizá-la.
 
@@ -41,7 +48,7 @@ comando `flutter pub get`.
 
 ## Arquitetura
 
-Como essa aplicação foi estruturada e como ela interage com dependência externas - escrito em detalhes em 
+Como essa aplicação foi estruturada e como ela interage com dependência externas - escrito em detalhes em
 [ARCHITECTURE](ARCHITECTURE.md) (em inglês).
 
 ## Background
