@@ -6,7 +6,7 @@ import 'package:memo/application/theme/material_theme_data.dart' as material_the
 import 'package:memo/application/theme/memo_theme_colors.dart' as colors;
 import 'package:memo/application/theme/memo_theme_data.dart';
 
-final themeProvider = StateNotifierProvider<ThemeController>((ref) => ThemeController());
+final themeProvider = StateNotifierProvider<ThemeController>((_) => ThemeController());
 
 /// Provides management for all theme-related operations
 ///
