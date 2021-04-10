@@ -1,9 +1,6 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/application/theme/theme_controller.dart';
-
-import '../../utils/widget_pump.dart';
 
 void main() {
   test('ThemeController should use the predefined default state', () {

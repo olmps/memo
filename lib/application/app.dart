@@ -29,9 +29,9 @@ class AppRoot extends StatelessWidget {
               spacings: spacings,
               child: ProviderScope(
                 // Override all `Provider` and `ScopedProvider` that are late-initialized
-                overrides: [
-                  // exampleServices.overrideWithValue(state.exampleServices),
-                ],
+                // overrides: [
+                // exampleServices.overrideWithValue(state.exampleServices),
+                // ],
                 child: _LoadedAppRoot(),
               ),
             );
