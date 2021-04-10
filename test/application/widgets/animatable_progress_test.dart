@@ -85,4 +85,25 @@ void main() {
       expect(size, const Size(fakeWidth, fakeLineSize));
     });
   });
+
+  group('AnimatableCircularProgress -', () {
+    testWidgets('should respect its minimum size', (tester) async {
+      const fakeSize = 100.0;
+      const fakeLineSize = 10.0;
+      const fakeProgress = AnimatableCircularProgress(
+        value: 0,
+        animationCurve: Curves.linear,
+        animationDuration: Duration.zero,
+        lineColor: const Color.fromRGBO(0, 0, 0, 0),
+        lineSize: fakeLineSize,
+        minSize: fakeSize,
+      );
+
+      await pumpMaterialScoped(tester, fakeProgress);
+
+      final finder = find.byType(AnimatableCircularProgress).first;
+      final size = tester.getSize(finder);
+      expect(size, const Size.square(fakeSize));
+    });
+  });
 }
