@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/spacings.dart';
@@ -6,6 +7,7 @@ import 'package:memo/application/coordinator/coordinator_information_parser.dart
 import 'package:memo/application/coordinator/coordinator_router_delegate.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/splash_page.dart';
+import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 
 /// "Pre-load" root widget for the application
@@ -45,7 +47,7 @@ class AppRoot extends StatelessWidget {
 ///
 /// After [AppRoot] is done with the loading, [_LoadedAppRoot] takes place (of the [SplashPage]) as the root of our
 /// application (and have all late-initialized providers available to it).
-class _LoadedAppRoot extends StatefulWidget {
+class _LoadedAppRoot extends StatefulHookWidget {
   @override
   _LoadedAppRootState createState() => _LoadedAppRootState();
 }
@@ -64,9 +66,12 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
       initialRouteInformation: RouteInformation(location: coordinator.currentRoute),
     );
 
+    final themeController = useProvider(themeProvider);
+
     return MaterialApp.router(
       title: 'Memo',
       debugShowCheckedModeBanner: false,
+      theme: themeController.currentThemeData(context),
       routerDelegate: CoordinatorRouterDelegate(coordinator),
       routeInformationParser: CoordinatorInformationParser(),
       routeInformationProvider: _routeInformationParser,
