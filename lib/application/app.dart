@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
+import 'package:memo/application/constants/spacings.dart';
 import 'package:memo/application/coordinator/coordinator_information_parser.dart';
 import 'package:memo/application/coordinator/coordinator_router_delegate.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
-import 'package:memo/application/layout_provider.dart';
 import 'package:memo/application/pages/splash_page.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 
@@ -23,18 +23,15 @@ class AppRoot extends StatelessWidget {
       builder: (context, value, child) {
         return value.maybeWhen(
           data: (state) {
-            // Wraps in a LayoutBuilder to override the layout provider accordingly
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                return ProviderScope(
-                  // Override all `Provider` and `ScopedProvider` that are late-initialized
-                  overrides: [
-                    // exampleServices.overrideWithValue(state.exampleServices),
-                    layoutProvider.overrideWithValue(CommonLayout(constraints.maxWidth)),
-                  ],
-                  child: _LoadedAppRoot(),
-                );
-              },
+            return CommonLayoutWidget(
+              spacings: spacings,
+              child: ProviderScope(
+                // Override all `Provider` and `ScopedProvider` that are late-initialized
+                overrides: [
+                  // exampleServices.overrideWithValue(state.exampleServices),
+                ],
+                child: _LoadedAppRoot(),
+              ),
             );
           },
           orElse: () => const MaterialApp(home: SplashPage()),
