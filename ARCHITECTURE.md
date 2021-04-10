@@ -13,8 +13,11 @@ Table of contents
       - [`constants/`](#constants)
       - [`coordinator/`](#coordinator)
       - [`pages/` (views)](#pages-views)
+      - [`theme/`](#theme)
       - [`utils/`](#utils)
       - [`widgets/`](#widgets)
+      - [`widgets/material/`](#widgetsmaterial)
+      - [`widgets/themed/`](#widgetsthemed)
       - [`view_models/`](#view_models)
     - [`domain/`](#domain)
       - [`enums/`](#enums)
@@ -35,6 +38,7 @@ Table of contents
   - [Why `sembast` and not "x" database?](#why-sembast-and-not-x-database)
   - [Why `mocktail` and not `mockito`?](#why-mocktail-and-not-mockito)
   - [`CoordinatorRouter` and `Router` (or Navigator 2.0)](#coordinatorrouter-and-router-or-navigator-20)
+  - [Why manually importing the font, if there is the `google_fonts`?](#why-manually-importing-the-font-if-there-is-the-google_fonts)
   - [Environment](#environment)
     - [Release](#release)
 
@@ -183,6 +187,13 @@ which is controlled by the `CoordinatorRouter`.
 
 These `pages` are the only elements that can access the [`view_models/`](#view_models).
 
+#### `theme/`
+
+Specialized implementations that deal with the `Flutter` framework's Theme (more specifically, the `ThemeData`).
+
+Because of some known limitations of the `MaterialApp` theme handling, there are some custom implementations like the
+`ThemeController`, which provides extra functionality on top of the material's default.
+
 #### `utils/`
 
 UI-related utilities like formatting, widgets helpers, animations, painters, etcetera.
@@ -192,6 +203,18 @@ UI-related utilities like formatting, widgets helpers, animations, painters, etc
 Individual `Widget`s that represent some custom visual element that is reused in multiple different
 [`pages`](#pages-views) or even other `application/widgets`. These should not know anything about VMs, pages, or
 anything other than `application/utils` and `application/constants`. They should be **pure** and **independent**.
+
+#### `widgets/material/`
+
+Same as the [`widgets`](#widgets/), but specific to the `flutter/material` library, which means that they can only exist
+below (as a child) of a `MaterialApp`.
+
+#### `widgets/themed/`
+
+Same as the [`widgets`](#widgets/), but requiring a `ThemeController` as a parent. It also (usually) means that they
+depend on the `flutter/material` library as well. This is because the current theme implementation is tightly coupled to
+the flutter's implementation of the material framework - do not mistake, this is an intended decision, as the material
+framework provide an enormous amount of useful features by default, mainly related to accessibility and animations.
 
 #### `view_models/`
 
@@ -291,7 +314,7 @@ models), we decided to go with the manual serialization. The `serializers/` exis
 
 ### `core/`
 
-Fundamental functionality to all the layers (being accessed by any of them), but doesn't know about their existance.
+Fundamental functionality to all the layers (being accessed by any of them), but doesn't know about their existence.
 In terms of knowledge, they are similar to the [`data/`](#data) layer, other than the fact that the `data/` layer itself
 can access `core/`.
 
@@ -373,6 +396,21 @@ Flutter's Navigator API, so we should keep track of its evolution and how it may
 While the Flutter framework doesn't provide an improved version of the current Navigator 2.0 state **AND IF** the
 current coordinator proves to be more of a burden than a help, we should migrate to one of the libraries mentioned
 above.
+
+## Why manually importing the font, if there is the `google_fonts`?
+
+Four main points for this decision:
+
+- The `google_fonts` package makes an async request to lazily load its fonts, meaning that it will fallback to the
+unsupported font (it will not crash, but will be visually inconsistent with what we expect from a decent UI);
+- We wouldn't benefit from the `google_fonts` default implementation of the project's fonts, as we have a custom layout
+for each material's text theme;
+- The current version of memo doesn't require any internet connection to work, so it would also mean a bad user
+experience for offline users;
+- It's a new dependency (meaning more possible future problems) for the project.
+
+The only drawback of doing this manually is importing the fonts in the `assets/` folder (size shouldn't be relevant to
+impact even low-end devices), and specifying them in the `pubspec.yaml`.
 
 ## Environment
 
