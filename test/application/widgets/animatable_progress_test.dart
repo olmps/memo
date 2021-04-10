@@ -73,7 +73,7 @@ void main() {
         value: 0,
         animationCurve: Curves.linear,
         animationDuration: Duration.zero,
-        lineColor: const Color.fromRGBO(0, 0, 0, 0),
+        lineColor: Color.fromRGBO(0, 0, 0, 0),
         lineSize: fakeLineSize,
         minWidth: fakeWidth,
       );
@@ -94,7 +94,7 @@ void main() {
         value: 0,
         animationCurve: Curves.linear,
         animationDuration: Duration.zero,
-        lineColor: const Color.fromRGBO(0, 0, 0, 0),
+        lineColor: Color.fromRGBO(0, 0, 0, 0),
         lineSize: fakeLineSize,
         minSize: fakeSize,
       );
