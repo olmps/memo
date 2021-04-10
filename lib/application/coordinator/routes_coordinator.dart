@@ -6,7 +6,7 @@ import 'package:memo/application/pages/settings/settings_page.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
 final coordinatorProvider = Provider<RoutesCoordinator>(
-  (ref) => RoutesCoordinator(navigatorKey: GlobalKey<NavigatorState>()),
+  (_) => RoutesCoordinator(navigatorKey: GlobalKey<NavigatorState>()),
 );
 
 /// Coordinates the logic of the visible [Page]s stack based on locations (or URIs)
