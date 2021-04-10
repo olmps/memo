@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/widgets.dart';
 
 /// Min size reinforced in all progress indicators
