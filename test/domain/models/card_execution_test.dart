@@ -20,7 +20,7 @@ void main() {
           answeredDifficulty: CardDifficulty.easy,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
 
     expect(
@@ -33,7 +33,7 @@ void main() {
           answeredDifficulty: CardDifficulty.easy,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 
@@ -48,7 +48,7 @@ void main() {
           answeredDifficulty: CardDifficulty.easy,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 
@@ -57,7 +57,7 @@ void main() {
       () {
         CardExecutions(cardId: 'cardId', deckId: 'deckId', executions: const []);
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 }

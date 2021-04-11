@@ -14,7 +14,7 @@ void main() {
           timeSpentInMillis: -1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
 
     expect(
@@ -28,7 +28,7 @@ void main() {
           easyCardsAmount: -1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
 
     expect(
@@ -42,7 +42,7 @@ void main() {
           mediumCardsAmount: -1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
 
     expect(
@@ -56,7 +56,7 @@ void main() {
           hardCardsAmount: -1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 }
