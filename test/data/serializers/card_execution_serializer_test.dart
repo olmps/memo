@@ -19,7 +19,7 @@ void main() {
   group('CardExecutionSerializer -', () {
     final serializer = CardExecutionSerializer();
 
-    test('CardExecutionSerializer should correctly encode/decode a CardExecution', () {
+    test('should correctly encode/decode a CardExecution', () {
       final rawExecution = fixtures.cardExecution();
 
       final decodedExecution = serializer.from(rawExecution);
@@ -29,7 +29,7 @@ void main() {
       expect(encodedExecution, rawExecution);
     });
 
-    test('CardExecutionSerializer should fail to decode without required properties', () {
+    test('should fail to decode without required properties', () {
       expect(() {
         final rawExecution = fixtures.cardExecution()..remove('started');
         serializer.from(rawExecution);
@@ -63,7 +63,7 @@ void main() {
 
     final testExecutions = CardExecutions(cardId: '1', deckId: '1', executions: [testExecution]);
 
-    test('CardExecutionsSerializer should correctly encode/decode a CardExecutions', () {
+    test('should correctly encode/decode a CardExecutions', () {
       final rawExecutions = createRawExecutions();
 
       final decodedExecutions = serializer.from(rawExecutions);
@@ -73,7 +73,7 @@ void main() {
       expect(encodedExecution, rawExecutions);
     });
 
-    test('CardExecutionsSerializer should fail to decode without required properties', () {
+    test('should fail to decode without required properties', () {
       expect(() {
         final rawExecutions = createRawExecutions()..remove('cardId');
         serializer.from(rawExecutions);
