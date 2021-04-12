@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/widgets.dart';
 
 /// Min size reinforced in all progress indicators
@@ -189,6 +190,150 @@ class _LinearProgressPainter extends CustomPainter implements ProgressPainter {
 
   @override
   bool shouldRepaint(covariant _LinearProgressPainter oldDelegate) =>
+      oldDelegate.value != value ||
+      oldDelegate.lineSize != lineSize ||
+      oldDelegate.lineColor != lineColor ||
+      oldDelegate.lineBackgroundColor != lineBackgroundColor;
+}
+
+/// A customizable circular progress indicator
+///
+/// This component is an alternative to the `CircularProgressIndicator`, provided by the `flutter/material` framework.
+/// It allows further customization that isn't provided  by the material's components interfaces.
+///
+/// To exemplify the customizations, the [AnimatableCircularProgress] uses a [CustomPainter] to draw itself, so it can
+/// change the desired [StrokeCap] to the drawn progress lines (which is something we can't achieve if using the
+/// material one).
+class AnimatableCircularProgress extends AnimatableProgress implements ProgressPainter {
+  const AnimatableCircularProgress({
+    required this.value,
+    required this.animationCurve,
+    required this.animationDuration,
+    required this.lineSize,
+    required this.lineColor,
+    this.semanticLabel,
+    this.lineBackgroundColor,
+    this.minSize,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  final double value;
+
+  @override
+  final Curve animationCurve;
+
+  @override
+  final Duration animationDuration;
+
+  @override
+  final Color? lineBackgroundColor;
+
+  @override
+  final Color lineColor;
+
+  @override
+  final double lineSize;
+
+  /// Label describing this widget - for accessibility concerns
+  final String? semanticLabel;
+
+  /// Constraints this circular progress size (both width and height)
+  final double? minSize;
+
+  @override
+  _AnimatableCircularProgressState createState() => _AnimatableCircularProgressState();
+}
+
+/// Implements the [AnimatableProgressState] for a circular-styled progress indicator
+class _AnimatableCircularProgressState extends AnimatableProgressState<AnimatableCircularProgress> {
+  CustomPaint _progressPaintBuilder(BuildContext context, Widget? child) {
+    return CustomPaint(
+      painter: _CircularProgressPainter(
+        value: animationController.value,
+        lineSize: widget.lineSize,
+        lineColor: widget.lineColor,
+        lineBackgroundColor: widget.lineBackgroundColor,
+      ),
+      child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: widget.semanticLabel,
+      value: semanticProgressValue,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: widget.minSize ?? _progressMinSize,
+          minWidth: widget.minSize ?? _progressMinSize,
+        ),
+        child: AnimatedBuilder(
+          animation: animationController,
+          builder: _progressPaintBuilder,
+        ),
+      ),
+    );
+  }
+}
+
+/// Draws a circular progress with the specified arguments
+class _CircularProgressPainter extends CustomPainter implements ProgressPainter {
+  const _CircularProgressPainter({
+    required this.value,
+    required this.lineSize,
+    required this.lineColor,
+    this.lineBackgroundColor,
+  }) : assert(value >= 0 && value <= 1);
+
+  final double value;
+
+  @override
+  final Color? lineBackgroundColor;
+
+  @override
+  final Color lineColor;
+
+  @override
+  final double lineSize;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = lineSize
+      ..strokeCap = StrokeCap.round;
+
+    if (lineBackgroundColor != null) {
+      canvas
+          // Draw progress background stroke
+          .drawArc(
+        Offset.zero & size,
+        _degreesToRadians(0),
+        _degreesToRadians(360),
+        false,
+        paint..color = lineBackgroundColor!,
+      );
+    }
+
+    if (value > 0) {
+      canvas
+          // Draw progress stroke
+          .drawArc(
+        Offset.zero & size,
+        _degreesToRadians(-90),
+        _degreesToRadians(value * 360),
+        false,
+        paint..color = lineColor,
+      );
+    }
+  }
+
+  double _degreesToRadians(double degrees) => (pi / 180) * degrees;
+
+  @override
+  bool shouldRepaint(covariant _CircularProgressPainter oldDelegate) =>
       oldDelegate.value != value ||
       oldDelegate.lineSize != lineSize ||
       oldDelegate.lineColor != lineColor ||
