@@ -8,7 +8,7 @@ void main() {
       () {
         CardBlock(type: CardBlockType.text, rawContents: '');
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 }

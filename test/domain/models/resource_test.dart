@@ -8,7 +8,7 @@ void main() {
       () {
         Resource(id: 'id', description: 'description', tags: const [], type: ResourceType.article, url: 'url');
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 }

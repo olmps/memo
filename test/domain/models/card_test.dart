@@ -17,7 +17,7 @@ void main() {
           executionsAmount: -1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 
@@ -32,7 +32,7 @@ void main() {
           executionsAmount: -1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
 
     expect(
@@ -45,7 +45,7 @@ void main() {
           executionsAmount: -1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 
@@ -60,7 +60,7 @@ void main() {
           executionsAmount: 1,
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
 
     expect(
@@ -79,7 +79,7 @@ void main() {
           ),
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 
@@ -101,7 +101,7 @@ void main() {
           ),
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
 
     expect(
@@ -114,7 +114,7 @@ void main() {
           dueDate: DateTime.now(),
         );
       },
-      throwsA(isA<AssertionError>()),
+      throwsAssertionError,
     );
   });
 }

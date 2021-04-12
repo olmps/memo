@@ -97,14 +97,18 @@ void main() {
     expect(objects.isEmpty, true);
   });
 
-  test('DatabaseRepositoryImpl should emits objects with success', () async {
-    final listFakeObjects = List.generate(2, (_) => fakeObject);
-
+  test('DatabaseRepositoryImpl should emit new events when listening to store updates', () async {
     final stream = await db.listenAll(store: fakeStore);
 
-    await fakeRecord.put(memorySembast, fakeObject);
-    await stringMapStoreFactory.store(fakeStore).record('2').put(memorySembast, fakeObject);
+    final expectedEmissions = <List<Map<String, String>>>[
+      [], // First emission is the "onListen", which is an empty store
+      [fakeObject],
+      List.generate(2, (_) => fakeObject),
+    ];
 
-    await expectLater(stream, emits(listFakeObjects));
+    expect(stream, emitsInOrder(expectedEmissions));
+
+    await fakeRecord.put(memorySembast, fakeObject);
+    await stringMapStoreFactory.store(fakeStore).record('other-fake-id').put(memorySembast, fakeObject);
   });
 }
