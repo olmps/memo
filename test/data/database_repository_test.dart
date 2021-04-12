@@ -97,5 +97,14 @@ void main() {
     expect(objects.isEmpty, true);
   });
 
-  // TODO(matuella): Find a way to test the listenAll
+  test('DatabaseRepositoryImpl should emits objects with success', () async {
+    final listFakeObjects = List.generate(2, (_) => fakeObject);
+
+    final stream = await db.listenAll(store: fakeStore);
+
+    await fakeRecord.put(memorySembast, fakeObject);
+    await stringMapStoreFactory.store(fakeStore).record('2').put(memorySembast, fakeObject);
+
+    await expectLater(stream, emits(listFakeObjects));
+  });
 }
