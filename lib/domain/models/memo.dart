@@ -3,7 +3,11 @@ import 'package:memo/domain/models/memo_block.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 import 'package:meta/meta.dart';
 
-/// TODO:
+/// Defines a unit of a `Collection`
+///
+/// A [Memo] simply wraps a [question] and its respective [answer]. Because each [Memo] can be executed an infinite
+/// amount of times, the [Memo] only stores its metadata representing all other executions, like [lastExecution] and
+/// [executionsAmount].
 @immutable
 class Memo extends Equatable {
   Memo({
@@ -28,6 +32,7 @@ class Memo extends Equatable {
 
   final String id;
 
+  /// Parent's `Collection.id`
   final String collectionId;
 
   /// Ordered blocks to represent this memo's question and provide the necessary metadata
@@ -42,7 +47,10 @@ class Memo extends Equatable {
   final MemoExecution? lastExecution;
   DateTime? get lastExecuted => lastExecution?.finished;
 
-  /// The date which this [Memo] is requires to be reviewed
+  /// Following the memory algorithm, the date which this [Memo] is requires to be reviewed
+  ///
+  /// More about this here:
+  // TODO(matuella): add reference to the algorithm when implemented.
   final DateTime? dueDate;
 
   /// `true` if this [Memo] was never executed

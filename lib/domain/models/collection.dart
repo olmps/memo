@@ -1,7 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-/// TODO: Defines a...
+/// Defines all metadata of a collection (group) of its associated `Memo`s
+///
+/// A [Collection] not only holds the metadata for a group of `Memo`s (like [name], [category] and [description]) but
+/// also deal with all the information about its executed `Memo`s, like [timeSpentInMillis] and [memoryStability], which
+/// are a byproduct of the act of executing an arbitrary number of `Memo`s.
 @immutable
 class Collection extends Equatable {
   const Collection({
@@ -46,7 +50,10 @@ class Collection extends Equatable {
   /// The total amount of hard answers (`MemoDifficulty`) for this collection
   final int hardMemosAmount;
 
-  // TODO
+  /// Following the stability algorithm, represents a floating number that ranges from 0 and 1
+  ///
+  /// More about this here:
+  // TODO(matuella): add reference to the algorithm when implemented.
   final double? memoryStability;
 
   /// `true` if this [Collection] has never executed any `Memo`
