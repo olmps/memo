@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memo/domain/models/deck.dart';
+import 'package:memo/domain/models/collection.dart';
 
 void main() {
-  test('Deck should not allow invalid integers for its properties', () {
+  test('Collection should not allow invalid integers for its properties', () {
     expect(
       () {
-        Deck(
+        Collection(
           id: 'id',
           name: 'name',
           description: 'description',
@@ -19,13 +19,13 @@ void main() {
 
     expect(
       () {
-        Deck(
+        Collection(
           id: 'id',
           name: 'name',
           description: 'description',
           category: 'category',
           tags: const [],
-          easyCardsAmount: -1,
+          easyMemosAmount: -1,
         );
       },
       throwsAssertionError,
@@ -33,13 +33,13 @@ void main() {
 
     expect(
       () {
-        Deck(
+        Collection(
           id: 'id',
           name: 'name',
           description: 'description',
           category: 'category',
           tags: const [],
-          mediumCardsAmount: -1,
+          mediumMemosAmount: -1,
         );
       },
       throwsAssertionError,
@@ -47,13 +47,13 @@ void main() {
 
     expect(
       () {
-        Deck(
+        Collection(
           id: 'id',
           name: 'name',
           description: 'description',
           category: 'category',
           tags: const [],
-          hardCardsAmount: -1,
+          hardMemosAmount: -1,
         );
       },
       throwsAssertionError,

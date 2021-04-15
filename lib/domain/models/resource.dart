@@ -13,7 +13,7 @@ class Resource extends Equatable {
 
   /// List of tags that can associate with this [Resource]
   ///
-  /// This is useful in cases where we must match a `Deck.tags` with each available resources
+  /// This is useful in cases where we must match a `Collection.tags` with each available resources
   final List<String> tags;
 
   /// Metadata that describes which type of [url] this resource refers to

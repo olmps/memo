@@ -1,6 +1,6 @@
 {
   "id": "1",
-  "deckId": "1",
+  "collectionId": "1",
   "question": [
     { 
       "type": "text",
