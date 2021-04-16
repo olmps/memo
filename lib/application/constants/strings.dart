@@ -7,3 +7,10 @@
 
 const collectionsNavigationTab = 'Coleções';
 const progressNavigationTab = 'Progresso';
+
+const collectionsExploreTab = 'Explorar';
+const collectionsReviewTab = 'Revisar';
+
+const collectionsSectionHeaderSeeAll = 'VER TODOS';
+
+const collectionsMemoryStability = 'Estabilidade da Memória';
