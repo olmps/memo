@@ -6,7 +6,7 @@ import 'package:memo/application/theme/material_theme_data.dart' as material_the
 import 'package:memo/application/theme/memo_theme_colors.dart' as colors;
 import 'package:memo/application/theme/memo_theme_data.dart';
 
-final themeProvider = StateNotifierProvider<ThemeController>((_) => ThemeController());
+final themeController = StateNotifierProvider<ThemeController>((_) => ThemeController());
 
 /// Provides management for all theme-related operations
 ///
@@ -78,13 +78,17 @@ class ThemeController extends StateNotifier<MemoThemeData> {
   }
 }
 
-extension HookThemeProvider on HookWidget {
-  /// Syntax sugar for calling a provider listener in `HookWidget`
-  ///
-  /// It's important to state that, just like any other `useProvider` call, the [theme] must also be called directly
-  /// in the `build` method of a `HookWidget`.
-  MemoThemeData get theme => useProvider(themeProvider.state);
-}
+/// Syntax sugar for _hooking_ the [themeController] state instance in a `HookWidget`
+///
+/// It's important to state that, just like any other `useProvider` call, the [useTheme] must also be called
+/// directly in the `build` method of a `HookWidget`.
+MemoThemeData useTheme() => useProvider(themeController.state);
+
+/// Syntax sugar for _hooking_ the [themeController] provider instance in a `HookWidget`
+///
+/// It's important to state that, just like any other `useProvider` call, the [useThemeController] must also be called
+/// directly in the `build` method of a `HookWidget`.
+ThemeController useThemeController() => useProvider(themeController);
 
 MaterialColor _primarySwatchFor(MemoTheme theme) {
   switch (theme) {

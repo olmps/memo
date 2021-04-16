@@ -16,7 +16,7 @@ class PrimaryTextTag extends HookWidget {
   @override
   Widget build(BuildContext context) => TextTag(
         text,
-        backgroundColor: theme.primarySwatch,
+        backgroundColor: useTheme().primarySwatch.shade600,
         padding: context.allInsets(Spacing.xxSmall),
         textStyle: Theme.of(context).textTheme.overline,
       );
@@ -34,7 +34,7 @@ class SecondaryTextTag extends HookWidget {
   @override
   Widget build(BuildContext context) => TextTag(
         text,
-        backgroundColor: theme.secondarySwatch,
+        backgroundColor: useTheme().secondarySwatch.shade600,
         padding: context.allInsets(Spacing.xxSmall),
         textStyle: Theme.of(context).textTheme.overline,
       );

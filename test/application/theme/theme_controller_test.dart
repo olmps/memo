@@ -5,24 +5,24 @@ import 'package:memo/application/theme/theme_controller.dart';
 void main() {
   test('ThemeController should use the predefined default state', () {
     final container = ProviderContainer();
-    final themeData = container.read(themeProvider.state);
+    final themeData = container.read(themeController.state);
 
     expect(themeData.theme, ThemeController.defaultTheme);
   });
 
   test('ThemeController should not trigger an update when changing the theme to the same as the actual', () {
     final container = ProviderContainer();
-    final themeNotifier = container.read(themeProvider);
+    final theme = container.read(themeController);
 
     var listenerCalls = 0;
     final stateListener = container.listen(
-      themeProvider.state,
+      themeController.state,
       didChange: (sub) {
         listenerCalls++;
       },
     );
 
-    themeNotifier.changeTheme(ThemeController.defaultTheme);
+    theme.changeTheme(ThemeController.defaultTheme);
     stateListener.flush();
     expect(listenerCalls, 0);
   });

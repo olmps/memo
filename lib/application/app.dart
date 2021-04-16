@@ -66,12 +66,10 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
       initialRouteInformation: RouteInformation(location: coordinator.currentRoute),
     );
 
-    final themeController = useProvider(themeProvider);
-
     return MaterialApp.router(
       title: 'Memo',
       debugShowCheckedModeBanner: false,
-      theme: themeController.currentThemeData(context),
+      theme: useThemeController().currentThemeData(context),
       routerDelegate: CoordinatorRouterDelegate(coordinator),
       routeInformationParser: CoordinatorInformationParser(),
       routeInformationProvider: _routeInformationParser,
