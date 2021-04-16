@@ -1,9 +1,12 @@
 import 'package:flutter/widgets.dart';
 
+//
+// Application-wide
+//
 const double iconSize = 24;
 
 const double minButtonHeight = 52;
-const double genericRoundedElementBorderRadius = 4;
+const genericRoundedElementBorderRadius = BorderRadius.all(Radius.circular(4));
 
 const double tabBarBorderHeight = 2;
 
