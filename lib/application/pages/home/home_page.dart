@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
+import 'package:memo/application/pages/home/collections/collections_page.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
 
 enum HomeBottomTab { collections, progress }
@@ -26,9 +27,7 @@ class HomePage extends StatelessWidget {
           Scaffold(
             body: Container(),
           ),
-          Scaffold(
-            body: Container(),
-          )
+          CollectionsPage(),
         ],
       ),
       bottomNavigationBar: _BottomAppBar(bottomTab),
