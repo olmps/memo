@@ -5,6 +5,7 @@ import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/home/collections/collections_page.dart';
+import 'package:memo/application/pages/home/progress/progress_page.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
 
 enum HomeBottomTab { collections, progress }
@@ -24,10 +25,8 @@ class HomePage extends StatelessWidget {
       body: IndexedStack(
         index: tabIndex,
         children: [
-          Scaffold(
-            body: Container(),
-          ),
           CollectionsPage(),
+          ProgressPage(),
         ],
       ),
       bottomNavigationBar: _BottomAppBar(bottomTab),
