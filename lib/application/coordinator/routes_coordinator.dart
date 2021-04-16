@@ -19,7 +19,7 @@ class RoutesCoordinator extends ChangeNotifier {
   RoutesCoordinator({required this.navigatorKey})
       : _pages = [
           MaterialPage<dynamic>(
-            child: const HomePage(bottomTab: HomeBottomTab.study),
+            child: const HomePage(bottomTab: HomeBottomTab.collections),
             key: _homeKey,
             name: StudyPath().formattedPath,
           ),
@@ -64,7 +64,7 @@ class RoutesCoordinator extends ChangeNotifier {
 
         final HomeBottomTab homeTab;
         if (path is StudyPath) {
-          homeTab = HomeBottomTab.study;
+          homeTab = HomeBottomTab.collections;
         } else if (path is ProgressPath) {
           homeTab = HomeBottomTab.progress;
         } else {

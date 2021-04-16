@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/material_theme_data.dart' as material_theme;
 import 'package:memo/application/theme/memo_theme_colors.dart' as colors;
@@ -60,8 +60,9 @@ class ThemeController extends StateNotifier<MemoThemeData> {
         break;
     }
 
+    final tabBarLabelPadding = context.symmetricInsets(vertical: Spacing.small);
+
     return material_theme.buildThemeData(
-      context,
       // Theme material-related values
       textColor: textColor,
       iconColor: iconColor,
@@ -74,6 +75,8 @@ class ThemeController extends StateNotifier<MemoThemeData> {
       roundedRectElementsRadius: dimens.genericRoundedElementBorderRadius,
       minButtonHeight: dimens.minButtonHeight,
       iconSize: dimens.iconSize,
+      // Spacings values
+      tabBarLabelPadding: tabBarLabelPadding,
     );
   }
 }

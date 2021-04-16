@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/application/constants/images.dart' as images;
+import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
+import 'package:memo/application/widgets/material/asset_icon_button.dart';
 
-enum HomeBottomTab { study, progress }
+enum HomeBottomTab { collections, progress }
 
 class HomePage extends StatelessWidget {
   const HomePage({required this.bottomTab, Key? key}) : super(key: key);
@@ -47,8 +50,8 @@ class _AppBar extends HookWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(_tab.title),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.settings),
+        AssetIconButton(
+          images.settingsAsset,
           onPressed: () {
             context.read(coordinatorProvider).navigateToSettings();
           },
@@ -67,25 +70,23 @@ class _BottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabItems = HomeBottomTab.values
         .map(
-          (tab) => BottomNavigationBarItem(icon: Icon(tab.icon), label: tab.title),
+          (tab) => BottomNavigationBarItem(icon: tab.icon, label: tab.title),
         )
         .toList();
 
-    return BottomAppBar(
-      child: BottomNavigationBar(
-        onTap: (index) {
-          switch (HomeBottomTab.values[index]) {
-            case HomeBottomTab.study:
-              context.read(coordinatorProvider).navigateToStudy();
-              break;
-            case HomeBottomTab.progress:
-              context.read(coordinatorProvider).navigateToProgress();
-              break;
-          }
-        },
-        currentIndex: HomeBottomTab.values.indexOf(_tab),
-        items: tabItems,
-      ),
+    return BottomNavigationBar(
+      onTap: (index) {
+        switch (HomeBottomTab.values[index]) {
+          case HomeBottomTab.collections:
+            context.read(coordinatorProvider).navigateToStudy();
+            break;
+          case HomeBottomTab.progress:
+            context.read(coordinatorProvider).navigateToProgress();
+            break;
+        }
+      },
+      currentIndex: HomeBottomTab.values.indexOf(_tab),
+      items: tabItems,
     );
   }
 }
@@ -93,19 +94,19 @@ class _BottomAppBar extends StatelessWidget {
 extension _TabMetadata on HomeBottomTab {
   String get title {
     switch (this) {
-      case HomeBottomTab.study:
-        return 'Study';
+      case HomeBottomTab.collections:
+        return strings.collectionsNavigationTab;
       case HomeBottomTab.progress:
-        return 'Progress';
+        return strings.progressNavigationTab;
     }
   }
 
-  IconData get icon {
+  ImageIcon get icon {
     switch (this) {
-      case HomeBottomTab.study:
-        return Icons.folder_open;
+      case HomeBottomTab.collections:
+        return const ImageIcon(AssetImage(images.folderAsset));
       case HomeBottomTab.progress:
-        return Icons.arrow_upward;
+        return const ImageIcon(AssetImage(images.trendingUpArrowAsset));
     }
   }
 }

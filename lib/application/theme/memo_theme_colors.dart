@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 // MemoTheme.classic
 //
 MaterialColor buildClassicPrimarySwatch() {
-  const defaultPrimary = Color(0xFF4DBB74);
+  const defaultPrimary = Color(0xFF49AB6C);
   return MaterialColor(
     defaultPrimary.value,
     const {
@@ -18,7 +18,7 @@ MaterialColor buildClassicPrimarySwatch() {
       300: Color(0xFF75F5A3),
       400: Color(0xFF60D88B),
       500: defaultPrimary,
-      600: Color(0xFF2C814A),
+      600: Color(0xFF349857),
       700: Color(0xFF1F6337),
       800: Color(0xFF134625),
       900: Color(0xFF0D301A),
@@ -54,7 +54,7 @@ MaterialColor buildClassicNeutralSwatch() {
       100: Color(0xFFEDEBF6),
       200: Color(0xFFC7C3DB),
       300: Color(0xFFADA7C1),
-      400: Color(0xFF7A748E),
+      400: Color(0xFF928CA6),
       500: defaultNeutral,
       600: Color(0xFF615D75),
       700: Color(0xFF4A465B),
