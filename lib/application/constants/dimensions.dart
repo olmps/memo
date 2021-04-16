@@ -18,6 +18,11 @@ const double cardBorderWidth = 4;
 //
 const double collectionsLinearProgressLineWidth = 12;
 
+//
+// ProgressPage
+//
+const double progressCircularProgressSize = 80;
+const double progressCircularProgressLineWidth = 8;
 
 //
 // Animations
