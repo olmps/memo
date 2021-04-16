@@ -1,17 +1,17 @@
-import 'package:memo/data/serializers/card_block_serializer.dart';
-import 'package:memo/data/serializers/card_execution_serializer.dart';
+import 'package:memo/data/serializers/memo_block_serializer.dart';
+import 'package:memo/data/serializers/memo_execution_serializer.dart';
 import 'package:memo/data/serializers/serializer.dart';
-import 'package:memo/domain/models/card.dart';
-import 'package:memo/domain/models/card_execution.dart';
+import 'package:memo/domain/models/memo.dart';
+import 'package:memo/domain/models/memo_execution.dart';
 
-class CardSerializer implements Serializer<Card, Map<String, dynamic>> {
-  final blockSerializer = CardBlockSerializer();
-  final executionSerializer = CardExecutionSerializer();
+class MemoSerializer implements Serializer<Memo, Map<String, dynamic>> {
+  final blockSerializer = MemoBlockSerializer();
+  final executionSerializer = MemoExecutionSerializer();
 
   @override
-  Card from(Map<String, dynamic> json) {
+  Memo from(Map<String, dynamic> json) {
     final id = json['id'] as String;
-    final deckId = json['deckId'] as String;
+    final collectionId = json['collectionId'] as String;
 
     final rawAnswer = json['answer'] as List;
     final rawQuestion = json['question'] as List;
@@ -22,7 +22,7 @@ class CardSerializer implements Serializer<Card, Map<String, dynamic>> {
 
     final executionsAmount = json['executionsAmount'] as int;
 
-    CardExecution? lastExecution;
+    MemoExecution? lastExecution;
     if (json.containsKey('lastExecution')) {
       final rawLastExecution = json['lastExecution'] as Map<String, dynamic>;
       lastExecution = executionSerializer.from(rawLastExecution);
@@ -34,9 +34,9 @@ class CardSerializer implements Serializer<Card, Map<String, dynamic>> {
       dueDate = DateTime.fromMillisecondsSinceEpoch(rawDueDate, isUtc: true);
     }
 
-    return Card(
+    return Memo(
       id: id,
-      deckId: deckId,
+      collectionId: collectionId,
       question: question,
       answer: answer,
       executionsAmount: executionsAmount,
@@ -46,13 +46,13 @@ class CardSerializer implements Serializer<Card, Map<String, dynamic>> {
   }
 
   @override
-  Map<String, dynamic> to(Card card) => <String, dynamic>{
-        'id': card.id,
-        'deckId': card.deckId,
-        'answer': card.answer.map(blockSerializer.to),
-        'question': card.question.map(blockSerializer.to),
-        'executionsAmount': card.executionsAmount,
-        if (card.lastExecution != null) 'lastExecution': executionSerializer.to(card.lastExecution!),
-        if (card.dueDate != null) 'dueDate': card.dueDate!.toUtc().millisecondsSinceEpoch,
+  Map<String, dynamic> to(Memo memo) => <String, dynamic>{
+        'id': memo.id,
+        'collectionId': memo.collectionId,
+        'answer': memo.answer.map(blockSerializer.to),
+        'question': memo.question.map(blockSerializer.to),
+        'executionsAmount': memo.executionsAmount,
+        if (memo.lastExecution != null) 'lastExecution': executionSerializer.to(memo.lastExecution!),
+        if (memo.dueDate != null) 'dueDate': memo.dueDate!.toUtc().millisecondsSinceEpoch,
       };
 }

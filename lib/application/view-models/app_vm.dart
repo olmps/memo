@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:memo/data/repositories/deck_repository.dart';
-import 'package:memo/domain/services/deck_services.dart';
+import 'package:memo/data/repositories/collection_repository.dart';
+import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/data/gateways/document_database_gateway.dart';
 import 'package:memo/data/gateways/sembast_database.dart' as sembast_db;
 import 'package:sembast/sembast.dart';
@@ -45,14 +45,14 @@ class AppVMImpl extends AppVM {
     // initialization.
 
     final dbRepo = SembastGateway(dependencies[0] as Database);
-    final decksRepo = DeckRepositoryImpl(dbRepo);
-    final deckServices = DeckServicesImpl(decksRepo);
+    final collectionRepo = CollectionRepositoryImpl(dbRepo);
+    final collectionServices = CollectionServicesImpl(collectionRepo);
 
-    value = AsyncValue.data(AppState(deckServices: deckServices));
+    value = AsyncValue.data(AppState(collectionServices: collectionServices));
   }
 }
 
 class AppState {
-  const AppState({required this.deckServices});
-  final DeckServices deckServices;
+  const AppState({required this.collectionServices});
+  final CollectionServices collectionServices;
 }
