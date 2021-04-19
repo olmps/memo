@@ -68,7 +68,7 @@ class _CollectionsSectionHeader extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(child: Text(title, style: sectionTitleStyle)),
-        TextButton(onPressed: onTap, child: const Text(strings.collectionsSectionHeaderSeeAll)),
+        TextButton(onPressed: onTap, child: Text(strings.collectionsSectionHeaderSeeAll.toUpperCase())),
       ],
     );
   }
