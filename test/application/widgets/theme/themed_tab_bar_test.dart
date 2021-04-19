@@ -26,11 +26,11 @@ void main() {
 
     final bottomDividerFinder = find.byType(Container).first;
     final size = tester.getSize(bottomDividerFinder);
-    final bottomLeftPosition = tester.getBottomRight(bottomDividerFinder);
+    final bottomLeftPosition = tester.getBottomLeft(bottomDividerFinder);
     final bottomRightPosition = tester.getBottomRight(bottomDividerFinder);
 
     final parentFinder = find.byType(ThemedTabBar).first;
-    final bottomLeftParentPosition = tester.getBottomRight(parentFinder);
+    final bottomLeftParentPosition = tester.getBottomLeft(parentFinder);
     final bottomRightParentPosition = tester.getBottomRight(parentFinder);
 
     // Has the same parent's bottom positions

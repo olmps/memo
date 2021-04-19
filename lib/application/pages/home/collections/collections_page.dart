@@ -23,7 +23,7 @@ class CollectionsPage extends HookWidget {
         final currentState = context.read(collectionsVM.state);
 
         // We want to update only when the indexIsChanging (because this listener is called multiple times by the tab
-        // controller)  and if the current tab index is different from the index of the current filter, so they are
+        // controller) and if the current tab index is different from the index of the current filter, so they are
         // always in sync
         if (collectionsTabController.indexIsChanging && currentState.filterIndex != collectionsTabController.index) {
           final newTab = availableFilters.elementAt(collectionsTabController.index);
