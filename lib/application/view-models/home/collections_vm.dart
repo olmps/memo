@@ -5,14 +5,15 @@ import 'package:meta/meta.dart';
 
 final collectionsVM = StateNotifierProvider<CollectionsVM>((_) => CollectionsVMImpl());
 
-enum CollectionsFilter { explore, review }
-const availableFilters = CollectionsFilter.values;
+/// Segment used to filter the current state of the [CollectionsVM]
+enum CollectionsSegment { explore, review }
+const availableSegments = CollectionsSegment.values;
 
 abstract class CollectionsVM extends StateNotifier<CollectionsState> {
   CollectionsVM(CollectionsState state) : super(state);
 
-  /// Updates the current [state] with [filter]
-  Future<void> updateCollectionsFilter(CollectionsFilter filter);
+  /// Updates the current [state] with [segment]
+  Future<void> updateCollectionsSegment(CollectionsSegment segment);
 }
 
 const mockedCollections = [
@@ -58,29 +59,29 @@ const mockedCollections = [
 ];
 
 class CollectionsVMImpl extends CollectionsVM {
-  CollectionsVMImpl() : super(LoadingCollectionsState(availableFilters.first)) {
+  CollectionsVMImpl() : super(LoadingCollectionsState(availableSegments.first)) {
     _loadCollections();
   }
 
   @override
-  Future<void> updateCollectionsFilter(CollectionsFilter filter) async {
-    state = LoadingCollectionsState(filter);
+  Future<void> updateCollectionsSegment(CollectionsSegment segment) async {
+    state = LoadingCollectionsState(segment);
 
     // TODO(matuella): attach logic
     await Future.delayed(const Duration(seconds: 1), () {});
 
     final Map<String, List<Collection>> collectionsPerCategory;
-    switch (filter) {
-      case CollectionsFilter.explore:
+    switch (segment) {
+      case CollectionsSegment.explore:
         collectionsPerCategory = _mapCollectionsToCategories(mockedCollections);
         break;
-      case CollectionsFilter.review:
+      case CollectionsSegment.review:
         collectionsPerCategory =
             _mapCollectionsToCategories(mockedCollections.where((collection) => !collection.isPristine).toList());
         break;
     }
 
-    state = LoadedCollectionsState(collectionsPerCategory, currentFilter: filter);
+    state = LoadedCollectionsState(collectionsPerCategory, currentSegment: segment);
   }
 
   Future<void> _loadCollections() async {
@@ -88,7 +89,7 @@ class CollectionsVMImpl extends CollectionsVM {
     await Future.delayed(const Duration(seconds: 1), () {});
 
     final collectionsPerCategory = _mapCollectionsToCategories(mockedCollections);
-    state = LoadedCollectionsState(collectionsPerCategory, currentFilter: state.currentFilter);
+    state = LoadedCollectionsState(collectionsPerCategory, currentSegment: state.currentSegment);
   }
 
   Map<String, List<Collection>> _mapCollectionsToCategories(List<Collection> collections) {
@@ -112,21 +113,21 @@ class CollectionsVMImpl extends CollectionsVM {
 
 @immutable
 abstract class CollectionsState extends Equatable {
-  const CollectionsState(this.currentFilter);
-  final CollectionsFilter currentFilter;
-  int get filterIndex => availableFilters.indexOf(currentFilter);
+  const CollectionsState(this.currentSegment);
+  final CollectionsSegment currentSegment;
+  int get segmentIndex => availableSegments.indexOf(currentSegment);
 
   @override
   List<Object?> get props => [];
 }
 
 class LoadingCollectionsState extends CollectionsState {
-  const LoadingCollectionsState(CollectionsFilter currentFilter) : super(currentFilter);
+  const LoadingCollectionsState(CollectionsSegment currentSegment) : super(currentSegment);
 }
 
 class LoadedCollectionsState extends CollectionsState {
-  const LoadedCollectionsState(this._collectionsPerCategory, {required CollectionsFilter currentFilter})
-      : super(currentFilter);
+  const LoadedCollectionsState(this._collectionsPerCategory, {required CollectionsSegment currentSegment})
+      : super(currentSegment);
 
   final Map<String, List<Collection>> _collectionsPerCategory;
 
@@ -154,7 +155,7 @@ class LoadedCollectionsState extends CollectionsState {
   }
 
   @override
-  List<Object?> get props => [_collectionsPerCategory, currentFilter];
+  List<Object?> get props => [_collectionsPerCategory, currentSegment];
 }
 
 abstract class CollectionItemMetadata {}
