@@ -174,17 +174,25 @@ class _LinearProgressPainter extends CustomPainter implements ProgressPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    canvas.clipRRect(RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(size.height / 2)));
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = lineSize
       ..strokeCap = StrokeCap.round;
 
-    if (value > 0) {
-      canvas.drawLine(Offset.zero, Offset(size.width * value, 0), paint..color = lineColor);
+    // Instead of simply start from 0 up to until the endPoint, we have to make sure that our line starts drawing inside
+    // the bounds (read more here https://github.com/flutter/flutter/issues/31202)
+    final lineSizeOffset = lineSize / 2;
+
+    final startPoint = Offset(lineSizeOffset, lineSizeOffset);
+    if (lineBackgroundColor != null) {
+      final endPoint = Offset(size.width - lineSizeOffset, lineSizeOffset);
+      canvas.drawLine(startPoint, endPoint, paint..color = lineBackgroundColor!);
     }
 
-    if (lineBackgroundColor != null) {
-      canvas.drawLine(Offset.zero, Offset(size.width, 0), paint..color = lineBackgroundColor!);
+    if (value > 0) {
+      final endPoint = Offset((size.width * value) - lineSizeOffset, lineSizeOffset);
+      canvas.drawLine(startPoint, endPoint, paint..color = lineColor);
     }
   }
 
@@ -306,9 +314,8 @@ class _CircularProgressPainter extends CustomPainter implements ProgressPainter 
       ..strokeCap = StrokeCap.round;
 
     if (lineBackgroundColor != null) {
-      canvas
-          // Draw progress background stroke
-          .drawArc(
+      // Draw progress background stroke
+      canvas.drawArc(
         Offset.zero & size,
         _degreesToRadians(0),
         _degreesToRadians(360),
@@ -318,9 +325,8 @@ class _CircularProgressPainter extends CustomPainter implements ProgressPainter 
     }
 
     if (value > 0) {
-      canvas
-          // Draw progress stroke
-          .drawArc(
+      // Draw progress stroke
+      canvas.drawArc(
         Offset.zero & size,
         _degreesToRadians(-90),
         _degreesToRadians(value * 360),

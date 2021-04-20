@@ -15,9 +15,7 @@ class SecondaryButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        primary: theme.secondarySwatch,
-      ),
+      style: ElevatedButton.styleFrom(primary: useTheme().neutralSwatch.shade800),
       onPressed: onPressed,
       child: child,
     );

@@ -7,7 +7,7 @@ class AssetIconButton extends StatelessWidget {
   final String asset;
   final Color? iconColor;
   final double? iconSize;
-  final void Function()? onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

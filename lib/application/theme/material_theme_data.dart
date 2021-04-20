@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:layoutr/common_layout.dart';
 
 /// Creates a new `ThemeData` with customized sub-themes
 ///
 /// All arguments are used for a couple of definitions, some are more broadly used in different sub-themes (like
 /// [neutralSwatch]), while others (like [iconSize]) are used for only a specific theme.
-///
-/// More specifically about the `context` argument: this is particularly needed because there are some properties that
-/// depend on responsive values like [Spacing].
-ThemeData buildThemeData(
-  BuildContext context, {
+ThemeData buildThemeData({
   required MaterialColor primarySwatch,
   required MaterialColor secondarySwatch,
   required MaterialColor neutralSwatch,
   required Color iconColor,
   required Color textColor,
   required Color bottomNavSelectedItemColor,
-  required double roundedRectElementsRadius,
+  required BorderRadius roundedRectElementsRadius,
   required double minButtonHeight,
   required double iconSize,
+  required EdgeInsets tabBarLabelPadding,
 }) {
-  final roundedBorderRadius = BorderRadius.all(Radius.circular(roundedRectElementsRadius));
-  final roundedCornersShape = RoundedRectangleBorder(borderRadius: roundedBorderRadius);
+  final roundedCornersShape = RoundedRectangleBorder(borderRadius: roundedRectElementsRadius);
 
   final textTheme = _buildTextTheme(textColor: textColor);
   const brightness = Brightness.dark;
@@ -50,6 +45,10 @@ ThemeData buildThemeData(
     ),
   );
 
+  final textButtonTheme = TextButtonThemeData(
+    style: TextButton.styleFrom(primary: secondarySwatch.shade400),
+  );
+
   final iconTheme = IconThemeData(color: neutralSwatch, size: iconSize);
 
   final appBarTheme = AppBarTheme(
@@ -63,14 +62,14 @@ ThemeData buildThemeData(
   final bottomNavTheme = BottomNavigationBarThemeData(
     elevation: 0,
     backgroundColor: neutralSwatch.shade800,
+    unselectedItemColor: neutralSwatch.shade500,
     selectedItemColor: bottomNavSelectedItemColor,
-    unselectedItemColor: neutralSwatch.shade700,
   );
 
   final tabBarTheme = TabBarTheme(
-    labelPadding: context.symmetricInsets(vertical: Spacing.small),
-    labelColor: secondarySwatch,
-    unselectedLabelColor: neutralSwatch.shade400,
+    labelPadding: tabBarLabelPadding,
+    labelColor: secondarySwatch.shade400,
+    unselectedLabelColor: neutralSwatch.shade300,
     labelStyle: textTheme.subtitle2,
     unselectedLabelStyle: textTheme.subtitle2,
   );
@@ -84,6 +83,7 @@ ThemeData buildThemeData(
     scaffoldBackgroundColor: neutralSwatch.shade900,
     cardTheme: cardTheme,
     elevatedButtonTheme: elevatedButtonTheme,
+    textButtonTheme: textButtonTheme,
     appBarTheme: appBarTheme,
     tabBarTheme: tabBarTheme,
     bottomNavigationBarTheme: bottomNavTheme,
