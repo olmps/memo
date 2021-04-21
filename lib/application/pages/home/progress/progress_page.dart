@@ -31,7 +31,7 @@ class ProgressPage extends HookWidget {
               context,
               texts: [loadedState.completedMemosCount.toString()],
             ),
-            description: strings.progressTotalMemos,
+            description: strings.progressTotalMemos.toUpperCase(),
           ),
         ),
       ],
@@ -48,7 +48,7 @@ class ProgressPage extends HookWidget {
         context,
         texts: [loadedState.readableHardMemosPercentage, strings.percentSymbol],
       ),
-      description: strings.progressTotalHardMemos,
+      description: strings.progressTotalHardMemos.toUpperCase(),
     );
 
     final mediumMemosProgress = _ProgressContainer(
@@ -62,7 +62,7 @@ class ProgressPage extends HookWidget {
         context,
         texts: [loadedState.readableMediumMemosPercentage, strings.percentSymbol],
       ),
-      description: strings.progressTotalMediumMemos,
+      description: strings.progressTotalMediumMemos.toUpperCase(),
     );
 
     final easyMemosProgress = _ProgressContainer(
@@ -76,7 +76,7 @@ class ProgressPage extends HookWidget {
         context,
         texts: [loadedState.readableEasyMemosPercentage, strings.percentSymbol],
       ),
-      description: strings.progressTotalEasyMemos,
+      description: strings.progressTotalEasyMemos.toUpperCase(),
     );
 
     return SingleChildScrollView(
@@ -108,7 +108,7 @@ class ProgressPage extends HookWidget {
 
     return _ProgressContainer(
       title: _buildAlternateStyleTextBox(context, texts: textComponents),
-      description: strings.progressTotalStudyTime,
+      description: strings.progressTotalStudyTime.toUpperCase(),
     );
   }
 

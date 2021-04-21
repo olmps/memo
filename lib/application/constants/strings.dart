@@ -17,12 +17,12 @@ const collectionsSectionHeaderSeeAll = 'Ver todos';
 
 const collectionsMemoryStability = 'Estabilidade da Memória';
 
-const progressTotalStudyTime = 'HORAS TOTAIS DE ESTUDOS';
+const progressTotalStudyTime = 'Horas totais de estudos';
 
-const progressTotalMemos = 'MEMOS COMPLETADOS';
-const progressTotalHardMemos = 'MEMOS MARCADOS COMO DIFÍCIL';
-const progressTotalMediumMemos = 'MEMOS MARCADOS COMO MÉDIO';
-const progressTotalEasyMemos = 'MEMOS MARCADOS COMO FÁCIL';
+const progressTotalMemos = 'Memos completados';
+const progressTotalHardMemos = 'Memos marcados como difícil';
+const progressTotalMediumMemos = 'Memos marcados como médio';
+const progressTotalEasyMemos = 'Memos marcados como fácil';
 
 const progressHardMemosIndicatorLabel =
     'Indicador circular demonstrando o percentual de memos respondidos como difícil';
