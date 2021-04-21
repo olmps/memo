@@ -16,3 +16,30 @@ const collectionsReviewTab = 'Revisar';
 const collectionsSectionHeaderSeeAll = 'Ver todos';
 
 const collectionsMemoryStability = 'Estabilidade da Memória';
+
+const progressTotalStudyTime = 'Horas totais de estudos';
+
+const progressTotalMemos = 'Memos completados';
+const progressTotalHardMemos = 'Memos marcados como difícil';
+const progressTotalMediumMemos = 'Memos marcados como médio';
+const progressTotalEasyMemos = 'Memos marcados como fácil';
+
+const progressHardMemosIndicatorLabel =
+    'Indicador circular demonstrando o percentual de memos respondidos como difícil';
+const progressMediumMemosIndicatorLabel =
+    'Indicador circular demonstrando o percentual de memos respondidos como médio';
+const progressEasyMemosIndicatorLabel = 'Indicador circular demonstrando o percentual de memos respondidos como fácil';
+
+//
+// Symbols
+//
+const percentSymbol = '%';
+const hoursSymbol = 'h';
+const minutesSymbol = 'm';
+
+//
+// Unicode Emojis
+//
+const faceScreamingInFear = '\u{1F631}';
+const expressionlessFace = '\u{1F611}';
+const squintingFaceWithTongue = '\u{1F61D}';
