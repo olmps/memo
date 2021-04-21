@@ -16,45 +16,48 @@ abstract class CollectionsVM extends StateNotifier<CollectionsState> {
   Future<void> updateCollectionsSegment(CollectionsSegment segment);
 }
 
-const mockedCollections = [
+final mockedCollections = [
   Collection(
     id: '1',
     name: 'Swift Fundamentals I',
     description: 'Swift fundamentals I description, bla bla bla.',
     category: 'Swift',
-    tags: ['Linguagem de Programação'],
+    tags: const ['Linguagem de Programação'],
     timeSpentInMillis: 10000,
-    memoryStability: 0.3,
+    uniqueMemosAmount: 1,
   ),
   Collection(
     id: '2',
     name: 'Swift Fundamentals II',
     description: 'Swift fundamentals II description, bla bla bla.',
     category: 'Swift',
-    tags: ['Linguagem de Programação'],
+    tags: const ['Linguagem de Programação'],
     timeSpentInMillis: 20000,
-    memoryStability: 0.1,
+    uniqueMemosAmount: 1,
   ),
   Collection(
     id: '3',
     name: 'Swift Fundamentals III',
     description: 'Swift fundamentals III description, bla bla bla.',
     category: 'Swift',
-    tags: ['Linguagem de Programação'],
+    tags: const ['Linguagem de Programação'],
+    uniqueMemosAmount: 1,
   ),
   Collection(
     id: '4',
     name: 'Git Fundamentals I',
     description: 'Git fundamentals I description, bla bla bla.',
     category: 'Git',
-    tags: ['Controle de Versão', 'Linha de Comando'],
+    tags: const ['Controle de Versão', 'Linha de Comando'],
+    uniqueMemosAmount: 1,
   ),
   Collection(
     id: '5',
     name: 'Git Fundamentals II',
     description: 'Git fundamentals II description, bla bla bla.',
     category: 'Git',
-    tags: ['Controle de Versão', 'Linha de Comando'],
+    tags: const ['Controle de Versão', 'Linha de Comando'],
+    uniqueMemosAmount: 1,
   ),
 ];
 
@@ -141,7 +144,8 @@ class LoadedCollectionsState extends CollectionsState {
               id: collection.id,
               tags: collection.tags,
               name: collection.name,
-              memoryStability: collection.memoryStability,
+              // TODO(matuella): Remove this placeholder and add logic when memoryStability calc is ready
+              memoryStability: 0.5,
             ),
           )
           .toList();

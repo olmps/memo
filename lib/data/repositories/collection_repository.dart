@@ -1,6 +1,6 @@
-import 'package:memo/domain/models/collection.dart';
-import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/data/gateways/document_database_gateway.dart';
+import 'package:memo/data/serializers/collection_serializer.dart';
+import 'package:memo/domain/models/collection.dart';
 
 abstract class CollectionRepository {
   Future<List<Collection>> getAllCollections();
