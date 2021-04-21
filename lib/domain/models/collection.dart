@@ -1,32 +1,34 @@
 import 'package:equatable/equatable.dart';
+import 'package:memo/domain/enums/memo_difficulty.dart';
+import 'package:memo/domain/models/memo_execution.dart';
 import 'package:meta/meta.dart';
 
 /// Defines all metadata of a collection (group) of its associated `Memo`s
 ///
 /// A [Collection] not only holds the metadata for a group of `Memo`s (like [name], [category] and [description]) but
-/// also deal with all the information about its executed `Memo`s, like [timeSpentInMillis] and [memoryStability], which
-/// are a byproduct of the act of executing an arbitrary number of `Memo`s.
+/// also deal with all the information about its executed `Memo`s, like [uniqueMemosAmount],
+/// [uniqueMemoExecutionsAmount], and by extending the [MemoExecutionsMetadata], which are all a byproduct of the act of
+/// executing an arbitrary number of `Memo`s.
 @immutable
-class Collection extends Equatable {
-  const Collection({
+class Collection extends MemoExecutionsMetadata with EquatableMixin {
+  Collection({
     required this.id,
     required this.name,
     required this.description,
     required this.category,
     required this.tags,
-    this.timeSpentInMillis = 0,
-    this.easyMemosAmount = 0,
-    this.mediumMemosAmount = 0,
-    this.hardMemosAmount = 0,
-    this.memoryStability,
-  })  : assert(timeSpentInMillis >= 0, 'must be a positive (or zero) integer'),
+    required this.uniqueMemosAmount,
+    this.uniqueMemoExecutionsAmount = 0,
+    Map<MemoDifficulty, int> executionsAmounts = const {},
+    int timeSpentInMillis = 0,
+  })  : assert(uniqueMemosAmount > 0, 'must be a positive integer'),
+        assert(uniqueMemoExecutionsAmount >= 0, 'must be a positive (or zero) integer'),
+        assert(timeSpentInMillis >= 0, 'must be a positive (or zero) integer'),
         assert(
-          (timeSpentInMillis == 0 && memoryStability == null) || (timeSpentInMillis > 0 && memoryStability != null),
-          'must not be null when timeSpentInMillis is positive',
+          uniqueMemosAmount >= uniqueMemoExecutionsAmount,
+          'executions should never exceed the unique total amount',
         ),
-        assert(easyMemosAmount >= 0, 'must be a positive (or zero) integer'),
-        assert(mediumMemosAmount >= 0, 'must be a positive (or zero) integer'),
-        assert(hardMemosAmount >= 0, 'must be a positive (or zero) integer');
+        super(timeSpentInMillis, executionsAmounts);
 
   final String id;
   final String name;
@@ -38,26 +40,17 @@ class Collection extends Equatable {
   /// This is useful in cases where we must match [Collection.tags] with each available resource(s)
   final List<String> tags;
 
-  /// The total amount of time spent executing `Memo`s for this collection (in milliseconds)
-  final int timeSpentInMillis;
+  /// The total amount of unique `Memo`s (associated with this [Collection]) that have been executed at least once
+  final int uniqueMemoExecutionsAmount;
 
-  /// The total amount of easy answers (`MemoDifficulty`) for this collection
-  final int easyMemosAmount;
-
-  /// The total amount of medium answers (`MemoDifficulty`) for this collection
-  final int mediumMemosAmount;
-
-  /// The total amount of hard answers (`MemoDifficulty`) for this collection
-  final int hardMemosAmount;
-
-  /// Following the stability algorithm, represents a floating number that ranges from 0 and 1
-  ///
-  /// More about this here:
-  // TODO(matuella): add reference to the algorithm when implemented.
-  final double? memoryStability;
+  /// The total amount of unique `Memo`s associated with this [Collection]
+  final int uniqueMemosAmount;
 
   /// `true` if this [Collection] has never executed any `Memo`
-  bool get isPristine => timeSpentInMillis == 0;
+  bool get isPristine => uniqueMemoExecutionsAmount == 0;
+
+  /// `true` if this [Collection] has executed (at least once) all of its `Memo`s
+  bool get isCompleted => uniqueMemoExecutionsAmount == uniqueMemosAmount;
 
   @override
   List<Object?> get props => [
@@ -66,10 +59,8 @@ class Collection extends Equatable {
         description,
         category,
         tags,
-        timeSpentInMillis,
-        easyMemosAmount,
-        mediumMemosAmount,
-        hardMemosAmount,
-        memoryStability,
+        uniqueMemoExecutionsAmount,
+        uniqueMemosAmount,
+        ...super.props,
       ];
 }
