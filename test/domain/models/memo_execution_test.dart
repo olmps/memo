@@ -1,61 +1,93 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memo/domain/enums/memo_block_type.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
-import 'package:memo/domain/models/memo_block.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
+import '../../utils/fakes.dart' as fakes;
+
+class FakeExecutionsMetadata extends MemoExecutionsMetadata {
+  FakeExecutionsMetadata(int timeSpentInMillis, Map<MemoDifficulty, int> executionsAmounts)
+      : super(timeSpentInMillis, executionsAmounts);
+}
+
 void main() {
-  final started = DateTime.now();
-  final question = [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')];
-  final answer = [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string answer')];
+  group('MemoExecution -', () {
+    final started = DateTime.now();
 
-  test('MemoExecution should not allow empty question/answer', () {
+    MemoExecution newExecution({
+      DateTime? finished,
+      List<Map<String, dynamic>>? rawQuestion,
+      List<Map<String, dynamic>>? rawAnswer,
+    }) {
+      return MemoExecution(
+        started: started,
+        finished: finished ?? started.add(const Duration(seconds: 1)),
+        rawQuestion: rawQuestion ?? fakes.question,
+        rawAnswer: rawAnswer ?? fakes.answer,
+        markedDifficulty: MemoDifficulty.easy,
+      );
+    }
+
+    test('should not allow a missing question', () {
+      expect(
+        () {
+          newExecution(rawQuestion: []);
+        },
+        throwsAssertionError,
+      );
+
+      expect(
+        () {
+          newExecution(rawQuestion: [<String, dynamic>{}]);
+        },
+        throwsAssertionError,
+      );
+    });
+
+    test('should not allow a missing answer', () {
+      expect(
+        () {
+          newExecution(rawAnswer: []);
+        },
+        throwsAssertionError,
+      );
+
+      expect(
+        () {
+          newExecution(rawAnswer: [<String, dynamic>{}]);
+        },
+        throwsAssertionError,
+      );
+    });
+    test('should not allow finished to be before started', () {
+      expect(
+        () {
+          newExecution(finished: started.subtract(const Duration(seconds: 1)));
+        },
+        throwsAssertionError,
+      );
+    });
+  });
+
+  test('UniqueMemoExecutions should not allow empty executions', () {
     expect(
       () {
-        MemoExecution(
-          started: started,
-          finished: started.add(const Duration(seconds: 1)),
-          question: question,
-          answer: const [],
-          answeredDifficulty: MemoDifficulty.easy,
-        );
-      },
-      throwsAssertionError,
-    );
-
-    expect(
-      () {
-        MemoExecution(
-          started: started,
-          finished: started.add(const Duration(seconds: 1)),
-          question: const [],
-          answer: answer,
-          answeredDifficulty: MemoDifficulty.easy,
-        );
+        UniqueMemoExecutions(memoId: 'memoId', collectionId: 'collectionId', executions: const []);
       },
       throwsAssertionError,
     );
   });
 
-  test('MemoExecution should not allow finished to be before started', () {
+  test('MemoExecutionsMetadata should not allow execution properties be inconsistent', () {
     expect(
       () {
-        MemoExecution(
-          started: started.add(const Duration(seconds: 1)),
-          finished: started,
-          question: question,
-          answer: answer,
-          answeredDifficulty: MemoDifficulty.easy,
-        );
+        FakeExecutionsMetadata(1, const {});
       },
       throwsAssertionError,
     );
-  });
 
-  test('MemoExecution should not allow empty executions', () {
     expect(
       () {
-        MemoExecutions(memoId: 'memoId', collectionId: 'collectionId', executions: const []);
+        FakeExecutionsMetadata(0, const {MemoDifficulty.easy: 1});
       },
       throwsAssertionError,
     );

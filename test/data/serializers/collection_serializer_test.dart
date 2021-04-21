@@ -1,17 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/data/serializers/collection_serializer.dart';
+import 'package:memo/data/serializers/memo_difficulty_parser.dart';
+import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
 
 void main() {
   final serializer = CollectionSerializer();
-  const testCollection = Collection(
+  final testCollection = Collection(
     id: '1',
     name: 'My Collection',
     description: 'This collection represents a collection.',
     category: 'Category',
-    tags: ['Tag 1', 'Tag 2'],
+    tags: const ['Tag 1', 'Tag 2'],
+    uniqueMemosAmount: 1,
   );
 
   test('CollectionSerializer should correctly encode/decode a Collection', () {
@@ -26,40 +29,52 @@ void main() {
 
   test('CollectionSerializer should fail to decode without required properties', () {
     expect(() {
-      final rawCollection = fixtures.collection()..remove('id');
+      final rawCollection = fixtures.collection()..remove(CollectionKeys.id);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove('name');
+      final rawCollection = fixtures.collection()..remove(CollectionKeys.name);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove('description');
+      final rawCollection = fixtures.collection()..remove(CollectionKeys.description);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove('category');
+      final rawCollection = fixtures.collection()..remove(CollectionKeys.category);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove('tags');
+      final rawCollection = fixtures.collection()..remove(CollectionKeys.tags);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove('timeSpentInMillis');
+      final rawCollection = fixtures.collection()..remove(CollectionKeys.uniqueMemosAmount);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = fixtures.collection()..remove('easyMemosAmount');
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = fixtures.collection()..remove('mediumMemosAmount');
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = fixtures.collection()..remove('hardMemosAmount');
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
+  });
+
+  test('CollectionSerializer should decode with optional properties', () {
+    final rawCollection = fixtures.collection()
+      ..[CollectionKeys.uniqueMemoExecutionsAmount] = 1
+      ..[CollectionKeys.executionsAmounts] = {MemoDifficulty.easy.raw: 1}
+      ..[CollectionKeys.timeSpentInMillis] = 5000;
+
+    final decodedCollection = serializer.from(rawCollection);
+
+    final allPropsCollection = Collection(
+      id: '1',
+      name: 'My Collection',
+      description: 'This collection represents a collection.',
+      category: 'Category',
+      tags: const ['Tag 1', 'Tag 2'],
+      uniqueMemosAmount: 1,
+      uniqueMemoExecutionsAmount: 1,
+      executionsAmounts: const {MemoDifficulty.easy: 1},
+      timeSpentInMillis: 5000,
+    );
+
+    expect(decodedCollection, allPropsCollection);
+    expect(rawCollection, serializer.to(decodedCollection));
   });
 }
