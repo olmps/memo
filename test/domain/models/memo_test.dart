@@ -1,117 +1,77 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memo/domain/enums/memo_block_type.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/memo.dart';
-import 'package:memo/domain/models/memo_block.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
+import '../../utils/fakes.dart' as fakes;
+
 void main() {
-  test('Memo should fail assert when executionsAmount is not a valid integer', () {
+  Memo newMemo({
+    List<Map<String, dynamic>>? rawQuestion,
+    List<Map<String, dynamic>>? rawAnswer,
+    int timeSpentInMillis = 0,
+    MemoExecution? lastExecution,
+  }) {
+    return Memo(
+      id: 'id',
+      collectionId: 'collectionId',
+      rawQuestion: rawQuestion ?? fakes.question,
+      rawAnswer: rawAnswer ?? fakes.answer,
+      timeSpentInMillis: timeSpentInMillis,
+      lastExecution: lastExecution,
+    );
+  }
+
+  test('Memo should not allow a missing question', () {
     expect(
       () {
-        Memo(
-          id: '1',
-          collectionId: '1',
-          question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string answer')],
-          executionsAmount: -1,
-        );
+        newMemo(rawQuestion: []);
+      },
+      throwsAssertionError,
+    );
+
+    expect(
+      () {
+        newMemo(rawQuestion: [<String, dynamic>{}]);
       },
       throwsAssertionError,
     );
   });
 
-  test('Memo should fail assert when question/answer are not present', () {
+  test('Memo should not allow a missing answer', () {
     expect(
       () {
-        Memo(
-          id: '1',
-          collectionId: '1',
-          question: const [],
-          answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string answer')],
-          executionsAmount: -1,
-        );
+        newMemo(rawAnswer: []);
       },
       throwsAssertionError,
     );
 
     expect(
       () {
-        Memo(
-          id: '1',
-          collectionId: '1',
-          question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          answer: const [],
-          executionsAmount: -1,
-        );
+        newMemo(rawAnswer: [<String, dynamic>{}]);
       },
       throwsAssertionError,
     );
   });
 
-  test('Memo should fail assert when lastExecution and executionsAmount are not in sync', () {
+  test('Memo should not allow incoherent execution-related properties', () {
     expect(
       () {
-        Memo(
-          id: '1',
-          collectionId: '1',
-          question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          executionsAmount: 1,
-        );
+        newMemo(timeSpentInMillis: 1);
       },
       throwsAssertionError,
     );
 
     expect(
       () {
-        Memo(
-          id: '1',
-          collectionId: '1',
-          question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
+        newMemo(
           lastExecution: MemoExecution(
-            started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
-            finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
-            question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-            answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-            answeredDifficulty: MemoDifficulty.medium,
+            started: DateTime.now(),
+            finished: DateTime.now().subtract(const Duration(seconds: 1)),
+            rawQuestion: fakes.question,
+            rawAnswer: fakes.answer,
+            markedDifficulty: MemoDifficulty.easy,
           ),
-        );
-      },
-      throwsAssertionError,
-    );
-  });
-
-  test('Memo should fail assert when lastExecution and dueDate are not in sync', () {
-    expect(
-      () {
-        Memo(
-          id: '1',
-          collectionId: '1',
-          question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          executionsAmount: 1,
-          lastExecution: MemoExecution(
-            started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
-            finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
-            question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-            answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-            answeredDifficulty: MemoDifficulty.medium,
-          ),
-        );
-      },
-      throwsAssertionError,
-    );
-
-    expect(
-      () {
-        Memo(
-          id: '1',
-          collectionId: '1',
-          question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-          dueDate: DateTime.now(),
         );
       },
       throwsAssertionError,

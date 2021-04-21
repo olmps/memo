@@ -1,19 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/data/serializers/memo_execution_serializer.dart';
-import 'package:memo/domain/enums/memo_block_type.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
-import 'package:memo/domain/models/memo_block.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
+import '../../utils/fakes.dart' as fakes;
 
 void main() {
   final testExecution = MemoExecution(
     started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
     finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
-    question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-    answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string answer')],
-    answeredDifficulty: MemoDifficulty.medium,
+    rawAnswer: fakes.answer,
+    rawQuestion: fakes.question,
+    markedDifficulty: MemoDifficulty.easy,
   );
 
   group('MemoExecutionSerializer -', () {
@@ -31,37 +30,37 @@ void main() {
 
     test('should fail to decode without required properties', () {
       expect(() {
-        final rawExecution = fixtures.memoExecution()..remove('started');
+        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.started);
         serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
-        final rawExecution = fixtures.memoExecution()..remove('finished');
+        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.finished);
         serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
-        final rawExecution = fixtures.memoExecution()..remove('question');
+        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.rawQuestion);
         serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
-        final rawExecution = fixtures.memoExecution()..remove('answer');
+        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.rawAnswer);
         serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {
-        final rawExecution = fixtures.memoExecution()..remove('answeredDifficulty');
+        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.markedDifficulty);
         serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
     });
   });
 
   group('MemoExecutionsSerializer -', () {
-    final serializer = MemoExecutionsSerializer();
+    final serializer = UniqueMemoExecutionsSerializer();
     Map<String, Object> createRawExecutions() => {
           'memoId': '1',
           'collectionId': '1',
           'executions': [fixtures.memoExecution()],
         };
 
-    final testExecutions = MemoExecutions(memoId: '1', collectionId: '1', executions: [testExecution]);
+    final testExecutions = UniqueMemoExecutions(memoId: '1', collectionId: '1', executions: [testExecution]);
 
     test('should correctly encode/decode a MemoExecutions', () {
       final rawExecutions = createRawExecutions();
@@ -75,15 +74,15 @@ void main() {
 
     test('should fail to decode without required properties', () {
       expect(() {
-        final rawExecutions = createRawExecutions()..remove('memoId');
+        final rawExecutions = createRawExecutions()..remove(UniqueMemoExecutionsKeys.memoId);
         serializer.from(rawExecutions);
       }, throwsA(isA<TypeError>()));
       expect(() {
-        final rawExecutions = createRawExecutions()..remove('collectionId');
+        final rawExecutions = createRawExecutions()..remove(UniqueMemoExecutionsKeys.collectionId);
         serializer.from(rawExecutions);
       }, throwsA(isA<TypeError>()));
       expect(() {
-        final rawExecutions = createRawExecutions()..remove('executions');
+        final rawExecutions = createRawExecutions()..remove(UniqueMemoExecutionsKeys.executions);
         serializer.from(rawExecutions);
       }, throwsA(isA<TypeError>()));
     });

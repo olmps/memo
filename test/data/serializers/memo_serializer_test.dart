@@ -1,20 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/data/serializers/memo_difficulty_parser.dart';
 import 'package:memo/data/serializers/memo_serializer.dart';
-import 'package:memo/domain/enums/memo_block_type.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/memo.dart';
-import 'package:memo/domain/models/memo_block.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
+import '../../utils/fakes.dart' as fakes;
 
 void main() {
   final serializer = MemoSerializer();
   final testMemo = Memo(
     id: '1',
     collectionId: '1',
-    question: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string question')],
-    answer: [MemoBlock(type: MemoBlockType.text, rawContents: 'This is my simple string answer')],
+    rawQuestion: fakes.question,
+    rawAnswer: fakes.answer,
   );
 
   test('MemoSerializer should correctly encode/decode a Memo', () {
@@ -29,55 +29,53 @@ void main() {
 
   test('MemoSerializer should fail to decode without required properties', () {
     expect(() {
-      final rawMemo = fixtures.memo()..remove('id');
+      final rawMemo = fixtures.memo()..remove(MemoKeys.id);
       serializer.from(rawMemo);
     }, throwsA(isA<TypeError>()));
 
     expect(() {
-      final rawMemo = fixtures.memo()..remove('collectionId');
+      final rawMemo = fixtures.memo()..remove(MemoKeys.collectionId);
       serializer.from(rawMemo);
     }, throwsA(isA<TypeError>()));
 
     expect(() {
-      final rawMemo = fixtures.memo()..remove('question');
+      final rawMemo = fixtures.memo()..remove(MemoKeys.rawQuestion);
       serializer.from(rawMemo);
     }, throwsA(isA<TypeError>()));
 
     expect(() {
-      final rawMemo = fixtures.memo()..remove('answer');
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
-
-    expect(() {
-      final rawMemo = fixtures.memo()..remove('executionsAmount');
+      final rawMemo = fixtures.memo()..remove(MemoKeys.rawAnswer);
       serializer.from(rawMemo);
     }, throwsA(isA<TypeError>()));
   });
 
   test('MemoSerializer should decode with optional properties', () {
     final rawMemo = fixtures.memo()
-      ..['executionsAmount'] = 5
-      ..['lastExecution'] = fixtures.memoExecution() // Use the existing `MemoExecution` fixture
-      ..['dueDate'] = 1616757292509; // Fake date in millis
+      ..[MemoKeys.executionsAmounts] = {MemoDifficulty.easy.raw: 1}
+      ..[MemoKeys.timeSpentInMillis] = 5000
+      ..[MemoKeys.lastExecution] = fixtures.memoExecution(); // Use the existing `MemoExecution` fixture
 
     final decodedMemo = serializer.from(rawMemo);
+
+    final testExecution = MemoExecution(
+      started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
+      finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
+      rawAnswer: fakes.answer,
+      rawQuestion: fakes.question,
+      markedDifficulty: MemoDifficulty.easy,
+    );
 
     final allPropsMemo = Memo(
       id: testMemo.id,
       collectionId: testMemo.collectionId,
-      question: testMemo.question,
-      answer: testMemo.answer,
-      executionsAmount: 5,
-      lastExecution: MemoExecution(
-        started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
-        finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
-        question: testMemo.question,
-        answer: testMemo.answer,
-        answeredDifficulty: MemoDifficulty.medium,
-      ),
-      dueDate: DateTime.fromMillisecondsSinceEpoch(1616757292509, isUtc: true),
+      rawQuestion: testMemo.rawQuestion,
+      rawAnswer: testMemo.rawAnswer,
+      executionsAmounts: const {MemoDifficulty.easy: 1},
+      timeSpentInMillis: 5000,
+      lastExecution: testExecution,
     );
 
     expect(decodedMemo, allPropsMemo);
+    expect(rawMemo, serializer.to(decodedMemo));
   });
 }
