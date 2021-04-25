@@ -6,6 +6,8 @@ import 'package:meta/meta.dart';
 @immutable
 class MemoExecution extends Equatable {
   MemoExecution({
+    required this.memoId,
+    required this.collectionId,
     required this.started,
     required this.finished,
     required this.rawQuestion,
@@ -16,6 +18,9 @@ class MemoExecution extends Equatable {
         assert(rawQuestion.first.isNotEmpty),
         assert(rawAnswer.isNotEmpty),
         assert(rawAnswer.first.isNotEmpty);
+
+  final String memoId;
+  final String collectionId;
 
   final DateTime started;
   final DateTime finished;
@@ -28,20 +33,6 @@ class MemoExecution extends Equatable {
 
   @override
   List<Object?> get props => [started, finished, rawQuestion, rawAnswer, markedDifficulty];
-}
-
-/// Associates a `Collection.id` with all its executions of a particular `Memo`, through its [memoId]
-@immutable
-class UniqueMemoExecutions extends Equatable {
-  UniqueMemoExecutions({required this.memoId, required this.collectionId, required this.executions})
-      : assert(executions.isNotEmpty);
-
-  final String memoId;
-  final String collectionId;
-  final List<MemoExecution> executions;
-
-  @override
-  List<Object?> get props => [memoId, collectionId, executions];
 }
 
 /// Defines the shared metadata about one or multiple `Memo` executions
