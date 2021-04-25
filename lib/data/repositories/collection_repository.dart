@@ -17,7 +17,7 @@ abstract class CollectionRepository {
   /// Retrieves all available [Collection]
   Future<List<Collection>> getAllCollections();
 
-  /// Updates a [Collection] with the [id] argument with the execution-related arguments
+  /// Updates a [Collection] (of [id]) with the execution-related arguments
   ///
   /// Any update made to these properties, will override the current value, so make sure to update with the latest
   /// corresponding values.
