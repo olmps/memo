@@ -63,4 +63,16 @@ class Memo extends MemoExecutionsMetadata with EquatableMixin {
         lastExecution,
         ...super.props,
       ];
+
+  Memo copyWith(MemoExecution? lastExecution, Map<MemoDifficulty, int>? executionsAmounts, int? timeSpentInMillis) {
+    return Memo(
+      id: id,
+      collectionId: collectionId,
+      rawQuestion: rawQuestion,
+      rawAnswer: rawAnswer,
+      lastExecution: lastExecution ?? this.lastExecution,
+      executionsAmounts: executionsAmounts ?? this.executionsAmounts,
+      timeSpentInMillis: timeSpentInMillis ?? this.timeSpentInMillis,
+    );
+  }
 }
