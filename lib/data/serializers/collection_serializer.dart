@@ -1,6 +1,5 @@
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
 import 'package:memo/data/serializers/serializer.dart';
-import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
 
 class CollectionKeys {

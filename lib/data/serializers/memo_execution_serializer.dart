@@ -3,6 +3,8 @@ import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
 class MemoExecutionKeys {
+  static const memoId = 'memoId';
+  static const collectionId = 'collectionId';
   static const started = 'started';
   static const finished = 'finished';
   static const rawQuestion = 'question';
@@ -13,6 +15,9 @@ class MemoExecutionKeys {
 class MemoExecutionSerializer implements Serializer<MemoExecution, Map<String, dynamic>> {
   @override
   MemoExecution from(Map<String, dynamic> json) {
+    final memoId = json[MemoExecutionKeys.memoId] as String;
+    final collectionId = json[MemoExecutionKeys.collectionId] as String;
+
     final rawStarted = json[MemoExecutionKeys.started] as int;
     final started = DateTime.fromMillisecondsSinceEpoch(rawStarted, isUtc: true);
 
@@ -27,6 +32,8 @@ class MemoExecutionSerializer implements Serializer<MemoExecution, Map<String, d
     final markedDifficulty = memoDifficultyFromRaw(rawDifficulty);
 
     return MemoExecution(
+      memoId: memoId,
+      collectionId: collectionId,
       started: started,
       finished: finished,
       rawQuestion: rawQuestion,
@@ -37,43 +44,12 @@ class MemoExecutionSerializer implements Serializer<MemoExecution, Map<String, d
 
   @override
   Map<String, dynamic> to(MemoExecution execution) => <String, dynamic>{
+        MemoExecutionKeys.memoId: execution.memoId,
+        MemoExecutionKeys.collectionId: execution.collectionId,
         MemoExecutionKeys.started: execution.started.toUtc().millisecondsSinceEpoch,
         MemoExecutionKeys.finished: execution.finished.toUtc().millisecondsSinceEpoch,
         MemoExecutionKeys.rawQuestion: execution.rawQuestion,
         MemoExecutionKeys.rawAnswer: execution.rawAnswer,
         MemoExecutionKeys.markedDifficulty: execution.markedDifficulty.raw,
-      };
-}
-
-//
-// UniqueMemoExecutions
-//
-
-class UniqueMemoExecutionsKeys {
-  static const memoId = 'memoId';
-  static const collectionId = 'collectionId';
-  static const executions = 'executions';
-}
-
-class UniqueMemoExecutionsSerializer implements Serializer<UniqueMemoExecutions, Map<String, dynamic>> {
-  final executionSerializer = MemoExecutionSerializer();
-
-  @override
-  UniqueMemoExecutions from(Map<String, dynamic> json) {
-    final memoId = json[UniqueMemoExecutionsKeys.memoId] as String;
-    final collectionId = json[UniqueMemoExecutionsKeys.collectionId] as String;
-
-    final rawExecutions = json[UniqueMemoExecutionsKeys.executions] as List;
-    // Casting just to make sure, because sembast returns an ImmutableList<dynamic>
-    final executions = rawExecutions.cast<Map<String, dynamic>>().map(executionSerializer.from).toList();
-
-    return UniqueMemoExecutions(memoId: memoId, collectionId: collectionId, executions: executions);
-  }
-
-  @override
-  Map<String, dynamic> to(UniqueMemoExecutions memoExecutions) => <String, dynamic>{
-        UniqueMemoExecutionsKeys.memoId: memoExecutions.memoId,
-        UniqueMemoExecutionsKeys.collectionId: memoExecutions.collectionId,
-        UniqueMemoExecutionsKeys.executions: memoExecutions.executions.map(executionSerializer.to).toList(),
       };
 }
