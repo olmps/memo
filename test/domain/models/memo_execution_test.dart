@@ -19,6 +19,8 @@ void main() {
       List<Map<String, dynamic>>? rawAnswer,
     }) {
       return MemoExecution(
+        memoId: '1',
+        collectionId: '1',
         started: started,
         finished: finished ?? started.add(const Duration(seconds: 1)),
         rawQuestion: rawQuestion ?? fakes.question,
@@ -66,15 +68,6 @@ void main() {
         throwsAssertionError,
       );
     });
-  });
-
-  test('UniqueMemoExecutions should not allow empty executions', () {
-    expect(
-      () {
-        UniqueMemoExecutions(memoId: 'memoId', collectionId: 'collectionId', executions: const []);
-      },
-      throwsAssertionError,
-    );
   });
 
   test('MemoExecutionsMetadata should not allow execution properties be inconsistent', () {

@@ -66,6 +66,8 @@ void main() {
       () {
         newMemo(
           lastExecution: MemoExecution(
+            memoId: '1',
+            collectionId: '1',
             started: DateTime.now(),
             finished: DateTime.now().subtract(const Duration(seconds: 1)),
             rawQuestion: fakes.question,

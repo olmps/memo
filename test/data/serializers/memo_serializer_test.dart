@@ -58,6 +58,8 @@ void main() {
     final decodedMemo = serializer.from(rawMemo);
 
     final testExecution = MemoExecution(
+      memoId: '1',
+      collectionId: '1',
       started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
       finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
       rawAnswer: fakes.answer,
