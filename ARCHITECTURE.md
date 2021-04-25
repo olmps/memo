@@ -21,6 +21,7 @@ Table of contents
       - [`view_models/`](#view_models)
     - [`domain/`](#domain)
       - [`enums/`](#enums)
+      - [`isolated_services/`](#isolated_services)
       - [`models/`](#models)
       - [`services/`](#services)
     - [`data/`](#data)
@@ -248,6 +249,13 @@ difference that it can be *described* statically (they are constant).
 > These are the only structures that can be accessed (or leaked) to the views due to its constant nature. It provides a
 > type-safety when dealing with these cases and if we don't actually leak it, normally what we have is a duplication of
 > this same enumerator behavior in the UI, but less type-safe (or just replicating the exact same behavior).
+
+#### `isolated_services/`
+
+Just like a regular [`services`](#services), but as the name states, it should be always completely isolated from any
+dependency. Think of the regular `services` as "impure" business logic, meaning that they need to use external
+dependencies interfaces, like databases, file system, etcetera, and the `isolated_services` as completely "pure"
+business logic, as it only requires to know the logic itself and nothing else.
 
 #### `models/`
 
