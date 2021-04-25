@@ -1,4 +1,4 @@
-import 'package:memo/data/gateways/document_database_gateway.dart';
+import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/domain/models/collection.dart';
 
@@ -9,8 +9,9 @@ abstract class CollectionRepository {
 class CollectionRepositoryImpl implements CollectionRepository {
   CollectionRepositoryImpl(this._db);
 
-  final DocumentDatabaseGateway _db;
   final _collectionSerializer = CollectionSerializer();
+  final SembastDatabase _db;
+
   final _collectionStore = 'collections';
 
   @override

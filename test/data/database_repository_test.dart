@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memo/data/gateways/document_database_gateway.dart';
+import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_memory.dart';
 
@@ -10,12 +10,12 @@ void main() {
   final fakeRecord = stringMapStoreFactory.store(fakeStore).record(fakeRecordId);
 
   late Database memorySembast;
-  late DocumentDatabaseGateway db;
+  late SembastDatabase db;
 
   setUp(() async {
     await databaseFactoryMemory.deleteDatabase('test.db');
     memorySembast = await databaseFactoryMemory.openDatabase('test.db');
-    db = SembastGateway(memorySembast);
+    db = SembastDatabaseImpl(memorySembast);
   });
 
   test('DatabaseRepositoryImpl should put a new object', () async {
