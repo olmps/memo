@@ -6,7 +6,7 @@ import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
 
-/// Handles all domain-specific operations pertaining to one or multiple [Collection]
+/// Handles all read, write and serialization operations pertaining to one or multiple [Collection]
 abstract class CollectionRepository {
   /// Retrieves a [Collection] with the [id] argument
   Future<Collection> getCollection({required String id});

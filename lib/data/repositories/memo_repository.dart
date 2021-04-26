@@ -2,7 +2,7 @@ import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:memo/data/serializers/memo_serializer.dart';
 import 'package:memo/domain/models/memo.dart';
 
-/// Handles all domain-specific operations pertaining to one or multiple [Memo]
+/// Handles all read, write and serialization operations pertaining to one or multiple [Memo]
 abstract class MemoRepository {
   /// Retrieves all available [Memo] that belongs to a `Collection` with id [collectionId]
   Future<List<Memo>> getAllMemos({required String collectionId});
