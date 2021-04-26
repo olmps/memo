@@ -7,6 +7,8 @@
 // just like this file, but we have to consider that we will possibly need access to the BuildContext, as this is where
 // the runtime locale is determined.
 
+import 'package:memo/domain/enums/memo_difficulty.dart';
+
 const collectionsNavigationTab = 'Coleções';
 const progressNavigationTab = 'Progresso';
 
@@ -14,21 +16,38 @@ const collectionsExploreTab = 'Explorar';
 const collectionsReviewTab = 'Revisar';
 
 const collectionsSectionHeaderSeeAll = 'Ver todos';
-
 const collectionsMemoryStability = 'Estabilidade da Memória';
+String collectionsCompletionProgress({required int current, required int target}) =>
+    '$current / $target memos completados';
 
 const progressTotalStudyTime = 'Horas totais de estudos';
-
 const progressTotalMemos = 'Memos completados';
-const progressTotalHardMemos = 'Memos marcados como difícil';
-const progressTotalMediumMemos = 'Memos marcados como médio';
-const progressTotalEasyMemos = 'Memos marcados como fácil';
 
-const progressHardMemosIndicatorLabel =
-    'Indicador circular demonstrando o percentual de memos respondidos como difícil';
-const progressMediumMemosIndicatorLabel =
-    'Indicador circular demonstrando o percentual de memos respondidos como médio';
-const progressEasyMemosIndicatorLabel = 'Indicador circular demonstrando o percentual de memos respondidos como fácil';
+String progressTotalCompletedMemos(MemoDifficulty difficulty) => 'Memos marcados como ${_rawDifficulty(difficulty)}';
+String progressIndicatorLabel(MemoDifficulty difficulty) =>
+    'Indicador circular demonstrando o percentual de memos respondidos como ${_rawDifficulty(difficulty)}';
+
+String progressDifficultyEmoji(MemoDifficulty difficulty) {
+  switch (difficulty) {
+    case MemoDifficulty.easy:
+      return squintingFaceWithTongue;
+    case MemoDifficulty.medium:
+      return expressionlessFace;
+    case MemoDifficulty.hard:
+      return faceScreamingInFear;
+  }
+}
+
+String _rawDifficulty(MemoDifficulty difficulty) {
+  switch (difficulty) {
+    case MemoDifficulty.easy:
+      return 'fácil';
+    case MemoDifficulty.medium:
+      return 'médio';
+    case MemoDifficulty.hard:
+      return 'difícil';
+  }
+}
 
 //
 // Symbols
@@ -40,6 +59,6 @@ const minutesSymbol = 'm';
 //
 // Unicode Emojis
 //
-const faceScreamingInFear = '\u{1F631}';
-const expressionlessFace = '\u{1F611}';
 const squintingFaceWithTongue = '\u{1F61D}';
+const expressionlessFace = '\u{1F611}';
+const faceScreamingInFear = '\u{1F631}';

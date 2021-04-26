@@ -7,6 +7,7 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/progress_vm.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
+import 'package:memo/domain/enums/memo_difficulty.dart';
 
 class ProgressPage extends HookWidget {
   @override
@@ -29,7 +30,7 @@ class ProgressPage extends HookWidget {
           child: _ProgressContainer(
             title: _buildAlternateStyleTextBox(
               context,
-              texts: [loadedState.completedMemosCount.toString()],
+              texts: [loadedState.totalExecutions.toString()],
             ),
             description: strings.progressTotalMemos.toUpperCase(),
           ),
@@ -37,61 +38,40 @@ class ProgressPage extends HookWidget {
       ],
     );
 
-    final hardMemosProgress = _ProgressContainer(
-      leading: _buildCircularProgress(
-        context,
-        progressValue: loadedState.hardMemosPercentage,
-        centerLabel: strings.faceScreamingInFear,
-        semanticLabel: strings.progressHardMemosIndicatorLabel,
-      ),
-      title: _buildAlternateStyleTextBox(
-        context,
-        texts: [loadedState.readableHardMemosPercentage, strings.percentSymbol],
-      ),
-      description: strings.progressTotalHardMemos.toUpperCase(),
-    );
-
-    final mediumMemosProgress = _ProgressContainer(
-      leading: _buildCircularProgress(
-        context,
-        progressValue: loadedState.mediumMemosPercentage,
-        centerLabel: strings.expressionlessFace,
-        semanticLabel: strings.progressMediumMemosIndicatorLabel,
-      ),
-      title: _buildAlternateStyleTextBox(
-        context,
-        texts: [loadedState.readableMediumMemosPercentage, strings.percentSymbol],
-      ),
-      description: strings.progressTotalMediumMemos.toUpperCase(),
-    );
-
-    final easyMemosProgress = _ProgressContainer(
-      leading: _buildCircularProgress(
-        context,
-        progressValue: loadedState.easyMemosPercentage,
-        centerLabel: strings.squintingFaceWithTongue,
-        semanticLabel: strings.progressEasyMemosIndicatorLabel,
-      ),
-      title: _buildAlternateStyleTextBox(
-        context,
-        texts: [loadedState.readableEasyMemosPercentage, strings.percentSymbol],
-      ),
-      description: strings.progressTotalEasyMemos.toUpperCase(),
-    );
-
     return SingleChildScrollView(
       child: Column(
         children: [
           // Wrapping in an `IntrinsicHeight`, otherwise the column will vertically expand to infinity
           IntrinsicHeight(child: firstRowParallelContainers),
-          context.verticalBox(Spacing.medium),
-          hardMemosProgress,
-          context.verticalBox(Spacing.medium),
-          mediumMemosProgress,
-          context.verticalBox(Spacing.medium),
-          easyMemosProgress,
+          for (final difficulty in loadedState.executionsPercentage.keys) ...[
+            context.verticalBox(Spacing.medium),
+            _buildDifficultyProgressContainer(
+              context,
+              difficulty,
+              amountPercentage: loadedState.executionsPercentage[difficulty]!,
+            ),
+          ]
         ],
       ).withSymmetricalPadding(context, vertical: Spacing.large, horizontal: Spacing.medium),
+    );
+  }
+
+  Widget _buildDifficultyProgressContainer(BuildContext context, MemoDifficulty difficulty,
+      {required double amountPercentage}) {
+    final readablePercentage = (amountPercentage * 100).round().toString();
+
+    return _ProgressContainer(
+      leading: _buildCircularProgress(
+        context,
+        progressValue: amountPercentage,
+        centerLabel: strings.progressDifficultyEmoji(difficulty),
+        semanticLabel: strings.progressIndicatorLabel(difficulty),
+      ),
+      title: _buildAlternateStyleTextBox(
+        context,
+        texts: [readablePercentage, strings.percentSymbol],
+      ),
+      description: strings.progressTotalCompletedMemos(difficulty),
     );
   }
 

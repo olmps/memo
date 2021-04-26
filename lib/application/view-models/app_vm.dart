@@ -1,9 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
+import 'package:memo/data/repositories/memo_execution_repository.dart';
+import 'package:memo/data/repositories/memo_repository.dart';
+import 'package:memo/data/repositories/user_repository.dart';
+import 'package:memo/domain/isolated_services/memory_stability_services.dart';
 import 'package:memo/domain/services/collection_services.dart';
-import 'package:memo/data/gateways/document_database_gateway.dart';
-import 'package:memo/data/gateways/sembast_database.dart' as sembast_db;
+import 'package:memo/data/gateways/sembast_database.dart';
+import 'package:memo/data/gateways/sembast.dart' as sembast;
+import 'package:memo/domain/services/execution_services.dart';
+import 'package:memo/domain/services/progress_services.dart';
 import 'package:sembast/sembast.dart';
 
 /// Manages all app asynchronous dependencies
@@ -28,7 +34,7 @@ class AppVMImpl extends AppVM {
   Future<void> _loadAppVM() async {
     const splashMinDuration = Duration(milliseconds: 500);
     final dependencies = await Future.wait<dynamic>([
-      sembast_db.openDatabase(),
+      sembast.openDatabase(),
       // Set a minimum (reasonable) duration for this first load, as it may simply flick a splash screen if too fast
       Future<dynamic>.delayed(splashMinDuration),
     ]);
@@ -44,15 +50,61 @@ class AppVMImpl extends AppVM {
     // All of these needs a late initialization due to runtime dependencies, which we will only know after some async
     // initialization.
 
-    final dbRepo = SembastGateway(dependencies[0] as Database);
-    final collectionRepo = CollectionRepositoryImpl(dbRepo);
-    final collectionServices = CollectionServicesImpl(collectionRepo);
+    // Gateways
+    final dbRepo = SembastDatabaseImpl(dependencies[0] as Database);
 
-    value = AsyncValue.data(AppState(collectionServices: collectionServices));
+    // Repositories
+    final collectionRepo = CollectionRepositoryImpl(dbRepo);
+    final memoRepo = MemoRepositoryImpl(dbRepo);
+    final memoExecutionRepo = MemoExecutionRepositoryImpl(dbRepo);
+    final userRepo = UserRepositoryImpl(dbRepo);
+
+    // Isolated Services
+    final memoryServices = MemoryStabilityServicesImpl();
+
+    // Services
+    final collectionServices = CollectionServicesImpl(
+      collectionRepo: collectionRepo,
+      memoRepo: memoRepo,
+      memoryServices: memoryServices,
+    );
+    final executionServices = ExecutionServicesImpl(
+      userRepo: userRepo,
+      memoRepo: memoRepo,
+      collectionRepo: collectionRepo,
+      executionsRepo: memoExecutionRepo,
+      memoryServices: memoryServices,
+    );
+    final progressServices = ProgressServicesImpl(userRepo: userRepo);
+
+    final appState = AppState(
+      collectionServices: collectionServices,
+      executionServices: executionServices,
+      progressServices: progressServices,
+    );
+    value = AsyncValue.data(appState);
   }
 }
 
 class AppState {
-  const AppState({required this.collectionServices});
+  const AppState({
+    required this.collectionServices,
+    required this.executionServices,
+    required this.progressServices,
+  });
+
   final CollectionServices collectionServices;
+  final ExecutionServices executionServices;
+  final ProgressServices progressServices;
 }
+
+// Creates uninitialized Provider for all services, which MUST BE overriden in the root `ProviderScope.overrides`
+final collectionServices = Provider<CollectionServices>((_) {
+  throw UnimplementedError('collectionServices Provider must be overridden');
+});
+final executionServices = Provider<ExecutionServices>((_) {
+  throw UnimplementedError('executionServices Provider must be overridden');
+});
+final progressServices = Provider<ProgressServices>((_) {
+  throw UnimplementedError('progressServices Provider must be overridden');
+});
