@@ -10,7 +10,7 @@ abstract class CollectionServices {
   Future<List<Stream<CollectionStatus>>> listenToAllCollectionsStatus();
 
   /// Retrieves all available [Collection]
-  Future<List<Collection>> getAllCollections();
+  Future<List<CollectionStatus>> getAllCollectionsStatus();
 
   /// Retrieves the [Collection] (with [collectionId]) current memory stability
   ///
@@ -32,22 +32,17 @@ class CollectionServicesImpl implements CollectionServices {
   Future<List<Stream<CollectionStatus>>> listenToAllCollectionsStatus() async {
     final collectionsStream = await collectionRepo.listenToAllCollections();
     return collectionsStream
-        .map(
-          // Asynchronously transform the stream due to the async calculations
-          (collectionStream) => collectionStream.asyncMap((collection) async {
-            double? memoryStability;
-            if (collection.isCompleted) {
-              memoryStability = await _getMemosAverageMemoryStability(collectionId: collection.id);
-            }
-
-            return CollectionStatus(collection, memoryStability);
-          }),
-        )
+        // Asynchronously transform the stream due to the async calculations
+        .map((collectionStream) => collectionStream.asyncMap(_mapCollectionToCollectionStatus))
         .toList();
   }
 
   @override
-  Future<List<Collection>> getAllCollections() => collectionRepo.getAllCollections();
+  Future<List<CollectionStatus>> getAllCollectionsStatus() async {
+    final collections = await collectionRepo.getAllCollections();
+    final collectionStatuses = collections.map(_mapCollectionToCollectionStatus).toList();
+    return Future.wait(collectionStatuses);
+  }
 
   @override
   Future<double> getCollectionMemoryStability({required String collectionId}) =>
@@ -65,5 +60,14 @@ class CollectionServicesImpl implements CollectionServices {
     });
 
     return averageStability / allCollectionMemos.length;
+  }
+
+  Future<CollectionStatus> _mapCollectionToCollectionStatus(Collection collection) async {
+    double? memoryStability;
+    if (collection.isCompleted) {
+      memoryStability = await _getMemosAverageMemoryStability(collectionId: collection.id);
+    }
+
+    return CollectionStatus(collection, memoryStability);
   }
 }
