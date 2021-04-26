@@ -38,11 +38,22 @@ class CollectionsListView extends HookWidget {
             title: item.name,
             onTap: () {},
           ).withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.small);
-        } else if (item is CollectionMetadata) {
+        } else if (item is CompletedCollectionMetadata) {
           return _CollectionCard(
             name: item.name,
             tags: item.tags,
-            memoryStability: item.memoryStability,
+            progressDescription: strings.collectionsMemoryStability,
+            progressValue: item.memoryStability,
+          ).withOnlyPadding(context, bottom: Spacing.medium);
+        } else if (item is IncompleteCollectionMetadata) {
+          return _CollectionCard(
+            name: item.name,
+            tags: item.tags,
+            progressDescription: strings.collectionsCompletionProgress(
+              current: item.executedUniqueMemos,
+              target: item.totalUniqueMemos,
+            ),
+            progressValue: item.completionPercentage,
           ).withOnlyPadding(context, bottom: Spacing.medium);
         }
 
@@ -75,8 +86,13 @@ class _CollectionsSectionHeader extends HookWidget {
 }
 
 class _CollectionCard extends HookWidget {
-  _CollectionCard({required this.name, required this.tags, required this.memoryStability, Key? key})
-      : assert(tags.isNotEmpty),
+  _CollectionCard({
+    required this.name,
+    required this.tags,
+    required this.progressDescription,
+    required this.progressValue,
+    Key? key,
+  })  : assert(tags.isNotEmpty),
         super(key: key);
 
   /// Name for this collection
@@ -85,8 +101,11 @@ class _CollectionCard extends HookWidget {
   /// Name for this collection
   final List<String> tags;
 
-  /// Raw value for this collection's memory stability - ranging from 0 to 1
-  final double? memoryStability;
+  /// Auxiliar description to describe this collection's progress
+  final String? progressDescription;
+
+  /// Raw value for this collection's generic progress value - ranging from 0 to 1
+  final double? progressValue;
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +144,7 @@ class _CollectionCard extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Flexible(child: firstRowElements),
-            if (memoryStability != null) ...[
+            if (progressDescription != null && progressValue != null) ...[
               context.verticalBox(Spacing.large),
               _buildMemoryStabilityTitle(context),
               context.verticalBox(Spacing.xSmall),
@@ -152,7 +171,7 @@ class _CollectionCard extends HookWidget {
     final captionColor = memoTheme.neutralSwatch.shade200;
     final captionStyle = Theme.of(context).textTheme.caption;
 
-    return Text(strings.collectionsMemoryStability, style: captionStyle?.copyWith(color: captionColor));
+    return Text(progressDescription!, style: captionStyle?.copyWith(color: captionColor));
   }
 
   Widget _buildMemoryStabilityProgress() {
@@ -160,7 +179,7 @@ class _CollectionCard extends HookWidget {
     final lineColor = memoTheme.secondarySwatch.shade400;
 
     return AnimatableLinearProgress(
-      value: memoryStability!,
+      value: progressValue!,
       animationCurve: dimens.defaultAnimationCurve,
       animationDuration: dimens.defaultAnimatableProgressDuration,
       lineSize: dimens.collectionsLinearProgressLineWidth,
