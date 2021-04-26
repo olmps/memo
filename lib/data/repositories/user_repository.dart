@@ -6,7 +6,7 @@ import 'package:memo/data/serializers/user_serializer.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/user.dart';
 
-/// Handles all domain-specific operations pertaining to a [User]
+/// Handles all read, write and serialization operations pertaining to a [User]
 abstract class UserRepository {
   /// Retrieves the current [User] and keeps listening to any changes made to it
   Future<Stream<User>> listenToUser();

@@ -2,7 +2,7 @@ import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:memo/data/serializers/memo_execution_serializer.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
-/// Handles all domain-specific operations pertaining to one or multiple [MemoExecution]
+/// Handles all read, write and serialization operations pertaining to one or multiple [MemoExecution]
 abstract class MemoExecutionRepository {
   /// Batch-create a list of [executions]
   Future<void> addExecutions(List<MemoExecution> executions);
