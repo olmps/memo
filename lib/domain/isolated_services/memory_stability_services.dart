@@ -19,12 +19,11 @@ abstract class MemoryStabilityServices {
 class MemoryStabilityServicesImpl implements MemoryStabilityServices {
   @override
   double? evaluateMemoryStability(Memo memo) {
-    final now = DateTime.now().toUtc();
-
     if (memo.isPristine) {
       return null;
     }
 
+    final now = DateTime.now().toUtc();
     final totalRepetitions = memo.totalExecutionsAmount;
     final millisSinceLastExecution = now.difference(memo.lastExecuted!).inMilliseconds;
 
@@ -40,7 +39,10 @@ class MemoryStabilityServicesImpl implements MemoryStabilityServices {
     required int totalRepetitions,
     required MemoDifficulty lastDifficulty,
   }) {
-    assert(millisSinceLastExecution > 0 && totalRepetitions > 0, '');
+    assert(
+      millisSinceLastExecution > 0 && totalRepetitions > 0,
+      'Expected `millisSinceLastExecution` and `totalRepetitions` to be positive integers',
+    );
 
     // Constant `k`
     const k = 5;
