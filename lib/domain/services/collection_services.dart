@@ -58,7 +58,7 @@ class CollectionServicesImpl implements CollectionServices {
 
     var averageStability = 0.0;
     allCollectionMemos.forEach((memo) {
-      final stability = memoryServices.evaluateMemoryStability(memo);
+      final stability = memoryServices.evaluateMemoryRecall(memo);
       if (stability != null) {
         averageStability += stability;
       }
