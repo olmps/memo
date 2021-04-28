@@ -47,7 +47,6 @@ class ExecutionServicesImpl implements ExecutionServices {
   @override
   Future<List<Memo>> getNextExecutableMemosChunk({required String collectionId}) async {
     final user = await userRepo.getUser();
-    // This is the size of our chunk
     final dailyGoal = user.dailyMemosGoal;
 
     final allCollectionMemos = await memoRepo.getAllMemos(collectionId: collectionId);
@@ -69,22 +68,16 @@ class ExecutionServicesImpl implements ExecutionServices {
     }
 
     final executedMemoPerStability =
-        executedMemos.asMap().map((key, value) => MapEntry(memoryServices.evaluateMemoryStability(value)!, value));
+        executedMemos.asMap().map((key, value) => MapEntry(memoryServices.evaluateMemoryRecall(value)!, value));
     final sortedStabilityKeys = executedMemoPerStability.keys.toList()
       ..sort((stabilityA, stabilityB) => stabilityA.compareTo(stabilityB));
 
-    final executableMemosChunk = <Memo>[];
-
-    // Keep adding the remaining pristine memos and then the sorted-by-memory-stability memos until the chunk has met
-    // its required size, or if there ar no more memos to be added
-    while (dailyGoal > executableMemosChunk.length || (pristineMemos.isEmpty && executedMemoPerStability.isEmpty)) {
-      if (pristineMemos.isNotEmpty) {
-        executableMemosChunk.add(pristineMemos.first);
-        pristineMemos.removeAt(0);
-      } else {
-        executableMemosChunk.add(executedMemoPerStability[sortedStabilityKeys]!);
-        executedMemoPerStability.remove(sortedStabilityKeys);
-      }
+    // Otherwise we start with all the existing pristine memos and keep adding the remaining sorted-by-recall memos
+    // until the chunk has met its required size (or if there are no more memos to be added)
+    final executableMemosChunk = pristineMemos;
+    while (dailyGoal > executableMemosChunk.length || executedMemoPerStability.isEmpty) {
+      executableMemosChunk.add(executedMemoPerStability[sortedStabilityKeys]!);
+      executedMemoPerStability.remove(sortedStabilityKeys);
     }
 
     return executableMemosChunk;
