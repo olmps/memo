@@ -27,13 +27,13 @@ abstract class CollectionsVM extends StateNotifier<CollectionsState> {
 
 class CollectionsVMImpl extends CollectionsVM {
   CollectionsVMImpl(this._services) : super(LoadingCollectionsState(availableSegments.first)) {
-    _loadInitialCollections();
+    _addCollectionsListeners();
   }
 
   final CollectionServices _services;
-  List<StreamSubscription<CollectionStatus>>? _statusListeners;
 
-  final _cachedCollectionMetadata = <CollectionMetadata>[];
+  StreamSubscription<List<CollectionStatus>>? _statusListener;
+  List<CollectionItem> _cachedCollectionItems = [];
 
   @override
   Future<void> updateCollectionsSegment(CollectionsSegment segment) async {
@@ -42,57 +42,29 @@ class CollectionsVMImpl extends CollectionsVM {
       return;
     }
 
-    // Filters all the `CollectionMetadata` given the `segment`
-    final filteredMetadata = _cachedCollectionMetadata.where((metadata) {
-      switch (segment) {
-        case CollectionsSegment.explore:
-          return metadata is CompletedCollectionMetadata;
-        case CollectionsSegment.review:
-          return metadata is IncompleteCollectionMetadata;
-      }
-    }).toList();
-
-    final items = _mapMetadataToItems(filteredMetadata);
-    state = LoadedCollectionsState(items, currentSegment: segment);
-  }
-
-  Future<void> _loadInitialCollections() async {
-    final collections = await _services.getAllCollectionsStatus();
-    _cachedCollectionMetadata.addAll(collections.map(_mapStatusToMetadata));
-    return _addCollectionsListeners();
+    _updateToLoadedStateWithCachedMetadata(segment: segment);
   }
 
   Future<void> _addCollectionsListeners() async {
-    final statusStreams = await _services.listenToAllCollectionsStatus();
-    // Listens to each individual stream, as we don't want to update all the objects once a single one changes
-    _statusListeners = statusStreams.map((statusStream) {
-      var isFirstUpdate = true;
-      return statusStream.listen((status) {
-        final cachedIndex = _cachedCollectionMetadata.indexWhere((metadata) => status.collection.id == metadata.id);
-        // TODO(matuella): TEST IF THIS IS NEEDED
-        if (!isFirstUpdate) {
-          _cachedCollectionMetadata[cachedIndex] = _mapStatusToMetadata(status);
-          // Force an update
-          updateCollectionsSegment(state.currentSegment);
-        } else {
-          isFirstUpdate = false;
-        }
-      });
-    }).toList();
+    final statusesStream = await _services.listenToAllCollectionsStatus();
+    _statusListener = statusesStream.listen((statuses) {
+      _cachedCollectionItems = statuses.map(_mapStatusToMetadata).toList();
+      _updateToLoadedStateWithCachedMetadata();
+    });
   }
 
-  CollectionMetadata _mapStatusToMetadata(CollectionStatus status) {
+  CollectionItem _mapStatusToMetadata(CollectionStatus status) {
     final collection = status.collection;
-    if (status.memoryStability != null) {
-      return CompletedCollectionMetadata(
-        memoryStability: status.memoryStability!,
+    if (status.memoryRecall != null) {
+      return CompletedCollectionItem(
+        recallLevel: status.memoryRecall!,
         id: collection.id,
         name: collection.name,
         category: collection.category,
         tags: collection.tags,
       );
     } else {
-      return IncompleteCollectionMetadata(
+      return IncompleteCollectionItem(
         executedUniqueMemos: collection.uniqueMemoExecutionsAmount,
         totalUniqueMemos: collection.uniqueMemosAmount,
         id: collection.id,
@@ -103,14 +75,34 @@ class CollectionsVMImpl extends CollectionsVM {
     }
   }
 
+  /// Updates the [state] with [_cachedCollectionItems] filtered to a `CollectionsSegment`
+  ///
+  /// If [segment] is `null`, the current [state]'s segment is used ([CollectionsState.currentSegment]).
+  void _updateToLoadedStateWithCachedMetadata({CollectionsSegment? segment}) {
+    final normalizedSegment = segment ?? state.currentSegment;
+
+    // Filters all the `CollectionItem` given the `segment`
+    final filteredMetadata = _cachedCollectionItems.where((metadata) {
+      switch (normalizedSegment) {
+        case CollectionsSegment.explore:
+          return metadata is IncompleteCollectionItem;
+        case CollectionsSegment.review:
+          return metadata is CompletedCollectionItem;
+      }
+    }).toList();
+
+    final items = _mapMetadataToItems(filteredMetadata);
+    state = LoadedCollectionsState(items, currentSegment: normalizedSegment);
+  }
+
   /// Maps all [metadata] to its sorted [ItemMetadata] list
   ///
   /// To sort its contents, a `Map` is created to segment (meaning the key) its [metadata] in the same respective
   /// categories, and then flatten this `Map` entries into a single list, containing both keys and values, in a sorted
   /// fashion.
-  List<ItemMetadata> _mapMetadataToItems(List<CollectionMetadata> metadata) {
+  List<ItemMetadata> _mapMetadataToItems(List<CollectionItem> metadata) {
     // It's a `LinkedHashMap` instance, so order is preserved.
-    final metadataPerCategory = <String, List<CollectionMetadata>>{};
+    final metadataPerCategory = <String, List<CollectionItem>>{};
     metadata.forEach((metadata) {
       final category = metadata.category;
 
@@ -136,7 +128,7 @@ class CollectionsVMImpl extends CollectionsVM {
 
   @override
   void dispose() {
-    _statusListeners?.forEach((listener) => listener.cancel());
+    _statusListener?.cancel();
     super.dispose();
   }
 }
@@ -180,13 +172,8 @@ class CollectionsCategoryMetadata extends ItemMetadata {
   List<Object?> get props => [name];
 }
 
-abstract class CollectionMetadata extends ItemMetadata {
-  CollectionMetadata({
-    required this.id,
-    required this.name,
-    required this.category,
-    required this.tags,
-  });
+abstract class CollectionItem extends ItemMetadata {
+  CollectionItem({required this.id, required this.name, required this.category, required this.tags});
 
   final String id;
   final String name;
@@ -198,23 +185,25 @@ abstract class CollectionMetadata extends ItemMetadata {
 }
 
 /// Represents a Collection that have been fully executed - meaning, no pristine memos are left
-class CompletedCollectionMetadata extends CollectionMetadata {
-  CompletedCollectionMetadata({
-    required this.memoryStability,
+class CompletedCollectionItem extends CollectionItem {
+  CompletedCollectionItem({
+    required this.recallLevel,
     required String id,
     required String name,
     required String category,
     required List<String> tags,
   }) : super(id: id, name: name, category: category, tags: tags);
-  final double memoryStability;
+  final double recallLevel;
+
+  String get readableRecall => (recallLevel * 100).round().toString();
 
   @override
-  List<Object?> get props => [...super.props, memoryStability];
+  List<Object?> get props => [...super.props, recallLevel];
 }
 
 /// Represents a Collection that hasn't been fully executed - meaning, there are still pristine memos left
-class IncompleteCollectionMetadata extends CollectionMetadata {
-  IncompleteCollectionMetadata({
+class IncompleteCollectionItem extends CollectionItem {
+  IncompleteCollectionItem({
     required this.executedUniqueMemos,
     required this.totalUniqueMemos,
     required String id,
@@ -226,6 +215,10 @@ class IncompleteCollectionMetadata extends CollectionMetadata {
   final int executedUniqueMemos;
   final int totalUniqueMemos;
   double get completionPercentage => executedUniqueMemos / totalUniqueMemos;
+
+  bool get isPristine => executedUniqueMemos == 0;
+
+  String get readableCompletion => (completionPercentage * 100).round().toString();
 
   @override
   List<Object?> get props => [...super.props, executedUniqueMemos, totalUniqueMemos];
