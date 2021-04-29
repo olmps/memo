@@ -30,6 +30,9 @@ abstract class SembastDatabase {
   /// Deletes the value with [id] from the [store]
   Future<void> remove({required String id, required String store});
 
+  /// Deletes all objects with the following [ids] from the [store]
+  Future<void> removeAll({required List<String> ids, required String store});
+
   /// Retrieves an object with [id] from the [store]
   ///
   /// Returns `null` if the key doesn't exist
@@ -38,11 +41,14 @@ abstract class SembastDatabase {
   /// Retrieves all objects within [store]
   Future<List<Map<String, dynamic>>> getAll({required String store, Finder? finder});
 
+  /// Retrieves all objects with the following [ids] from the [store]
+  Future<List<Map<String, dynamic>?>> getAllByIds({required List<String> ids, required String store});
+
   /// Retrieves a stream of all the [store] objects, triggered whenever any update occurs to this [store]
   Future<Stream<List<Map<String, dynamic>>>> listenAll({required String store});
 
   /// Retrieves a stream of a single [store] object, triggered whenever any update occurs to this object's [id]
-  Future<Stream<Map<String, dynamic>>> listenTo({required String id, required String store});
+  Future<Stream<Map<String, dynamic>?>> listenTo({required String id, required String store});
 }
 
 class SembastDatabaseImpl implements SembastDatabase {
@@ -82,7 +88,13 @@ class SembastDatabaseImpl implements SembastDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?> get({required String id, required String store}) async {
+  Future<void> removeAll({required List<String> ids, required String store}) async {
+    final storeMap = stringMapStoreFactory.store(store);
+    await storeMap.records(ids).delete(_db);
+  }
+
+  @override
+  Future<Map<String, dynamic>?> get({required String id, required String store}) {
     final storeMap = stringMapStoreFactory.store(store);
     return storeMap.record(id).get(_db);
   }
@@ -96,13 +108,20 @@ class SembastDatabaseImpl implements SembastDatabase {
   }
 
   @override
+  Future<List<Map<String, dynamic>?>> getAllByIds({required List<String> ids, required String store}) {
+    final storeMap = stringMapStoreFactory.store(store);
+
+    return storeMap.records(ids).get(_db);
+  }
+
+  @override
   Future<Stream<List<Map<String, dynamic>>>> listenAll({required String store}) async {
     final storeMap = stringMapStoreFactory.store(store);
     return storeMap.query().onSnapshots(_db).transform(snapshotsTransformer);
   }
 
   @override
-  Future<Stream<Map<String, dynamic>>> listenTo({required String id, required String store}) async {
+  Future<Stream<Map<String, dynamic>?>> listenTo({required String id, required String store}) async {
     final storeMap = stringMapStoreFactory.store(store);
     return storeMap.record(id).onSnapshot(_db).transform(snapshotTransformer);
   }
@@ -118,9 +137,9 @@ class SembastDatabaseImpl implements SembastDatabase {
 
   /// Transforms a single `sembast` snapshot record into an object
   final snapshotTransformer =
-      StreamTransformer<RecordSnapshot<String, Map<String, Object?>>, Map<String, Object?>>.fromHandlers(
+      StreamTransformer<RecordSnapshot<String, Map<String, Object?>>?, Map<String, Object?>?>.fromHandlers(
     handleData: (snapshot, sink) {
-      sink.add(snapshot.value);
+      sink.add(snapshot?.value);
     },
   );
 }
