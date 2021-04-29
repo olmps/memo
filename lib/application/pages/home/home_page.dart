@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
@@ -51,7 +50,7 @@ class _AppBar extends HookWidget implements PreferredSizeWidget {
         AssetIconButton(
           images.settingsAsset,
           onPressed: () {
-            context.read(coordinatorProvider).navigateToSettings();
+            readCoordinator(context).navigateToSettings();
           },
         ),
       ],
@@ -76,10 +75,10 @@ class _BottomAppBar extends StatelessWidget {
       onTap: (index) {
         switch (HomeBottomTab.values[index]) {
           case HomeBottomTab.collections:
-            context.read(coordinatorProvider).navigateToStudy();
+            readCoordinator(context).navigateToStudy();
             break;
           case HomeBottomTab.progress:
-            context.read(coordinatorProvider).navigateToProgress();
+            readCoordinator(context).navigateToProgress();
             break;
         }
       },

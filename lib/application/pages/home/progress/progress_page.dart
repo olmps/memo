@@ -6,7 +6,7 @@ import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/progress_vm.dart';
-import 'package:memo/application/widgets/animatable_progress.dart';
+import 'package:memo/application/widgets/theme/circular_labeled_progress.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
 class ProgressPage extends HookWidget {
@@ -56,28 +56,30 @@ class ProgressPage extends HookWidget {
     );
   }
 
-  Widget _buildDifficultyProgressContainer(BuildContext context, MemoDifficulty difficulty,
-      {required double amountPercentage}) {
+  Widget _buildDifficultyProgressContainer(
+    BuildContext context,
+    MemoDifficulty difficulty, {
+    required double amountPercentage,
+  }) {
     final readablePercentage = (amountPercentage * 100).round().toString();
 
     return _ProgressContainer(
-      leading: _buildCircularProgress(
-        context,
+      leading: CircularLabeledProgress(
         progressValue: amountPercentage,
-        centerLabel: strings.progressDifficultyEmoji(difficulty),
-        semanticLabel: strings.progressIndicatorLabel(difficulty),
+        centerLabel: strings.memoDifficultyEmoji(difficulty),
+        semanticLabel: strings.circularIndicatorMemoAnswersLabel(difficulty),
       ),
       title: _buildAlternateStyleTextBox(
         context,
         texts: [readablePercentage, strings.percentSymbol],
       ),
-      description: strings.progressTotalCompletedMemos(difficulty),
+      description: strings.answeredMemos(difficulty).toUpperCase(),
     );
   }
 
   Widget _buildTotalTimeContainer(BuildContext context, {required TimeProgress timeProgress}) {
     final textComponents = <String>[];
-    if (timeProgress.hours != null || timeProgress.isEmpty) {
+    if (timeProgress.hours != null || timeProgress.hasOnlySeconds) {
       final rawHours = timeProgress.hours ?? 0;
       textComponents.addAll([rawHours.toString(), strings.hoursSymbol]);
     }
@@ -115,38 +117,6 @@ class ProgressPage extends HookWidget {
 
     // Use a `FittedBox` to resize its text width if not enough horizontal space is available
     return FittedBox(child: Text.rich(TextSpan(children: spans), maxLines: 1));
-  }
-
-  Widget _buildCircularProgress(
-    BuildContext context, {
-    required double progressValue,
-    required String centerLabel,
-    required String semanticLabel,
-  }) {
-    final memoTheme = useTheme();
-    final centerLabelTheme = Theme.of(context).textTheme.headline4;
-
-    return SizedBox(
-      width: dimens.progressCircularProgressSize,
-      height: dimens.progressCircularProgressSize,
-      child: Stack(
-        children: [
-          AnimatableCircularProgress(
-            value: progressValue,
-            animationCurve: dimens.defaultAnimationCurve,
-            animationDuration: dimens.defaultAnimatableProgressDuration,
-            lineSize: dimens.progressCircularProgressLineWidth,
-            lineColor: memoTheme.secondarySwatch.shade400,
-            lineBackgroundColor: memoTheme.neutralSwatch.shade800,
-            minSize: dimens.progressCircularProgressSize,
-            semanticLabel: semanticLabel,
-          ),
-          Positioned.fill(
-            child: Align(child: Text(centerLabel, style: centerLabelTheme)),
-          ),
-        ],
-      ),
-    );
   }
 }
 
