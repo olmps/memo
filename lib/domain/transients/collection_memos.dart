@@ -20,14 +20,19 @@ class CollectionMemos extends CollectionMetadata {
 
   @override
   final String id;
+
   @override
   final String name;
+
   @override
   final String description;
+
   @override
   final String category;
+
   @override
   final List<String> tags;
+
   @override
   int get uniqueMemosAmount => memosMetadata.length;
 
