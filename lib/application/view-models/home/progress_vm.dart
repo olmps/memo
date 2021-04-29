@@ -30,7 +30,7 @@ class ProgressVMImpl extends ProgressVM {
       state = LoadedProgressState(
         timeSpentInMillis: progress.timeSpentInMillis,
         executionsPercentage: progress.executionsAmounts.map(
-          (key, value) => MapEntry(key, value / progress.totalExecutionsAmount),
+          (key, value) => MapEntry(key, progress.hasExecutions ? value / progress.totalExecutionsAmount : 0),
         ),
         totalExecutions: progress.totalExecutionsAmount,
       );
@@ -125,6 +125,9 @@ class TimeProgress {
   final int? hours;
   final int? minutes;
   final int? seconds;
+
+  /// `true` only when the [seconds] component is present
+  bool get hasOnlySeconds => hours == null && minutes == null;
 
   /// `true` if all time components are `null`
   bool get isEmpty => hours == null && minutes == null && seconds == null;
