@@ -49,7 +49,7 @@ ThemeData buildThemeData({
     style: TextButton.styleFrom(primary: secondarySwatch.shade400),
   );
 
-  final iconTheme = IconThemeData(color: neutralSwatch, size: iconSize);
+  final iconTheme = IconThemeData(color: iconColor, size: iconSize);
 
   final appBarTheme = AppBarTheme(
     elevation: 0,
