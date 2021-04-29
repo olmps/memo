@@ -53,6 +53,33 @@ class ProgressPath extends HomePath {
 }
 
 //
+// Collection Details
+//
+class CollectionDetailsPath extends AppPath {
+  CollectionDetailsPath(this.collectionId);
+  static const name = 'collection_details';
+
+  final String collectionId;
+
+  @override
+  String get formattedPath => '/$name/$collectionId';
+}
+
+//
+// Collection Execution
+//
+class CollectionExecutionPath extends AppPath {
+  CollectionExecutionPath(this.collectionId, {this.isNestedNavigation = true});
+  static const name = 'collection_execution';
+
+  final String collectionId;
+  final bool isNestedNavigation;
+
+  @override
+  String get formattedPath => '/$name/$collectionId';
+}
+
+//
 // Settings
 //
 class SettingsPath extends AppPath {

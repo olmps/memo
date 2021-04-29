@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/coordinator/routes.dart';
+import 'package:memo/application/pages/collection_details/collection_details_page.dart';
+import 'package:memo/application/pages/execution/collection_execution_page.dart';
+import 'package:memo/application/pages/execution/execution_providers.dart';
 import 'package:memo/application/pages/home/home_page.dart';
 import 'package:memo/application/pages/settings/settings_page.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
@@ -8,6 +11,8 @@ import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 final coordinatorProvider = Provider<RoutesCoordinator>(
   (_) => RoutesCoordinator(navigatorKey: GlobalKey<NavigatorState>()),
 );
+
+RoutesCoordinator readCoordinator(BuildContext context) => context.read(coordinatorProvider);
 
 /// Coordinates the logic of the visible [Page]s stack based on locations (or URIs)
 ///
@@ -78,6 +83,27 @@ class RoutesCoordinator extends ChangeNotifier {
       }
     }
 
+    if (path is CollectionDetailsPath) {
+      _addPage(
+        ProviderScope(
+          overrides: [detailsCollectionId.overrideWithValue(path.collectionId)],
+          child: CollectionDetailsPage(),
+        ),
+        name: path.formattedPath,
+      );
+    }
+
+    if (path is CollectionExecutionPath) {
+      _addPage(
+        ProviderScope(
+          overrides: [executionCollectionId.overrideWithValue(path.collectionId)],
+          child: CollectionExecutionPage(),
+        ),
+        name: path.formattedPath,
+        isFullscreen: !path.isNestedNavigation,
+      );
+    }
+
     if (path is SettingsPath) {
       _addPage(SettingsPage(), name: path.formattedPath);
     }
@@ -130,5 +156,13 @@ class RoutesCoordinator extends ChangeNotifier {
 
   void navigateToSettings() {
     setNewRoutePath(SettingsPath());
+  }
+
+  void navigateToCollectionDetails(String collectionId) {
+    setNewRoutePath(CollectionDetailsPath(collectionId));
+  }
+
+  void navigateToCollectionExecution(String collectionId, {bool isNestedNavigation = true}) {
+    setNewRoutePath(CollectionExecutionPath(collectionId, isNestedNavigation: isNestedNavigation));
   }
 }
