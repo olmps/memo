@@ -22,8 +22,7 @@ abstract class CollectionExecutionVM extends StateNotifier<CollectionExecutionSt
 
   /// Marks the current [Memo] with the [difficulty]
   ///
-  /// This action of marking will always trigger a new [LoadedCollectionExecutionState] update with the selected
-  /// [difficulty]
+  /// Always trigger a new [LoadedCollectionExecutionState] update with the selected [difficulty]
   ///
   /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState]
   void markCurrentMemoDifficulty(MemoDifficulty difficulty);
@@ -31,10 +30,11 @@ abstract class CollectionExecutionVM extends StateNotifier<CollectionExecutionSt
   /// Go forward with the next suitable contents
   ///
   /// There are two scenarios where we should allow an execution to go forward:
-  ///   1. there is a question being displayed and it should provide the question to the current memo; or when
-  ///   2. there is an answer *with a marked answer* and it should proceed to next question (or change its state to a
-  /// [FinishedCollectionExecutionState] if there are no more memos left). In this case, if `nextContents` is requested
-  /// displaying an answer with no marked answer, it won't do anything.
+  ///   1. there is a question being displayed and it should provide the answer for this question; or when
+  ///   2. there is an answer contents being displayed, **with the according marked difficulty**, and it should proceed
+  /// to next question (or change its state to a [FinishedCollectionExecutionState] if there are no more memos left). In
+  /// this same case, if `nextContents` is requested while displaying an answer with no marked answer, it won't do
+  /// anything.
   ///
   /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState]
   Future<void> nextContents();
