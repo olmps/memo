@@ -11,7 +11,7 @@ import '../../utils/fakes.dart' as fakes;
 void main() {
   final serializer = MemoSerializer();
   final testMemo = Memo(
-    id: '1',
+    uniqueId: '1',
     collectionId: '1',
     rawQuestion: fakes.question,
     rawAnswer: fakes.answer,
@@ -29,7 +29,7 @@ void main() {
 
   test('MemoSerializer should fail to decode without required properties', () {
     expect(() {
-      final rawMemo = fixtures.memo()..remove(MemoKeys.id);
+      final rawMemo = fixtures.memo()..remove(MemoKeys.uniqueId);
       serializer.from(rawMemo);
     }, throwsA(isA<TypeError>()));
 
@@ -58,7 +58,7 @@ void main() {
     final decodedMemo = serializer.from(rawMemo);
 
     final testExecution = MemoExecution(
-      memoId: '1',
+      uniqueId: '1',
       collectionId: '1',
       started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
       finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
@@ -68,7 +68,7 @@ void main() {
     );
 
     final allPropsMemo = Memo(
-      id: testMemo.id,
+      uniqueId: testMemo.uniqueId,
       collectionId: testMemo.collectionId,
       rawQuestion: testMemo.rawQuestion,
       rawAnswer: testMemo.rawAnswer,
