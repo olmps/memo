@@ -13,4 +13,7 @@ class User extends MemoExecutionsMetadata {
 
   /// Amount of `Memo`s expected to be executed per chunk (given any `Collection`)
   final int memosExecutionChunkGoal;
+
+  @override
+  List<Object?> get props => [memosExecutionChunkGoal, ...super.props];
 }

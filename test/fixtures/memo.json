@@ -1,8 +1,12 @@
 {
-  "id": "1",
+  "uniqueId": "1",
   "collectionId": "1",
   "question": [{"question": "?"}],
   "answer": [{"answer": "!"}],
-  "executionsAmounts": {},
+  "executionsAmounts": {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0
+  },
   "timeSpentInMillis": 0
 }

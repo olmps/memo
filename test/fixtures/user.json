@@ -1,5 +1,9 @@
 {
   "memosExecutionChunkGoal": 10,
-  "executionsAmounts": {},
+  "executionsAmounts": {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0
+  },
   "timeSpentInMillis": 0
 }

@@ -57,7 +57,11 @@ void main() {
   test('CollectionSerializer should decode with optional properties', () {
     final rawCollection = fixtures.collection()
       ..[CollectionKeys.uniqueMemoExecutionsAmount] = 1
-      ..[CollectionKeys.executionsAmounts] = {MemoDifficulty.easy.raw: 1}
+      ..[CollectionKeys.executionsAmounts] = {
+        MemoDifficulty.easy.raw: 1,
+        MemoDifficulty.medium.raw: 0,
+        MemoDifficulty.hard.raw: 0
+      }
       ..[CollectionKeys.timeSpentInMillis] = 5000;
 
     final decodedCollection = serializer.from(rawCollection);

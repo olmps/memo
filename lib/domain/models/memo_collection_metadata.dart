@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// Fundamental fields that defines a `Memo` when relating to a `Collection`
-class MemoCollectionMetadata {
+class MemoCollectionMetadata with EquatableMixin {
   MemoCollectionMetadata({required this.uniqueId, required this.rawQuestion, required this.rawAnswer})
       : assert(rawQuestion.isNotEmpty),
         assert(rawQuestion.first.isNotEmpty),
@@ -22,4 +24,7 @@ class MemoCollectionMetadata {
   /// an "element", will have a completely different structure from each other. In this scenario, a [List] of [Map]
   /// (which is usually a JSON) is a reasonable fit for this  customized structure.
   final List<Map<String, dynamic>> rawAnswer;
+
+  @override
+  List<Object?> get props => [uniqueId, rawQuestion, rawAnswer];
 }

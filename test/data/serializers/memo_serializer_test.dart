@@ -51,7 +51,11 @@ void main() {
 
   test('MemoSerializer should decode with optional properties', () {
     final rawMemo = fixtures.memo()
-      ..[MemoKeys.executionsAmounts] = {MemoDifficulty.easy.raw: 1}
+      ..[MemoKeys.executionsAmounts] = {
+        MemoDifficulty.easy.raw: 1,
+        MemoDifficulty.medium.raw: 0,
+        MemoDifficulty.hard.raw: 0
+      }
       ..[MemoKeys.timeSpentInMillis] = 5000
       ..[MemoKeys.lastExecution] = fixtures.memoExecution(); // Use the existing `MemoExecution` fixture
 

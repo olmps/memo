@@ -6,6 +6,10 @@
   "tags": ["Tag 1", "Tag 2"],
   "uniqueMemosAmount": 1,
   "uniqueMemoExecutionsAmount": 0,
-  "executionsAmounts": {},
+  "executionsAmounts": {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0
+  },
   "timeSpentInMillis": 0
 }

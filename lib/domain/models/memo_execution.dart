@@ -5,31 +5,23 @@ import 'package:meta/meta.dart';
 
 /// Representation of the exact history (immutable) of a `Memo` execution
 @immutable
-class MemoExecution extends Equatable implements MemoCollectionMetadata {
+class MemoExecution extends MemoCollectionMetadata {
   MemoExecution({
     required this.collectionId,
     required this.started,
     required this.finished,
-    required this.uniqueId,
-    required this.rawQuestion,
-    required this.rawAnswer,
+    required String uniqueId,
+    required List<Map<String, dynamic>> rawQuestion,
+    required List<Map<String, dynamic>> rawAnswer,
     required this.markedDifficulty,
-  }) : assert(started.isBefore(finished));
+  })   : assert(started.isBefore(finished)),
+        super(uniqueId: uniqueId, rawQuestion: rawQuestion, rawAnswer: rawAnswer);
 
   final String collectionId;
 
   final DateTime started;
   final DateTime finished;
   int get timeSpentInMillis => finished.difference(started).inMilliseconds;
-
-  @override
-  final String uniqueId;
-
-  @override
-  final List<Map<String, dynamic>> rawQuestion;
-
-  @override
-  final List<Map<String, dynamic>> rawAnswer;
 
   final MemoDifficulty markedDifficulty;
 
@@ -38,10 +30,10 @@ class MemoExecution extends Equatable implements MemoCollectionMetadata {
         collectionId,
         started,
         finished,
+        markedDifficulty,
         uniqueId,
         rawQuestion,
         rawAnswer,
-        markedDifficulty,
       ];
 }
 
@@ -69,5 +61,5 @@ abstract class MemoExecutionsMetadata extends Equatable {
   bool get hasExecutions => totalExecutionsAmount > 0;
 
   @override
-  List<Object?> get props => [timeSpentInMillis, _executionsAmounts];
+  List<Object?> get props => [timeSpentInMillis, executionsAmounts];
 }

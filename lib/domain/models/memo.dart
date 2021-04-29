@@ -10,6 +10,7 @@ import 'package:meta/meta.dart';
 /// infinite amount of times, its purpose is to store the most recent version of its question/answer with useful
 /// execution's metadata, like [lastExecution] and by extending [MemoExecutionsMetadata].
 @immutable
+// ignore: avoid_implementing_value_types
 class Memo extends MemoExecutionsMetadata with EquatableMixin implements MemoCollectionMetadata {
   Memo({
     required this.collectionId,
@@ -45,7 +46,7 @@ class Memo extends MemoExecutionsMetadata with EquatableMixin implements MemoCol
   bool get isPristine => lastExecution == null;
 
   @override
-  List<Object?> get props => [collectionId, uniqueId, rawQuestion, rawAnswer, lastExecution, ...super.props];
+  List<Object?> get props => [collectionId, lastExecution, uniqueId, rawQuestion, rawAnswer, ...super.props];
 
   Memo copyWith({
     List<Map<String, dynamic>>? rawQuestion,
