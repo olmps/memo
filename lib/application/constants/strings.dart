@@ -16,18 +16,51 @@ const collectionsExploreTab = 'Explorar';
 const collectionsReviewTab = 'Revisar';
 
 const collectionsSectionHeaderSeeAll = 'Ver todos';
-const collectionsMemoryStability = 'Estabilidade da Memória';
-String collectionsCompletionProgress({required int current, required int target}) =>
-    '$current / $target memos completados';
 
-const progressTotalStudyTime = 'Horas totais de estudos';
+//
+// Progress
+//
+const progressTotalStudyTime = 'Totais de estudos';
 const progressTotalMemos = 'Memos completados';
 
-String progressTotalCompletedMemos(MemoDifficulty difficulty) => 'Memos marcados como ${_rawDifficulty(difficulty)}';
-String progressIndicatorLabel(MemoDifficulty difficulty) =>
-    'Indicador circular demonstrando o percentual de memos respondidos como ${_rawDifficulty(difficulty)}';
+//
+// Execution
+//
+const executionQuestion = 'Questão';
+const executionAnswer = 'Resposta';
 
-String progressDifficultyEmoji(MemoDifficulty difficulty) {
+const executionNext = 'Próxima';
+const executionCheckAnswer = 'Ver resposta';
+
+const executionYourPerformance = 'Seu desempenho';
+const executionBackToCollections = 'Voltar para as coleções';
+
+const executionWellDone = '## Muito Bem';
+const executionImprovedKnowledgeDescription = 'Você acaba de aprimorar seu conhecimento em:';
+
+String executionLinearIndicatorCompletionLabel(String completionDescription) =>
+    'Indicador linear demonstrando que o nível de conclusão desta sessão aprendizado está em $completionDescription';
+
+//
+// Application-wide strings
+//
+String recallLevel = 'Nível de Fixação';
+
+String answeredMemos(MemoDifficulty difficulty) => 'Memos marcados como ${memoDifficulty(difficulty).toLowerCase()}';
+
+String collectionCompletionProgress({required int current, required int target}) =>
+    '$current / $target memos completados';
+
+String circularIndicatorMemoAnswersLabel(MemoDifficulty difficulty) =>
+    'Indicador circular demonstrando o percentual de memos respondidos como ${memoDifficulty(difficulty).toLowerCase()}';
+
+String linearIndicatorCollectionRecallLabel(String recallDescription) =>
+    'Indicador linear demonstrando que o nível de fixação da coleção está em $recallDescription';
+
+String linearIndicatorCollectionCompletionLabel(String completionDescription) =>
+    'Indicador linear demonstrando que o nível de conclusão da coleção está em $completionDescription';
+
+String memoDifficultyEmoji(MemoDifficulty difficulty) {
   switch (difficulty) {
     case MemoDifficulty.easy:
       return squintingFaceWithTongue;
@@ -38,14 +71,14 @@ String progressDifficultyEmoji(MemoDifficulty difficulty) {
   }
 }
 
-String _rawDifficulty(MemoDifficulty difficulty) {
+String memoDifficulty(MemoDifficulty difficulty) {
   switch (difficulty) {
     case MemoDifficulty.easy:
-      return 'fácil';
+      return 'Fácil';
     case MemoDifficulty.medium:
-      return 'médio';
+      return 'Médio';
     case MemoDifficulty.hard:
-      return 'difícil';
+      return 'Difícil';
   }
 }
 
@@ -57,8 +90,10 @@ const hoursSymbol = 'h';
 const minutesSymbol = 'm';
 
 //
-// Unicode Emojis
+// Unicode Emojis - Reference: https://unicode.org/emoji/charts/full-emoji-list.html
 //
 const squintingFaceWithTongue = '\u{1F61D}';
 const expressionlessFace = '\u{1F611}';
 const faceScreamingInFear = '\u{1F631}';
+
+const partyPopper = '\u{1F389}';
