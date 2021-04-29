@@ -1,8 +1,8 @@
 import 'package:memo/domain/models/collection.dart';
 
 class CollectionStatus {
-  CollectionStatus(this.collection, this.memoryStability);
+  CollectionStatus(this.collection, this.memoryRecall);
 
   final Collection collection;
-  final double? memoryStability;
+  final double? memoryRecall;
 }

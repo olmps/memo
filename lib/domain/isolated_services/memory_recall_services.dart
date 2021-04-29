@@ -3,20 +3,20 @@ import 'dart:math';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/memo.dart';
 
-/// Handles all domain-specific operations pertaining to the concept of Memory Stability
-abstract class MemoryStabilityServices {
-  /// Given a [memo] and the current time of this call, estimates a memory stability for this memo
+/// Handles all domain-specific operations pertaining to the concept of Memory Recall
+abstract class MemoryRecallServices {
+  /// Given a [memo] and the current time of this call, estimates a memory recall for this memo
   ///
   /// The returned `double` ranges from `0` to `1`, but because it's an exponential operation, it should never reach
-  /// those integers values, just approximate them if the memory stability is really low (meaning close to `0`) or if
+  /// those integers values, just approximate them if the memory recall is really low (meaning close to `0`) or if
   /// it's really recent/high (close to `1`).
   ///
-  /// This may return `null` if [Memo.isPristine] is `true`, meaning that it has no execution to execute the stability
+  /// This may return `null` if [Memo.isPristine] is `true`, meaning that it has no execution to execute the recall
   /// calculation.
   double? evaluateMemoryRecall(Memo memo);
 }
 
-class MemoryStabilityServicesImpl implements MemoryStabilityServices {
+class MemoryRecallServicesImpl implements MemoryRecallServices {
   @override
   double? evaluateMemoryRecall(Memo memo) {
     if (memo.isPristine) {
@@ -44,10 +44,10 @@ class MemoryStabilityServicesImpl implements MemoryStabilityServices {
   /// ### The Formula
   ///
   /// Latex representation: `R = e^{-t/S}`, where:
-  /// - `R` is our memory stability;
+  /// - `R` is our memory recall;
   /// - [e] base of the natural logarithms;
   /// - `t` time since the last execution for this memo;
-  /// - `S` stability - or strenght - for this memo.
+  /// - `S` stability - or strength - for this memo.
   ///
   /// #### `t` variable
   ///

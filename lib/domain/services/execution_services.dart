@@ -3,7 +3,7 @@ import 'package:memo/data/repositories/memo_execution_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
 import 'package:memo/data/repositories/user_repository.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
-import 'package:memo/domain/isolated_services/memory_stability_services.dart';
+import 'package:memo/domain/isolated_services/memory_recall_services.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/memo.dart';
 import 'package:memo/domain/models/memo_execution.dart';
@@ -12,7 +12,7 @@ import 'package:memo/domain/models/memo_execution.dart';
 abstract class ExecutionServices {
   /// Retrieves a suitable chunk of [Memo]s when executing a [Collection] of [collectionId]
   ///
-  /// To retrieve this chunk, it first sorts all the [Memo]s belonging to the referenced [Collection] by memoryStability
+  /// To retrieve this chunk, it first sorts all the [Memo]s belonging to the referenced [Collection] by memoryRecall
   /// (also, if they are pristine, they take priority), and then chunks it using the execution chunk setting given the
   /// current `User`.
   Future<List<Memo>> getNextExecutableMemosChunk({required String collectionId});
@@ -42,12 +42,12 @@ class ExecutionServicesImpl implements ExecutionServices {
   final MemoExecutionRepository executionsRepo;
   final CollectionRepository collectionRepo;
 
-  final MemoryStabilityServices memoryServices;
+  final MemoryRecallServices memoryServices;
 
   @override
   Future<List<Memo>> getNextExecutableMemosChunk({required String collectionId}) async {
     final user = await userRepo.getUser();
-    final dailyGoal = user.dailyMemosGoal;
+    final chunkGoal = user!.memosExecutionChunkGoal;
 
     final allCollectionMemos = await memoRepo.getAllMemos(collectionId: collectionId);
     final pristineMemos = <Memo>[];
@@ -62,22 +62,28 @@ class ExecutionServicesImpl implements ExecutionServices {
       }
     });
 
-    // If we have enough pristine memos, we don't need to calculate each memory stability
-    if (pristineMemos.length >= dailyGoal) {
-      return pristineMemos.sublist(0, dailyGoal - 1);
+    // If we have enough pristine memos, we don't need to calculate each memory recall
+    if (pristineMemos.length >= chunkGoal) {
+      return pristineMemos.sublist(0, chunkGoal - 1);
     }
 
-    final executedMemoPerStability =
+    final executedMemoPerRecall =
+        // We can use the bang operator here because all executedMemos surely are not pristine, which is the only condition
+        // that the evaluation returns `null`
         executedMemos.asMap().map((key, value) => MapEntry(memoryServices.evaluateMemoryRecall(value)!, value));
-    final sortedStabilityKeys = executedMemoPerStability.keys.toList()
-      ..sort((stabilityA, stabilityB) => stabilityA.compareTo(stabilityB));
+
+    final sortedRecallKeys = executedMemoPerRecall.keys.toList()
+      ..sort((recallA, recallB) => recallA.compareTo(recallB));
 
     // Otherwise we start with all the existing pristine memos and keep adding the remaining sorted-by-recall memos
     // until the chunk has met its required size (or if there are no more memos to be added)
     final executableMemosChunk = pristineMemos;
-    while (dailyGoal > executableMemosChunk.length || executedMemoPerStability.isEmpty) {
-      executableMemosChunk.add(executedMemoPerStability[sortedStabilityKeys]!);
-      executedMemoPerStability.remove(sortedStabilityKeys);
+    while (chunkGoal > executableMemosChunk.length && executedMemoPerRecall.isNotEmpty) {
+      final lessRecalledMemoKey = sortedRecallKeys.first;
+      executableMemosChunk.add(executedMemoPerRecall[lessRecalledMemoKey]!);
+
+      executedMemoPerRecall.remove(lessRecalledMemoKey);
+      sortedRecallKeys.removeAt(0);
     }
 
     return executableMemosChunk;
@@ -85,7 +91,7 @@ class ExecutionServicesImpl implements ExecutionServices {
 
   @override
   Future<void> addExecutions(List<MemoExecution> executions, {required String collectionId}) async {
-    final associatedData = await Future.wait([
+    final associatedData = await Future.wait<dynamic>([
       memoRepo.getAllMemos(collectionId: collectionId),
       userRepo.getUser(),
       collectionRepo.getCollection(id: collectionId),
@@ -102,14 +108,14 @@ class ExecutionServicesImpl implements ExecutionServices {
 
       // Creates a copy of the memo associated with this execution (same id) and with the new execution-related
       // properties
-      final associatedMemo = allCollectionMemos.firstWhere((memo) => memo.id == execution.memoId);
+      final associatedMemo = allCollectionMemos.firstWhere((memo) => memo.uniqueId == execution.uniqueId);
       final associatedMemoExecutionAmounts = associatedMemo.executionsAmounts;
       final memoCurrentValue = associatedMemoExecutionAmounts[execution.markedDifficulty] ?? 0;
       associatedMemoExecutionAmounts[execution.markedDifficulty] = memoCurrentValue + 1;
       final updatedMemo = associatedMemo.copyWith(
-        execution,
-        associatedMemoExecutionAmounts,
-        associatedMemo.timeSpentInMillis + execution.timeSpentInMillis,
+        lastExecution: execution,
+        executionsAmounts: associatedMemoExecutionAmounts,
+        timeSpentInMillis: associatedMemo.timeSpentInMillis + execution.timeSpentInMillis,
       );
       updatedMemos.add(updatedMemo);
 
@@ -150,7 +156,7 @@ class ExecutionServicesImpl implements ExecutionServices {
         timeSpentInMillis: associatedCollection.timeSpentInMillis + totalTimeSpent,
         uniqueExecutionsAmount: associatedCollection.uniqueMemoExecutionsAmount + newUniqueMemos,
       ),
-      memoRepo.updateMemos(updatedMemos),
+      memoRepo.putMemos(updatedMemos, updatesOnlyCollectionMetadata: false),
     ]);
   }
 }
