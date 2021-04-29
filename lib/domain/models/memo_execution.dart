@@ -14,11 +14,7 @@ class MemoExecution extends Equatable implements MemoCollectionMetadata {
     required this.rawQuestion,
     required this.rawAnswer,
     required this.markedDifficulty,
-  })   : assert(started.isBefore(finished)),
-        assert(rawQuestion.isNotEmpty),
-        assert(rawQuestion.first.isNotEmpty),
-        assert(rawAnswer.isNotEmpty),
-        assert(rawAnswer.first.isNotEmpty);
+  }) : assert(started.isBefore(finished));
 
   final String collectionId;
 

@@ -19,11 +19,7 @@ class Memo extends MemoExecutionsMetadata with EquatableMixin implements MemoCol
     this.lastExecution,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
-  })  : assert(rawQuestion.isNotEmpty),
-        assert(rawQuestion.first.isNotEmpty),
-        assert(rawAnswer.isNotEmpty),
-        assert(rawAnswer.first.isNotEmpty),
-        assert(
+  })  : assert(
           (timeSpentInMillis > 0 && lastExecution != null) || (timeSpentInMillis == 0 && lastExecution == null),
           'both properties must be simultaneously empty (zero) or not',
         ),

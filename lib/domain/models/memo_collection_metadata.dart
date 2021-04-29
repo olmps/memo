@@ -1,6 +1,10 @@
 /// Fundamental fields that defines a `Memo` when relating to a `Collection`
 class MemoCollectionMetadata {
-  MemoCollectionMetadata({required this.uniqueId, required this.rawQuestion, required this.rawAnswer});
+  MemoCollectionMetadata({required this.uniqueId, required this.rawQuestion, required this.rawAnswer})
+      : assert(rawQuestion.isNotEmpty),
+        assert(rawQuestion.first.isNotEmpty),
+        assert(rawAnswer.isNotEmpty),
+        assert(rawAnswer.first.isNotEmpty);
 
   /// Identifies a global unique id (unique both in the parent's `Collection` and through all other `Memo`)
   final String uniqueId;

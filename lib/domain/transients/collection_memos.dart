@@ -14,7 +14,9 @@ class CollectionMemos extends CollectionMetadata {
     required this.tags,
     required this.memosMetadata,
     int uniqueMemoExecutionsAmount = 0,
-  }) : _uniqueMemoExecutionsAmount = uniqueMemoExecutionsAmount;
+  })  : _uniqueMemoExecutionsAmount = uniqueMemoExecutionsAmount,
+        assert(memosMetadata.isNotEmpty, 'Must not be an empty list of memos'),
+        assert(uniqueMemoExecutionsAmount >= 0, 'must be a positive (or zero) integer');
 
   final List<MemoCollectionMetadata> memosMetadata;
 
@@ -42,5 +44,7 @@ class CollectionMemos extends CollectionMetadata {
 
   void addToExecutionsAmount(int amount) {
     _uniqueMemoExecutionsAmount = _uniqueMemoExecutionsAmount + amount;
+
+    assert(uniqueMemoExecutionsAmount >= 0, 'must be a positive (or zero) integer');
   }
 }
