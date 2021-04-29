@@ -43,6 +43,6 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
         CollectionMemosKeys.description: collection.description,
         CollectionMemosKeys.category: collection.category,
         CollectionMemosKeys.tags: collection.tags,
-        CollectionMemosKeys.memosMetadata: collection.memosMetadata,
+        CollectionMemosKeys.memosMetadata: collection.memosMetadata.map(memoMetadataSerializer.to).toList(),
       };
 }

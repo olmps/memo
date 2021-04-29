@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
 
@@ -5,7 +6,8 @@ import 'package:memo/domain/models/memo_collection_metadata.dart';
 ///
 /// This transient also have a mutable behavior through [addToExecutionsAmount], allowing updates to be made to
 /// [uniqueMemoExecutionsAmount]
-class CollectionMemos extends CollectionMetadata {
+// ignore: must_be_immutable
+class CollectionMemos extends CollectionMetadata with EquatableMixin {
   CollectionMemos({
     required this.id,
     required this.name,
@@ -47,4 +49,16 @@ class CollectionMemos extends CollectionMetadata {
 
     assert(uniqueMemoExecutionsAmount >= 0, 'must be a positive (or zero) integer');
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        description,
+        category,
+        tags,
+        _uniqueMemoExecutionsAmount,
+        uniqueMemosAmount,
+        memosMetadata,
+      ];
 }
