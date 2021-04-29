@@ -29,37 +29,6 @@ void main() {
       );
     }
 
-    test('should not allow a missing question', () {
-      expect(
-        () {
-          newExecution(rawQuestion: []);
-        },
-        throwsAssertionError,
-      );
-
-      expect(
-        () {
-          newExecution(rawQuestion: [<String, dynamic>{}]);
-        },
-        throwsAssertionError,
-      );
-    });
-
-    test('should not allow a missing answer', () {
-      expect(
-        () {
-          newExecution(rawAnswer: []);
-        },
-        throwsAssertionError,
-      );
-
-      expect(
-        () {
-          newExecution(rawAnswer: [<String, dynamic>{}]);
-        },
-        throwsAssertionError,
-      );
-    });
     test('should not allow finished to be before started', () {
       expect(
         () {

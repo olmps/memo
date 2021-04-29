@@ -22,38 +22,6 @@ void main() {
     );
   }
 
-  test('Memo should not allow a missing question', () {
-    expect(
-      () {
-        newMemo(rawQuestion: []);
-      },
-      throwsAssertionError,
-    );
-
-    expect(
-      () {
-        newMemo(rawQuestion: [<String, dynamic>{}]);
-      },
-      throwsAssertionError,
-    );
-  });
-
-  test('Memo should not allow a missing answer', () {
-    expect(
-      () {
-        newMemo(rawAnswer: []);
-      },
-      throwsAssertionError,
-    );
-
-    expect(
-      () {
-        newMemo(rawAnswer: [<String, dynamic>{}]);
-      },
-      throwsAssertionError,
-    );
-  });
-
   test('Memo should not allow incoherent execution-related properties', () {
     expect(
       () {
