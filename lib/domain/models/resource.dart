@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 import 'package:meta/meta.dart';
 
+/// A simple [url] empowered by useful metadata, which are used to link this with any `Collection`
 @immutable
 class Resource extends Equatable {
   Resource({required this.id, required this.description, required this.tags, required this.type, required this.url})
