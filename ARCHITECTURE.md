@@ -279,7 +279,9 @@ specifically, through the [`repositories/`](#repositories).
 
 #### `transients/`
 
-A domain model - a set of structures that represent a business object.
+Just like the [`models/`](#models), the `transients` represent a set of business structures, although there's a
+clear distinction between these and `models` - they exist only in memory, meaning that they make sense only in some
+particular contexts required by the application's lifecycle.
 
 ### `data/`
 
