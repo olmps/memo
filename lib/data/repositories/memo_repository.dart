@@ -7,7 +7,7 @@ abstract class MemoRepository {
   /// Retrieves all available [Memo] that belongs to a `Collection` with id [collectionId]
   Future<List<Memo>> getAllMemos({required String collectionId});
 
-  /// Retrieves all available [Memo] that belongs to one any of the `Collection`s with [collectionIds]
+  /// Retrieves all available [Memo] that belongs to any of the `Collection`s with [collectionIds]
   Future<List<Memo>> getAllMemosByAnyCollectionId({required List<String> collectionIds});
 
   /// Batch put a list of [memos]
