@@ -15,10 +15,13 @@ import 'package:memo/application/widgets/theme/circular_labeled_progress.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
+/// Contents (non-Scaffold) of a execution that has been completed
 class CompletedExecutionContents extends HookWidget {
   const CompletedExecutionContents(this.state, {required this.onBackTap});
 
   final FinishedCollectionExecutionState state;
+
+  /// Callback for a non-appbar tap to back
   final VoidCallback onBackTap;
 
   @override
