@@ -39,7 +39,7 @@ const executionWellDone = '## Muito Bem';
 const executionImprovedKnowledgeDescription = 'Você acaba de aprimorar seu conhecimento em:';
 
 String executionLinearIndicatorCompletionLabel(String completionDescription) =>
-    'Indicador linear demonstrando que o nível de conclusão desta sessão aprendizado está em $completionDescription';
+    'Indicador linear demonstrando que o nível de conclusão desta sessão de aprendizado está em $completionDescription';
 
 //
 // Application-wide strings
