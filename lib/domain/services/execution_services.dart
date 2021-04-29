@@ -10,7 +10,7 @@ import 'package:memo/domain/models/memo_execution.dart';
 
 /// Handles all domain-specific operations pertaining to the act of executing a [Collection] and its [Memo]s
 abstract class ExecutionServices {
-  /// Retrieves a suitable chunk of [Memo]s when executing a [Collection] of [collectionId]
+  /// Retrieves a suitable chunk of [Memo]s before an execution session of the [Collection] of [collectionId]
   ///
   /// To retrieve this chunk, it first sorts all the [Memo]s belonging to the referenced [Collection] by memoryRecall
   /// (also, if they are pristine, they take priority), and then chunks it using the execution chunk setting given the
