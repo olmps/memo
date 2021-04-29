@@ -17,7 +17,7 @@ class MemoExecutionRepositoryImpl implements MemoExecutionRepository {
 
   @override
   Future<void> addExecutions(List<MemoExecution> executions) {
-    final ids = executions.map((exec) => exec.memoId).toList();
+    final ids = executions.map((exec) => exec.uniqueId).toList();
     final encodedExecutions = executions.map(_memoExecutionsSerializer.to).toList();
     return _db.putAll(ids: ids, objects: encodedExecutions, store: _memoExecutionsStore);
   }

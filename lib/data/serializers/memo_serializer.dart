@@ -4,8 +4,8 @@ import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/memo.dart';
 
 class MemoKeys {
-  static const id = 'id';
   static const collectionId = 'collectionId';
+  static const uniqueId = 'uniqueId';
   static const rawQuestion = 'question';
   static const rawAnswer = 'answer';
   static const executionsAmounts = 'executionsAmounts';
@@ -18,8 +18,8 @@ class MemoSerializer implements Serializer<Memo, Map<String, dynamic>> {
 
   @override
   Memo from(Map<String, dynamic> json) {
-    final id = json[MemoKeys.id] as String;
     final collectionId = json[MemoKeys.collectionId] as String;
+    final uniqueId = json[MemoKeys.uniqueId] as String;
 
     // Casting just to make sure, because sembast returns an ImmutableList<dynamic>
     final rawQuestion = (json[MemoKeys.rawQuestion] as List).cast<Map<String, dynamic>>();
@@ -36,8 +36,8 @@ class MemoSerializer implements Serializer<Memo, Map<String, dynamic>> {
     final lastExecution = rawLastExecution == null ? null : executionSerializer.from(rawLastExecution);
 
     return Memo(
-      id: id,
       collectionId: collectionId,
+      uniqueId: uniqueId,
       rawQuestion: rawQuestion,
       rawAnswer: rawAnswer,
       executionsAmounts: executionsAmounts ?? {},
@@ -48,8 +48,8 @@ class MemoSerializer implements Serializer<Memo, Map<String, dynamic>> {
 
   @override
   Map<String, dynamic> to(Memo memo) => <String, dynamic>{
-        MemoKeys.id: memo.id,
         MemoKeys.collectionId: memo.collectionId,
+        MemoKeys.uniqueId: memo.uniqueId,
         MemoKeys.rawQuestion: memo.rawQuestion,
         MemoKeys.rawAnswer: memo.rawAnswer,
         MemoKeys.executionsAmounts: memo.executionsAmounts.map((key, value) => MapEntry(key.raw, value)),

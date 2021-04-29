@@ -6,11 +6,11 @@ import 'package:meta/meta.dart';
 @immutable
 class User extends MemoExecutionsMetadata {
   User({
-    required this.dailyMemosGoal,
+    required this.memosExecutionChunkGoal,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
   }) : super(timeSpentInMillis, executionsAmounts);
 
-  /// Amount of `Memo`s expected to be executed per day (for a single `Collection`)
-  final int dailyMemosGoal;
+  /// Amount of `Memo`s expected to be executed per chunk (given any `Collection`)
+  final int memosExecutionChunkGoal;
 }

@@ -10,7 +10,7 @@ import 'package:meta/meta.dart';
 /// [uniqueMemoExecutionsAmount], and by extending the [MemoExecutionsMetadata], which are all a byproduct of the act of
 /// executing an arbitrary number of `Memo`s.
 @immutable
-class Collection extends MemoExecutionsMetadata with EquatableMixin {
+class Collection extends MemoExecutionsMetadata with EquatableMixin implements CollectionMetadata {
   Collection({
     required this.id,
     required this.name,
@@ -30,21 +30,26 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin {
         ),
         super(timeSpentInMillis, executionsAmounts);
 
+  @override
   final String id;
+
+  @override
   final String name;
+
+  @override
   final String description;
+
+  @override
   final String category;
 
-  /// List of tags that can associate with this `Resource`
-  ///
-  /// This is useful in cases where we must match [Collection.tags] with each available resource(s)
+  @override
   final List<String> tags;
 
-  /// The total amount of unique `Memo`s (associated with this [Collection]) that have been executed at least once
-  final int uniqueMemoExecutionsAmount;
-
-  /// The total amount of unique `Memo`s associated with this [Collection]
+  @override
   final int uniqueMemosAmount;
+
+  @override
+  final int uniqueMemoExecutionsAmount;
 
   /// `true` if this [Collection] has never executed any `Memo`
   bool get isPristine => uniqueMemoExecutionsAmount == 0;
@@ -63,4 +68,23 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin {
         uniqueMemosAmount,
         ...super.props,
       ];
+}
+
+/// Represents all `Collection` metadata
+abstract class CollectionMetadata {
+  String get id;
+  String get name;
+  String get description;
+  String get category;
+
+  /// List of tags that can associate with this `Resource`
+  ///
+  /// This is useful in cases where we must match [Collection.tags] with each available resource(s)
+  List<String> get tags;
+
+  /// The total amount of unique `Memo`s associated with this [Collection]
+  int get uniqueMemosAmount;
+
+  /// The total amount of unique `Memo`s (associated with this [Collection]) that have been executed at least once
+  int get uniqueMemoExecutionsAmount;
 }

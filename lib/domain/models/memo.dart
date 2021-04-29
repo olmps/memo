@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
+import 'package:memo/domain/models/memo_collection_metadata.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 import 'package:meta/meta.dart';
 
@@ -9,10 +10,10 @@ import 'package:meta/meta.dart';
 /// infinite amount of times, its purpose is to store the most recent version of its question/answer with useful
 /// execution's metadata, like [lastExecution] and by extending [MemoExecutionsMetadata].
 @immutable
-class Memo extends MemoExecutionsMetadata with EquatableMixin {
+class Memo extends MemoExecutionsMetadata with EquatableMixin implements MemoCollectionMetadata {
   Memo({
-    required this.id,
     required this.collectionId,
+    required this.uniqueId,
     required this.rawQuestion,
     required this.rawAnswer,
     this.lastExecution,
@@ -28,24 +29,17 @@ class Memo extends MemoExecutionsMetadata with EquatableMixin {
         ),
         super(timeSpentInMillis, executionsAmounts);
 
-  final String id;
+  @override
+  final String uniqueId;
+
+  @override
+  final List<Map<String, dynamic>> rawQuestion;
+
+  @override
+  final List<Map<String, dynamic>> rawAnswer;
 
   /// Parent's `Collection.id`
   final String collectionId;
-
-  /// Raw representation of a `Memo` question
-  ///
-  /// Because a question may be composed of an arbitrary amount of styled elements, each raw "block", "piece", or even
-  /// an "element", will have a completely different structure from each other. In this scenario, a [List] of [Map]
-  /// (the latter which is usually a JSON) is a reasonable fit for this  customized structure.
-  final List<Map<String, dynamic>> rawQuestion;
-
-  /// Raw representation of a `Memo` answer
-  ///
-  /// Because an answer may be composed of an arbitrary amount of styled elements, each raw "block", "piece", or even
-  /// an "element", will have a completely different structure from each other. In this scenario, a [List] of [Map]
-  /// (the latter which is usually a JSON) is a reasonable fit for this  customized structure.
-  final List<Map<String, dynamic>> rawAnswer;
 
   final MemoExecution? lastExecution;
   DateTime? get lastExecuted => lastExecution?.finished;
@@ -55,21 +49,20 @@ class Memo extends MemoExecutionsMetadata with EquatableMixin {
   bool get isPristine => lastExecution == null;
 
   @override
-  List<Object?> get props => [
-        id,
-        collectionId,
-        rawQuestion,
-        rawAnswer,
-        lastExecution,
-        ...super.props,
-      ];
+  List<Object?> get props => [collectionId, uniqueId, rawQuestion, rawAnswer, lastExecution, ...super.props];
 
-  Memo copyWith(MemoExecution? lastExecution, Map<MemoDifficulty, int>? executionsAmounts, int? timeSpentInMillis) {
+  Memo copyWith({
+    List<Map<String, dynamic>>? rawQuestion,
+    List<Map<String, dynamic>>? rawAnswer,
+    MemoExecution? lastExecution,
+    Map<MemoDifficulty, int>? executionsAmounts,
+    int? timeSpentInMillis,
+  }) {
     return Memo(
-      id: id,
       collectionId: collectionId,
-      rawQuestion: rawQuestion,
-      rawAnswer: rawAnswer,
+      uniqueId: uniqueId,
+      rawQuestion: rawQuestion ?? this.rawQuestion,
+      rawAnswer: rawAnswer ?? this.rawAnswer,
       lastExecution: lastExecution ?? this.lastExecution,
       executionsAmounts: executionsAmounts ?? this.executionsAmounts,
       timeSpentInMillis: timeSpentInMillis ?? this.timeSpentInMillis,
