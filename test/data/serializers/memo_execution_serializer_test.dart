@@ -8,7 +8,7 @@ import '../../utils/fakes.dart' as fakes;
 
 void main() {
   final testExecution = MemoExecution(
-    memoId: '1',
+    uniqueId: '1',
     collectionId: '1',
     started: DateTime.fromMillisecondsSinceEpoch(1616747007347, isUtc: true),
     finished: DateTime.fromMillisecondsSinceEpoch(1616747027347, isUtc: true),
@@ -32,7 +32,7 @@ void main() {
 
     test('should fail to decode without required properties', () {
       expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.memoId);
+        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.uniqueId);
         serializer.from(rawExecution);
       }, throwsA(isA<TypeError>()));
       expect(() {

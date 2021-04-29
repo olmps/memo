@@ -11,7 +11,7 @@ void main() {
     final rawUser = fixtures.user();
 
     final decodedUser = serializer.from(rawUser);
-    final allPropsUser = User(dailyMemosGoal: 10);
+    final allPropsUser = User(memosExecutionChunkGoal: 10);
 
     expect(decodedUser, allPropsUser);
     expect(rawUser, serializer.to(decodedUser));

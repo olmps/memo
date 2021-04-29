@@ -13,7 +13,7 @@ void main() {
     MemoExecution? lastExecution,
   }) {
     return Memo(
-      id: 'id',
+      uniqueId: 'id',
       collectionId: 'collectionId',
       rawQuestion: rawQuestion ?? fakes.question,
       rawAnswer: rawAnswer ?? fakes.answer,
@@ -66,7 +66,7 @@ void main() {
       () {
         newMemo(
           lastExecution: MemoExecution(
-            memoId: '1',
+            uniqueId: '1',
             collectionId: '1',
             started: DateTime.now(),
             finished: DateTime.now().subtract(const Duration(seconds: 1)),

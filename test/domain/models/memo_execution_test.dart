@@ -19,7 +19,7 @@ void main() {
       List<Map<String, dynamic>>? rawAnswer,
     }) {
       return MemoExecution(
-        memoId: '1',
+        uniqueId: '1',
         collectionId: '1',
         started: started,
         finished: finished ?? started.add(const Duration(seconds: 1)),

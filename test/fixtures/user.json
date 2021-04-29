@@ -1,5 +1,5 @@
 {
-  "dailyMemosGoal": 10,
+  "memosExecutionChunkGoal": 10,
   "executionsAmounts": {},
   "timeSpentInMillis": 0
 }
