@@ -1,0 +1,88 @@
+default_platform(:ios)
+
+platform :ios do
+  # Provisions and Certificates Setup
+  ## Download and setup all necessary provisions and certificates (Dev & Dist)
+  desc "Setup Development & Distribution profiles and certificates in the local machine"
+  lane :setup_provisions do
+    # Install Distribution Provisions and Certificates
+    match(
+      app_identifier: "com.olmps.memoClient",
+      type: "appstore",
+    )
+
+    # Install Development Provisions and Certificates
+    match(
+      app_identifier: "com.olmps.memoClient",
+      type: "development",
+    )
+  end
+
+  ########################--------------------------------########################
+  ########################-------- RELEASE LANES ---------########################
+  ########################--------------------------------########################
+
+  # Release a new version to Testflight
+  #
+  # It assumes that the app version is correctly set.
+  # The lane increments the build number if necessary
+  desc "Release app to Testflight"
+  lane :releasetf do
+    # Clean
+    sh("flutter", "clean")
+
+    # Run flutter tests
+    sh("flutter", "test", "test")
+
+    # Run flutter build with release mode
+    sh("flutter", "build", "ios", "--release", "--no-codesign", "--dart-define=ENV=PROD")
+
+    # Detects if the git status was clean before bumping the build number
+    repo_clean = `git status --porcelain`.empty?
+
+    # Increment the build number (use the latest build number for this version + 1)
+    increment_build_number(
+      build_number: latest_testflight_build_number(version: get_version_number) + 1,
+      xcodeproj: "Runner.xcodeproj",
+    )
+
+    # Build the app
+    build_ios_app(scheme: "Runner")
+
+    # If the only changes locally are the build number bump, automatically push it to source control
+    if repo_clean and !`git status --porcelain`.empty?
+      commit_version_bump(
+        message: "[Fastlane] Bumping Version",
+      )
+
+      push_to_git_remote
+    end
+
+    # Upload dSYM files to Firebae Crashlytics
+    # TODO
+
+    # Upload to Testflight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      distribute_external: true,
+    )
+
+    # Clean local dSYM and IPA files
+    clean_build_artifacts
+  end
+
+  # Release a new version to AppStore Connect
+  #
+  # Moves the latest Testflight build to production
+  desc "Release app to AppStore Connect"
+  lane :release do
+    # Moves latest Testflight build to production
+    appstore(
+      build_number: latest_testflight_build_number,
+      force: true,
+      reject_if_possible: true,
+      submit_for_review: true,
+      skip_screenshots: true,
+    )
+  end
+end

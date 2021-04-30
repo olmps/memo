@@ -1,0 +1,5 @@
+app_identifier("com.olmps.memoClient") # The bundle identifier of your app
+apple_id("admin@olmps.co") # Your Apple email address
+
+itc_team_id("118587928") # App Store Connect Team ID
+team_id("583UZTNE98") # Developer Portal Team ID

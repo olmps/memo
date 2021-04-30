@@ -1,0 +1,2 @@
+git_url("https://github.com/olmps/memo-provision-profiles")
+storage_mode("git")
