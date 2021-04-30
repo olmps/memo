@@ -1,0 +1,2 @@
+json_key_file("gcp_service_account.json")
+package_name("com.olmps.memoClient")

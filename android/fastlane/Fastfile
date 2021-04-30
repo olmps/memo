@@ -1,0 +1,46 @@
+default_platform(:android)
+
+platform :android do
+  desc "Deploy a new version to the Google Play Internal track"
+  lane :internal do
+    # Clean
+    sh("flutter", "clean")
+
+    # Run flutter tests
+    sh("flutter", "test", "test")
+
+    # Bumps Version Code
+    android_set_version_code()
+
+    # Run flutter build that generates app bundle
+    sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD")
+
+    # Gets version info
+    version_info = flutter_version(
+      pubspec_location: "../pubspec.yaml",
+    )
+
+    supply(
+      track: "internal",
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_apk: true,
+      version_name: version_info["version_name"],
+      version_code: android_get_version_code(),
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+    )
+  end
+
+  desc "Deploy a new version to the Google Play Release track"
+  lane :release do
+    supply(
+      track_promote_to: "release",
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      version_code: android_get_version_code(),
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+    )
+  end
+end
