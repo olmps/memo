@@ -10,6 +10,8 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need to access your photo library so you can choose picture to create your Memos</string>
 	<key>CFBundleName</key>
 	<string>Memo</string>
 	<key>CFBundlePackageType</key>
@@ -19,9 +21,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
