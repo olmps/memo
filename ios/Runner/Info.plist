@@ -10,8 +10,8 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>We need to access your photo library so you can choose picture to create your Memos</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>We need to access your photo library so you can choose your own pictures when creating your Memos</string>
 	<key>CFBundleName</key>
 	<string>Memo</string>
 	<key>CFBundlePackageType</key>
