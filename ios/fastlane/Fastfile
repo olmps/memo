@@ -1,25 +1,67 @@
 default_platform(:ios)
 
 platform :ios do
+
+  ########################--------------------------------########################
+  ########################--------- SETUP LANES ----------########################
+  ########################--------------------------------########################
+
+  api_key = nil
+
+  # Environment Setup
+  ## Setup local keychain if running on a CI machine and setup AppStore Connect API Key to communicate with AppStore 
+  ## services
+  private_lane :setup_environment do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY"],
+      in_house: false,
+    )
+
+    if is_ci
+      create_keychain(
+        name: ENV["KEYCHAIN_NAME"],
+        password: ENV["KEYCHAIN_PASSWORD"],
+        default_keychain: true,
+        unlock: true,
+        timeout: 3600,
+        lock_when_sleeps: false
+      )
+    end
+  end
+
   # Provisions and Certificates Setup
   ## Download and setup all necessary provisions and certificates (Dev & Dist)
   desc "Setup Development & Distribution profiles and certificates in the local machine"
   lane :setup_provisions do
+    setup_environment
+
     # Install Distribution Provisions and Certificates
     match(
       app_identifier: "com.olmps.memoClient",
       type: "appstore",
+      readonly: true,
+      api_key: api_key,
+      keychain_name: ENV["KEYCHAIN_NAME"],
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
+      verbose: true,
     )
 
     # Install Development Provisions and Certificates
     match(
       app_identifier: "com.olmps.memoClient",
       type: "development",
+      readonly: true,
+      api_key: api_key,
+      keychain_name: ENV["KEYCHAIN_NAME"],
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
+      verbose: true,
     )
   end
 
   ########################--------------------------------########################
-  ########################-------- RELEASE LANES ---------########################
+  ########################-------- RELEASE LANE ----------########################
   ########################--------------------------------########################
 
   # Release a new version to Testflight
@@ -27,62 +69,56 @@ platform :ios do
   # It assumes that the app version is correctly set.
   # The lane increments the build number if necessary
   desc "Release app to Testflight"
-  lane :releasetf do
+  lane :release do
+    if is_ci
+      setup_provisions
+    else
+      setup_environment
+    end
+
     # Clean
     sh("flutter", "clean")
 
     # Run flutter tests
     sh("flutter", "test", "test")
 
-    # Run flutter build with release mode
-    sh("flutter", "build", "ios", "--release", "--no-codesign", "--dart-define=ENV=PROD")
+    # Run flutter analyzer
+    # sh("flutter", "analyze", ".")
 
-    # Detects if the git status was clean before bumping the build number
-    repo_clean = `git status --porcelain`.empty?
+    # Run flutter build with release mode
+    sh("flutter", "build", "ios", "--release", "--dart-define=ENV=PROD")
 
     # Increment the build number (use the latest build number for this version + 1)
     increment_build_number(
-      build_number: latest_testflight_build_number(version: get_version_number) + 1,
+      build_number: latest_testflight_build_number(api_key: api_key, version: get_version_number) + 1,
       xcodeproj: "Runner.xcodeproj",
     )
 
     # Build the app
-    build_ios_app(scheme: "Runner")
-
-    # If the only changes locally are the build number bump, automatically push it to source control
-    if repo_clean and !`git status --porcelain`.empty?
-      commit_version_bump(
-        message: "[Fastlane] Bumping Version",
-      )
-
-      push_to_git_remote
-    end
+    build_ios_app(
+      scheme: "Runner",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: { 
+          "com.olmps.memoClient" => "match AppStore com.olmps.memoClient"
+        }
+      }
+    )
 
     # Upload dSYM files to Firebae Crashlytics
     # TODO
 
     # Upload to Testflight
+    changelog = File.read("Changelog.txt")
+
     upload_to_testflight(
+      api_key: api_key,
       skip_waiting_for_build_processing: true,
       distribute_external: true,
+      changelog: changelog
     )
 
     # Clean local dSYM and IPA files
     clean_build_artifacts
-  end
-
-  # Release a new version to AppStore Connect
-  #
-  # Moves the latest Testflight build to production
-  desc "Release app to AppStore Connect"
-  lane :release do
-    # Moves latest Testflight build to production
-    appstore(
-      build_number: latest_testflight_build_number,
-      force: true,
-      reject_if_possible: true,
-      submit_for_review: true,
-      skip_screenshots: true,
-    )
   end
 end

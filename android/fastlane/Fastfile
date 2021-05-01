@@ -20,25 +20,14 @@ platform :android do
       pubspec_location: "../pubspec.yaml",
     )
 
+    # Upload the app to Play console
     supply(
       track: "internal",
+      json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT"],
       skip_upload_images: true,
       skip_upload_screenshots: true,
       skip_upload_apk: true,
       version_name: version_info["version_name"],
-      version_code: android_get_version_code(),
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
-    )
-  end
-
-  desc "Deploy a new version to the Google Play Release track"
-  lane :release do
-    supply(
-      track_promote_to: "release",
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
-      skip_upload_apk: true,
-      skip_upload_aab: true,
       version_code: android_get_version_code(),
       aab: "../build/app/outputs/bundle/release/app-release.aab",
     )

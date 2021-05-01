@@ -31,5 +31,10 @@ Runner/GeneratedPluginRegistrant.*
 !default.pbxuser
 !default.perspectivev3
 
-# Fastlane Reports
+# Fastlane auto-generated files
 fastlane/*.xml
+fastlane/README.md
+
+# IPA and Dsyms
+Runner.app.dSYM.zip
+Runner.ipa

@@ -1,2 +1,2 @@
-git_url("https://github.com/olmps/memo-provision-profiles")
+git_url(ENV["PROVISIONS_CERTIFICATES_REPO"])
 storage_mode("git")
