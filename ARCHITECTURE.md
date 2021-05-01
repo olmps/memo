@@ -445,4 +445,9 @@ And that's it, the currently supported environments are: `DEV` and `PROD`.
 
 ### Release
 
-WIP
+The release process is fully-automated using Github Actions + Fastlane. The 
+[release workflow](.github/workflows/release.yml) triggers when a new tag is published and begins the release process
+in all supported platforms. Fastlane lanes run the tests, analyze the code, build and deploy the apps.
+
+- [iOS Fastfile](ios/fastlane/Fastfile)
+- [Android Fastfile](android/fastlane/Fastfile)
