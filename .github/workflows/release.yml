@@ -1,0 +1,58 @@
+name: Release Workflow
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+
+      # Install Github private key to be able to clone the private repository with the iOS Provision Profiles and
+      # Certificates
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: replace
+
+      - name: Release iOS App
+        run: cd ios && fastlane release --verbose
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          KEYCHAIN_NAME: ${{ secrets.KEYCHAIN_NAME }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          PROVISIONS_CERTIFICATES_REPO: ${{ secrets.PROVISIONS_CERTIFICATES_REPO }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+      # Retrieves `keystore.jks` and `key.properties` files which are base 64 encoded at Github Secrets. Both files
+      # are used to sign the Android app. Then run `internal` lane to build and deploy Android app
+      - name: Release Android App
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64_ENCODED }}" > keystore.jks.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASHPHRASE }}" --batch keystore.jks.asc > android/app/keystore.jks
+          echo "${{ secrets.KEY_PROPERTIES_BASE64_ENCODED }}" > key.properties.asc
+          gpg -d --passphrase "${{ secrets.KEY_PROPERTIES_PASSPHRASE }}" --batch key.properties.asc > android/key.properties
+          cd android && fastlane internal --verbose
+        env:
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
