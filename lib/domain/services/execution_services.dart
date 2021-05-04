@@ -64,7 +64,7 @@ class ExecutionServicesImpl implements ExecutionServices {
 
     // If we have enough pristine memos, we don't need to calculate each memory recall
     if (pristineMemos.length >= chunkGoal) {
-      return pristineMemos.sublist(0, chunkGoal - 1);
+      return pristineMemos.sublist(0, chunkGoal);
     }
 
     final executedMemoPerRecall =
