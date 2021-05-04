@@ -38,6 +38,8 @@ PODS:
     - Flutter
   - image_picker (0.0.1):
     - Flutter
+  - package_info (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - SDWebImage (5.11.0):
@@ -52,6 +54,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
@@ -71,6 +74,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   url_launcher:
@@ -83,6 +88,7 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
+  package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
