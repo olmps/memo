@@ -7,6 +7,7 @@
 // just like this file, but we have to consider that we will possibly need access to the BuildContext, as this is where
 // the runtime locale is determined.
 
+import 'package:memo/application/view-models/settings/settings_vm.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 
@@ -51,6 +52,35 @@ const executionImprovedKnowledgeDescription = 'Você acaba de aprimorar seu conh
 
 String executionLinearIndicatorCompletionLabel(String completionDescription) =>
     'Indicador linear demonstrando que o nível de conclusão desta sessão de aprendizado está em $completionDescription';
+
+//
+// Settings
+//
+const settings = 'Ajustes';
+String settingsDescriptionForSection(SettingsSection section) {
+  switch (section) {
+    case SettingsSection.legal:
+      return 'Legal';
+    case SettingsSection.sponsors:
+      return 'Patrocinadores';
+    case SettingsSection.organizers:
+      return 'Organizadores';
+  }
+}
+
+String settingsDescriptionForNamedLink(NamedLinkSettings link) {
+  switch (link) {
+    case NamedLinkSettings.termsAndPrivacyPolicy:
+      return 'Termos de Uso e Política de Privacidade';
+  }
+}
+
+String settingsDescriptionForNamedCustom(NamedCustomSettings custom) {
+  switch (custom) {
+    case NamedCustomSettings.licenses:
+      return 'Licenças';
+  }
+}
 
 //
 // Application-wide strings
