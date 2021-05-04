@@ -2,10 +2,11 @@ import 'package:collection/collection.dart';
 
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
-import 'package:memo/data/repositories/user_repository.dart';
+import 'package:memo/data/repositories/resource_repository.dart';
 import 'package:memo/data/repositories/version_repository.dart';
 import 'package:memo/domain/models/memo.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
+import 'package:memo/domain/models/resource.dart';
 
 /// Handles all domain-specific operations pertaining to all versioning made in the application
 abstract class VersionServices {
@@ -22,65 +23,59 @@ abstract class VersionServices {
   ///   3. Finds out that a stored `Collection` doesn't exist anymore, although we've opted to ignore this case right
   /// now, as we don't want to create an unwanted behavior. This use-case will probably be addressed at some point in
   /// the future.
-  Future<void> updateCollectionsIfNeeded();
+  Future<void> updateDependenciesIfNeeded();
 }
 
 class VersionServicesImpl implements VersionServices {
   VersionServicesImpl({
-    required this.userRepo,
     required this.versionRepo,
     required this.collectionRepo,
     required this.memoRepo,
+    required this.resourceRepo,
   });
 
-  final UserRepository userRepo;
   final VersionRepository versionRepo;
   final CollectionRepository collectionRepo;
   final MemoRepository memoRepo;
+  final ResourceRepository resourceRepo;
 
   @override
-  Future<void> updateCollectionsIfNeeded() async {
+  Future<void> updateDependenciesIfNeeded() async {
     final versions = await Future.wait([
-      userRepo.getLastCollectionsVersions(),
-      versionRepo.getLocalCollectionVersions(),
+      versionRepo.getCurrentApplicationVersion(),
+      versionRepo.getStoredApplicationVersion(),
     ]);
 
-    final oldVersions = versions[0] ?? {};
-    final newVersions = versions[1]!;
+    final currentVersion = versions[0];
+    final latestVersion = versions[1];
 
-    final updatedCollectionsIds = <String>[];
-    // As the docs said, we are ignoring the missing collections that are present on old but not on new.
-    // Ideally we should simply delete them, but this may cause a bad user-experience, so we still need to think about
-    // that more carefully.
-    // final deletedCollectionsIds = <String>[];
-
-    // Runs through all expected collections and check if they should be created/updated given their version versus the
-    // last stored version
-    for (final collectionId in newVersions.keys) {
-      final existingCollectionVersion = oldVersions[collectionId];
-      final expectedVersion = newVersions[collectionId];
-
-      if (existingCollectionVersion != expectedVersion) {
-        updatedCollectionsIds.add(collectionId);
-      }
-    }
-
-    // Not a single collection changed, we can safely return
-    if (updatedCollectionsIds.isEmpty) {
+    if (currentVersion == latestVersion) {
       return;
     }
 
+    final collectionsUpdates = await _updateCollections();
+    final resourcesUpdates = await _updateResources();
+
+    await Future.wait([
+      ...collectionsUpdates,
+      ...resourcesUpdates,
+      versionRepo.updateToLatestApplicationVersion(),
+    ]);
+  }
+
+  Future<List<Future>> _updateCollections() async {
     // Retrieve all locally-stored `LocalCollection`
-    final updatedLocalCollections = await collectionRepo.getCollectionMemosByIds(updatedCollectionsIds);
+    final localCollections = await collectionRepo.getAllCollectionMemos();
+    final localCollectionsIds = localCollections.map((collection) => collection.id).toList();
 
     // Retrieve all old memos that are associated with the updated collection ids
-    final allAssociatedOldMemos = await memoRepo.getAllMemosByAnyCollectionId(collectionIds: updatedCollectionsIds);
+    final allAssociatedOldMemos = await memoRepo.getAllMemosByAnyCollectionId(collectionIds: localCollectionsIds);
 
     // Run all memo-related operations, more specifically adding, updating and removing.
     final addedOrUpdatedMemos = <Memo>[];
     final deletedMemosUniqueIds = <String>[];
 
-    for (final localCollection in updatedLocalCollections) {
+    for (final localCollection in localCollections) {
       // Maps all collections to a list of tuples containing the collection, its memos amount and executions (empty)
       final oldMemos = allAssociatedOldMemos.where((memo) => memo.collectionId == localCollection.id).toList();
       final newMemos = localCollection.memosMetadata;
@@ -95,12 +90,7 @@ class VersionServicesImpl implements VersionServices {
       for (final newMemo in newMemos) {
         final oldMemo = oldMemos.firstWhereOrNull((memo) => memo.uniqueId == newMemo.uniqueId);
 
-        if (oldMemo != null) {
-          if (!_compareSameMetadataContents(oldMemo, newMemo)) {
-            final updatedMemo = oldMemo.copyWith(rawQuestion: newMemo.rawQuestion, rawAnswer: newMemo.rawAnswer);
-            addedOrUpdatedMemos.add(updatedMemo);
-          }
-        } else {
+        if (oldMemo == null) {
           final addedMemo = Memo(
             collectionId: localCollection.id,
             uniqueId: newMemo.uniqueId,
@@ -109,6 +99,11 @@ class VersionServicesImpl implements VersionServices {
           );
 
           addedOrUpdatedMemos.add(addedMemo);
+
+          // We need to make sure if it exists, it still contains the same metadata contents, otherwise it must be updated
+        } else if (!_compareSameMetadataContents(oldMemo, newMemo)) {
+          final updatedMemo = oldMemo.copyWith(rawQuestion: newMemo.rawQuestion, rawAnswer: newMemo.rawAnswer);
+          addedOrUpdatedMemos.add(updatedMemo);
         }
       }
 
@@ -125,18 +120,53 @@ class VersionServicesImpl implements VersionServices {
           if (!oldMemo.isPristine) {
             localCollection.addToExecutionsAmount(-1);
           }
+
           deletedMemosUniqueIds.add(oldMemo.uniqueId);
         }
       }
     }
 
-    await Future.wait([
+    return [
       if (addedOrUpdatedMemos.isNotEmpty) memoRepo.putMemos(addedOrUpdatedMemos, updatesOnlyCollectionMetadata: true),
       if (deletedMemosUniqueIds.isNotEmpty) memoRepo.removeMemosByIds(deletedMemosUniqueIds),
-      // Always-updated dependencies
-      collectionRepo.putCollectionsWithCollectionMemos(updatedLocalCollections),
-      userRepo.updateCollectionsVersions(newVersions),
-    ]);
+      collectionRepo.putCollectionsWithCollectionMemos(localCollections),
+    ];
+  }
+
+  Future<List<Future>> _updateResources() async {
+    // Retrieve all locally-stored resources
+    final localResources = await resourceRepo.getAllLocalResources();
+
+    // Retrieve all resources
+    final oldResources = await resourceRepo.getAllResources();
+
+    final addedOrUpdatedResources = <Resource>[];
+    final deletedResourcesIds = <String>[];
+
+    for (final localResource in localResources) {
+      // Checking if there are any memo with different question/answer contents to be updated or, if one don't
+      // exists, to be added.
+      final oldResource = oldResources.firstWhereOrNull((resource) => resource.id == localResource.id);
+
+      // We must update/add the following resource if it doesn't exist (null) or if it has any different property
+      if (oldResource == null || oldResource != localResource) {
+        addedOrUpdatedResources.add(localResource);
+      }
+    }
+
+    // Then we check if the old resources contains one that doesn't exist anymore, so we can delete it if so
+    for (final oldResource in oldResources) {
+      final resourceStillExists = localResources.firstWhereOrNull((resource) => resource.id == oldResource.id) != null;
+
+      if (!resourceStillExists) {
+        deletedResourcesIds.add(oldResource.id);
+      }
+    }
+
+    return [
+      if (addedOrUpdatedResources.isNotEmpty) resourceRepo.putResources(addedOrUpdatedResources),
+      if (deletedResourcesIds.isNotEmpty) resourceRepo.removeResourcesByIds(deletedResourcesIds),
+    ];
   }
 
   /// Uses a [DeepCollectionEquality] to compare if both `MemoCollectionMetadata` have the same question/answer

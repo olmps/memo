@@ -18,11 +18,11 @@ abstract class CollectionRepository {
   /// Retrieves all available [Collection] and keeps listening to any changes made to them
   Future<Stream<List<Collection>>> listenToAllCollections();
 
-  /// Retrieves all available [Collection]
-  Future<List<Collection>> getAllCollections();
+  /// Retrieves a [Collection] with [id] and keeps listening to any changes
+  Future<Stream<Collection?>> listenToCollection({required String id});
 
-  /// Retrieves all [CollectionMemos], matched by the respective ([ids])
-  Future<List<CollectionMemos>> getCollectionMemosByIds(List<String> ids);
+  /// Retrieves all [CollectionMemos]
+  Future<List<CollectionMemos>> getAllCollectionMemos();
 
   /// Put all [Collection] with a list of [CollectionMemos]
   ///
@@ -67,14 +67,9 @@ class CollectionRepositoryImpl implements CollectionRepository {
   }
 
   @override
-  Future<List<Collection>> getAllCollections() async {
-    final rawCollections = await _db.getAll(store: _collectionStore);
-    return rawCollections.map(_collectionSerializer.from).toList();
-  }
-
-  @override
-  Future<List<CollectionMemos>> getCollectionMemosByIds(List<String> ids) async {
-    final collectionsFutures = ids.map((id) => _appBundle.loadJson('$_collectionsRoot/$id.json'));
+  Future<List<CollectionMemos>> getAllCollectionMemos() async {
+    final collectionsPaths = await _appBundle.loadAssetsListPath(_collectionsRoot);
+    final collectionsFutures = collectionsPaths.map(_appBundle.loadJson);
     final rawCollections = await Future.wait<dynamic>(collectionsFutures);
 
     final castCollections = List<Map<String, dynamic>>.from(rawCollections);
@@ -105,7 +100,13 @@ class CollectionRepositoryImpl implements CollectionRepository {
   @override
   Future<Stream<List<Collection>>> listenToAllCollections() async {
     final rawCollections = await _db.listenAll(store: _collectionStore);
-    return rawCollections.map((event) => event.map(_collectionSerializer.from).toList());
+    return rawCollections.map((collections) => collections.map(_collectionSerializer.from).toList());
+  }
+
+  @override
+  Future<Stream<Collection?>> listenToCollection({required String id}) async {
+    final rawCollection = await _db.listenTo(id: id, store: _collectionStore);
+    return rawCollection.map((collection) => collection != null ? _collectionSerializer.from(collection) : null);
   }
 
   @override
