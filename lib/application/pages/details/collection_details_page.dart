@@ -64,7 +64,7 @@ class CollectionDetailsPage extends HookWidget {
         child: ElevatedButton(
           onPressed: () {
             final id = context.read(detailsCollectionId);
-            readCoordinator(context).navigateToCollectionExecution(id);
+            readCoordinator(context).navigateToCollectionExecution(id, isNestedNavigation: false);
           },
           child: Text(strings.detailsStudyNow.toUpperCase()),
         ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
