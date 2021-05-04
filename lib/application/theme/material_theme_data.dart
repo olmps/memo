@@ -74,6 +74,12 @@ ThemeData buildThemeData({
     unselectedLabelStyle: textTheme.subtitle2,
   );
 
+  final snackBarTheme = SnackBarThemeData(
+    backgroundColor: neutralSwatch.shade800,
+    contentTextStyle: textTheme.bodyText2,
+    actionTextColor: secondarySwatch.shade400,
+  );
+
   return ThemeData(
     brightness: brightness,
     colorScheme: colorScheme,
@@ -88,6 +94,7 @@ ThemeData buildThemeData({
     tabBarTheme: tabBarTheme,
     bottomNavigationBarTheme: bottomNavTheme,
     iconTheme: iconTheme,
+    snackBarTheme: snackBarTheme,
   );
 }
 
