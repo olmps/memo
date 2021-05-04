@@ -1,8 +1,10 @@
+# Triggers on all changes committed to Pull Requests pointing to `main` branch
 name: Pull Request Workflow
 
 on:
-  push:
   pull_request:
+    branches:
+      - main
 
 jobs:
   build:
