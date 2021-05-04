@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "description": "Git Cheatsheet",
+    "tags": ["git", "versionamento"],
+    "type": "article",
+    "url": "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet/"
+  },
+  {
+    "id": "2",
+    "description": "Git Handbook (enUS)",
+    "tags": ["git", "versionamento"],
+    "type": "article",
+    "url": "https://guides.github.com/introduction/git-handbook/"
+  },
+  {
+    "id": "3",
+    "description": "Aprenda Git Branching (enUS)",
+    "tags": ["git", "versionamento"],
+    "type": "game",
+    "url": "https://learngitbranching.js.org/"
+  },
+  {
+    "id": "4",
+    "description": "Comandos Git",
+    "tags": ["git", "versionamento"],
+    "type": "article",
+    "url": "https://comandosgit.github.io/"
+  },
+  {
+    "id": "5",
+    "description": "Como usar o Git e Github na prática",
+    "tags": ["git", "github", "versionamento"],
+    "type": "video",
+    "url": "https://www.youtube.com/watch?v=2alg7MQ6_sI&ab_channel=Rocketseat"
+  }
+]
