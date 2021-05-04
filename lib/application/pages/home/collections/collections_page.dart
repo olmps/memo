@@ -15,23 +15,26 @@ class CollectionsPage extends HookWidget {
       initialLength: availableSegments.length,
       initialIndex: initialState.segmentIndex,
     );
-    final tabs = availableSegments.map(_widgetForTab).toList();
 
     // Adds listener once (in the first build call)
     useEffect(() {
-      collectionsTabController.addListener(() {
+      void tabListener() {
         final currentState = context.read(collectionsVM.state);
 
-        // We want to update only when the indexIsChanging (because this listener is called multiple times by the tab
-        // controller) and if the current tab index is different from the index of the current segment, so they are
-        // always in sync
+        // We want to update only when the indexIsChanging AND if the current tab index is different from the index of
+        // the current segment. This check is mandatory because this listener is called multiple times by the tab
+        // controller.
         if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
           final newTab = availableSegments.elementAt(collectionsTabController.index);
           context.read(collectionsVM).updateCollectionsSegment(newTab);
         }
-      });
-    }, []);
+      }
 
+      collectionsTabController.addListener(tabListener);
+      return () => collectionsTabController.removeListener(tabListener);
+    }, [collectionsTabController]);
+
+    final tabs = availableSegments.map(_widgetForTab).toList();
     return Column(
       children: [
         ThemedTabBar(controller: collectionsTabController, tabs: tabs),
