@@ -41,6 +41,9 @@ Table of contents
   - [Why `mocktail` and not `mockito`?](#why-mocktail-and-not-mockito)
   - [`CoordinatorRouter` and `Router` (or Navigator 2.0)](#coordinatorrouter-and-router-or-navigator-20)
   - [Why manually importing the font, if there is the `google_fonts`?](#why-manually-importing-the-font-if-there-is-the-google_fonts)
+  - [Exception handling](#exception-handling)
+  - [App Icon](#app-icon)
+  - [Local collections and resources versioning](#local-collections-and-resources-versioning)
   - [Environment](#environment)
     - [Release](#release)
 
@@ -429,6 +432,47 @@ experience for offline users;
 
 The only drawback of doing this manually is importing the fonts in the `assets/` folder (size shouldn't be relevant to
 impact even low-end devices), and specifying them in the `pubspec.yaml`.
+
+## Exception handling
+
+Currently, because the application has almost no async interactions, other than fetching local files and databases,
+which rarely fails if comparing to network requests (and when it fail, probably throws an `Error` and not an
+`Exception`).
+
+This is one of the main reasons that this application doesn't have much to deal when we are talking about exception
+handling, altough there is an use-case that justified the creation of this layer that handles an `Exception`, which are
+failures expected in runtime and we should handle them properly, so the user can know exactly what went wrong.
+
+The exceptions are presented using `SnackBar`s and, using a simply global (but not static) approach, we provide our own
+`GlobalKey<ScaffoldMessengerState>()` instance to `MaterialApp`, so we can freely access this same key using the same
+instance provided to the `MaterialApp`.
+
+Adding to this, there is a helper function that takes the `BaseException` and translates to the according error. Its
+signature is: `showExceptionSnackBar(BaseException exception)`.
+
+## App Icon
+
+The application icon is auto-generated using a high-res single icon asset file alongside a commonly used package that
+uses this asset to generate for all platforms (`flutter-launcher-icons`).
+
+If you change the icon's asset, you have to run this tool again to make sure that the files are updated:
+
+```
+flutter pub run flutter_launcher_icons:main
+```
+
+## Local collections and resources versioning
+
+Because the current `memo` version only manages its data locally, it has no server to defer more complex use-cases, like
+syncing the user's list of `Collection`s (with its `Memo`s) and its `Resource`s.
+
+This sync is done whenever a new application version is deployed - by checking which was the last stored version. Then,
+when this version differs from the last stored one, runs through all the `assets/collections/` files to make the
+according additions, updates and removals. The same happens to `assets/resources.json`, but in this case, there is a
+single json file containing all the resources available to the application.
+
+This version check runs once every time the application opens, but the heavy computation only occurs when the current
+versus expected version differs. You can find more about this in the `VersionServices` implementation file.
 
 ## Environment
 
