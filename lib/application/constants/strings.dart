@@ -25,6 +25,16 @@ const progressTotalStudyTime = 'Totais de estudos';
 const progressTotalMemos = 'Memos completados';
 
 //
+// Details
+//
+
+const details = 'Detalhes';
+const detailsDescription = 'Descrição';
+String detailsTotalMemos(int memos) => '$memos memos';
+const detailsResources = 'Materiais de apoio';
+const detailsStudyNow = 'Estudar agora';
+
+//
 // Execution
 //
 const executionQuestion = 'Questão';
