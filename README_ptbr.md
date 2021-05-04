@@ -52,8 +52,6 @@ Como essa aplicação foi estruturada e como ela interage com dependência exter
 
 Este projeto foi construído com a ajuda dos patrocinadores abaixo:
 
-WIP(sponsors)
-
 Se você está interessado em dar uma olhadinha sobre como acabamos lidando com o processo de software deste projeto (dentro
 da nossa equipe), dê uma olhada no [.process/](.process/README.md).
 
@@ -64,3 +62,9 @@ Veja o documento [CONTRIBUTING](CONTRIBUTING.md) para mais detalhes sobre como c
 ## Licença
 
 Memo está licenciado sobre a licença [BSD 3-Clause](LICENSE).
+
+## Patrocinadores
+
+[Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover): Aprenda programação na prática. E de graça.
+[Startup Life Podcast](https://bit.ly/lucas-montano-startup-life): O seu podcast sobre negócios, tecnologia e inovação.
+[Pingback](https://bit.ly/lucas-montano-pingback): Crie conteúdo com total liberdade.
