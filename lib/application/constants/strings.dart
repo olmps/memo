@@ -8,6 +8,7 @@
 // the runtime locale is determined.
 
 import 'package:memo/domain/enums/memo_difficulty.dart';
+import 'package:memo/domain/enums/resource_type.dart';
 
 const collectionsNavigationTab = 'Coleções';
 const progressNavigationTab = 'Progresso';
@@ -71,6 +72,19 @@ String memoDifficultyEmoji(MemoDifficulty difficulty) {
   }
 }
 
+String resourceEmoji(ResourceType resource) {
+  switch (resource) {
+    case ResourceType.article:
+      return memo;
+    case ResourceType.book:
+      return books;
+    case ResourceType.video:
+      return television;
+    case ResourceType.unknown:
+      return link;
+  }
+}
+
 String memoDifficulty(MemoDifficulty difficulty) {
   switch (difficulty) {
     case MemoDifficulty.easy:
@@ -90,8 +104,15 @@ const hoursSymbol = 'h';
 const minutesSymbol = 'm';
 
 //
-// Unicode Emojis - Reference: https://unicode.org/emoji/charts/full-emoji-list.html
+// Unicode Emojis
 //
+// The list below follows the [unicode.org spec](https://unicode.org/emoji/charts/full-emoji-list.html), so that we
+// don't expose vendor-specific emojis, thus failing to render on some specific platforms.
+const memo = '\u{1F4DD}';
+const books = '\u{1F4DA}';
+const television = '\u{1F4FA}';
+const link = '\u{1F517}';
+
 const squintingFaceWithTongue = '\u{1F61D}';
 const expressionlessFace = '\u{1F611}';
 const faceScreamingInFear = '\u{1F631}';
