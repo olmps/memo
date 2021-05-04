@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 
 import 'package:memo/application/constants/animations.dart' as anims;
@@ -63,17 +64,23 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customWidgets = Row(children: [
-      AssetIconButton(images.closeAsset, onPressed: Navigator.of(context).pop),
-      if (completionValue != null) Expanded(child: _buildCompletionProgress()),
-    ]);
+    if (completionValue == null) {
+      return AppBar(automaticallyImplyLeading: false);
+    } else {
+      final actions = Row(
+        children: [
+          AssetIconButton(images.closeAsset, onPressed: Navigator.of(context).pop),
+          Expanded(child: _buildCompletionProgress()),
+        ],
+      );
 
-    return AppBar(
-      bottom: PreferredSize(
+      final titleWidget = PreferredSize(
         preferredSize: preferredSize,
-        child: customWidgets.withSymmetricalPadding(context, horizontal: Spacing.medium),
-      ),
-    );
+        child: actions.withSymmetricalPadding(context),
+      );
+
+      return AppBar(title: titleWidget, automaticallyImplyLeading: false);
+    }
   }
 
   Widget _buildCompletionProgress() {
