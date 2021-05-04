@@ -75,6 +75,7 @@ flutter:
     - assets/collections/
     - assets/images/icons/
     - assets/images/illustrations/
+    - assets/licenses/
 
   fonts:
     - family: RobotoMono
