@@ -83,7 +83,7 @@ platform :ios do
     sh("flutter", "test", "test")
 
     # Run flutter analyzer
-    # sh("flutter", "analyze", ".")
+    sh("flutter", "analyze", ".")
 
     # Run flutter build with release mode
     sh("flutter", "build", "ios", "--release", "--dart-define=ENV=PROD")
