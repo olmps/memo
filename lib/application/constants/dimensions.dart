@@ -14,7 +14,6 @@ const double cardBorderWidth = 4;
 const double iconSize = 24;
 
 const double smallIconSize = 16;
-const double smallIconButtonPadding = 0;
 
 //
 // CollectionsPage
