@@ -71,6 +71,7 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
     );
 
     return MaterialApp.router(
+      scaffoldMessengerKey: useScaffoldMessenger(),
       title: 'Memo',
       debugShowCheckedModeBanner: false,
       theme: useThemeController().currentThemeData(context),
