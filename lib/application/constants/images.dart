@@ -12,3 +12,6 @@ const folderAsset = '$_iconsRoot/folder.png';
 const linkAsset = '$_iconsRoot/link.png';
 const settingsAsset = '$_iconsRoot/settings.png';
 const trendingUpArrowAsset = '$_iconsRoot/trending_up_arrow.png';
+
+const _illustrationsRoot = '$_imgsRoot/illustrations';
+const logoAsset = '$_illustrationsRoot/logo.png';
