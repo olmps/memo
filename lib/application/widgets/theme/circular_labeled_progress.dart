@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/widgets/animatable_progress.dart';
 
@@ -29,8 +30,8 @@ class CircularLabeledProgress extends HookWidget {
         children: [
           AnimatableCircularProgress(
             value: progressValue,
-            animationCurve: dimens.defaultAnimationCurve,
-            animationDuration: dimens.defaultAnimatableProgressDuration,
+            animationCurve: anims.defaultAnimationCurve,
+            animationDuration: anims.defaultAnimatableProgressDuration,
             lineSize: dimens.progressCircularProgressLineWidth,
             lineColor: memoTheme.secondarySwatch.shade400,
             lineBackgroundColor: memoTheme.neutralSwatch.shade800,

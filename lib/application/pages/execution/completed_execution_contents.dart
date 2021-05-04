@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:layoutr/common_layout.dart';
 
+import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
 
@@ -105,8 +106,8 @@ class CompletedExecutionContents extends HookWidget {
         context.verticalBox(Spacing.medium),
         AnimatableLinearProgress(
           value: linearProgressValue,
-          animationCurve: dimens.defaultAnimationCurve,
-          animationDuration: dimens.defaultAnimatableProgressDuration,
+          animationCurve: anims.defaultAnimationCurve,
+          animationDuration: anims.defaultAnimatableProgressDuration,
           lineSize: dimens.progressCircularProgressLineWidth,
           lineColor: memoTheme.secondarySwatch.shade400,
           lineBackgroundColor: memoTheme.neutralSwatch.shade800,
