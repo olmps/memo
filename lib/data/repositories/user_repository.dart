@@ -18,17 +18,6 @@ abstract class UserRepository {
   /// Creates a new pristine [User]
   Future<void> createUser();
 
-  /// Retrieves the last stored versions per collection given the current [User]
-  ///
-  /// Returns a `Map` that associates a `Collection` name as its key and its version as the value
-  Future<Map<String, int>?> getLastCollectionsVersions();
-
-  /// Updates the versions per collection given the current [User]
-  Future<void> updateCollectionsVersions(Map<String, int> collectionsVersions);
-
-  /// Sets the current [User]
-  Future<void> updateMemoExecutionChunkGoal(int goal);
-
   /// Updates the [User] with the execution-related arguments
   ///
   /// Any update made to these properties, will override the current value, so make sure to update with the latest
@@ -42,7 +31,6 @@ class UserRepositoryImpl implements UserRepository {
   final SembastDatabase _db;
   final _mainStore = '';
   final _userRecord = 'user';
-  final _collectionsVersionsRecord = 'collections_versions';
 
   final _userSerializer = UserSerializer();
 
@@ -70,23 +58,6 @@ class UserRepositoryImpl implements UserRepository {
     final encodedUser = _userSerializer.to(User(memosExecutionChunkGoal: executionsGoal));
     await _db.put(id: _userRecord, object: encodedUser, store: _mainStore);
   }
-
-  @override
-  Future<Map<String, int>?> getLastCollectionsVersions() async {
-    final rawVersions = await _db.get(id: _collectionsVersionsRecord, store: _mainStore);
-    return rawVersions != null ? Map<String, int>.from(rawVersions) : null;
-  }
-
-  @override
-  Future<void> updateCollectionsVersions(Map<String, int> collectionsVersions) =>
-      _db.put(id: _collectionsVersionsRecord, object: collectionsVersions, store: _mainStore);
-
-  @override
-  Future<void> updateMemoExecutionChunkGoal(int goal) => _db.put(
-        id: _userRecord,
-        object: <String, dynamic>{UserKeys.memosExecutionChunkGoal: goal},
-        store: _mainStore,
-      );
 
   @override
   Future<void> updateExecution({required Map<MemoDifficulty, int> executionsAmounts, required int timeSpentInMillis}) =>
