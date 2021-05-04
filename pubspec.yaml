@@ -41,6 +41,9 @@ dependencies:
   flutter_hooks: ^0.16.0
   hooks_riverpod: ^0.13.0
 
+  # Keep dependency locked, as we need it to be the exact same in `memo-editor`
+  flutter_quill: 1.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -62,6 +65,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/collections/
     - assets/images/icons/
 
   fonts:

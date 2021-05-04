@@ -1,28 +1,46 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/application/view-models/app_vm.dart';
+import 'package:memo/domain/enums/memo_difficulty.dart';
+import 'package:memo/domain/models/memo_execution.dart';
+import 'package:memo/domain/services/progress_services.dart';
 import 'package:meta/meta.dart';
 
-final progressVM = StateNotifierProvider<ProgressVM>((_) => ProgressVMImpl());
+final progressVM = StateNotifierProvider<ProgressVM>((ref) {
+  return ProgressVMImpl(ref.read(progressServices));
+});
 
 abstract class ProgressVM extends StateNotifier<ProgressState> {
   ProgressVM(ProgressState state) : super(state);
 }
 
 class ProgressVMImpl extends ProgressVM {
-  ProgressVMImpl() : super(LoadingProgressState()) {
-    _loadProgress();
+  ProgressVMImpl(this._services) : super(LoadingProgressState()) {
+    _addProgressListener();
   }
 
-  Future<void> _loadProgress() async {
-    // TODO(matuella): attach logic
-    await Future.delayed(const Duration(seconds: 1), () {});
+  final ProgressServices _services;
+  StreamSubscription<MemoExecutionsMetadata>? _progressListener;
 
-    state = LoadedProgressState(
-      timeSpentInMillis: 20000000,
-      hardMemosCount: 17,
-      mediumMemosCount: 37,
-      easyMemosCount: 97,
-    );
+  Future<void> _addProgressListener() async {
+    final progressStream = await _services.listenToUserProgress();
+    _progressListener = progressStream.listen((progress) {
+      state = LoadedProgressState(
+        timeSpentInMillis: progress.timeSpentInMillis,
+        executionsPercentage: progress.executionsAmounts.map(
+          (key, value) => MapEntry(key, progress.hasExecutions ? value / progress.totalExecutionsAmount : 0),
+        ),
+        totalExecutions: progress.totalExecutionsAmount,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _progressListener?.cancel();
+    super.dispose();
   }
 }
 
@@ -37,31 +55,19 @@ class LoadingProgressState extends ProgressState {}
 class LoadedProgressState extends ProgressState {
   LoadedProgressState({
     required this.timeSpentInMillis,
-    required this.hardMemosCount,
-    required this.mediumMemosCount,
-    required this.easyMemosCount,
+    required this.executionsPercentage,
+    required this.totalExecutions,
   });
 
   /// Total time spent in all memos (in milliseconds)
   final int timeSpentInMillis;
   TimeProgress get timeProgress => TimeProgress.fromDuration(Duration(milliseconds: timeSpentInMillis));
 
-  int get completedMemosCount => hardMemosCount + mediumMemosCount + easyMemosCount;
-
-  String get readableHardMemosPercentage => (hardMemosPercentage * 100).round().toString();
-  double get hardMemosPercentage => hardMemosCount / completedMemosCount;
-  final int hardMemosCount;
-
-  String get readableMediumMemosPercentage => (mediumMemosPercentage * 100).round().toString();
-  double get mediumMemosPercentage => mediumMemosCount / completedMemosCount;
-  final int mediumMemosCount;
-
-  String get readableEasyMemosPercentage => (easyMemosPercentage * 100).round().toString();
-  double get easyMemosPercentage => easyMemosCount / completedMemosCount;
-  final int easyMemosCount;
+  final Map<MemoDifficulty, double> executionsPercentage;
+  final int totalExecutions;
 
   @override
-  List<Object?> get props => [timeSpentInMillis, hardMemosCount, mediumMemosCount, easyMemosCount];
+  List<Object?> get props => [timeSpentInMillis, executionsPercentage, totalExecutions];
 }
 
 /// Helper that excludes time components with zero-values
@@ -119,6 +125,9 @@ class TimeProgress {
   final int? hours;
   final int? minutes;
   final int? seconds;
+
+  /// `true` only when the [seconds] component is present
+  bool get hasOnlySeconds => hours == null && minutes == null;
 
   /// `true` if all time components are `null`
   bool get isEmpty => hours == null && minutes == null && seconds == null;

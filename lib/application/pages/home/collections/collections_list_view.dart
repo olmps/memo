@@ -7,6 +7,7 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/colors.dart' as colors;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
+import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/collections_vm.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
@@ -38,11 +39,28 @@ class CollectionsListView extends HookWidget {
             title: item.name,
             onTap: () {},
           ).withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.small);
-        } else if (item is CollectionMetadata) {
+        } else if (item is CompletedCollectionItem) {
           return _CollectionCard(
             name: item.name,
             tags: item.tags,
-            memoryStability: item.memoryStability,
+            progressDescription: strings.recallLevel,
+            progressValue: item.recallLevel,
+            progressSemanticLabel:
+                strings.linearIndicatorCollectionRecallLabel(item.readableRecall + strings.percentSymbol),
+            onTap: () => readCoordinator(context).navigateToCollectionExecution(item.id),
+          ).withOnlyPadding(context, bottom: Spacing.medium);
+        } else if (item is IncompleteCollectionItem) {
+          return _CollectionCard(
+            name: item.name,
+            tags: item.tags,
+            progressDescription: strings.collectionCompletionProgress(
+              current: item.executedUniqueMemos,
+              target: item.totalUniqueMemos,
+            ),
+            progressValue: item.isPristine ? null : item.completionPercentage,
+            progressSemanticLabel:
+                strings.linearIndicatorCollectionCompletionLabel(item.readableCompletion + strings.percentSymbol),
+            onTap: () => readCoordinator(context).navigateToCollectionExecution(item.id),
           ).withOnlyPadding(context, bottom: Spacing.medium);
         }
 
@@ -67,7 +85,7 @@ class _CollectionsSectionHeader extends HookWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(title, style: sectionTitleStyle)),
+        Expanded(child: Text(title, style: sectionTitleStyle)),
         TextButton(onPressed: onTap, child: Text(strings.collectionsSectionHeaderSeeAll.toUpperCase())),
       ],
     );
@@ -75,8 +93,15 @@ class _CollectionsSectionHeader extends HookWidget {
 }
 
 class _CollectionCard extends HookWidget {
-  _CollectionCard({required this.name, required this.tags, required this.memoryStability, Key? key})
-      : assert(tags.isNotEmpty),
+  _CollectionCard({
+    required this.name,
+    required this.tags,
+    required this.progressDescription,
+    required this.progressValue,
+    required this.progressSemanticLabel,
+    required this.onTap,
+    Key? key,
+  })  : assert(tags.isNotEmpty),
         super(key: key);
 
   /// Name for this collection
@@ -85,8 +110,16 @@ class _CollectionCard extends HookWidget {
   /// Name for this collection
   final List<String> tags;
 
-  /// Raw value for this collection's memory stability - ranging from 0 to 1
-  final double? memoryStability;
+  /// Auxiliar description to describe this collection's progress
+  final String? progressDescription;
+
+  /// Raw value for this collection's generic progress value - ranging from 0 to 1
+  final double? progressValue;
+
+  /// Accessibility description for this progress
+  final String? progressSemanticLabel;
+
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -116,23 +149,26 @@ class _CollectionCard extends HookWidget {
     );
 
     // We are not using the `Card` widget because we need to customize the background with border + painter
-    return Container(
-      decoration: wrapperDecoration,
-      child: CustomPaint(
-        painter: backgroundPainter,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(child: firstRowElements),
-            if (memoryStability != null) ...[
-              context.verticalBox(Spacing.large),
-              _buildMemoryStabilityTitle(context),
-              context.verticalBox(Spacing.xSmall),
-              _buildMemoryStabilityProgress(),
-            ]
-          ],
-        ).withSymmetricalPadding(context, vertical: Spacing.large, horizontal: Spacing.small),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: wrapperDecoration,
+        child: CustomPaint(
+          painter: backgroundPainter,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(child: firstRowElements),
+              if (progressDescription != null && progressValue != null) ...[
+                context.verticalBox(Spacing.large),
+                _buildMemoryRecallTitle(context),
+                context.verticalBox(Spacing.xSmall),
+                _buildMemoryRecallProgress(),
+              ]
+            ],
+          ).withSymmetricalPadding(context, vertical: Spacing.large, horizontal: Spacing.small),
+        ),
       ),
     );
   }
@@ -147,25 +183,26 @@ class _CollectionCard extends HookWidget {
     );
   }
 
-  Text _buildMemoryStabilityTitle(BuildContext context) {
+  Text _buildMemoryRecallTitle(BuildContext context) {
     final memoTheme = useTheme();
     final captionColor = memoTheme.neutralSwatch.shade200;
     final captionStyle = Theme.of(context).textTheme.caption;
 
-    return Text(strings.collectionsMemoryStability, style: captionStyle?.copyWith(color: captionColor));
+    return Text(progressDescription!, style: captionStyle?.copyWith(color: captionColor));
   }
 
-  Widget _buildMemoryStabilityProgress() {
+  Widget _buildMemoryRecallProgress() {
     final memoTheme = useTheme();
     final lineColor = memoTheme.secondarySwatch.shade400;
 
     return AnimatableLinearProgress(
-      value: memoryStability!,
+      value: progressValue!,
       animationCurve: dimens.defaultAnimationCurve,
       animationDuration: dimens.defaultAnimatableProgressDuration,
       lineSize: dimens.collectionsLinearProgressLineWidth,
       lineColor: lineColor,
       lineBackgroundColor: memoTheme.neutralSwatch.shade900.withOpacity(0.4),
+      semanticLabel: progressSemanticLabel,
     );
   }
 }
@@ -196,9 +233,9 @@ class _CollectionCardBackgroundPainter extends CustomPainter {
         Offset.zero,
         Offset(size.width, size.height),
         [
-          horizontalLineColor.withAlpha((255 * 0.03).round()), // 3% opacity
-          horizontalLineColor.withAlpha((255 * 0.012).round()), // 1,2% opacity
-          horizontalLineColor.withAlpha((255 * 0.03).round()) // 3% opacity
+          horizontalLineColor.withOpacity(0.03),
+          horizontalLineColor.withOpacity(0.012),
+          horizontalLineColor.withOpacity(0.03),
         ],
         [0, 0.5, 1],
       );

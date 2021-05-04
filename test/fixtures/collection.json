@@ -4,8 +4,12 @@
   "description": "This collection represents a collection.",
   "category": "Category",
   "tags": ["Tag 1", "Tag 2"],
-  "timeSpentInMillis": 0,
-  "easyMemosAmount": 0,
-  "mediumMemosAmount": 0,
-  "hardMemosAmount": 0
+  "uniqueMemosAmount": 1,
+  "uniqueMemoExecutionsAmount": 0,
+  "executionsAmounts": {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0
+  },
+  "timeSpentInMillis": 0
 }

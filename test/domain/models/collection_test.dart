@@ -1,60 +1,58 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
 
 void main() {
-  test('Collection should not allow invalid integers for its properties', () {
+  Collection newCollection({
+    int uniqueMemosAmount = 1,
+    Map<MemoDifficulty, int> executionsAmounts = const {},
+    int uniqueMemoExecutionsAmount = 0,
+    int timeSpentInMillis = 0,
+  }) {
+    return Collection(
+      id: 'id',
+      name: 'name',
+      description: 'description',
+      category: 'category',
+      tags: const [],
+      uniqueMemosAmount: uniqueMemosAmount,
+      executionsAmounts: executionsAmounts,
+      uniqueMemoExecutionsAmount: uniqueMemoExecutionsAmount,
+      timeSpentInMillis: timeSpentInMillis,
+    );
+  }
+
+  test('Collection should not allow zero unique memos', () {
     expect(
       () {
-        Collection(
-          id: 'id',
-          name: 'name',
-          description: 'description',
-          category: 'category',
-          tags: const [],
-          timeSpentInMillis: -1,
-        );
+        newCollection(uniqueMemosAmount: 0);
       },
       throwsAssertionError,
     );
+  });
 
+  test('Collection should not allow a negative amount of unique executions', () {
     expect(
       () {
-        Collection(
-          id: 'id',
-          name: 'name',
-          description: 'description',
-          category: 'category',
-          tags: const [],
-          easyMemosAmount: -1,
-        );
+        newCollection(uniqueMemoExecutionsAmount: -1);
       },
       throwsAssertionError,
     );
+  });
 
+  test('Collection should not allow a negative time spent', () {
     expect(
       () {
-        Collection(
-          id: 'id',
-          name: 'name',
-          description: 'description',
-          category: 'category',
-          tags: const [],
-          mediumMemosAmount: -1,
-        );
+        newCollection(timeSpentInMillis: -1);
       },
       throwsAssertionError,
     );
+  });
 
+  test('Collection should not allow unique memos exceed the executed ones', () {
     expect(
       () {
-        Collection(
-          id: 'id',
-          name: 'name',
-          description: 'description',
-          category: 'category',
-          tags: const [],
-          hardMemosAmount: -1,
-        );
+        newCollection(uniqueMemoExecutionsAmount: 2);
       },
       throwsAssertionError,
     );

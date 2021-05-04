@@ -21,8 +21,10 @@ Table of contents
       - [`view_models/`](#view_models)
     - [`domain/`](#domain)
       - [`enums/`](#enums)
+      - [`isolated_services/`](#isolated_services)
       - [`models/`](#models)
       - [`services/`](#services)
+      - [`transients/`](#transients)
     - [`data/`](#data)
       - [`gateways/`](#gateways)
       - [`repositories/`](#repositories)
@@ -249,6 +251,16 @@ difference that it can be *described* statically (they are constant).
 > type-safety when dealing with these cases and if we don't actually leak it, normally what we have is a duplication of
 > this same enumerator behavior in the UI, but less type-safe (or just replicating the exact same behavior).
 
+#### `isolated_services/`
+
+Just like a regular [`services`](#services), but as the name states, it should be always completely isolated from any
+dependency. Think of the regular `services` as "impure" business logic, meaning that they need to use external
+dependencies interfaces, like databases, file system, etcetera, and the `isolated_services` as completely "pure"
+business logic, as it only requires to know the logic itself and nothing else.
+
+Because these are independent, the impure `services` may use them as dependencies, as it would never create a cyclical
+reference problem.
+
 #### `models/`
 
 A domain model - a set of structures that represent a business object.
@@ -264,6 +276,12 @@ structures (called Use Cases in the clean architecture) if proven necessary.
 
 They are the only structures in [`domain/`](#domain) that communicates with the [`data/`](#data) layer, more
 specifically, through the [`repositories/`](#repositories).
+
+#### `transients/`
+
+Just like the [`models/`](#models), the `transients` represent a set of business structures, although there's a
+clear distinction between these and `models` - they exist only in memory, meaning that they make sense only in some
+particular contexts required by the application's lifecycle.
 
 ### `data/`
 

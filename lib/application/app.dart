@@ -20,6 +20,8 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    vm.loadDependencies(DefaultAssetBundle.of(context));
+
     return ValueListenableBuilder<AsyncValue<AppState>>(
       valueListenable: vm,
       builder: (context, value, child) {
@@ -29,9 +31,11 @@ class AppRoot extends StatelessWidget {
               spacings: spacings,
               child: ProviderScope(
                 // Override all `Provider` and `ScopedProvider` that are late-initialized
-                // overrides: [
-                // exampleServices.overrideWithValue(state.exampleServices),
-                // ],
+                overrides: [
+                  collectionServices.overrideWithValue(state.collectionServices),
+                  executionServices.overrideWithValue(state.executionServices),
+                  progressServices.overrideWithValue(state.progressServices),
+                ],
                 child: _LoadedAppRoot(),
               ),
             );
@@ -57,7 +61,7 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
 
   @override
   Widget build(BuildContext context) {
-    final coordinator = context.read(coordinatorProvider);
+    final coordinator = readCoordinator(context);
 
     // Must keep stored the `PlatformRouteInformationProvider`, otherwise when this widget rebuilds (for any reason),
     // the current route will be reset to our "root". Not sure if this is the best approach, but this new Router API

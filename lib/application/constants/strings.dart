@@ -7,6 +7,8 @@
 // just like this file, but we have to consider that we will possibly need access to the BuildContext, as this is where
 // the runtime locale is determined.
 
+import 'package:memo/domain/enums/memo_difficulty.dart';
+
 const collectionsNavigationTab = 'Coleções';
 const progressNavigationTab = 'Progresso';
 
@@ -15,20 +17,70 @@ const collectionsReviewTab = 'Revisar';
 
 const collectionsSectionHeaderSeeAll = 'Ver todos';
 
-const collectionsMemoryStability = 'Estabilidade da Memória';
-
-const progressTotalStudyTime = 'Horas totais de estudos';
-
+//
+// Progress
+//
+const progressTotalStudyTime = 'Totais de estudos';
 const progressTotalMemos = 'Memos completados';
-const progressTotalHardMemos = 'Memos marcados como difícil';
-const progressTotalMediumMemos = 'Memos marcados como médio';
-const progressTotalEasyMemos = 'Memos marcados como fácil';
 
-const progressHardMemosIndicatorLabel =
-    'Indicador circular demonstrando o percentual de memos respondidos como difícil';
-const progressMediumMemosIndicatorLabel =
-    'Indicador circular demonstrando o percentual de memos respondidos como médio';
-const progressEasyMemosIndicatorLabel = 'Indicador circular demonstrando o percentual de memos respondidos como fácil';
+//
+// Execution
+//
+const executionQuestion = 'Questão';
+const executionAnswer = 'Resposta';
+
+const executionNext = 'Próxima';
+const executionCheckAnswer = 'Ver resposta';
+
+const executionYourPerformance = 'Seu desempenho';
+const executionBackToCollections = 'Voltar para as coleções';
+
+const executionWellDone = '## Muito Bem';
+const executionImprovedKnowledgeDescription = 'Você acaba de aprimorar seu conhecimento em:';
+
+String executionLinearIndicatorCompletionLabel(String completionDescription) =>
+    'Indicador linear demonstrando que o nível de conclusão desta sessão de aprendizado está em $completionDescription';
+
+//
+// Application-wide strings
+//
+String recallLevel = 'Nível de Fixação';
+
+String answeredMemos(MemoDifficulty difficulty) => 'Memos marcados como ${memoDifficulty(difficulty).toLowerCase()}';
+
+String collectionCompletionProgress({required int current, required int target}) =>
+    '$current / $target memos completados';
+
+String circularIndicatorMemoAnswersLabel(MemoDifficulty difficulty) =>
+    'Indicador circular demonstrando o percentual de memos respondidos como ${memoDifficulty(difficulty).toLowerCase()}';
+
+String linearIndicatorCollectionRecallLabel(String recallDescription) =>
+    'Indicador linear demonstrando que o nível de fixação da coleção está em $recallDescription';
+
+String linearIndicatorCollectionCompletionLabel(String completionDescription) =>
+    'Indicador linear demonstrando que o nível de conclusão da coleção está em $completionDescription';
+
+String memoDifficultyEmoji(MemoDifficulty difficulty) {
+  switch (difficulty) {
+    case MemoDifficulty.easy:
+      return squintingFaceWithTongue;
+    case MemoDifficulty.medium:
+      return expressionlessFace;
+    case MemoDifficulty.hard:
+      return faceScreamingInFear;
+  }
+}
+
+String memoDifficulty(MemoDifficulty difficulty) {
+  switch (difficulty) {
+    case MemoDifficulty.easy:
+      return 'Fácil';
+    case MemoDifficulty.medium:
+      return 'Médio';
+    case MemoDifficulty.hard:
+      return 'Difícil';
+  }
+}
 
 //
 // Symbols
@@ -38,8 +90,10 @@ const hoursSymbol = 'h';
 const minutesSymbol = 'm';
 
 //
-// Unicode Emojis
+// Unicode Emojis - Reference: https://unicode.org/emoji/charts/full-emoji-list.html
 //
-const faceScreamingInFear = '\u{1F631}';
-const expressionlessFace = '\u{1F611}';
 const squintingFaceWithTongue = '\u{1F61D}';
+const expressionlessFace = '\u{1F611}';
+const faceScreamingInFear = '\u{1F631}';
+
+const partyPopper = '\u{1F389}';

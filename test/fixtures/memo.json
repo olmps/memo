@@ -1,17 +1,12 @@
 {
-  "id": "1",
+  "uniqueId": "1",
   "collectionId": "1",
-  "question": [
-    { 
-      "type": "text",
-      "rawContents": "This is my simple string question"
-    }
-  ],
-  "answer": [
-    { 
-      "type": "text",
-      "rawContents": "This is my simple string answer"
-    }
-  ],
-  "executionsAmount": 0
+  "question": [{"question": "?"}],
+  "answer": [{"answer": "!"}],
+  "executionsAmounts": {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0
+  },
+  "timeSpentInMillis": 0
 }

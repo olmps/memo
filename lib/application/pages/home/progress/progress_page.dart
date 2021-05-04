@@ -6,7 +6,8 @@ import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/progress_vm.dart';
-import 'package:memo/application/widgets/animatable_progress.dart';
+import 'package:memo/application/widgets/theme/circular_labeled_progress.dart';
+import 'package:memo/domain/enums/memo_difficulty.dart';
 
 class ProgressPage extends HookWidget {
   @override
@@ -29,7 +30,7 @@ class ProgressPage extends HookWidget {
           child: _ProgressContainer(
             title: _buildAlternateStyleTextBox(
               context,
-              texts: [loadedState.completedMemosCount.toString()],
+              texts: [loadedState.totalExecutions.toString()],
             ),
             description: strings.progressTotalMemos.toUpperCase(),
           ),
@@ -37,67 +38,48 @@ class ProgressPage extends HookWidget {
       ],
     );
 
-    final hardMemosProgress = _ProgressContainer(
-      leading: _buildCircularProgress(
-        context,
-        progressValue: loadedState.hardMemosPercentage,
-        centerLabel: strings.faceScreamingInFear,
-        semanticLabel: strings.progressHardMemosIndicatorLabel,
-      ),
-      title: _buildAlternateStyleTextBox(
-        context,
-        texts: [loadedState.readableHardMemosPercentage, strings.percentSymbol],
-      ),
-      description: strings.progressTotalHardMemos.toUpperCase(),
-    );
-
-    final mediumMemosProgress = _ProgressContainer(
-      leading: _buildCircularProgress(
-        context,
-        progressValue: loadedState.mediumMemosPercentage,
-        centerLabel: strings.expressionlessFace,
-        semanticLabel: strings.progressMediumMemosIndicatorLabel,
-      ),
-      title: _buildAlternateStyleTextBox(
-        context,
-        texts: [loadedState.readableMediumMemosPercentage, strings.percentSymbol],
-      ),
-      description: strings.progressTotalMediumMemos.toUpperCase(),
-    );
-
-    final easyMemosProgress = _ProgressContainer(
-      leading: _buildCircularProgress(
-        context,
-        progressValue: loadedState.easyMemosPercentage,
-        centerLabel: strings.squintingFaceWithTongue,
-        semanticLabel: strings.progressEasyMemosIndicatorLabel,
-      ),
-      title: _buildAlternateStyleTextBox(
-        context,
-        texts: [loadedState.readableEasyMemosPercentage, strings.percentSymbol],
-      ),
-      description: strings.progressTotalEasyMemos.toUpperCase(),
-    );
-
     return SingleChildScrollView(
       child: Column(
         children: [
           // Wrapping in an `IntrinsicHeight`, otherwise the column will vertically expand to infinity
           IntrinsicHeight(child: firstRowParallelContainers),
-          context.verticalBox(Spacing.medium),
-          hardMemosProgress,
-          context.verticalBox(Spacing.medium),
-          mediumMemosProgress,
-          context.verticalBox(Spacing.medium),
-          easyMemosProgress,
+          for (final difficulty in loadedState.executionsPercentage.keys) ...[
+            context.verticalBox(Spacing.medium),
+            _buildDifficultyProgressContainer(
+              context,
+              difficulty,
+              amountPercentage: loadedState.executionsPercentage[difficulty]!,
+            ),
+          ]
         ],
       ).withSymmetricalPadding(context, vertical: Spacing.large, horizontal: Spacing.medium),
     );
   }
 
+  Widget _buildDifficultyProgressContainer(
+    BuildContext context,
+    MemoDifficulty difficulty, {
+    required double amountPercentage,
+  }) {
+    final readablePercentage = (amountPercentage * 100).round().toString();
+
+    return _ProgressContainer(
+      leading: CircularLabeledProgress(
+        progressValue: amountPercentage,
+        centerLabel: strings.memoDifficultyEmoji(difficulty),
+        semanticLabel: strings.circularIndicatorMemoAnswersLabel(difficulty),
+      ),
+      title: _buildAlternateStyleTextBox(
+        context,
+        texts: [readablePercentage, strings.percentSymbol],
+      ),
+      description: strings.answeredMemos(difficulty).toUpperCase(),
+    );
+  }
+
   Widget _buildTotalTimeContainer(BuildContext context, {required TimeProgress timeProgress}) {
     final textComponents = <String>[];
-    if (timeProgress.hours != null || timeProgress.isEmpty) {
+    if (timeProgress.hours != null || timeProgress.hasOnlySeconds) {
       final rawHours = timeProgress.hours ?? 0;
       textComponents.addAll([rawHours.toString(), strings.hoursSymbol]);
     }
@@ -135,38 +117,6 @@ class ProgressPage extends HookWidget {
 
     // Use a `FittedBox` to resize its text width if not enough horizontal space is available
     return FittedBox(child: Text.rich(TextSpan(children: spans), maxLines: 1));
-  }
-
-  Widget _buildCircularProgress(
-    BuildContext context, {
-    required double progressValue,
-    required String centerLabel,
-    required String semanticLabel,
-  }) {
-    final memoTheme = useTheme();
-    final centerLabelTheme = Theme.of(context).textTheme.headline4;
-
-    return SizedBox(
-      width: dimens.progressCircularProgressSize,
-      height: dimens.progressCircularProgressSize,
-      child: Stack(
-        children: [
-          AnimatableCircularProgress(
-            value: progressValue,
-            animationCurve: dimens.defaultAnimationCurve,
-            animationDuration: dimens.defaultAnimatableProgressDuration,
-            lineSize: dimens.progressCircularProgressLineWidth,
-            lineColor: memoTheme.secondarySwatch.shade400,
-            lineBackgroundColor: memoTheme.neutralSwatch.shade800,
-            minSize: dimens.progressCircularProgressSize,
-            semanticLabel: semanticLabel,
-          ),
-          Positioned.fill(
-            child: Align(child: Text(centerLabel, style: centerLabelTheme)),
-          ),
-        ],
-      ),
-    );
   }
 }
 
