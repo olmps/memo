@@ -43,10 +43,3 @@ const double executionsTerminalBlur = 32;
 const double executionsCompletionDividerHeight = 1;
 
 const double executionsHeaderEmojiTextSize = 80;
-
-//
-// Animations
-//
-const defaultAnimationCurve = Curves.easeInOutCubic;
-
-const defaultAnimatableProgressDuration = Duration(seconds: 1);

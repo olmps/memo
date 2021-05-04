@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:layoutr/common_layout.dart';
 
+import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
@@ -81,8 +82,8 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
 
     return AnimatableLinearProgress(
       value: completionValue!,
-      animationCurve: dimens.defaultAnimationCurve,
-      animationDuration: dimens.defaultAnimatableProgressDuration,
+      animationCurve: anims.defaultAnimationCurve,
+      animationDuration: anims.defaultAnimatableProgressDuration,
       lineSize: dimens.collectionsLinearProgressLineWidth,
       lineColor: lineColor,
       lineBackgroundColor: memoTheme.neutralSwatch.shade800,
