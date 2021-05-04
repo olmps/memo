@@ -10,8 +10,18 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
-> Android build: ?
-> iOS build: ?
+## [Unreleased] [0.1.0-rc.1]
+
+Introduces the first release candidate with all the first idealized functionalities for `memo`:
+
+- Collections listing, which sections all collections using its category and segments the contents by explore and
+review:
+  - Explore shows all collections that haven't all memos completed at least once;
+  - Review shows all collections that have all memos completed at least once.
+- Progress, showing the user's metadata for application-wide collection's executions, such as time spent, the
+percentage for each answer, etcetera;
+- Collection details and execution, which allows the user to study upon a compiled collection in this repository;
+- Settings page with info related to this project.
 
 ## [0.1.0-dev.1] - 2021-04-01
 
