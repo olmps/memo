@@ -10,7 +10,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -56,3 +56,11 @@ jobs:
           cd android && fastlane internal --verbose
         env:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+
+      # Push version bump changes to the repo
+      - name: Commit and push versions bump
+        run: |
+          git config --global user.name 'Memo Bot'
+          git config --global user.email 'memo@olmps.co'
+          git commit -am "[Fastlane] Bump version"
+          git push
