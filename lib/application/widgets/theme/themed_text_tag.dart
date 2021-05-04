@@ -39,3 +39,21 @@ class SecondaryTextTag extends HookWidget {
         textStyle: Theme.of(context).textTheme.overline,
       );
 }
+
+/// A `TextTag` instance that follows the neutral specs
+///
+/// To style itself, this `TextTag` implementation not only needs to be a child of `MaterialApp`, but also in be a
+/// context where a `ThemeController` is provided as well.
+class NeutralTextTag extends HookWidget {
+  const NeutralTextTag(this.text, {Key? key}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => TextTag(
+        text,
+        backgroundColor: useTheme().neutralSwatch.shade800,
+        padding: context.allInsets(Spacing.xxSmall),
+        textStyle: Theme.of(context).textTheme.overline,
+      );
+}
