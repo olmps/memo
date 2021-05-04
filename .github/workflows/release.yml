@@ -1,9 +1,9 @@
 name: Release Workflow
 
 on:
-  pull_request:
-    branches:
-      - main
+  release:
+    types:
+      - published
 
 env:
   flutter_version: "2.0.6"
