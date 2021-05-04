@@ -463,7 +463,7 @@ targets, and the lanes that perform such tasks are described in details in both 
 - [iOS Fastfile](ios/fastlane/Fastfile)
 - [Android Fastfile](android/fastlane/Fastfile)
 
-The main difference between the mobile platforms, is that Android build number is indefinitely incremented, since it's
+The main difference between the mobile platforms is that Android build number is indefinitely incremented, since it's
 not allowed to reset an Android project build number, while iOS resets its build number every time the app version 
 changes. 
 
