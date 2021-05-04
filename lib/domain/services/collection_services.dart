@@ -1,3 +1,4 @@
+import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
 import 'package:memo/domain/isolated_services/memory_recall_services.dart';
@@ -9,9 +10,6 @@ abstract class CollectionServices {
   /// Retrieves all available [CollectionStatus] and keeps listening to any changes made to them
   Future<Stream<List<CollectionStatus>>> listenToAllCollectionsStatus();
 
-  /// Retrieves all available [Collection]
-  Future<List<CollectionStatus>> getAllCollectionsStatus();
-
   /// Retrieves the [Collection] (with [collectionId]) current memory recall ratio
   ///
   /// This value ranges from `0` to `1`, meaning lesser the value, worse is the memory recall.
@@ -21,6 +19,9 @@ abstract class CollectionServices {
 
   /// Retrieves a [Collection] with the following [id]
   Future<Collection> getCollectionById(String id);
+
+  /// Retrieves a [CollectionStatus] with [collectionId] and keeps listening to any changes
+  Future<Stream<CollectionStatus>> listenToCollectionStatus({required String collectionId});
 }
 
 class CollectionServicesImpl implements CollectionServices {
@@ -41,13 +42,6 @@ class CollectionServicesImpl implements CollectionServices {
         return Future.wait(mappedStatuses);
       },
     );
-  }
-
-  @override
-  Future<List<CollectionStatus>> getAllCollectionsStatus() async {
-    final collections = await collectionRepo.getAllCollections();
-    final collectionStatuses = collections.map(_mapCollectionToCollectionStatus).toList();
-    return Future.wait(collectionStatuses);
   }
 
   @override
@@ -79,4 +73,17 @@ class CollectionServicesImpl implements CollectionServices {
 
   @override
   Future<Collection> getCollectionById(String id) => collectionRepo.getCollection(id: id);
+
+  @override
+  Future<Stream<CollectionStatus>> listenToCollectionStatus({required String collectionId}) async {
+    final collectionStream = await collectionRepo.listenToCollection(id: collectionId);
+
+    return collectionStream.asyncMap((collection) {
+      if (collection == null) {
+        throw InconsistentStateError.service('Missing required collection (id "$collectionId")');
+      }
+
+      return _mapCollectionToCollectionStatus(collection);
+    });
+  }
 }
