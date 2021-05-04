@@ -59,6 +59,11 @@ dev_dependencies:
   ###
   mocktail: ^0.1.0
 
+  ###
+  # Icon auto-generator
+  ###
+  flutter_launcher_icons: "^0.9.0"
+
 flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -66,8 +71,10 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/collections/
     - assets/images/icons/
+    - assets/images/illustrations/
 
   fonts:
     - family: RobotoMono
@@ -86,3 +93,8 @@ flutter:
           weight: 600
         - asset: assets/fonts/RobotoMono-Bold.ttf
           weight: 700
+
+flutter_icons:
+  image_path: "assets/icon.png"
+  android: true
+  ios: true
