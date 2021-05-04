@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/coordinator/routes.dart';
-import 'package:memo/application/pages/collection_details/collection_details_page.dart';
+import 'package:memo/application/pages/details/collection_details_page.dart';
+import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/pages/execution/collection_execution_page.dart';
 import 'package:memo/application/pages/execution/execution_providers.dart';
 import 'package:memo/application/pages/home/home_page.dart';
