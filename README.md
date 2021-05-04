@@ -52,8 +52,6 @@ How this application works from inside and how it interacts with external depend
 
 This project was built with the help of the sponsors below:
 
-WIP(sponsors)
-
 If you're interested in checking out an overview about how we dealt with this project's software process (inside our team),
 check out [.process/](.process/README.md) (sorry, for now only in ptBR).
 
@@ -64,3 +62,9 @@ See [CONTRIBUTING](CONTRIBUTING.md) for details about how to contribute to the p
 ## License
 
 Memo is published under [BSD 3-Clause](LICENSE).
+
+## Sponsors
+
+[Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover)
+[Startup Life Podcast](https://bit.ly/lucas-montano-startup-life)
+[Pingback](https://bit.ly/lucas-montano-pingback)
