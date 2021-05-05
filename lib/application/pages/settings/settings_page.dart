@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
+import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/view-models/settings/settings_vm.dart';
-import 'package:memo/application/widgets/theme/link_button.dart';
+import 'package:memo/application/widgets/theme/link.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
 class SettingsPage extends HookWidget {
@@ -31,11 +34,13 @@ class SettingsPage extends HookWidget {
             return ExternalLinkButton(
               item.url,
               description: item.description,
+              onFailLaunchingUrl: context.showExceptionSnackBar,
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedLinkSettingsItem) {
             return ExternalLinkButton(
-              item.url,
+              strings.settingsUrlForNamedLink(item.linkSettings),
               description: strings.settingsDescriptionForNamedLink(item.linkSettings),
+              onFailLaunchingUrl: context.showExceptionSnackBar,
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedCustomSettingsItem) {
             return LinkButton(
