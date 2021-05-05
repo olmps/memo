@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/theme/theme_controller.dart';
-import 'package:memo/application/view-models/home/collections_vm.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
 import 'package:memo/application/widgets/theme/hero_collection_card.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
-class CollectionsListView extends HookWidget {
-  const CollectionsListView() : super();
+class CollectionsListView extends StatelessWidget {
+  const CollectionsListView(this.items);
+
+  final List<ItemMetadata> items;
 
   @override
   Widget build(BuildContext context) {
-    final state = useProvider(collectionsVM.state);
-
-    if (state is LoadingCollectionsState) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    final loadedState = state as LoadedCollectionsState;
-    final items = loadedState.collectionItems;
-
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
