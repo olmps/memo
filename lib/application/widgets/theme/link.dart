@@ -160,7 +160,7 @@ Future<void> _handleUrlLaunch(String url, Function(UrlException exception)? onFa
     if (await url_launcher.canLaunch(url)) {
       await url_launcher.launch(url);
     } else {
-      onFailLaunchingUrl?.call(UrlException.failedToOpen());
+      onFailLaunchingUrl?.call(UrlException.failedToOpen(debugInfo: url));
     }
   } on PlatformException catch (exception) {
     final urlException = UrlException.failedToOpen(debugInfo: exception.toString());
