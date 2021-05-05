@@ -142,9 +142,11 @@ class RoutesCoordinator extends ChangeNotifier {
     );
   }
 
-  /// Adds a generic path to the current stack
-  void addRoute(AppPath path) {
-    setNewRoutePath(path);
+  void pop() {
+    if (_pages.isNotEmpty) {
+      _pages.removeLast();
+      notifyListeners();
+    }
   }
 
   void navigateToStudy() {

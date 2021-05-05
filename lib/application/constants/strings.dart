@@ -60,6 +60,10 @@ const executionAnswer = 'Resposta';
 const executionNext = 'Próxima';
 const executionCheckAnswer = 'Ver resposta';
 
+const executionDiscardStudy = 'Descartar Estudo';
+const executionDiscardStudyDescription =
+    'Se você encerrar seu estudo, perderá todo o seu progresso.\nDeseja prosseguir?';
+
 const executionYourPerformance = 'Seu desempenho';
 const executionBackToCollections = 'Voltar para as coleções';
 
@@ -117,7 +121,10 @@ String settingsDescriptionForNamedCustom(NamedCustomSettings custom) {
 //
 // Application-wide strings
 //
-String recallLevel = 'Nível de Fixação';
+const yes = 'Sim';
+const no = 'Não';
+
+const recallLevel = 'Nível de Fixação';
 
 String answeredMemos(MemoDifficulty difficulty) => 'Memos marcados como ${memoDifficulty(difficulty).toLowerCase()}';
 
