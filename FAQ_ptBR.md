@@ -20,9 +20,9 @@ esta na qual pertence à um Deck.
 
 ## O que é o nível de fixação?
 
-O nível de fixação (traduzido de *memory recall*) pode ser definido como **a soma das estimativas que damos à
-probabilidade de um usuário ter memorizado todos os Memos de uma Coleção**. Este nível é calculado com base na
-[curva de esquecimento do SuperMemo](https://supermemo.guru/wiki/Forgetting_curve).
+O nível de fixação (traduzido de *memory recall*) pode ser definido como **a soma das estimativas de memória (do
+usuário) para cada Memo, isto é, o quão _forte_ é a memória do usuário sobre os Memos de uma Coleção**. Este nível é
+calculado com base na [curva de esquecimento do SuperMemo](https://supermemo.guru/wiki/Forgetting_curve).
 
 A implementação deste cálculo pode ser vista mais à fundo na sua própria implementação dentro deste repositório, no
 serviço chamado `MemoryRecallServices`.
