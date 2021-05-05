@@ -70,7 +70,10 @@ class LinkButton extends HookWidget {
 /// This could also accept `http`, `tel`, `mail` and `sms`, although we don't have a reason to allow those schemes.
 const List<String> _allowedSchemes = ['https:'];
 
-/// Component representing a button that opens an external (non-application scope) link
+/// A custom-layout button that opens an external (non-application scope) link
+///
+/// See also:
+///   - [ExternalLinkTextButton] for simpler use-cases that only require a text button.
 class ExternalLinkButton extends StatelessWidget {
   ExternalLinkButton(
     this.url, {
@@ -96,7 +99,7 @@ class ExternalLinkButton extends StatelessWidget {
   final Widget? leading;
 
   /// Callback that is triggered when the [url] has failed launching
-  final void Function(URLException exception)? onFailLaunchingUrl;
+  final void Function(UrlException exception)? onFailLaunchingUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -104,23 +107,63 @@ class ExternalLinkButton extends StatelessWidget {
     const linkIcon = ImageIcon(linkImage, size: dimens.smallIconSize);
 
     return LinkButton(
-      onTap: isEnabled ? _handleTap : null,
+      onTap: isEnabled ? () => _handleUrlLaunch(url, onFailLaunchingUrl) : null,
       text: description ?? url,
       leading: leading,
       trailing: linkIcon,
     );
   }
+}
 
-  Future<void> _handleTap() async {
-    try {
-      if (await url_launcher.canLaunch(url)) {
-        await url_launcher.launch(url);
-      } else {
-        onFailLaunchingUrl?.call(URLException.failedToOpen());
-      }
-    } on PlatformException catch (exception) {
-      final urlException = URLException.failedToOpen(debugInfo: exception.toString());
-      onFailLaunchingUrl?.call(urlException);
+/// A custom-layout text button that opens an external (non-application scope) link
+///
+/// See also:
+///   - [ExternalLinkButton] for use-cases that required a more emphatic button action.
+class ExternalLinkTextButton extends HookWidget {
+  ExternalLinkTextButton(
+    this.url, {
+    this.text,
+    this.onFailLaunchingUrl,
+    Key? key,
+  }) : super(key: key) {
+    _allowedSchemes.firstWhere((scheme) => url.toLowerCase().startsWith(scheme), orElse: () {
+      throw InconsistentStateError.layout(
+          'All links must start with one of the following schemes: $_allowedSchemes - actual: "$url"');
+    });
+  }
+
+  final String url;
+
+  /// Overrides the [url] value as the text for this widget, usually with a more descriptive text for the [url]
+  final String? text;
+
+  /// Callback that is triggered when the [url] has failed launching
+  final void Function(UrlException exception)? onFailLaunchingUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _handleUrlLaunch(url, onFailLaunchingUrl),
+      child: Text(
+        text ?? url,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            ?.copyWith(color: useTheme().neutralSwatch.shade300, decoration: TextDecoration.underline),
+      ),
+    );
+  }
+}
+
+Future<void> _handleUrlLaunch(String url, Function(UrlException exception)? onFailLaunchingUrl) async {
+  try {
+    if (await url_launcher.canLaunch(url)) {
+      await url_launcher.launch(url);
+    } else {
+      onFailLaunchingUrl?.call(UrlException.failedToOpen());
     }
+  } on PlatformException catch (exception) {
+    final urlException = UrlException.failedToOpen(debugInfo: exception.toString());
+    onFailLaunchingUrl?.call(urlException);
   }
 }

@@ -24,7 +24,7 @@ extension ExceptionHandler on BuildContext {
 
   String _descriptionForException(BaseException exception) {
     switch (exception.type) {
-      case ExceptionType.failedToOpenURL:
+      case ExceptionType.failedToOpenUrl:
         return 'Algo deu errado ao tentar abrir o link!';
     }
   }
