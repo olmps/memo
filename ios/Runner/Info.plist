@@ -24,6 +24,10 @@
 	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+	</array>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
 	<key>UILaunchStoryboardName</key>
