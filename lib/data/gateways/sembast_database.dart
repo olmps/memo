@@ -117,29 +117,14 @@ class SembastDatabaseImpl implements SembastDatabase {
   @override
   Future<Stream<List<Map<String, dynamic>>>> listenAll({required String store}) async {
     final storeMap = stringMapStoreFactory.store(store);
-    return storeMap.query().onSnapshots(_db).transform(snapshotsTransformer);
+    // Maps a list of `sembast` snapshot records into a list of objects
+    return storeMap.query().onSnapshots(_db).map((snapshots) => snapshots.map((record) => record.value).toList());
   }
 
   @override
   Future<Stream<Map<String, dynamic>?>> listenTo({required String id, required String store}) async {
     final storeMap = stringMapStoreFactory.store(store);
-    return storeMap.record(id).onSnapshot(_db).transform(snapshotTransformer);
+    // Maps a single `sembast` snapshot record into an object
+    return storeMap.record(id).onSnapshot(_db).map((snapshot) => snapshot?.value);
   }
-
-  /// Transforms a list of `sembast` snapshot records into a list of objects
-  final snapshotsTransformer =
-      StreamTransformer<List<RecordSnapshot<String, Map<String, Object?>>>, List<Map<String, Object?>>>.fromHandlers(
-    handleData: (snapshots, sink) {
-      final transformedRecords = snapshots.map((record) => record.value).toList();
-      sink.add(transformedRecords);
-    },
-  );
-
-  /// Transforms a single `sembast` snapshot record into an object
-  final snapshotTransformer =
-      StreamTransformer<RecordSnapshot<String, Map<String, Object?>>?, Map<String, Object?>?>.fromHandlers(
-    handleData: (snapshot, sink) {
-      sink.add(snapshot?.value);
-    },
-  );
 }
