@@ -5,6 +5,7 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/home/collections/collections_page.dart';
 import 'package:memo/application/pages/home/progress/progress_page.dart';
+import 'package:memo/application/widgets/theme/themed_bottom_container.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
 
 enum HomeBottomTab { collections, progress }
@@ -58,7 +59,7 @@ class _AppBar extends HookWidget implements PreferredSizeWidget {
   }
 }
 
-class _BottomAppBar extends StatelessWidget {
+class _BottomAppBar extends HookWidget {
   const _BottomAppBar(this._tab);
 
   final HomeBottomTab _tab;
@@ -71,19 +72,21 @@ class _BottomAppBar extends StatelessWidget {
         )
         .toList();
 
-    return BottomNavigationBar(
-      onTap: (index) {
-        switch (HomeBottomTab.values[index]) {
-          case HomeBottomTab.collections:
-            readCoordinator(context).navigateToStudy();
-            break;
-          case HomeBottomTab.progress:
-            readCoordinator(context).navigateToProgress();
-            break;
-        }
-      },
-      currentIndex: HomeBottomTab.values.indexOf(_tab),
-      items: tabItems,
+    return ThemedBottomContainer(
+      child: BottomNavigationBar(
+        onTap: (index) {
+          switch (HomeBottomTab.values[index]) {
+            case HomeBottomTab.collections:
+              readCoordinator(context).navigateToStudy();
+              break;
+            case HomeBottomTab.progress:
+              readCoordinator(context).navigateToProgress();
+              break;
+          }
+        },
+        currentIndex: HomeBottomTab.values.indexOf(_tab),
+        items: tabItems,
+      ),
     );
   }
 }
