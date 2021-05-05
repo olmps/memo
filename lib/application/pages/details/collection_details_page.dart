@@ -54,6 +54,11 @@ class CollectionDetailsPage extends HookWidget {
         children: [
           _buildSectionTitle(context, strings.detailsResources),
           context.verticalBox(Spacing.small),
+          Text(
+            strings.detailsResourcesWarning,
+            style: Theme.of(context).textTheme.caption?.copyWith(color: memoTheme.neutralSwatch.shade300),
+          ),
+          context.verticalBox(Spacing.small),
           ResourcesList(
             itemCount: resources.length,
             resourceDescriptionBuilder: (index) => resources[index].description,
