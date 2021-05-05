@@ -264,6 +264,8 @@ class _TerminalActions extends HookWidget {
 
   Widget _buildDifficultyAction(MemoDifficulty difficulty) {
     final theme = useTheme();
+    final hasMarkedAnswer = markedAnswer != null;
+    final isMarkedAnswer = markedAnswer == difficulty;
 
     final blurFilter = BackdropFilter(
       filter: ui.ImageFilter.blur(
@@ -289,17 +291,20 @@ class _TerminalActions extends HookWidget {
       ),
     );
 
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: theme.neutralSwatch.shade400.withOpacity(0.1)),
-      width: dimens.executionsTerminalActionSize,
-      height: dimens.executionsTerminalActionSize,
-      child: Stack(
-        children: [
-          Positioned.fill(child: blurFilter),
-          Align(child: difficultyEmoji),
-          if (markedAnswer == difficulty) Positioned.fill(child: highlightDecoration),
-        ],
+    return Opacity(
+      opacity: hasMarkedAnswer && !isMarkedAnswer ? 0.4 : 1,
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: theme.neutralSwatch.shade400.withOpacity(0.1)),
+        width: dimens.executionsTerminalActionSize,
+        height: dimens.executionsTerminalActionSize,
+        child: Stack(
+          children: [
+            Positioned.fill(child: blurFilter),
+            Align(child: difficultyEmoji),
+            if (isMarkedAnswer) Positioned.fill(child: highlightDecoration),
+          ],
+        ),
       ),
     );
   }
