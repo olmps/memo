@@ -7,10 +7,14 @@
 // just like this file, but we have to consider that we will possibly need access to the BuildContext, as this is where
 // the runtime locale is determined.
 
+import 'package:memo/application/view-models/home/collections_vm.dart';
 import 'package:memo/application/view-models/settings/settings_vm.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 
+//
+// Collections
+//
 const collectionsNavigationTab = 'Coleções';
 const progressNavigationTab = 'Progresso';
 
@@ -18,6 +22,17 @@ const collectionsExploreTab = 'Explorar';
 const collectionsReviewTab = 'Revisar';
 
 const collectionsSectionHeaderSeeAll = 'Ver todos';
+
+String collectionsEmptySegment(CollectionsSegment segment) {
+  switch (segment) {
+    case CollectionsSegment.explore:
+      return 'Parabéns, você explorou todas as coleções!\n\n'
+          'Você ainda pode aperfeiçoar seu aprendizado na aba de "$collectionsReviewTab".';
+    case CollectionsSegment.review:
+      return 'Você ainda não tem nenhuma coleção para revisar.\n\n'
+          'Uma coleção só entra em revisão após terminar todos os seus respectivos memos pelo menos uma vez.';
+  }
+}
 
 //
 // Progress
@@ -28,11 +43,12 @@ const progressTotalMemos = 'Memos completados';
 //
 // Details
 //
-
 const details = 'Detalhes';
 const detailsDescription = 'Descrição';
 String detailsTotalMemos(int memos) => '$memos memos';
 const detailsResources = 'Materiais de apoio';
+const detailsResourcesWarning =
+    'Cuidado, estes materiais são referências para outros sites que não estão sob nosso controle';
 const detailsStudyNow = 'Estudar agora';
 
 //
@@ -50,6 +66,8 @@ const executionBackToCollections = 'Voltar para as coleções';
 const executionWellDone = '## Muito Bem';
 const executionImprovedKnowledgeDescription = 'Você acaba de aprimorar seu conhecimento em:';
 
+const executionWhatIsRecallLevel = 'O que é o nível de fixação?';
+
 String executionLinearIndicatorCompletionLabel(String completionDescription) =>
     'Indicador linear demonstrando que o nível de conclusão desta sessão de aprendizado está em $completionDescription';
 
@@ -61,6 +79,8 @@ String settingsDescriptionForSection(SettingsSection section) {
   switch (section) {
     case SettingsSection.legal:
       return 'Legal';
+    case SettingsSection.help:
+      return 'Ajuda';
     case SettingsSection.sponsors:
       return 'Patrocinadores';
     case SettingsSection.organizers:
@@ -68,10 +88,22 @@ String settingsDescriptionForSection(SettingsSection section) {
   }
 }
 
+String settingsUrlForNamedLink(NamedLinkSettings link) {
+  switch (link) {
+    // TODO(matuella): Add link when available
+    case NamedLinkSettings.termsAndPrivacyPolicy:
+      return 'https://google.com.br/';
+    case NamedLinkSettings.faq:
+      return faqUrl;
+  }
+}
+
 String settingsDescriptionForNamedLink(NamedLinkSettings link) {
   switch (link) {
     case NamedLinkSettings.termsAndPrivacyPolicy:
-      return 'Termos de Uso e Política de Privacidade';
+      return 'Termos e Política de Privacidade';
+    case NamedLinkSettings.faq:
+      return 'Perguntas Frequentes';
   }
 }
 
@@ -158,3 +190,8 @@ const expressionlessFace = '\u{1F611}';
 const faceScreamingInFear = '\u{1F631}';
 
 const partyPopper = '\u{1F389}';
+
+//
+// URLs
+//
+const faqUrl = 'https://github.com/olmps/memo/blob/main/FAQ_ptBR.md';
