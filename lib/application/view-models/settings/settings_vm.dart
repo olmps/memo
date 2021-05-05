@@ -15,9 +15,11 @@ class SettingsVM {
 
 const _items = {
   SettingsSection.legal: [
-    // TODO(matuella): Add link when available
-    NamedLinkSettingsItem(NamedLinkSettings.termsAndPrivacyPolicy, url: 'https://google.com/'),
+    NamedLinkSettingsItem(NamedLinkSettings.termsAndPrivacyPolicy),
     NamedCustomSettingsItem(NamedCustomSettings.licenses),
+  ],
+  SettingsSection.help: [
+    NamedLinkSettingsItem(NamedLinkSettings.faq),
   ],
   SettingsSection.sponsors: [
     LinkSettingsItem(description: 'Rocketseat', url: 'https://rocketseat.com.br/'),
@@ -39,10 +41,10 @@ abstract class SettingsItem extends Equatable {
 }
 
 /// Available settings sections
-enum SettingsSection { legal, sponsors, organizers }
+enum SettingsSection { legal, help, sponsors, organizers }
 
-/// Named settings that links to external sources but have a locale-specific naming
-enum NamedLinkSettings { termsAndPrivacyPolicy }
+/// Named settings that links to external sources but have a locale-specific naming and url linking
+enum NamedLinkSettings { termsAndPrivacyPolicy, faq }
 
 /// Named settings that have a locale-specific naming and custom navigation behavior
 enum NamedCustomSettings { licenses }
@@ -71,12 +73,11 @@ class LinkSettingsItem extends SettingsContent {
 }
 
 class NamedLinkSettingsItem extends SettingsContent {
-  const NamedLinkSettingsItem(this.linkSettings, {required this.url});
+  const NamedLinkSettingsItem(this.linkSettings);
   final NamedLinkSettings linkSettings;
-  final String url;
 
   @override
-  List<Object?> get props => [linkSettings, url];
+  List<Object?> get props => [linkSettings];
 }
 
 class NamedCustomSettingsItem extends SettingsContent {
