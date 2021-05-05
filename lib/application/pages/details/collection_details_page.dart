@@ -9,26 +9,30 @@ import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/details/collection_details_vm.dart';
 import 'package:memo/application/widgets/theme/hero_collection_card.dart';
 import 'package:memo/application/widgets/theme/resources_list.dart';
+import 'package:memo/application/widgets/theme/themed_bottom_container.dart';
 import 'package:memo/application/widgets/theme/themed_text_tag.dart';
 
 class CollectionDetailsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final memoTheme = useTheme();
     final state = useCollectionDetailsState();
 
     if (state is LoadedCollectionDetailsState) {
-      final heroCollectionCard = buildHeroCollectionCardFromItem(
-        state.metadata,
-        padding: EdgeInsets.only(
-          // The top spacing must take into consideration both the safe area and the toolbar height, as this page's
-          // scaffold `extendBodyBehindAppBar` is set to `true`, meaning that this collection card will be placed behind
-          // the app bar
-          top: context.rawSpacing(Spacing.large) + kToolbarHeight + MediaQuery.of(context).padding.top,
-          right: context.rawSpacing(Spacing.small),
-          bottom: context.rawSpacing(Spacing.large),
-          left: context.rawSpacing(Spacing.small),
+      final heroCollectionCard = ThemedTopContainer(
+        child: buildHeroCollectionCardFromItem(
+          state.metadata,
+          padding: EdgeInsets.only(
+            // The top spacing must take into consideration both the safe area and the toolbar height, as this page's
+            // scaffold `extendBodyBehindAppBar` is set to `true`, meaning that this collection card will be placed behind
+            // the app bar
+            top: context.rawSpacing(Spacing.large) + kToolbarHeight + MediaQuery.of(context).padding.top,
+            right: context.rawSpacing(Spacing.small),
+            bottom: context.rawSpacing(Spacing.large),
+            left: context.rawSpacing(Spacing.small),
+          ),
+          hasBorder: false,
         ),
-        hasBorder: false,
       );
 
       final descriptionSection = Column(
@@ -59,15 +63,17 @@ class CollectionDetailsPage extends HookWidget {
         ],
       );
 
-      final fixedBottomAction = Container(
-        color: useTheme().neutralSwatch.shade800,
-        child: ElevatedButton(
-          onPressed: () {
-            final id = context.read(detailsCollectionId);
-            readCoordinator(context).navigateToCollectionExecution(id, isNestedNavigation: false);
-          },
-          child: Text(strings.detailsStudyNow.toUpperCase()),
-        ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+      final fixedBottomAction = ThemedBottomContainer(
+        child: Container(
+          color: memoTheme.neutralSwatch.shade800,
+          child: ElevatedButton(
+            onPressed: () {
+              final id = context.read(detailsCollectionId);
+              readCoordinator(context).navigateToCollectionExecution(id, isNestedNavigation: false);
+            },
+            child: Text(strings.detailsStudyNow.toUpperCase()),
+          ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+        ),
       );
 
       final sections = [descriptionSection, resourcesSection];
@@ -103,5 +109,5 @@ class CollectionDetailsPage extends HookWidget {
   }
 
   Widget _buildSectionTitle(BuildContext context, String text) =>
-      Text(text, style: Theme.of(context).textTheme.subtitle1);
+      Text(text, style: Theme.of(context).textTheme.subtitle1?.copyWith(color: useTheme().neutralSwatch.shade300));
 }
