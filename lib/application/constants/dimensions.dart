@@ -8,6 +8,8 @@ const genericRoundedElementBorderRadius = BorderRadius.all(Radius.circular(4));
 
 const double tabBarBorderHeight = 2;
 
+const double elevatedContainerBorderHeight = 2;
+
 const textTagBorderRadius = BorderRadius.all(Radius.circular(2));
 const double cardBorderWidth = 4;
 
