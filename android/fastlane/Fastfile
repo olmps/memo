@@ -1,18 +1,44 @@
 default_platform(:android)
 
 platform :android do
-  desc "Deploy a new version to the Google Play Internal track"
-  lane :internal do
+
+  ########################--------------------------------########################
+  ########################--------- SETUP LANES ----------########################
+  ########################--------------------------------########################
+
+  # Check prerequisites for build and release:
+  #   - Clean the project
+  #   - Run tests
+  #   - Run Analyzer
+  private_lane :check_prerequisites do
     # Clean
     sh("flutter", "clean")
 
-    # Run flutter tests
+    # Run tests
     sh("flutter", "test", "test")
+
+    # Run Analyzer
+    sh("flutter", "analyze", ".")
+  end
+
+  # Run prerequisites and builds the app
+  lane :build do
+    # Run prerequisites
+    check_prerequisites
+
+    # Build the app
+    sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD")
+  end
+
+  desc "Deploy a new version to the Google Play Internal track"
+  lane :internal do
+    # Run prerequisites
+    check_prerequisites
 
     # Bumps Version Code
     android_set_version_code()
 
-    # Run flutter build that generates app bundle
+    # Build the app
     sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD")
 
     # Gets version info

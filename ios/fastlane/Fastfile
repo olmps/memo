@@ -59,6 +59,38 @@ platform :ios do
       verbose: true,
     )
   end
+  
+  ########################--------------------------------########################
+  ########################--------- BUILD LANES ----------########################
+  ########################--------------------------------########################
+
+  # Check prerequisites for build and release:
+  #   - Clean the project
+  #   - Run tests
+  #   - Run Analyzer
+  private_lane :check_prerequisites do
+    # Clean
+    sh("flutter", "clean")
+
+    # Run tests
+    sh("flutter", "test", "test")
+
+    # Run Analyzer
+    sh("flutter", "analyze", ".")
+  end
+
+  # Setup and build the app
+  ## Setup provision, certificates, run check_prerequisites and build the app in production env
+  lane :build do
+    # Setup provision profiles
+    setup_provisions
+
+    # Check prerequisites
+    check_prerequisites
+
+    # Run flutter build with release mode
+    sh("flutter", "build", "ios", "--release", "--dart-define=ENV=PROD")
+  end
 
   ########################--------------------------------########################
   ########################-------- RELEASE LANE ----------########################
@@ -76,17 +108,8 @@ platform :ios do
       setup_environment
     end
 
-    # Clean
-    sh("flutter", "clean")
-
-    # Run flutter tests
-    sh("flutter", "test", "test")
-
-    # Run flutter analyzer
-    sh("flutter", "analyze", ".")
-
-    # Run flutter build with release mode
-    sh("flutter", "build", "ios", "--release", "--dart-define=ENV=PROD")
+    # Clean and build the app
+    build
 
     # Increment the build number (use the latest build number for this version + 1)
     increment_build_number(
