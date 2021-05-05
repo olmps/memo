@@ -3,7 +3,7 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/utils/scaffold_messenger.dart';
-import 'package:memo/application/widgets/theme/link_button.dart';
+import 'package:memo/application/widgets/theme/link.dart';
 
 import 'package:memo/domain/enums/resource_type.dart';
 

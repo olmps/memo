@@ -34,6 +34,6 @@ abstract class BaseException extends Equatable implements Exception {
 }
 
 enum ExceptionType {
-  // URLException
-  failedToOpenURL,
+  // UrlException
+  failedToOpenUrl,
 }
