@@ -5,7 +5,7 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/home/collections/collections_page.dart';
 import 'package:memo/application/pages/home/progress/progress_page.dart';
-import 'package:memo/application/widgets/theme/themed_bottom_container.dart';
+import 'package:memo/application/widgets/theme/themed_container.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
 
 enum HomeBottomTab { collections, progress }
