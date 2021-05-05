@@ -6,41 +6,67 @@ on:
     branches:
       - main
 
+env:
+  flutter_version: "2.0.6"
+  java_version: "12.x"
+
 jobs:
   build:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
+      # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          java-version: ${{ env.java_version }}
 
+      # Setup Flutter SDK with version `env.flutter_version`
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
         with:
-          channel: "stable"
+          flutter-version: ${{ env.flutter_version }}
 
-      - name: Installing dependences
-        run: flutter pub get
+      # Uses `shimataro/ssh-key-action@v2` action to install Github SSH private key locally and setup github.com domain
+      # as a known host.
+      # The SSH Private Key being installed locally is the key used to clone the repository that contains the iOS
+      # Provisions Profiles and Certificates, used to deploy the iOS project to App Store Connect.
+      # Since this provisions and certificates are stored in an external repository, we must install the SSH private key
+      # that gives access to this repository, so we are able to clone it locally - and an easy and safe way to do it is
+      # by using SSH
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: replace
 
-      - name: Analysing code
-        run: flutter analyze .
-
-      - name: Running tests
-        run: flutter test --coverage
-
-      - name: Building for android
-        run: flutter build appbundle --dart-define=ENV=${{env.FLUTTER_ENV}}
+      # Build iOS app in production environment
+      - name: Build iOS App
+        run: cd ios && fastlane build
         env:
-          FLUTTER_ENV: ${{ github.event.pull_request.base.ref == 'main' && 'PROD' || 'DEV' }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          KEYCHAIN_NAME: ${{ secrets.KEYCHAIN_NAME }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          PROVISIONS_CERTIFICATES_REPO: ${{ secrets.PROVISIONS_CERTIFICATES_REPO }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
-      - name: Building for ios
-        run: flutter build ios --release --no-codesign --dart-define=ENV=${{env.FLUTTER_ENV}}
-        env:
-          FLUTTER_ENV: ${{ github.event.pull_request.base.ref == 'main' && 'PROD' || 'DEV' }}
+      # Retrieves keystore.jks and key.properties files from Github secrets. Both are used to sign the Android app
+      # before publishing it to Google Play console
+      - name: Setup Android Dependencies
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64_ENCODED }}" > keystore.jks.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch keystore.jks.asc > android/app/keystore.jks
+          echo "${{ secrets.KEY_PROPERTIES_BASE64_ENCODED }}" > key.properties.asc
+          gpg -d --passphrase "${{ secrets.KEY_PROPERTIES_PASSPHRASE }}" --batch key.properties.asc > android/key.properties
 
-      - name: Upload coverage to codecov
-        run: curl -s https://codecov.io/bash | bash
+      # Build Android app in production environment
+      - name: Build Android App
+        run: cd android && fastlane build
