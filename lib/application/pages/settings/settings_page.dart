@@ -43,6 +43,9 @@ class SettingsPage extends HookWidget {
               onFailLaunchingUrl: context.showExceptionSnackBar,
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedCustomSettingsItem) {
+            const navigationImage = AssetImage(images.chevronRightAsset);
+            const navigationIcon = ImageIcon(navigationImage, size: dimens.smallIconSize);
+
             return LinkButton(
               onTap: () {
                 switch (item.customSettings) {
@@ -51,6 +54,7 @@ class SettingsPage extends HookWidget {
                     break;
                 }
               },
+              trailing: navigationIcon,
               text: strings.settingsDescriptionForNamedCustom(item.customSettings),
             ).withOnlyPadding(context, top: Spacing.xSmall);
           }
