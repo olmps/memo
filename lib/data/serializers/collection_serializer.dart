@@ -23,8 +23,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
     final category = json[CollectionKeys.category] as String;
 
     final rawTags = json[CollectionKeys.tags] as List;
-    // Casting just to make sure, because sembast returns an ImmutableList<dynamic>
-    final tags = rawTags.cast<String>();
+    final tags = List<String>.from(rawTags);
 
     final uniqueMemosAmount = json[CollectionKeys.uniqueMemosAmount] as int;
     final uniqueMemoExecutionsAmount = json[CollectionKeys.uniqueMemoExecutionsAmount] as int?;

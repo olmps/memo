@@ -24,9 +24,8 @@ class MemoExecutionSerializer implements Serializer<MemoExecution, Map<String, d
     final rawFinished = json[MemoExecutionKeys.finished] as int;
     final finished = DateTime.fromMillisecondsSinceEpoch(rawFinished, isUtc: true);
 
-    // Casting just to make sure, because sembast returns an ImmutableList<dynamic>
-    final rawQuestion = (json[MemoExecutionKeys.rawQuestion] as List).cast<Map<String, dynamic>>();
-    final rawAnswer = (json[MemoExecutionKeys.rawAnswer] as List).cast<Map<String, dynamic>>();
+    final rawQuestion = List<Map<String, dynamic>>.from(json[MemoExecutionKeys.rawQuestion] as List);
+    final rawAnswer = List<Map<String, dynamic>>.from(json[MemoExecutionKeys.rawAnswer] as List);
 
     final rawDifficulty = json[MemoExecutionKeys.markedDifficulty] as String;
     final markedDifficulty = memoDifficultyFromRaw(rawDifficulty);
