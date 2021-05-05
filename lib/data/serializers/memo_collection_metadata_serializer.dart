@@ -12,7 +12,6 @@ class MemoCollectionMetadataSerializer implements Serializer<MemoCollectionMetad
   MemoCollectionMetadata from(Map<String, dynamic> json) {
     final uniqueId = json[MemoCollectionMetadataKeys.uniqueId] as String;
 
-    // Casting just to make sure, because sembast returns an ImmutableList<dynamic>
     final rawQuestion = List<Map<String, dynamic>>.from(json[MemoCollectionMetadataKeys.rawQuestion] as List);
     final rawAnswer = List<Map<String, dynamic>>.from(json[MemoCollectionMetadataKeys.rawAnswer] as List);
 

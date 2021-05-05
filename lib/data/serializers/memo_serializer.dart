@@ -21,9 +21,8 @@ class MemoSerializer implements Serializer<Memo, Map<String, dynamic>> {
     final collectionId = json[MemoKeys.collectionId] as String;
     final uniqueId = json[MemoKeys.uniqueId] as String;
 
-    // Casting just to make sure, because sembast returns an ImmutableList<dynamic>
-    final rawQuestion = (json[MemoKeys.rawQuestion] as List).cast<Map<String, dynamic>>();
-    final rawAnswer = (json[MemoKeys.rawAnswer] as List).cast<Map<String, dynamic>>();
+    final rawQuestion = List<Map<String, dynamic>>.from(json[MemoExecutionKeys.rawQuestion] as List);
+    final rawAnswer = List<Map<String, dynamic>>.from(json[MemoExecutionKeys.rawAnswer] as List);
 
     final rawExecutionsAmounts = json[MemoKeys.executionsAmounts] as Map<String, dynamic>?;
     final executionsAmounts =
