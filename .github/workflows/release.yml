@@ -79,3 +79,9 @@ jobs:
           git config --global user.email 'memo@olmps.co'
           git commit -am "[Fastlane] Bump version"
           git push
+
+      # Run tests and upload code coverage do Codecov
+      - name: Run tests and upload coverage to Codecov
+        run: |
+          flutter test --coverage
+          curl -s https://codecov.io/bash | bash
