@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/data/gateways/database_transaction_handler.dart';
+import 'package:meta/meta.dart';
 import 'package:sembast/sembast.dart' as sembast;
 
 export 'package:sembast/sembast.dart' show Finder, Filter;
@@ -13,7 +14,10 @@ export 'package:sembast/sembast.dart' show Finder, Filter;
 abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
   SembastTransactionHandler(this.db);
 
+  @protected
   final sembast.Database db;
+
+  @protected
   sembast.Transaction? currentTransaction;
 
   @override
