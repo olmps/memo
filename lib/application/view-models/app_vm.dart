@@ -6,6 +6,7 @@ import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_execution_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
 import 'package:memo/data/repositories/resource_repository.dart';
+import 'package:memo/data/repositories/transaction_handler.dart';
 import 'package:memo/data/repositories/user_repository.dart';
 import 'package:memo/data/repositories/version_repository.dart';
 import 'package:memo/domain/isolated_services/memory_recall_services.dart';
@@ -81,6 +82,8 @@ class AppVMImpl extends AppVM {
     final versionRepo = VersionRepositoryImpl(dbRepo);
     final resourceRepo = ResourceRepositoryImpl(dbRepo, appBundle);
 
+    final transactionHandler = TransactionHandlerImpl(dbRepo);
+
     // Isolated Services
     final memoryServices = MemoryRecallServicesImpl();
 
@@ -97,6 +100,7 @@ class AppVMImpl extends AppVM {
       collectionRepo: collectionRepo,
       executionsRepo: memoExecutionRepo,
       memoryServices: memoryServices,
+      transactionHandler: transactionHandler,
     );
 
     final progressServices = ProgressServicesImpl(userRepo: userRepo);
