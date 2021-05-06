@@ -43,8 +43,8 @@ class SettingsPage extends HookWidget {
               onFailLaunchingUrl: context.showExceptionSnackBar,
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedCustomSettingsItem) {
-            const navigationImage = AssetImage(images.chevronRightAsset);
-            const navigationIcon = ImageIcon(navigationImage, size: dimens.smallIconSize);
+            final navigationImage = AssetImage(images.chevronRightAsset);
+            final navigationIcon = ImageIcon(navigationImage, size: dimens.smallIconSize);
 
             return LinkButton(
               onTap: () {
