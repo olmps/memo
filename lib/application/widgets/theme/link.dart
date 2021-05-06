@@ -103,8 +103,8 @@ class ExternalLinkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const linkImage = AssetImage(images.linkAsset);
-    const linkIcon = ImageIcon(linkImage, size: dimens.smallIconSize);
+    final linkImage = AssetImage(images.linkAsset);
+    final linkIcon = ImageIcon(linkImage, size: dimens.smallIconSize);
 
     return LinkButton(
       onTap: isEnabled ? () => _handleUrlLaunch(url, onFailLaunchingUrl) : null,
