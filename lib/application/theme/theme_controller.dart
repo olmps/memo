@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/fonts.dart' as fonts;
 import 'package:memo/application/theme/material_theme_data.dart' as material_theme;
 import 'package:memo/application/theme/memo_theme_colors.dart' as colors;
 import 'package:memo/application/theme/memo_theme_data.dart';
@@ -67,6 +68,8 @@ class ThemeController extends StateNotifier<MemoThemeData> {
       textColor: textColor,
       iconColor: iconColor,
       bottomNavSelectedItemColor: bottomNavSelectedItemColor,
+      // Text
+      textThemeFontFamily: fonts.robotoMono,
       // Theme state swatches
       primarySwatch: state.primarySwatch,
       secondarySwatch: state.secondarySwatch,
