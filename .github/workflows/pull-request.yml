@@ -29,38 +29,19 @@ jobs:
         with:
           flutter-version: ${{ env.flutter_version }}
 
-      # Uses `shimataro/ssh-key-action@v2` action to install Github SSH private key locally and setup github.com domain
-      # as a known host.
-      # The SSH Private Key being installed locally is the key used to clone the repository that contains the iOS
-      # Provisions Profiles and Certificates, used to deploy the iOS project to App Store Connect.
-      # Since this provisions and certificates are stored in an external repository, we must install the SSH private key
-      # that gives access to this repository, so we are able to clone it locally - and an easy and safe way to do it is
-      # by using SSH
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: replace
-
-      # Build iOS app in production environment
-      - name: Build iOS App
-        run: cd ios && fastlane build
-        env:
-          KEYCHAIN_NAME: ${{ secrets.KEYCHAIN_NAME }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          PROVISIONS_CERTIFICATES_REPO: ${{ secrets.PROVISIONS_CERTIFICATES_REPO }}
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-
-      # Retrieves keystore.jks and key.properties files from Github secrets. Both are used to sign the Android app
-      # before publishing it to Google Play console
-      - name: Setup Android Dependencies
+      # Run pre-requisites to build both applications (iOS and Android)
+      - name: Clean, Analyze and run tests
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64_ENCODED }}" > keystore.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch keystore.jks.asc > android/app/keystore.jks
-          echo "${{ secrets.KEY_PROPERTIES_BASE64_ENCODED }}" > key.properties.asc
-          gpg -d --passphrase "${{ secrets.KEY_PROPERTIES_PASSPHRASE }}" --batch key.properties.asc > android/key.properties
+          flutter clean
+          flutter analyze .
+          flutter test test
 
-      # Build Android app in production environment
+        # Build iOS app in production environment without code sign
+      - name: Build iOS App
+        run: flutter build ios --release --dart-define=ENV=PROD --no-codesign
+
+      # Build Android app in production environment without signing the appbundle
       - name: Build Android App
-        run: cd android && fastlane build
+        run: flutter build appbundle --release --dart-define=ENV=PROD
+        env:
+          IS_SIGNING_ENABLED: false
