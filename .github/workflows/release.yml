@@ -71,6 +71,7 @@ jobs:
         run: cd android && fastlane internal --verbose
         env:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          IS_SIGNING_ENABLED: true
 
       # Commit versioning files updates to the repository
       - name: Commit and push versions bump

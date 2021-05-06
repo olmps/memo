@@ -51,9 +51,11 @@ android {
     }
 
     buildTypes {
+      if (System.getenv("IS_SIGNING_ENABLED") == true) {
         release {
-            signingConfig signingConfigs.release
+          signingConfig signingConfigs.release
         }
+      }
     }
 }
 
