@@ -6,19 +6,10 @@ platform :ios do
   ########################--------- SETUP LANES ----------########################
   ########################--------------------------------########################
 
-  api_key = nil
-
   # Environment Setup
-  ## Setup local keychain if running on a CI machine and setup AppStore Connect API Key to communicate with AppStore 
-  ## services
+  ## Setup local environment configuraiton. If running on a CI machine we need to create a keychain to store the 
+  ## distribution certificates
   private_lane :setup_environment do
-    api_key = app_store_connect_api_key(
-      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
-      issuer_id: ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
-      key_content: ENV["APP_STORE_CONNECT_API_KEY"],
-      in_house: false,
-    )
-
     if is_ci
       create_keychain(
         name: ENV["KEYCHAIN_NAME"],
@@ -42,7 +33,6 @@ platform :ios do
       app_identifier: "com.olmps.memoClient",
       type: "appstore",
       readonly: true,
-      api_key: api_key,
       keychain_name: ENV["KEYCHAIN_NAME"],
       keychain_password: ENV["KEYCHAIN_PASSWORD"],
       verbose: true,
@@ -53,7 +43,6 @@ platform :ios do
       app_identifier: "com.olmps.memoClient",
       type: "development",
       readonly: true,
-      api_key: api_key,
       keychain_name: ENV["KEYCHAIN_NAME"],
       keychain_password: ENV["KEYCHAIN_PASSWORD"],
       verbose: true,
@@ -102,11 +91,15 @@ platform :ios do
   # The lane increments the build number if necessary
   desc "Release app to Testflight"
   lane :release do
-    if is_ci
-      setup_provisions
-    else
-      setup_environment
-    end
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY"],
+      in_house: false,
+    )
+    
+    # Setup provision profiles
+    setup_provisions
 
     # Clean and build the app
     build
