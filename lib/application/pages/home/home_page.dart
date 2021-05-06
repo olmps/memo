@@ -104,9 +104,9 @@ extension _TabMetadata on HomeBottomTab {
   ImageIcon get icon {
     switch (this) {
       case HomeBottomTab.collections:
-        return const ImageIcon(AssetImage(images.folderAsset));
+        return ImageIcon(AssetImage(images.folderAsset));
       case HomeBottomTab.progress:
-        return const ImageIcon(AssetImage(images.trendingUpArrowAsset));
+        return ImageIcon(AssetImage(images.trendingUpArrowAsset));
     }
   }
 }
