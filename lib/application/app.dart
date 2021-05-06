@@ -8,6 +8,7 @@ import 'package:memo/application/coordinator/coordinator_router_delegate.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/splash_page.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/utils/license_update.dart';
 import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 
@@ -21,7 +22,9 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    vm.loadDependencies(DefaultAssetBundle.of(context));
+    final bundle = DefaultAssetBundle.of(context);
+    vm.loadDependencies(bundle);
+    addLicenseRegistryUpdater(bundle);
 
     return ValueListenableBuilder<AsyncValue<AppState>>(
       valueListenable: vm,
