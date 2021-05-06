@@ -4,9 +4,6 @@ English | [Portuguese](README_ptbr.md)
 
 <p align="center">
 <a href="https://github.com/olmps/memo/actions"><img src="https://github.com/olmps/memo/actions/workflows/flutter-ci.yml/badge.svg" alt="Build Status"></a>
-<a href="https://codecov.io/gh/olmps/memo">
-  <img src="https://codecov.io/gh/olmps/memo/branch/main/graph/badge.svg?token=CYE2JL0X4N"/>
-</a>
 </p>
 
 Monorepo for Memo.
