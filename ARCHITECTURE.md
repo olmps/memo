@@ -41,6 +41,7 @@ Table of contents
   - [Why `mocktail` and not `mockito`?](#why-mocktail-and-not-mockito)
   - [`CoordinatorRouter` and `Router` (or Navigator 2.0)](#coordinatorrouter-and-router-or-navigator-20)
   - [Why manually importing the font, if there is the `google_fonts`?](#why-manually-importing-the-font-if-there-is-the-google_fonts)
+  - [Importing Fonts](#importing-fonts)
   - [Exception handling](#exception-handling)
   - [App Icon](#app-icon)
   - [Local collections and resources versioning](#local-collections-and-resources-versioning)
@@ -432,6 +433,22 @@ experience for offline users;
 
 The only drawback of doing this manually is importing the fonts in the `assets/` folder (size shouldn't be relevant to
 impact even low-end devices), and specifying them in the `pubspec.yaml`.
+
+## Importing Fonts
+
+To import fonts, into this project, one should:
+1. Add all font files to `assets/fonts` following the weight/name guidelines below:
+    - `100`: `"{font_name}-Thin.{ttf || otf}'`;
+    - `200`: `"{font_name}-ExtraLight.{ttf || otf}'`;
+    - `300`: `"{font_name}-Light.{ttf || otf}'`;
+    - `400`: `"{font_name}-Regular.{ttf || otf}'`;
+    - `500`: `"{font_name}-Medium.{ttf || otf}'`;
+    - `600`: `"{font_name}-SemiBold.{ttf || otf}'`;
+    - `700`: `"{font_name}-Bold.{ttf || otf}'`;
+    - `800`: `"{font_name}-ExtraBold.{ttf || otf}'`;
+    - `900`: `"{font_name}-Black.{ttf || otf}'`.
+2. Update the `pubspec.yaml` `flutter.fonts` property with the new fonts naming/weights;
+3. Follow the type-safe usage of `FontKey` enumerator in `constants/fonts.dart`.
 
 ## Exception handling
 
