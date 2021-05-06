@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/data/serializers/collection_memos_serializer.dart';
 import 'package:memo/data/serializers/memo_collection_metadata_serializer.dart';
+import 'package:memo/data/serializers/resource_serializer.dart';
 
 import 'utils/asset_manifest.dart' as asset;
 
@@ -58,5 +59,17 @@ void main() {
         },
       );
     }
+  });
+
+  test('Resources assets should have unique memo ids amongst themselves', () async {
+    final rawResourcesString = await rootBundle.loadString('assets/resources.json');
+    final rawResources = List<Map<String, dynamic>>.from(jsonDecode(rawResourcesString) as List);
+
+    final resourcesIds = <String>{};
+    rawResources.forEach((rawResource) {
+      final resourceId = rawResource[ResourceKeys.id] as String;
+      expect(resourcesIds.contains(resourceId), isFalse, reason: 'Duplicate resource id "$resourceId"');
+      resourcesIds.add(resourceId);
+    });
   });
 }
