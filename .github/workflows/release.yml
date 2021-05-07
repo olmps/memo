@@ -46,9 +46,9 @@ jobs:
       - name: Release iOS App
         run: cd ios && fastlane release --verbose
         env:
-          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
-          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
           TEAM_ID: ${{ secrets.TEAM_ID }}
