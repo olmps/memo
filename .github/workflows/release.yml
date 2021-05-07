@@ -1,0 +1,87 @@
+name: Release Workflow
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  flutter_version: "2.0.6"
+  java_version: "12.x"
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # Checkout to main branch because this workflow is triggered from a release publish, it means that
+          # actions/checkout checkouts to HEAD by default. We need to be in main branch to commit and push the bumped
+          # version files changes - this workflow last phase
+          ref: main
+
+      # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.java_version }}
+
+      # Setup Flutter SDK with version `env.flutter_version`
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ env.flutter_version }}
+
+      # Uses `shimataro/ssh-key-action@v2` action to install Github SSH private key locally and setup github.com domain
+      # as a known host.
+      # The SSH Private Key being installed locally is the key used to clone the repository that contains the iOS
+      # Provisions Profiles and Certificates, used to deploy the iOS project to App Store Connect.
+      # Since this provisions and certificates are stored in an external repository, we must install the SSH private key
+      # that gives access to this repository, so we are able to clone it locally - and an easy and safe way to do it is
+      # by using SSH
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: replace
+
+      # Build an release iOS app to App Store Connect. More info about the steps in ios/fastlane/Fastfile file
+      - name: Release iOS App
+        run: cd ios && fastlane release --verbose
+        env:
+          APP_STORE_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          KEYCHAIN_NAME: ${{ secrets.KEYCHAIN_NAME }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          PROVISIONS_CERTIFICATES_REPO: ${{ secrets.PROVISIONS_CERTIFICATES_REPO }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+      # Retrieves keystore.jks and key.properties files from Github secrets. Both are used to sign the Android app
+      # before publishing it to Google Play console
+      - name: Setup Android Dependencies
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64_ENCODED }}" > keystore.jks.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch keystore.jks.asc > android/app/keystore.jks
+          echo "${{ secrets.KEY_PROPERTIES_BASE64_ENCODED }}" > key.properties.asc
+          gpg -d --passphrase "${{ secrets.KEY_PROPERTIES_PASSPHRASE }}" --batch key.properties.asc > android/key.properties
+
+      # Build an release Android app to Google Play Console. More info about the steps in android/fastlane/Fastfile file
+      - name: Release Android App
+        run: cd android && fastlane internal --verbose
+        env:
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          IS_SIGNING_ENABLED: true
+
+      # Commit versioning files updates to the repository
+      - name: Commit and push versions bump
+        run: |
+          git config --global user.name 'Memo Bot'
+          git config --global user.email 'memo@olmps.co'
+          git commit -am "[Fastlane] Bump version"
+          git push

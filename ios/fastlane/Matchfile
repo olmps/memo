@@ -1,0 +1,2 @@
+git_url(ENV["PROVISIONS_CERTIFICATES_REPO"])
+storage_mode("git")

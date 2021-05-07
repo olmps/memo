@@ -445,4 +445,31 @@ And that's it, the currently supported environments are: `DEV` and `PROD`.
 
 ### Release
 
-WIP
+The release process is fully-automated using Github Actions with Fastlane.
+The [release workflow](.github/workflows/release.yml) script triggers each time a new tag is published, and begins the
+release process in all supported platforms. The release script prepares the environment to build and release all 
+app targets by setting up Flutter environment for iOS and Android platforms, setting up necessary private keys to fetch
+distribution certificates from an external Github Repository and other setup phases that are required to successfully 
+build and deploy the apps. All these phases are detailed explained in the 
+[release workflow script](.github/workflows/release.yml).
+
+The Github Actions triggers the script that begins the release process, but the heavy work is made by using 
+[Fastlane](https://fastlane.tools/) automation tool. Fastlane gives us a set of tools to automate all the heavy work
+of configuring a project environment to be deployed, build and deploy it to production. Every the release script from
+Github Actions finish the environment setup, we use Fastlane to run the targets tests, analyzer, bump the build version
+from the targets, build the projects and finally deploy them. We currently have Fastlane running for iOS and Android 
+targets, and the lanes that perform such tasks are described in details in both platforms Fastfile's:
+
+- [iOS Fastfile](ios/fastlane/Fastfile)
+- [Android Fastfile](android/fastlane/Fastfile)
+
+The main difference between the mobile platforms is that Android build number is indefinitely incremented, since it's
+not allowed to reset an Android project build number, while iOS resets its build number every time the app version 
+changes. 
+
+You may notice that both platforms Fastfiles are quite different. This happens firstly because both platforms 
+environments are completely different - as an example of that, iOS requires provision profiles and certificates to 
+build and deploy the application, while Android requires a sign key to before deploying the app. They also differ 
+because there are some actions being used in iOS Fastlane that doesn't exists on Android - an example of that is that
+the iOS Fastlane uses an action to fetch the last used build number on TestFlight so it can increment it and deploy the
+next version, while Android just trust in the number that exists in the local `build.gradle`.
