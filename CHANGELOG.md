@@ -10,7 +10,7 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
-## [Unreleased] [0.1.0-rc.1]
+## [0.1.0-rc.1] - 2021-05-08
 
 Introduces the first release candidate with all the first idealized functionalities for `memo`:
 
