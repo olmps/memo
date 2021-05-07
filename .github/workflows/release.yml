@@ -16,6 +16,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
+          # Checkout to main branch because this workflow is triggered from a release publish, it means that
+          # actions/checkout checkouts to HEAD by default. We need to be in main branch to commit and push the bumped
+          # version files changes - this workflow last phase
           ref: main
 
       # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
