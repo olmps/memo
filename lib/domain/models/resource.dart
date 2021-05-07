@@ -26,5 +26,5 @@ class Resource extends Equatable {
   final String url;
 
   @override
-  List<Object?> get props => [id, description, tags, url];
+  List<Object?> get props => [id, description, tags, type, url];
 }

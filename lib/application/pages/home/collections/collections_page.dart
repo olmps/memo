@@ -4,8 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/layoutr.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/pages/home/collections/collections_list_view.dart';
+import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/collections_vm.dart';
 import 'package:memo/application/widgets/theme/themed_tab_bar.dart';
+import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
 class CollectionsPage extends HookWidget {
   @override
@@ -15,27 +17,30 @@ class CollectionsPage extends HookWidget {
       initialLength: availableSegments.length,
       initialIndex: initialState.segmentIndex,
     );
-    final tabs = availableSegments.map(_widgetForTab).toList();
 
     // Adds listener once (in the first build call)
     useEffect(() {
-      collectionsTabController.addListener(() {
+      void tabListener() {
         final currentState = context.read(collectionsVM.state);
 
-        // We want to update only when the indexIsChanging (because this listener is called multiple times by the tab
-        // controller) and if the current tab index is different from the index of the current segment, so they are
-        // always in sync
+        // We want to update only when the indexIsChanging AND if the current tab index is different from the index of
+        // the current segment. This check is mandatory because this listener is called multiple times by the tab
+        // controller.
         if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
           final newTab = availableSegments.elementAt(collectionsTabController.index);
           context.read(collectionsVM).updateCollectionsSegment(newTab);
         }
-      });
-    }, []);
+      }
 
+      collectionsTabController.addListener(tabListener);
+      return () => collectionsTabController.removeListener(tabListener);
+    }, [collectionsTabController]);
+
+    final tabs = availableSegments.map(_widgetForTab).toList();
     return Column(
       children: [
         ThemedTabBar(controller: collectionsTabController, tabs: tabs),
-        Expanded(child: const CollectionsListView().withSymmetricalPadding(context, horizontal: Spacing.medium))
+        Expanded(child: CollectionsContents()),
       ],
     );
   }
@@ -53,5 +58,37 @@ class CollectionsPage extends HookWidget {
 
     // Not using `Tab` widget as it implicitly adds a material's hard-coded height
     return Text(text);
+  }
+}
+
+/// Handles the [CollectionsPage] visible contents, given the current [collectionsVM] state
+class CollectionsContents extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final state = useProvider(collectionsVM.state);
+
+    final Widget widget;
+    if (state is LoadingCollectionsState) {
+      widget = const Center(child: CircularProgressIndicator());
+    } else if (state is LoadedCollectionsState) {
+      final items = state.collectionItems;
+
+      if (items.isEmpty) {
+        // Empty state for the current segment
+        widget = Center(
+          child: Text(
+            strings.collectionsEmptySegment(state.currentSegment),
+            style: Theme.of(context).textTheme.subtitle1?.copyWith(color: useTheme().neutralSwatch.shade300),
+            textAlign: TextAlign.center,
+          ),
+        );
+      } else {
+        widget = CollectionsListView(items);
+      }
+    } else {
+      throw InconsistentStateError.layout('Unsupported subtype (${state.runtimeType}) of `CollectionsState`');
+    }
+
+    return widget.withSymmetricalPadding(context, horizontal: Spacing.medium);
   }
 }

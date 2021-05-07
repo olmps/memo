@@ -5,13 +5,16 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:layoutr/common_layout.dart';
 
+import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
 
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 import 'package:memo/application/widgets/theme/circular_labeled_progress.dart';
+import 'package:memo/application/widgets/theme/link.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
@@ -98,6 +101,8 @@ class CompletedExecutionContents extends HookWidget {
           'Unexpected `FinishedCollectionExecutionState` subtype: ${state.runtimeType}');
     }
 
+    final showsRecallLevelLink = state is FinishedCompleteCollectionExecutionState;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -105,13 +110,20 @@ class CompletedExecutionContents extends HookWidget {
         context.verticalBox(Spacing.medium),
         AnimatableLinearProgress(
           value: linearProgressValue,
-          animationCurve: dimens.defaultAnimationCurve,
-          animationDuration: dimens.defaultAnimatableProgressDuration,
+          animationCurve: anims.defaultAnimationCurve,
+          animationDuration: anims.defaultAnimatableProgressDuration,
           lineSize: dimens.progressCircularProgressLineWidth,
           lineColor: memoTheme.secondarySwatch.shade400,
           lineBackgroundColor: memoTheme.neutralSwatch.shade800,
           semanticLabel: progressSemanticValue,
-        )
+        ),
+        context.verticalBox(Spacing.medium),
+        if (showsRecallLevelLink)
+          ExternalLinkTextButton(
+            strings.faqUrl,
+            text: strings.executionWhatIsRecallLevel,
+            onFailLaunchingUrl: context.showExceptionSnackBar,
+          ),
       ],
     );
   }

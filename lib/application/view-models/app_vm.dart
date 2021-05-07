@@ -5,6 +5,8 @@ import 'package:memo/data/gateways/application_bundle.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_execution_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
+import 'package:memo/data/repositories/resource_repository.dart';
+import 'package:memo/data/repositories/transaction_handler.dart';
 import 'package:memo/data/repositories/user_repository.dart';
 import 'package:memo/data/repositories/version_repository.dart';
 import 'package:memo/domain/isolated_services/memory_recall_services.dart';
@@ -13,6 +15,7 @@ import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:memo/data/gateways/sembast.dart' as sembast;
 import 'package:memo/domain/services/execution_services.dart';
 import 'package:memo/domain/services/progress_services.dart';
+import 'package:memo/domain/services/resource_services.dart';
 import 'package:memo/domain/services/user_services.dart';
 import 'package:memo/domain/services/version_services.dart';
 import 'package:sembast/sembast.dart';
@@ -76,7 +79,10 @@ class AppVMImpl extends AppVM {
     final memoRepo = MemoRepositoryImpl(dbRepo);
     final memoExecutionRepo = MemoExecutionRepositoryImpl(dbRepo);
     final userRepo = UserRepositoryImpl(dbRepo);
-    final versionRepo = VersionRepositoryImpl(appBundle);
+    final versionRepo = VersionRepositoryImpl(dbRepo);
+    final resourceRepo = ResourceRepositoryImpl(dbRepo, appBundle);
+
+    final transactionHandler = TransactionHandlerImpl(dbRepo);
 
     // Isolated Services
     final memoryServices = MemoryRecallServicesImpl();
@@ -87,34 +93,40 @@ class AppVMImpl extends AppVM {
       memoRepo: memoRepo,
       memoryServices: memoryServices,
     );
+
     final executionServices = ExecutionServicesImpl(
       userRepo: userRepo,
       memoRepo: memoRepo,
       collectionRepo: collectionRepo,
       executionsRepo: memoExecutionRepo,
       memoryServices: memoryServices,
+      transactionHandler: transactionHandler,
     );
+
     final progressServices = ProgressServicesImpl(userRepo: userRepo);
+
+    final resourceServices = ResourceServicesImpl(resourceRepo);
 
     final appState = AppState(
       collectionServices: collectionServices,
       executionServices: executionServices,
       progressServices: progressServices,
+      resourceServices: resourceServices,
     );
 
     // Scope-specific Services
     final versionServices = VersionServicesImpl(
-      userRepo: userRepo,
       versionRepo: versionRepo,
       collectionRepo: collectionRepo,
       memoRepo: memoRepo,
+      resourceRepo: resourceRepo,
     );
 
     final userServices = UserServicesImpl(userRepo);
 
     // Then run all "dependent dependencies", which are required for the application to work properly
     await Future.wait<dynamic>([
-      versionServices.updateCollectionsIfNeeded(),
+      versionServices.updateDependenciesIfNeeded(),
       userServices.createUserIfNeeded(),
       splashMinDuration,
     ]);
@@ -128,11 +140,13 @@ class AppState {
     required this.collectionServices,
     required this.executionServices,
     required this.progressServices,
+    required this.resourceServices,
   });
 
   final CollectionServices collectionServices;
   final ExecutionServices executionServices;
   final ProgressServices progressServices;
+  final ResourceServices resourceServices;
 }
 
 // Creates uninitialized Provider for all services, which MUST BE overriden in the root `ProviderScope.overrides`
@@ -144,4 +158,7 @@ final executionServices = Provider<ExecutionServices>((_) {
 });
 final progressServices = Provider<ProgressServices>((_) {
   throw UnimplementedError('progressServices Provider must be overridden');
+});
+final resourceServices = Provider<ResourceServices>((_) {
+  throw UnimplementedError('resourceServices Provider must be overridden');
 });

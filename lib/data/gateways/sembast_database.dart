@@ -1,10 +1,53 @@
 import 'dart:async';
-import 'package:sembast/sembast.dart';
+import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
+import 'package:memo/data/gateways/database_transaction_handler.dart';
+import 'package:meta/meta.dart';
+import 'package:sembast/sembast.dart' as sembast;
 
 export 'package:sembast/sembast.dart' show Finder, Filter;
 
+/// Sembast implementation for an atomic database transaction
+///
+/// Currently, there is no support for multiple transactions running simultaneously, so if necessary, run a transaction
+/// once, then run another after completing the first one. A [InconsistentStateError] is thrown if multiple transactions
+/// are running in parallel.
+abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
+  SembastTransactionHandler(this.db);
+
+  @protected
+  final sembast.Database db;
+
+  @protected
+  sembast.Transaction? currentTransaction;
+
+  @override
+  Future<void> runInTransaction(Future<void> Function() run) async {
+    if (currentTransaction != null) {
+      throw InconsistentStateError.gateway('Trying to run a new transaction while there is one already running');
+    }
+
+    try {
+      await db.transaction((transaction) async {
+        currentTransaction = transaction;
+        await run();
+      });
+      // ignore: avoid_catches_without_on_clauses
+    } catch (error, stack) {
+      throw InconsistentStateError.gateway(
+          'Failed transaction with Error:\n${error.toString()} \nStackTrace:\n${stack.toString()}');
+    } finally {
+      currentTransaction = null;
+    }
+  }
+}
+
+/// An optional [sembast.Transaction] can be provided to make sure that all changes made in a single transaction are
+/// atomic.
+
 /// Handles the local persistence to the database
-abstract class SembastDatabase {
+abstract class SembastDatabase extends SembastTransactionHandler {
+  SembastDatabase(sembast.Database db) : super(db);
+
   /// Adds an [object] to the [store], using a [id]
   ///
   /// If there is already an object with the same [id], the default behavior is to merge all of its fields.
@@ -39,7 +82,7 @@ abstract class SembastDatabase {
   Future<Map<String, dynamic>?> get({required String id, required String store});
 
   /// Retrieves all objects within [store]
-  Future<List<Map<String, dynamic>>> getAll({required String store, Finder? finder});
+  Future<List<Map<String, dynamic>>> getAll({required String store, sembast.Finder? finder});
 
   /// Retrieves all objects with the following [ids] from the [store]
   Future<List<Map<String, dynamic>?>> getAllByIds({required List<String> ids, required String store});
@@ -51,11 +94,8 @@ abstract class SembastDatabase {
   Future<Stream<Map<String, dynamic>?>> listenTo({required String id, required String store});
 }
 
-class SembastDatabaseImpl implements SembastDatabase {
-  SembastDatabaseImpl(this._db);
-
-  // `sembast` database instance
-  final Database _db;
+class SembastDatabaseImpl extends SembastDatabase {
+  SembastDatabaseImpl(sembast.Database db) : super(db);
 
   @override
   Future<void> put({
@@ -64,9 +104,8 @@ class SembastDatabaseImpl implements SembastDatabase {
     required String store,
     bool shouldMerge = true,
   }) async {
-    final storeMap = stringMapStoreFactory.store(store);
-
-    await storeMap.record(id).put(_db, object, merge: shouldMerge);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    await storeMap.record(id).put(currentTransaction ?? db, object, merge: shouldMerge);
   }
 
   @override
@@ -76,70 +115,53 @@ class SembastDatabaseImpl implements SembastDatabase {
     required String store,
     bool shouldMerge = true,
   }) async {
-    final storeMap = stringMapStoreFactory.store(store);
-
-    await storeMap.records(ids).put(_db, objects, merge: shouldMerge);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    await storeMap.records(ids).put(currentTransaction ?? db, objects, merge: shouldMerge);
   }
 
   @override
   Future<void> remove({required String id, required String store}) async {
-    final storeMap = stringMapStoreFactory.store(store);
-    await storeMap.record(id).delete(_db);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    await storeMap.record(id).delete(currentTransaction ?? db);
   }
 
   @override
   Future<void> removeAll({required List<String> ids, required String store}) async {
-    final storeMap = stringMapStoreFactory.store(store);
-    await storeMap.records(ids).delete(_db);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    await storeMap.records(ids).delete(currentTransaction ?? db);
   }
 
   @override
   Future<Map<String, dynamic>?> get({required String id, required String store}) {
-    final storeMap = stringMapStoreFactory.store(store);
-    return storeMap.record(id).get(_db);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    return storeMap.record(id).get(currentTransaction ?? db);
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getAll({required String store, Finder? finder}) async {
-    final storeMap = stringMapStoreFactory.store(store);
+  Future<List<Map<String, dynamic>>> getAll({required String store, sembast.Finder? finder}) async {
+    final storeMap = sembast.stringMapStoreFactory.store(store);
 
-    final allRecords = await storeMap.find(_db, finder: finder);
+    final allRecords = await storeMap.find(currentTransaction ?? db, finder: finder);
     return allRecords.map((record) => record.value).toList();
   }
 
   @override
   Future<List<Map<String, dynamic>?>> getAllByIds({required List<String> ids, required String store}) {
-    final storeMap = stringMapStoreFactory.store(store);
-
-    return storeMap.records(ids).get(_db);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    return storeMap.records(ids).get(currentTransaction ?? db);
   }
 
   @override
   Future<Stream<List<Map<String, dynamic>>>> listenAll({required String store}) async {
-    final storeMap = stringMapStoreFactory.store(store);
-    return storeMap.query().onSnapshots(_db).transform(snapshotsTransformer);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    // Maps a list of `sembast` snapshot records into a list of objects
+    return storeMap.query().onSnapshots(db).map((snapshots) => snapshots.map((record) => record.value).toList());
   }
 
   @override
   Future<Stream<Map<String, dynamic>?>> listenTo({required String id, required String store}) async {
-    final storeMap = stringMapStoreFactory.store(store);
-    return storeMap.record(id).onSnapshot(_db).transform(snapshotTransformer);
+    final storeMap = sembast.stringMapStoreFactory.store(store);
+    // Maps a single `sembast` snapshot record into an object
+    return storeMap.record(id).onSnapshot(db).map((snapshot) => snapshot?.value);
   }
-
-  /// Transforms a list of `sembast` snapshot records into a list of objects
-  final snapshotsTransformer =
-      StreamTransformer<List<RecordSnapshot<String, Map<String, Object?>>>, List<Map<String, Object?>>>.fromHandlers(
-    handleData: (snapshots, sink) {
-      final transformedRecords = snapshots.map((record) => record.value).toList();
-      sink.add(transformedRecords);
-    },
-  );
-
-  /// Transforms a single `sembast` snapshot record into an object
-  final snapshotTransformer =
-      StreamTransformer<RecordSnapshot<String, Map<String, Object?>>?, Map<String, Object?>?>.fromHandlers(
-    handleData: (snapshot, sink) {
-      sink.add(snapshot?.value);
-    },
-  );
 }

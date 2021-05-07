@@ -27,6 +27,7 @@ enum ErrorType {
   repositoryInconsistentState,
   viewModelInconsistentState,
   layoutInconsistentState,
+  gatewayInconsistentState,
 
   // SerializationError
   serialization,

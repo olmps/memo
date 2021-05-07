@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -19,7 +20,7 @@ void main() {
     db = SembastDatabaseImpl(memorySembast);
   });
 
-  test('DatabaseRepositoryImpl should put a new object', () async {
+  test('SembastDatabaseImpl should put a new object', () async {
     expect(await fakeRecord.get(memorySembast), isNull);
 
     await db.put(id: fakeRecordId, object: fakeObject, store: fakeRawStore);
@@ -27,7 +28,7 @@ void main() {
     expect(await fakeRecord.get(memorySembast), fakeObject);
   });
 
-  test('DatabaseRepositoryImpl should put multiple objects at once', () async {
+  test('SembastDatabaseImpl should put multiple objects at once', () async {
     expect(await fakeRecord.get(memorySembast), isNull);
 
     final records = [fakeRecordId, 'second-$fakeRecordId'];
@@ -37,7 +38,7 @@ void main() {
     expect(await fakeStore.records(records).get(memorySembast), fakeObjects);
   });
 
-  test('DatabaseRepositoryImpl should update an existing object', () async {
+  test('SembastDatabaseImpl should update an existing object', () async {
     await fakeRecord.put(memorySembast, fakeObject);
 
     final fakeUpdatedObject = {'fake': 'fakeUpdated', 'newFake': 'fake'};
@@ -47,7 +48,7 @@ void main() {
     expect(await fakeRecord.get(memorySembast), fakeUpdatedObject);
   });
 
-  test('DatabaseRepositoryImpl should remove pre-existing fields in an update without merge', () async {
+  test('SembastDatabaseImpl should remove pre-existing fields in an update without merge', () async {
     await fakeRecord.put(memorySembast, fakeObject);
 
     final fakeUpdatedObject = {'newFake': 'fake'};
@@ -57,7 +58,7 @@ void main() {
     expect(await fakeRecord.get(memorySembast), fakeUpdatedObject);
   });
 
-  test('DatabaseRepositoryImpl should maintain pre-existing fields in an update with merge', () async {
+  test('SembastDatabaseImpl should maintain pre-existing fields in an update with merge', () async {
     await fakeRecord.put(memorySembast, fakeObject);
 
     final fakeUpdatedObject = {'newFake': 'fake'};
@@ -68,7 +69,7 @@ void main() {
     expect(await fakeRecord.get(memorySembast), fakeUpdatedObject);
   });
 
-  test('DatabaseRepositoryImpl should remove an existing object', () async {
+  test('SembastDatabaseImpl should remove an existing object', () async {
     await fakeRecord.put(memorySembast, fakeObject);
 
     expect(await fakeRecord.get(memorySembast), fakeObject);
@@ -78,7 +79,7 @@ void main() {
     expect(await fakeRecord.get(memorySembast), isNull);
   });
 
-  test('DatabaseRepositoryImpl should remove multiple existing objects at once', () async {
+  test('SembastDatabaseImpl should remove multiple existing objects at once', () async {
     final records = [fakeRecordId, 'second-$fakeRecordId'];
     final fakeObjects = [fakeObject, fakeObject];
     await fakeStore.records(records).put(memorySembast, fakeObjects);
@@ -89,21 +90,21 @@ void main() {
     expect(await fakeStore.find(memorySembast), const <dynamic>[]);
   });
 
-  test('DatabaseRepositoryImpl should do nothing when removing a nonexistent object', () async {
+  test('SembastDatabaseImpl should do nothing when removing a nonexistent object', () async {
     await fakeRecord.put(memorySembast, fakeObject);
 
     await db.remove(id: fakeRecordId, store: fakeRawStore);
     expect(await fakeRecord.get(memorySembast), isNull);
   });
 
-  test('DatabaseRepositoryImpl should retrieve a single existing object', () async {
+  test('SembastDatabaseImpl should retrieve a single existing object', () async {
     await fakeRecord.put(memorySembast, fakeObject);
 
     final object = await db.get(id: fakeRecordId, store: fakeRawStore);
     expect(object, isNotNull);
   });
 
-  test('DatabaseRepositoryImpl should retrieve multiple existing objects by their ids', () async {
+  test('SembastDatabaseImpl should retrieve multiple existing objects by their ids', () async {
     final records = [fakeRecordId, 'second-$fakeRecordId'];
     final fakeObjects = [fakeObject, fakeObject];
     await fakeStore.records(records).put(memorySembast, fakeObjects);
@@ -112,12 +113,12 @@ void main() {
     expect(objects, fakeObjects);
   });
 
-  test('DatabaseRepositoryImpl should get null when retrieving a single nonexistent object', () async {
+  test('SembastDatabaseImpl should get null when retrieving a single nonexistent object', () async {
     final object = await db.get(id: fakeRecordId, store: fakeRawStore);
     expect(object, isNull);
   });
 
-  test('DatabaseRepositoryImpl should retrieve multiple objects', () async {
+  test('SembastDatabaseImpl should retrieve multiple objects', () async {
     await fakeRecord.put(memorySembast, fakeObject);
     await stringMapStoreFactory.store(fakeRawStore).record('2').put(memorySembast, fakeObject);
 
@@ -125,12 +126,12 @@ void main() {
     expect(objects.length, 2);
   });
 
-  test('DatabaseRepositoryImpl should retrieve an empty list if there is no objects in the store', () async {
+  test('SembastDatabaseImpl should retrieve an empty list if there is no objects in the store', () async {
     final objects = await db.getAll(store: fakeRawStore);
     expect(objects.isEmpty, true);
   });
 
-  test('DatabaseRepositoryImpl should emit new events when listening to store updates', () async {
+  test('SembastDatabaseImpl should emit new events when listening to store updates', () async {
     final stream = await db.listenAll(store: fakeRawStore);
 
     final expectedEmissions = <List<Map<String, String>>>[
@@ -143,5 +144,64 @@ void main() {
 
     await fakeRecord.put(memorySembast, fakeObject);
     await stringMapStoreFactory.store(fakeRawStore).record('other-fake-id').put(memorySembast, fakeObject);
+  });
+
+  test('SembastTransactionHandler should not make any updates in a failed transaction', () async {
+    await fakeRecord.put(memorySembast, fakeObject);
+
+    try {
+      await db.runInTransaction(() async {
+        const generatedRecords = 10;
+        final fakeRecordsIds = List.generate(generatedRecords, (index) => '$fakeRecordId-$index');
+        await db.putAll(
+          ids: fakeRecordsIds,
+          objects: fakeRecordsIds.map((_) => fakeObject).toList(),
+          store: fakeRawStore,
+        );
+        final updatedAddedRecords = await db.getAll(store: fakeRawStore);
+        expect(updatedAddedRecords.length, generatedRecords + 1);
+
+        await db.remove(id: fakeRecordId, store: fakeRawStore);
+        final updatedRemovedRecord = await db.getAll(store: fakeRawStore);
+        expect(updatedRemovedRecord.length, generatedRecords);
+
+        throw Error();
+      });
+      // ignore: avoid_catches_without_on_clauses, empty_catches
+    } catch (error) {}
+
+    final records = await db.getAll(store: fakeRawStore);
+    expect(records.length, 1);
+  });
+
+  test('SembastTransactionHandler should correctly store multiple updates in a transaction', () async {
+    const secondRecordId = 'second-$fakeRecordId';
+    await Future.wait([
+      fakeRecord.put(memorySembast, fakeObject),
+      fakeStore.record(secondRecordId).put(memorySembast, fakeObject),
+    ]);
+
+    await db.runInTransaction(() async {
+      await db.remove(id: fakeRecordId, store: fakeRawStore);
+      await db.remove(id: secondRecordId, store: fakeRawStore);
+    });
+
+    expect(await db.getAll(store: fakeRawStore), isEmpty);
+  });
+
+  test('SembastTransactionHandler should throw an error if multiple transactions are created simultaneously', () async {
+    await expectLater(
+      () async {
+        await Future.wait([
+          db.runInTransaction(() async {
+            await Future.delayed(const Duration(seconds: 1), () {});
+          }),
+          db.runInTransaction(() async {
+            await Future.delayed(const Duration(seconds: 1), () {});
+          }),
+        ]);
+      },
+      throwsA(isA<InconsistentStateError>()),
+    );
   });
 }

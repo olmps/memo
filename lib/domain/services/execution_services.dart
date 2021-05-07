@@ -1,6 +1,7 @@
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_execution_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
+import 'package:memo/data/repositories/transaction_handler.dart';
 import 'package:memo/data/repositories/user_repository.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/isolated_services/memory_recall_services.dart';
@@ -35,6 +36,7 @@ class ExecutionServicesImpl implements ExecutionServices {
     required this.collectionRepo,
     required this.executionsRepo,
     required this.memoryServices,
+    required this.transactionHandler,
   });
 
   final UserRepository userRepo;
@@ -43,6 +45,8 @@ class ExecutionServicesImpl implements ExecutionServices {
   final CollectionRepository collectionRepo;
 
   final MemoryRecallServices memoryServices;
+
+  final TransactionHandler transactionHandler;
 
   @override
   Future<List<Memo>> getNextExecutableMemosChunk({required String collectionId}) async {
@@ -64,7 +68,7 @@ class ExecutionServicesImpl implements ExecutionServices {
 
     // If we have enough pristine memos, we don't need to calculate each memory recall
     if (pristineMemos.length >= chunkGoal) {
-      return pristineMemos.sublist(0, chunkGoal - 1);
+      return pristineMemos.sublist(0, chunkGoal);
     }
 
     final executedMemoPerRecall =
@@ -144,19 +148,22 @@ class ExecutionServicesImpl implements ExecutionServices {
     });
 
     // Dispatch all updates simultaneously
-    await Future.wait([
-      executionsRepo.addExecutions(executions),
-      userRepo.updateExecution(
-        executionsAmounts: userUpdatedExecutions,
-        timeSpentInMillis: userMetadata.timeSpentInMillis + totalTimeSpent,
-      ),
-      collectionRepo.updateExecution(
-        id: collectionId,
-        executionsAmounts: collectionUpdatedExecutions,
-        timeSpentInMillis: associatedCollection.timeSpentInMillis + totalTimeSpent,
-        uniqueExecutionsAmount: associatedCollection.uniqueMemoExecutionsAmount + newUniqueMemos,
-      ),
-      memoRepo.putMemos(updatedMemos, updatesOnlyCollectionMetadata: false),
-    ]);
+
+    await transactionHandler.runInTransaction(() async {
+      await Future.wait([
+        executionsRepo.addExecutions(executions),
+        userRepo.updateExecution(
+          executionsAmounts: userUpdatedExecutions,
+          timeSpentInMillis: userMetadata.timeSpentInMillis + totalTimeSpent,
+        ),
+        collectionRepo.updateExecution(
+          id: collectionId,
+          executionsAmounts: collectionUpdatedExecutions,
+          timeSpentInMillis: associatedCollection.timeSpentInMillis + totalTimeSpent,
+          uniqueExecutionsAmount: associatedCollection.uniqueMemoExecutionsAmount + newUniqueMemos,
+        ),
+        memoRepo.putMemos(updatedMemos, updatesOnlyCollectionMetadata: false),
+      ]);
+    });
   }
 }

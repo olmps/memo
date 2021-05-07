@@ -1,12 +1,9 @@
 {
   "id": "git_getting_started",
   "name": "Git - Getting Started",
-  "description": "My temp description of this collection",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean interdum lacinia nisi ut lobortis. Vestibulum porta convallis lacus vitae malesuada. Duis quis eleifend dui, a molestie dui. Donec eleifend placerat ex, sed hendrerit velit pellentesque bibendum.\n\nCurabitur felis turpis, suscipit vitae urna ut, fermentum pretium leo. Nullam lectus lectus, efficitur vitae dignissim sit amet, faucibus eu mi. Integer quis pretium orci. Integer sodales semper vestibulum. Fusce ut sagittis tellus, at fermentum enim. Nullam in velit et nibh convallis vestibulum. Maecenas ultricies lorem non libero dictum posuere. Proin et molestie urna.",
   "category": "Versionamento",
-  "tags": [
-    "temp tag 1",
-    "temp tag 2"
-  ],
+  "tags": ["git", "versionamento"],
   "memos": [
     {
       "uniqueId": "94e28f49-5396-4a52-bd53-e62d4bc7de76",

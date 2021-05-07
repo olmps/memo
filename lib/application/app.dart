@@ -8,6 +8,8 @@ import 'package:memo/application/coordinator/coordinator_router_delegate.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/splash_page.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/utils/license_update.dart';
+import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 
 /// "Pre-load" root widget for the application
@@ -20,7 +22,9 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    vm.loadDependencies(DefaultAssetBundle.of(context));
+    final bundle = DefaultAssetBundle.of(context);
+    vm.loadDependencies(bundle);
+    addLicenseRegistryUpdater(bundle);
 
     return ValueListenableBuilder<AsyncValue<AppState>>(
       valueListenable: vm,
@@ -35,6 +39,7 @@ class AppRoot extends StatelessWidget {
                   collectionServices.overrideWithValue(state.collectionServices),
                   executionServices.overrideWithValue(state.executionServices),
                   progressServices.overrideWithValue(state.progressServices),
+                  resourceServices.overrideWithValue(state.resourceServices),
                 ],
                 child: _LoadedAppRoot(),
               ),
@@ -71,6 +76,7 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
     );
 
     return MaterialApp.router(
+      scaffoldMessengerKey: useScaffoldMessenger(),
       title: 'Memo',
       debugShowCheckedModeBanner: false,
       theme: useThemeController().currentThemeData(context),

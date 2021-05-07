@@ -6,6 +6,7 @@ import 'package:flutter_quill/models/documents/document.dart' as quill_doc;
 import 'package:flutter_quill/widgets/controller.dart';
 import 'package:flutter_quill/widgets/editor.dart';
 import 'package:layoutr/common_layout.dart';
+import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
@@ -71,21 +72,23 @@ class ExecutionTerminal extends HookWidget {
       ),
     );
 
+    // Controls the contents fade animations
+    final contentsFadeAnimationController = useAnimationController(duration: anims.terminalFadeTransitionDuration);
+    // Runs the contents fade forward whenever there is a new value for the `contents` property
+    useEffect(() {
+      contentsFadeAnimationController.forward();
+      return () => contentsFadeAnimationController.dispose;
+    }, [contents]);
+
+    // Controls both fade and move animations for the terminal actions
+    final actionsAnimationController = useAnimationController(duration: anims.terminalActionsTransitionDuration);
+
     final contentsStack = Stack(
       children: [
-        Positioned.fill(child: _buildQuillReadOnlyEditor(context)),
+        Positioned.fill(child: _buildAnimatableQuillReadOnlyEditor(context, contentsFadeAnimationController)),
         Positioned(top: 0, left: 0, right: 0, child: terminalHeader),
         Positioned(bottom: 0, left: 0, right: 0, child: terminalActionTransition),
-        if (!isDisplayingQuestion)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _TerminalActions(
-              onDifficultyMarked: onDifficultyMarked,
-              markedAnswer: markedAnswer,
-            ),
-          ),
+        _buildAnimatablePositionedTerminalActions(actionsAnimationController),
       ],
     );
 
@@ -94,7 +97,12 @@ class ExecutionTerminal extends HookWidget {
     final actionText = isDisplayingQuestion ? strings.executionCheckAnswer : strings.executionNext;
     final actionButton = TextButton(
       style: TextButton.styleFrom(primary: theme.primarySwatch.shade300),
-      onPressed: onActionTapped,
+      onPressed: onActionTapped != null
+          ? () => _animateActionTapped(
+                contentsController: contentsFadeAnimationController,
+                actionsController: actionsAnimationController,
+              )
+          : null,
       child: Text(actionText.toUpperCase()),
     );
 
@@ -119,7 +127,47 @@ class ExecutionTerminal extends HookWidget {
     ).withAllPadding(context, Spacing.xSmall);
   }
 
-  Widget _buildQuillReadOnlyEditor(BuildContext context) {
+  Future<void> _animateActionTapped({
+    required AnimationController contentsController,
+    required AnimationController actionsController,
+  }) async {
+    // If there is any animation going on, we ignore this action tap
+    if (contentsController.isAnimating || actionsController.isAnimating) {
+      return;
+    }
+
+    await Future.wait([
+      // Before triggering the callback, we want to reverse the contents (due to the fade)
+      contentsController.reverse(),
+      // And if there is a question being displayed, we want the actions to be shown, otherwise hidden
+      if (isDisplayingQuestion) actionsController.forward() else actionsController.reverse(),
+    ]);
+    onActionTapped!.call();
+  }
+
+  /// Builds a [_TerminalActions] that animates its position and fade given the [controller]
+  AnimatedBuilder _buildAnimatablePositionedTerminalActions(AnimationController controller) {
+    final curvedController = controller.drive(CurveTween(curve: anims.defaultAnimationCurve));
+
+    return AnimatedBuilder(
+      animation: curvedController,
+      builder: (context, child) => Positioned(
+        bottom: (curvedController.value * 100) - 100,
+        left: 0,
+        right: 0,
+        child: Opacity(
+          opacity: curvedController.value,
+          child: _TerminalActions(
+            onDifficultyMarked: onDifficultyMarked,
+            markedAnswer: markedAnswer,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds an animated quill editor that uses a [FadeTransition] to animate its contents
+  Widget _buildAnimatableQuillReadOnlyEditor(BuildContext context, AnimationController controller) {
     final quillDocument = quill_doc.Document.fromJson(_headerFormattedToQuill + contents);
 
     final quillController = QuillController(
@@ -127,7 +175,7 @@ class ExecutionTerminal extends HookWidget {
       selection: const TextSelection.collapsed(offset: 0),
     );
 
-    return QuillEditor(
+    final quillEditor = QuillEditor(
       controller: quillController,
       focusNode: FocusNode(),
       scrollController: ScrollController(),
@@ -139,6 +187,11 @@ class ExecutionTerminal extends HookWidget {
       autoFocus: false,
       readOnly: true,
       expands: false,
+    );
+
+    return FadeTransition(
+      opacity: controller.drive(CurveTween(curve: anims.defaultAnimationCurve)),
+      child: quillEditor,
     );
   }
 }
@@ -211,6 +264,8 @@ class _TerminalActions extends HookWidget {
 
   Widget _buildDifficultyAction(MemoDifficulty difficulty) {
     final theme = useTheme();
+    final hasMarkedAnswer = markedAnswer != null;
+    final isMarkedAnswer = markedAnswer == difficulty;
 
     final blurFilter = BackdropFilter(
       filter: ui.ImageFilter.blur(
@@ -236,17 +291,20 @@ class _TerminalActions extends HookWidget {
       ),
     );
 
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: theme.neutralSwatch.shade400.withOpacity(0.1)),
-      width: dimens.executionsTerminalActionSize,
-      height: dimens.executionsTerminalActionSize,
-      child: Stack(
-        children: [
-          Positioned.fill(child: blurFilter),
-          Align(child: difficultyEmoji),
-          if (markedAnswer == difficulty) Positioned.fill(child: highlightDecoration),
-        ],
+    return Opacity(
+      opacity: hasMarkedAnswer && !isMarkedAnswer ? 0.4 : 1,
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: theme.neutralSwatch.shade400.withOpacity(0.1)),
+        width: dimens.executionsTerminalActionSize,
+        height: dimens.executionsTerminalActionSize,
+        child: Stack(
+          children: [
+            Positioned.fill(child: blurFilter),
+            Align(child: difficultyEmoji),
+            if (isMarkedAnswer) Positioned.fill(child: highlightDecoration),
+          ],
+        ),
       ),
     );
   }
