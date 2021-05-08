@@ -1,26 +1,27 @@
 English | [Portuguese](README_ptbr.md)
 
-# Memo
-
-<p align="center">
-<a href="https://github.com/olmps/memo/actions"><img src="https://github.com/olmps/memo/actions/workflows/flutter-ci.yml/badge.svg" alt="Build Status"></a>
-</p>
+<div align="center">
+  <h1>Memo</h1>
+  <img src="https://raw.githubusercontent.com/olmps/memo/master/assets/icon.png" alt="Memo Icon" width="200">
+  <br>
+  <br>
+  <a href="https://github.com/olmps/memo/actions/workflows/release.yml">
+    <img src="https://github.com/olmps/memo/actions/workflows/release.yml/badge.svg" alt="Release">
+  </a>
+  <br>
+  <br>
+</div>
 
 Monorepo for Memo.
 
 Memo is an open-source, programming-oriented [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)
 software (SRS) written in Flutter.
 
-<!--
-You can use the latest beta features through TestFlight / Google Play, or download through:
-
-AppStore (badge)
-Google Play (badge)
--->
-
 > As of now, this project is designed to only output builds for Android and iOS. Even though, given the current
 > _stability_ of Flutter SDK for desktop (Windows, Linux and macOS) and web, there is a high probability that this
 > project will eventually support builds for all platforms.
+
+---
 
 This README is meant to guide how this project is structured and should serve as a guide to help the project scale with
 the current and future requirements. Think of it as a flexible set of rules that guides the project's decisions. While

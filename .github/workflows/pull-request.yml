@@ -1,5 +1,5 @@
 # Triggers on all changes committed to Pull Requests pointing to `main` branch
-name: Pull Request Workflow
+name: Pull Request
 
 on:
   pull_request:
