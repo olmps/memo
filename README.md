@@ -65,6 +65,6 @@ Memo is published under [BSD 3-Clause](LICENSE).
 
 ## Sponsors
 
-[Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover)
-[Startup Life Podcast](https://bit.ly/lucas-montano-startup-life)
-[Pingback](https://bit.ly/lucas-montano-pingback)
+- [Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover): Discover is a free way of learning how to code.
+- [Startup Life Podcast](https://bit.ly/lucas-montano-startup-life): Your tech, business, and innovation Podcast.
+- [Pingback](https://bit.ly/lucas-montano-pingback): Total freedom to create content.
