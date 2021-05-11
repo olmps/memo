@@ -83,6 +83,6 @@ jobs:
       - name: Commit and push versions bump
         run: |
           git config --global user.name 'Olympus Bot'
-          git config --global user.email 'hi@olmps.co'
+          git config --global user.email 'admin@olmps.co'
           git commit -am "[Olympus Bot] Bump version"
           git push
