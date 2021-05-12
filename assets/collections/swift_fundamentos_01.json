@@ -1,0 +1,1566 @@
+{
+  "id": "swift_fundamentos_01",
+  "name": "Fundamentos de Swift I",
+  "description": "\"Swift é uma linguagem de programação desenvolvida pela Apple para desenvolvimento no iOS, macOS, watchOS, tvOS e Linux. O compilador usa a infraestrutura do LLVM e é distribuído junto do Xcode desde a versão 6.\" - Wikipedia, 2021",
+  "category": "Swift",
+  "tags": ["swift", "linguagem de programação"],
+  "memos": [
+    {
+      "uniqueId": "ad51a74c-b271-482c-944e-dfb9055eeb48",
+      "question": [
+        {
+          "insert": "Swift tem os mesmos built-in types (tipos internos) que as linguagens de programação ____ e ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Swift tem os mesmos built-in types (tipos internos) que as linguagens de programação "
+        },
+        {
+          "insert": "C",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "Objective-C",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "574d50de-fb95-4116-9fdb-3967b719703a",
+      "question": [
+        {
+          "insert": "Swift tem os seguintes built-in types (tipos internos) fundamentais:\n- inteiros: ____;\n- valores de pontos flutuantes: ____ e ____;\n- boleanos: ____;\n- texto: ____;\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "- inteiros: "
+        },
+        {
+          "insert": "Int",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ";\n- valores de pontos flutuantes: "
+        },
+        {
+          "insert": "Double",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "Float",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ";\n- boleanos: "
+        },
+        {
+          "insert": "Bool",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ";\n- texto: "
+        },
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ";\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "d5386468-2a76-4f8e-81bf-767d56eecf9c",
+      "question": [
+        {
+          "insert": "Swift tem os seguintes built-in types (tipos internos) para coleções:\n- valores ordenados: _____;\n- valores não ordenados e distintos: _____;\n- coleções de chave-valor: _____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "- valores ordenados: "
+        },
+        {
+          "insert": "Array",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ";\n- valores não ordenados e distintos: "
+        },
+        {
+          "insert": "Set",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ";\n- coleções de chave-valor: "
+        },
+        {
+          "insert": "Dictionary",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "c877bd21-b130-4444-a9e7-d5919e4adb65",
+      "question": [
+        {
+          "insert": "Swift usa ____ ____ para guardar suas variáveis\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "name identifiers",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (identificadores de nome)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "1ff11756-99f7-415f-8310-bc2ff03d086b",
+      "question": [
+        {
+          "insert": "Tipo que é composto de outros múltiplos valores\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Tuple (tupla)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "bcba7f91-54d3-4bcb-b257-5d129149f664",
+      "question": [
+        {
+          "insert": "Tipos que podem ter um valor ou não\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Optional Types (tipos opcionais)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "158f498d-ff6e-4128-9359-814024d7a8b2",
+      "question": [
+        {
+          "insert": "Swift é uma linguagem de programação ____-safe\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Swift é uma linguagem de programação "
+        },
+        {
+          "insert": "type",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "-safe\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "4e758d48-2889-4b96-b5da-effa8a5d98bb",
+      "question": [
+        {
+          "insert": "Variáveis que não podem atualizar seus valores\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "constants (constantes)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "78685c5e-4dbf-4edc-9a2f-8a86243ac4c8",
+      "question": [
+        {
+          "insert": "Se uma variável não irá mudar seu valor após sua declaração, ela deverá ser uma ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "constant (constante)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e21eb5f1-7e42-402e-94e2-78f5115d856b",
+      "question": [
+        {
+          "insert": "Constantes e nomes de variáveis não podem começar com um ____, mas podem conter esses ____ noutros lugares \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Constantes e nomes de variáveis não podem começar com um "
+        },
+        {
+          "insert": "número",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ", mas podem conter esses "
+        },
+        {
+          "insert": "números",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " noutros lugares\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "2b2b1ec8-9791-45d0-beaa-93331de4f847",
+      "question": [
+        {
+          "insert": "Constantes e nomes de variáveis não podem conter ____ e símbolos ____ \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Constantes e nomes de variáveis não podem conter "
+        },
+        {
+          "insert": "whitespaces",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (espaços em branco) e "
+        },
+        {
+          "insert": "símbolos matemáticos",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0e72c625-f56b-4c6f-a88e-6800f0a54908",
+      "question": [
+        {
+          "insert": "let name = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Declaração de uma constante (imutável) do tipo "
+        },
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " e valor "
+        },
+        {
+          "insert": "Memo",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "82400ed6-6142-4e69-85d3-3dd1991521a1",
+      "question": [
+        {
+          "insert": "var name = \"Nemo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "name = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Declaração de uma variável (mutável) do tipo "
+        },
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " e valor "
+        },
+        {
+          "insert": "Nemo",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ", depois um novo valor reatribuído "
+        },
+        {
+          "insert": "Memo",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "55b2688e-d7dc-43a8-9a2f-f31713bc31e8",
+      "question": [
+        {
+          "insert": "let name = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "name = \"Nemo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Erro de compilação:\ncannot assign to value: 'name' is a 'let' constant"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "f95ce611-5130-4079-bbd9-7f5055bb22ea",
+      "question": [
+        {
+          "insert": "let name = \"Memo\", surname = \"App\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Declaração de múltiplas constantes (do tipo "
+        },
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ") na mesma linha\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0158acfc-6cdd-4037-b70e-c2e37d186a66",
+      "question": [
+        {
+          "insert": "var name = \"Memo\", surname = \"App\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Declaração de múltiplas variáveis (do tipo "
+        },
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ") na mesma linha\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3a7b2bb8-5bd8-4cf1-aa43-232153b7e740",
+      "question": [
+        {
+          "insert": "var name: String = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Type annotation (do tipo "
+        },
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ") de uma declaração de variável de valor "
+        },
+        {
+          "insert": "Memo",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "68e16dd7-aace-42d3-820b-56405105def5",
+      "question": [
+        {
+          "insert": "var name: String = 0"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Erro de compilação:\ncannot convert value of type 'Int' to specified type 'String'"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "bd7cd848-579b-4f47-9a81-bd2579d4dea9",
+      "question": [
+        {
+          "insert": "var name: Int = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Erro de compilação:\ncannot convert value of type 'String' to specified type 'Int'"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "ab95087e-1b8e-4914-9b3a-db0054776b1b",
+      "question": [
+        {
+          "insert": "Função para imprimir uma constante ou variável no "
+        },
+        {
+          "insert": "console",
+          "attributes": {
+            "italic": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "print",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6af9f765-f602-42b3-b46b-e13db48254e5",
+      "question": [
+        {
+          "insert": "let name = \"Memo\""
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "print(name)"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Imprime \"Memo\" no console\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ee6923a9-4989-4310-986c-a82fa46ebc6d",
+      "question": [
+        {
+          "insert": "_____ são textos que não serão executados e servem para lembrar o desenvolvedor de alguma coisa\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Comments",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (comentários) são textos que não serão executados e servem para lembrar o desenvolvedor de alguma coisa\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "1730c05c-6d70-43a6-bc14-feea187301ac",
+      "question": [
+        {
+          "insert": "São ignorados quando o código é compilado\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Comments",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (comentários)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "daed0807-cecd-4433-9756-bcc7b7ebd50d",
+      "question": [
+        {
+          "insert": "/*"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": " This is my multiline comment"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "*/"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Multiline comment",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (comentário de múltiplas linhas)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0824d6d8-8c0d-4e3b-89f6-84c586ed4719",
+      "question": [
+        {
+          "insert": "// My comment"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Single line comment",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (comentário de uma única linha)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "83448ab4-0bff-4089-b7d6-6bea6b8aa772",
+      "question": [
+        {
+          "insert": "Tipo para números sem componentes fracionais\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Int\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "93e58b20-7d96-4e52-91fb-76d20db65ec5",
+      "question": [
+        {
+          "insert": "Mesmo que permitidos, ____ não são obrigatórios no Swift\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Mesmo que permitidos, "
+        },
+        {
+          "insert": "Semicolons",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (ponto e vírgula) não são obrigatórios no Swift\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "8e23fb14-ceed-42a1-b9cf-12f4fb238074",
+      "question": [
+        {
+          "insert": "Inteiros podem ser ____ ou ____, encontrados nas formas de 8, 16, 32 e 64 bits\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "signed (assinalado)  \nInteiros podem ser signed (assinalado) ou unsigned (não-assinalado), encontrados nas formas de 8, 16, 32 e 64 bits\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3893744f-dad7-4ba4-986f-da07fb66f43f",
+      "question": [
+        {
+          "insert": "Tipo para um unsigned integer de 16 bits\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "UInt16\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "c20734ed-c826-485e-ba02-a2012bfe026d",
+      "question": [
+        {
+          "insert": "Tipo para um signed integer de 8 bits\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Int8\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "fa1f7440-6886-419a-8fba-777443f050a8",
+      "question": [
+        {
+          "insert": "Tipo para um signed integer de 64 bits\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Int64\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6cfe22d7-2c3e-4ce4-a30f-956655a9ae39",
+      "question": [
+        {
+          "insert": "Se você não precisa especificar o tamanho de um inteiro, use ____ para uma melhor interoperabilidade de código e evitar problemas de conversão também\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Se você não precisa especificar o tamanho de um inteiro, use "
+        },
+        {
+          "insert": "Int",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " para uma melhor interoperabilidade de código e evitar problemas de conversão também\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "a272c5fa-b07b-4a99-9545-6cc9aaa485f4",
+      "question": [
+        {
+          "insert": "Tipos de números com componentes fracionais\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Double",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "Float",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "4b92916c-3228-494a-bbbf-8ad59c72fffd",
+      "question": [
+        {
+          "insert": "Double é representado por um número de ponto flutuante de ____, enquanto Float é representado por um de ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Double é representado por um número de ponto flutuante de "
+        },
+        {
+          "insert": "64 bits",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ", enquanto Float é representado por um de "
+        },
+        {
+          "insert": "32 bits",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "fe398177-dd8e-4cb8-9e90-faaef85d1b13",
+      "question": [
+        {
+          "insert": "A habilidade de um compilador deduzir um tipo de alguma expressão\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Type Inference (inferência de tipo)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "b4ee9b0c-cded-4756-bdbb-08a0c9d6f00e",
+      "question": [
+        {
+          "insert": "____ faz com que o uso de declarações de tipo sejam menos frequentes \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Type Inference",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (inferência de tipo) faz com que o uso de declarações de tipo sejam menos frequentes \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "fbc8c5f9-5ff0-4ab6-a06c-069ddd7e78e1",
+      "question": [
+        {
+          "insert": "Qual é o tipo inferido (inferred type) na seguinte declaração\n\nlet name = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "c6e97b9e-154f-45e4-ad64-191c74c7b822",
+      "question": [
+        {
+          "insert": "Qual é o tipo inferido (inferred type) na seguinte declaração\n\nlet e = 2.71828"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Double",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "44a1199a-3b7f-4b83-a68f-886c0ca04a11",
+      "question": [
+        {
+          "insert": "Inteiros podem ser representados por um número decimal ____ ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Inteiros podem ser representados por um número decimal "
+        },
+        {
+          "insert": "sem prefixo",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "f0e77c37-c466-4c7e-a97f-61002ce8f077",
+      "question": [
+        {
+          "insert": "Inteiros podem ser representados por um número binário usando o prefixo ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Inteiros podem ser representados por um número binário usando o prefixo "
+        },
+        {
+          "insert": "0b",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "21e59ce2-ff7f-4bca-a119-bc20aa0cf22e",
+      "question": [
+        {
+          "insert": "Inteiros podem ser representados por um número octal usando o prefixo ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Inteiros podem ser representados por um número octal usando o prefixo "
+        },
+        {
+          "insert": "0o",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e0aeb9b2-9430-4b21-9d19-ab8a4b4e8c04",
+      "question": [
+        {
+          "insert": "Inteiros podem ser representados por um número hexadecimal usando o prefixo ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Inteiros podem ser representados por um número hexadecimal usando o prefixo "
+        },
+        {
+          "insert": "0x",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "942bf605-2041-42be-ba0e-eddce36232ef",
+      "question": [
+        {
+          "insert": "Simplesmente adicionando sublinhados à um número grande, a seguinte declaração tem sua ____ ____\n\nlet moreThanABillion = 001_000_000_100 // um bilhão e cem"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Simplesmente adicionando sublinhados à um número grande, a seguinte declaração tem sua"
+        },
+        {
+          "insert": " legibilidade melhorada.",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "18ffb777-4a04-4b57-b186-4385788cadeb",
+      "question": [
+        {
+          "insert": "Usado para contextualizar um tipo existente, criando um tipo ainda mais específico\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Type aliases (\"Apelido\" de tipo)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "540490d2-9885-4bf0-ad53-cb6e467e82e2",
+      "question": [
+        {
+          "insert": "typealias AppName = String"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "let name: AppName = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Cria um "
+        },
+        {
+          "insert": "typealias",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " que representa uma "
+        },
+        {
+          "insert": "String",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "eb4c6a67-67f0-4155-b8f8-b7af27d64be5",
+      "question": [
+        {
+          "insert": "Tipo lógico do Swift e seus dois valores constantes possíveis\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Bool, true e false.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "33f72fe4-9365-4746-877a-d84980c32e5f",
+      "question": [
+        {
+          "insert": "Qual é o tipo inferido (inferred type) na seguinte declaração\n\nlet learningSwift = true"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Bool\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "f5e20754-f296-4953-84d7-cfe4a0ece2f4",
+      "question": [
+        {
+          "insert": "let fullName = (\"Memo\", \"App\")"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Declaração de uma Tuple (tupla) com tipo (String, String)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "b2483c6b-43f4-4541-94f8-9cab964faf99",
+      "question": [
+        {
+          "insert": "var fullName = (\"Memo\", \"App\")"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "fullName = \"a\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Erro de compilação:\nCannot assign value of type 'String' to type '(String, String)'"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "58c5ec8e-1c8e-4741-9168-85512a6a95ac",
+      "question": [
+        {
+          "insert": "var fullName = (\"Memo\", \"App\")"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "fullName = (1, 2)"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Erro de compilação:\nCannot assign value of type '(Int, Int)' to type '(String, String)'"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "9f416697-790c-4c2a-8ab3-e0d29c748f5a",
+      "question": [
+        {
+          "insert": "var fullName = (\"Nemo\", \"Movie\")"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "fullName = (\"Memo\", \"App\")"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Reatribui uma Tuple (tupla) de tipo (String, String) à um novo valor\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "2c7f8851-5690-4cfd-8610-3001ba085c8e",
+      "question": [
+        {
+          "insert": "As seguintes declarações ____ uma tupla em valores separados\n\nlet fullName = (\"Memo\", \"App\")"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "let (name, surname) = fullName"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "As seguintes declarações "
+        },
+        {
+          "insert": "decompõem",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (to decompose) uma tupla em valores separados\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "7ea74be4-3f71-44b6-a958-2b2323f2ed9f",
+      "question": [
+        {
+          "insert": "O seguinte código está acessando um valor de uma tupla pelo seu ____, imprimindo o valor ____\nlet fullName = (\"Memo\", \"App\")"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "print(fullName.0)"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O seguinte código está acessando um valor de uma tupla pelo seu "
+        },
+        {
+          "insert": "index",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (índice), imprimindo o valor \"Memo\".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3442fb33-5b80-4d62-9201-d4d5612ad629",
+      "question": [
+        {
+          "insert": "O seguinte código está acessando um valor de uma tupla pelo seu ____, imprimindo o valor ____\n\nlet fullName = (name: \"Memo\", surname: \"App\")"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "print(fullName.surname)"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O seguinte código está acessando um valor de uma tupla pelo seu "
+        },
+        {
+          "insert": "element name",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (nome do elemento), imprimindo o valor "
+        },
+        {
+          "insert": "\"App\"",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ce0c76c1-7733-4ab6-abd9-6b38d5ee76bc",
+      "question": [
+        {
+          "insert": "Tipos que agrupam valores mas não devem ser usados em estruturas de dados complexas\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Tuple (tuplas)\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e262a17d-a5aa-4138-bd5d-3f6af03889af",
+      "question": [
+        {
+          "insert": "Um tipo pode ser ____ se o seu valor pode (ou não) estar presente\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um tipo pode ser "
+        },
+        {
+          "insert": "Optional",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (opcional) se o seu valor pode (ou não) estar presente\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "7053327b-be25-4957-af85-b473ab98903e",
+      "question": [
+        {
+          "insert": "Caractere que indica se um tipo é opcional\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "?",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "91b80cc4-6ee8-4fe0-ac77-b0dad119c954",
+      "question": [
+        {
+          "insert": "Representa a ausência de um tipo (e seu valor)\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "nil\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ac8686fb-8e4d-4e5d-b877-96237021286e",
+      "question": [
+        {
+          "insert": "O código seguinte declara uma ____ String que começa com valor ____ e então é reatribuida com o valor \"Memo\"\n\nvar optionalName: String?"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "optionalName = \"Memo\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O código seguinte declara uma "
+        },
+        {
+          "insert": "Optional",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (opcional) String que começa com valor "
+        },
+        {
+          "insert": "nil",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (sem valor) e então é reatribuida com o valor \"Memo\"\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "de198bb8-de8b-4cf1-bac3-74063df5ba06",
+      "question": [
+        {
+          "insert": "O seguinte código falha ao compilar porquê a constante não é de tipo ____\nvar name = \"Memo\""
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "name = nil"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O seguinte código falha ao compilar porquê a constante não é de tipo "
+        },
+        {
+          "insert": "Optional",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " (opcional)\n"
+        }
+      ]
+    }
+  ]
+}

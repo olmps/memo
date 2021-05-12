@@ -1,0 +1,321 @@
+{
+  "id": "ecossistema_do_flutter",
+  "name": "Ecossistema do Flutter - Fundamentos",
+  "description": "\"Flutter é um kit de desenvolvimento de interface de usuário (UI toolkit), de código aberto, criado pelo Google, que possibilita a criação de aplicativos compilados nativamente. Atualmente pode compilar para Android, iOS, Windows, Mac, Linux, Google Fuchsia e Web.\" - Wikipedia, 2021.",
+  "category": "Flutter",
+  "tags": ["flutter", "framework", "cross-platform"],
+  "memos": [
+    {
+      "uniqueId": "90d7441d-bde7-4b5c-b717-3ff9a27fa8ba",
+      "question": [
+        {
+          "insert": "Tecnologias usadas para criar o Flutter\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "C, C++ e Skia\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "73bcdf88-b5dc-47ee-aad8-2b685a9b78f1",
+      "question": [
+        {
+          "insert": "Toda vez que um app construído em Flutter é lançado, ele carrega a biblioteca Flutter. Todos os eventos visuais são delegados para o código compilado do Flutter. A forma como a engine funciona é similar a como ____ ____ ____ funcionam\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Toda vez que um app construído em Flutter é lançado, ele carrega a biblioteca Flutter. Todos os eventos visuais são delegados para o código compilado do Flutter. A forma como a engine funciona é similar a como "
+        },
+        {
+          "insert": "engines de jogos",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " funcionam\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "37318495-20eb-48b7-a319-23872739a96f",
+      "question": [
+        {
+          "insert": "Como o Flutter roda o código no Android\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A parte C, C++ da engine do Flutter é compilada com a Android NDK, e o resto do código Dart é compilado em bibliotecas nativas, ARM e x86. Tudo isso é incluso num projeto (Runner), gerando uma .apk\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "14c8ebf4-bc2a-4e63-adf6-267b98482dd9",
+      "question": [
+        {
+          "insert": "Como o Flutter roda o código no iOS\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A parte C, C++ da engine do Flutter é compilada com a LLVM, e o resto do código Dart é compilado numa biblioteca ARM nativa. Tudo isso é incluso num projeto (Runner), gerando um .ipa\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "16bfcf07-d5df-42e9-8536-afea5d5c0119",
+      "question": [
+        {
+          "insert": "Sistemas Operacionais que permitem o desenvolvimento de aplicativos em Flutter\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Linux, macOS, ChromeOS, e Windows\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "1e00f748-b93c-4f8c-9a15-9d4d9081cef4",
+      "question": [
+        {
+          "insert": "Flutter usa a linguagem ____, otimizada para aplicativos ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Flutter usa a linguagem "
+        },
+        {
+          "insert": "Dart",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ", otimizada para aplicativos "
+        },
+        {
+          "insert": "client",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "954dc9f7-537d-4f0a-8702-af46a7d2d1ee",
+      "question": [
+        {
+          "insert": "O Flutter se propõe a alcançar uma performance de ____\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Flutter se propõe a alcançar uma performance de "
+        },
+        {
+          "insert": "60 FPS",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0a3a929f-cfc5-4a07-9b45-80b31daf7de1",
+      "question": [
+        {
+          "insert": "Diferente do Hot Restart, o Flutter usa o ____ ____ para recarregar mudanças feitas no código do projeto, trazendo consigo a capacidade de compreender a adição de novas classes, métodos e propriedades à classes já existentes. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Diferente do Hot Restart, o Flutter usa o "
+        },
+        {
+          "insert": "Hot Reload",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " para recarregar mudanças feitas no código do projeto, trazendo consigo a capacidade de compreender a adição de novas classes, métodos e propriedades à classes já existentes. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3fb76f8d-1777-4dc3-9baf-de9bcdc20266",
+      "question": [
+        {
+          "insert": "Além de iOS e Android, o Flutter pode ser usado para criar aplicativos para: ____ e ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Além de iOS e Android, o Flutter pode ser usado para criar aplicativos para: "
+        },
+        {
+          "insert": "web",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "desktop",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "dc277390-5215-4807-ab6c-737c3f9513b4",
+      "question": [
+        {
+          "insert": "O Flutter pode ser adicionado à ____ nativos já existentes.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Flutter pode ser adicionado à "
+        },
+        {
+          "insert": "aplicativos",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": " nativos já existentes.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "33091193-d590-45fb-a0a9-53ba54437270",
+      "question": [
+        {
+          "insert": "O Flutter permite a comunicação (interop) entre o projeto Dart e ____ ____ ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Flutter permite a comunicação (interop) entre o projeto Dart e "
+        },
+        {
+          "insert": "código nativo da plataforma",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0cfc7309-40e8-43a8-899b-cc6674cc181c",
+      "question": [
+        {
+          "insert": "Para criar aplicativos que necessitam de concorrência e/ou paralelização, o Flutter provê o que chamamos de ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Para criar aplicativos que necessitam de concorrência e/ou paralelização, o Flutter provê o que chamamos de "
+        },
+        {
+          "insert": "Isolates",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "49adef48-6dd1-4bcc-bc0f-ac5355b82f9d",
+      "question": [
+        {
+          "insert": "Além de poder usar os comandos flutter diretamente do terminal, o Flutter suporta plugins para as 3 seguintes IDEs: ____, ____ e ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Além de poder usar os comandos flutter diretamente do terminal, o Flutter suporta plugins para as 3 seguintes IDEs: "
+        },
+        {
+          "insert": "Android Studio, IntelliJ e VS Code",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "2741594d-0c37-4b33-85a3-19bcc610bd31",
+      "question": [
+        {
+          "insert": "O Flutter provê uma API para construir testes ____ e ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Flutter provê uma API para construir testes "
+        },
+        {
+          "insert": "unitários e de integração",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "9dac1c8b-fdb7-45e7-91b8-9d0662f74bfd",
+      "question": [
+        {
+          "insert": "Para facilitar o debug, o Flutter provê o seu ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Para facilitar o debug, o Flutter provê o seu "
+        },
+        {
+          "insert": "DevTools",
+          "attributes": {
+            "bold": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    }
+  ]
+}

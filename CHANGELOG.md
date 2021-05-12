@@ -10,6 +10,17 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## [0.1.0-rc.2] - 2021-05-12
+
+## Added
+- `comecando_com_git`, `ecossistema_do_flutter` and `swift_fundamentos_01` collections.
+
+## Removed
+- `git_getting_started` collection.
+
+## Updated
+- Added new resources to `resources.json`.
+
 ## Fixed
 - Fixed [`release`](.github/workflows/release.yml) workflow to use personal access token when pushing changes to the
 repo.

@@ -33,5 +33,40 @@
     "tags": ["git", "github", "versionamento"],
     "type": "video",
     "url": "https://www.youtube.com/watch?v=2alg7MQ6_sI&ab_channel=Rocketseat"
+  },
+  {
+    "id": "6",
+    "description": "Home do Flutter",
+    "tags": ["flutter"],
+    "type": "unknown",
+    "url": "https://flutter.dev/"
+  },
+  {
+    "id": "7",
+    "description": "FAQ do Flutter",
+    "tags": ["flutter"],
+    "type": "article",
+    "url": "https://flutter.dev/docs/resources/faq"
+  },
+  {
+    "id": "8",
+    "description": "The Basics - Swift",
+    "tags": ["swift"],
+    "type": "article",
+    "url": "https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html"
+  },
+  {
+    "id": "9",
+    "description": "Lívro da última edição do Swift",
+    "tags": ["swift"],
+    "type": "book",
+    "url": "https://books.apple.com/us/book/the-swift-programming-language-swift-5-4/id881256329"
+  },
+  {
+    "id": "10",
+    "description": "Índice de materias de referência da Apple - Swift + Xcode",
+    "tags": ["swift", "xcode"],
+    "type": "unknown",
+    "url": "https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html"
   }
 ]
