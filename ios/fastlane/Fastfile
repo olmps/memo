@@ -78,9 +78,6 @@ platform :ios do
     # Run Analyzer
     sh("flutter", "analyze", ".")
 
-    # Run flutter build with release mode
-    sh("flutter", "build", "ios", "--release", "--dart-define=ENV=PROD")
-
     # Increment the build number (use the latest build number for this version + 1)
     increment_build_number(
       build_number: latest_testflight_build_number(
@@ -91,16 +88,8 @@ platform :ios do
       xcodeproj: "Runner.xcodeproj",
     )
 
-    # Build the app
-    build_ios_app(
-      scheme: "Runner",
-      export_options: {
-        method: "app-store",
-        provisioningProfiles: { 
-          "com.olmps.memoClient" => "match AppStore com.olmps.memoClient"
-        }
-      }
-    )
+    # Run flutter build with release mode
+    sh("flutter", "build", "ipa", "--release", "--dart-define=ENV=PROD", "--export-options-plist=ios/exportOptions.plist")
 
     # Upload dSYM files to Firebae Crashlytics
     # TODO
