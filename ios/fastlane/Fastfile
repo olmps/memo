@@ -101,10 +101,8 @@ platform :ios do
       api_key: api_key,
       skip_waiting_for_build_processing: true,
       distribute_external: true,
-      changelog: changelog
+      changelog: changelog,
+      ipa: '../build/ios/ipa/Memo.ipa'
     )
-
-    # Clean local dSYM and IPA files
-    clean_build_artifacts
   end
 end
