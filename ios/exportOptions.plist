@@ -9,7 +9,7 @@
     <key>provisioningProfiles</key>
     <dict>
       <key>com.olmps.memoClient</key>
-      <string>match AppStore com.olmps.memoClient</string>
+      <string>Memo Distribution</string>
     </dict>
     <key>signingCertificate</key>
     <string>iOS Distribution</string>
