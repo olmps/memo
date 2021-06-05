@@ -26,7 +26,9 @@ class CollectionDetailsPage extends HookWidget {
             // The top spacing must take into consideration both the safe area and the toolbar height, as this page's
             // scaffold `extendBodyBehindAppBar` is set to `true`, meaning that this collection card will be placed behind
             // the app bar
-            top: context.rawSpacing(Spacing.large) + kToolbarHeight + MediaQuery.of(context).padding.top,
+            top: context.rawSpacing(Spacing.large) +
+                kToolbarHeight +
+                MediaQuery.of(context).padding.top,
             right: context.rawSpacing(Spacing.small),
             bottom: context.rawSpacing(Spacing.large),
             left: context.rawSpacing(Spacing.small),
@@ -56,7 +58,10 @@ class CollectionDetailsPage extends HookWidget {
           context.verticalBox(Spacing.small),
           Text(
             strings.detailsResourcesWarning,
-            style: Theme.of(context).textTheme.caption?.copyWith(color: memoTheme.neutralSwatch.shade300),
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                ?.copyWith(color: memoTheme.neutralSwatch.shade300),
           ),
           context.verticalBox(Spacing.small),
           ResourcesList(
@@ -83,36 +88,45 @@ class CollectionDetailsPage extends HookWidget {
 
       final sections = [descriptionSection, resourcesSection];
 
-      return Scaffold(
-        appBar: AppBar(title: const Text(strings.details)),
-        extendBodyBehindAppBar: true,
-        body: Column(
-          children: [
-            heroCollectionCard,
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  // Iterate through all sections and add a suitable top spacing
-                  children: sections
-                      .map((section) => [context.verticalBox(Spacing.xLarge), section])
-                      .expand((element) => element)
-                      .toList(),
-                ).withOnlyPadding(context, left: Spacing.medium, right: Spacing.medium, bottom: Spacing.xLarge),
-              ),
+      return Container(
+        color: memoTheme.neutralSwatch.shade800,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(title: const Text(strings.details)),
+            extendBodyBehindAppBar: true,
+            body: Column(
+              children: [
+                heroCollectionCard,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      // Iterate through all sections and add a suitable top spacing
+                      children: sections
+                          .map((section) => [context.verticalBox(Spacing.xLarge), section])
+                          .expand((element) => element)
+                          .toList(),
+                    ).withOnlyPadding(context,
+                        left: Spacing.medium, right: Spacing.medium, bottom: Spacing.xLarge),
+                  ),
+                ),
+              ],
             ),
-          ],
+            // By using the `bottomNavigationBar`, this widgets height will be padded accordingly to conform to any scroll
+            // view in this scaffold's `body`
+            bottomNavigationBar: fixedBottomAction,
+          ),
         ),
-        // By using the `bottomNavigationBar`, this widgets height will be padded accordingly to conform to any scroll
-        // view in this scaffold's `body`
-        bottomNavigationBar: fixedBottomAction,
       );
     }
 
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-  Widget _buildSectionTitle(BuildContext context, String text) =>
-      Text(text, style: Theme.of(context).textTheme.subtitle1?.copyWith(color: useTheme().neutralSwatch.shade300));
+  Widget _buildSectionTitle(BuildContext context, String text) => Text(text,
+      style: Theme.of(context)
+          .textTheme
+          .subtitle1
+          ?.copyWith(color: useTheme().neutralSwatch.shade300));
 }
