@@ -1,3 +1,4 @@
+import 'package:memo/data/serializers/contributor_serializer.dart';
 import 'package:memo/data/serializers/memo_collection_metadata_serializer.dart';
 import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/transients/collection_memos.dart';
@@ -7,12 +8,14 @@ class CollectionMemosKeys {
   static const name = 'name';
   static const description = 'description';
   static const category = 'category';
+  static const contributors = 'contributors';
   static const tags = 'tags';
   static const memosMetadata = 'memos';
 }
 
 class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<String, dynamic>> {
   final memoMetadataSerializer = MemoCollectionMetadataSerializer();
+  final contributorSerializer = ContributorSerializer();
 
   @override
   CollectionMemos from(Map<String, dynamic> json) {
@@ -26,6 +29,9 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
     final rawMemos = List<Map<String, dynamic>>.from(json[CollectionMemosKeys.memosMetadata] as List);
     final memosMetadata = rawMemos.map(memoMetadataSerializer.from).toList();
 
+    final contributors =
+        (json[CollectionMemosKeys.contributors] as List<dynamic>).map(contributorSerializer.from).toList();
+
     return CollectionMemos(
       id: id,
       name: name,
@@ -33,6 +39,7 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
       category: category,
       tags: tags,
       memosMetadata: memosMetadata,
+      contributors: contributors,
     );
   }
 
@@ -44,5 +51,6 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
         CollectionMemosKeys.category: collection.category,
         CollectionMemosKeys.tags: collection.tags,
         CollectionMemosKeys.memosMetadata: collection.memosMetadata.map(memoMetadataSerializer.to).toList(),
+        CollectionMemosKeys.contributors: collection.contributors.map(contributorSerializer.to).toList(),
       };
 }

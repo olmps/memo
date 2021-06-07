@@ -3,6 +3,7 @@ import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
+import 'package:memo/domain/models/contributor.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
 
@@ -13,6 +14,14 @@ void main() {
     name: 'My Collection',
     description: 'This collection represents a collection.',
     category: 'Category',
+    contributors: const [
+      Contributor(
+          id: '03a5f9b4-b424-4010-8027-1ef22c748g56',
+          githubUser: '@lucasbiancogs',
+          imageUrl:
+              'https://avatars.githubusercontent.com/u/64819163?s=400&u=3ca78fee7808f7b5b7ad8e9230e268519e9aea71&v=4',
+          url: 'https://github.com/lucasbiancogs')
+    ],
     tags: const ['Tag 1', 'Tag 2'],
     uniqueMemosAmount: 1,
   );
@@ -71,6 +80,14 @@ void main() {
       name: 'My Collection',
       description: 'This collection represents a collection.',
       category: 'Category',
+      contributors: const [
+        Contributor(
+            id: '03a5f9b4-b424-4010-8027-1ef22c748g56',
+            githubUser: '@lucasbiancogs',
+            imageUrl:
+                'https://avatars.githubusercontent.com/u/64819163?s=400&u=3ca78fee7808f7b5b7ad8e9230e268519e9aea71&v=4',
+            url: 'https://github.com/lucasbiancogs')
+      ],
       tags: const ['Tag 1', 'Tag 2'],
       uniqueMemosAmount: 1,
       uniqueMemoExecutionsAmount: 1,

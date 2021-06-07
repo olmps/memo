@@ -68,6 +68,17 @@ class CollectionDetailsPage extends HookWidget {
         ],
       );
 
+      final contributors = state.contributors;
+
+      print('page - contributors: $contributors');
+      if (contributors.isNotEmpty) {
+        print('page - contributors.first: ${contributors.first}');
+        print('page - contributors.first.githubUser: ${contributors.first.githubUser}');
+        print('page - contributors.first.imageUrl: ${contributors.first.imageUrl}');
+        print('page - contributors.first.id: ${contributors.first.id}');
+        print('page - contributors.first.url: ${contributors.first.url}');
+      }
+
       final fixedBottomAction = ThemedBottomContainer(
         child: Container(
           color: memoTheme.neutralSwatch.shade800,

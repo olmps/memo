@@ -5,6 +5,7 @@ import 'package:memo/data/gateways/application_bundle.dart';
 import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/data/serializers/collection_memos_serializer.dart';
+import 'package:memo/data/serializers/contributor_serializer.dart';
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
@@ -51,9 +52,10 @@ class CollectionRepositoryImpl implements CollectionRepository {
 
   final ApplicationBundle _appBundle;
   final _collectionsRoot = 'assets/collections';
-  final _collectionsMemosSerializer = CollectionMemosSerializer();
 
+  final _collectionsMemosSerializer = CollectionMemosSerializer();
   final _collectionSerializer = CollectionSerializer();
+  final _contributorSerializer = ContributorSerializer();
 
   @override
   Future<Collection> getCollection({required String id}) async {
@@ -88,6 +90,7 @@ class CollectionRepositoryImpl implements CollectionRepository {
               CollectionKeys.description: collection.description,
               CollectionKeys.category: collection.category,
               CollectionKeys.tags: collection.tags,
+              CollectionKeys.contributors: collection.contributors.map(_contributorSerializer.to),
               CollectionKeys.uniqueMemosAmount: collection.uniqueMemosAmount,
               CollectionKeys.uniqueMemoExecutionsAmount: collection.uniqueMemoExecutionsAmount,
             },

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
 import 'package:memo/domain/enums/resource_type.dart';
+import 'package:memo/domain/models/contributor.dart';
 import 'package:memo/domain/models/resource.dart';
 import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/services/resource_services.dart';
@@ -66,11 +67,14 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
 
       final description = collectionStatus.collection.description;
       final memosAmount = collectionStatus.collection.uniqueMemosAmount;
+      final contributors = collectionStatus.collection.contributors;
+
       state = LoadedCollectionDetailsState(
         metadata: mapStatusToMetadata(collectionStatus),
         description: description,
         memosAmount: memosAmount,
         resources: mappedResources,
+        contributors: contributors,
       );
     });
   }
@@ -95,10 +99,12 @@ class LoadedCollectionDetailsState extends CollectionDetailsState {
     required this.description,
     required this.memosAmount,
     required this.resources,
+    required this.contributors,
   });
 
   final CollectionItem metadata;
   final String description;
   final int memosAmount;
   final List<ResourceInfo> resources;
+  final List<Contributor> contributors;
 }
