@@ -7,6 +7,7 @@ import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/details/collection_details_vm.dart';
+import 'package:memo/application/widgets/theme/contributors_button.dart';
 import 'package:memo/application/widgets/theme/hero_collection_card.dart';
 import 'package:memo/application/widgets/theme/resources_list.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
@@ -19,6 +20,9 @@ class CollectionDetailsPage extends HookWidget {
     final state = useCollectionDetailsState();
 
     if (state is LoadedCollectionDetailsState) {
+      // ignore: omit_local_variable_types
+      final List<Widget> sections = [];
+
       final heroCollectionCard = ThemedTopContainer(
         child: buildHeroCollectionCardFromItem(
           state.metadata,
@@ -47,6 +51,17 @@ class CollectionDetailsPage extends HookWidget {
         ],
       );
 
+      sections.add(descriptionSection);
+
+      final contributors = state.contributors;
+      if (contributors.isNotEmpty) {
+        final contributorsSection = contributors.length > 1
+            ? MultipleContributorsButton(contributors)
+            : SingleContributorButton(contributors.first);
+
+        sections.add(contributorsSection);
+      }
+
       final resources = state.resources;
       final resourcesSection = Column(
         mainAxisSize: MainAxisSize.min,
@@ -68,16 +83,7 @@ class CollectionDetailsPage extends HookWidget {
         ],
       );
 
-      final contributors = state.contributors;
-
-      print('page - contributors: $contributors');
-      if (contributors.isNotEmpty) {
-        print('page - contributors.first: ${contributors.first}');
-        print('page - contributors.first.name: ${contributors.first.name}');
-        print('page - contributors.first.imageUrl: ${contributors.first.imageUrl}');
-        print('page - contributors.first.id: ${contributors.first.id}');
-        print('page - contributors.first.url: ${contributors.first.url}');
-      }
+      sections.add(resourcesSection);
 
       final fixedBottomAction = ThemedBottomContainer(
         child: Container(
@@ -93,8 +99,6 @@ class CollectionDetailsPage extends HookWidget {
           ),
         ),
       );
-
-      final sections = [descriptionSection, resourcesSection];
 
       return Scaffold(
         appBar: AppBar(title: const Text(strings.details)),
