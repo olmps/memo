@@ -39,7 +39,7 @@ Widget buildHeroCollectionCardFromItem(
   }
 
   return Hero(
-    tag: _collectionCardTag,
+    tag: '$_collectionCardTag-${item.id}',
     child: CollectionCard(
       name: item.name,
       tags: item.tags,
