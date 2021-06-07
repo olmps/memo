@@ -73,7 +73,7 @@ class CollectionDetailsPage extends HookWidget {
       print('page - contributors: $contributors');
       if (contributors.isNotEmpty) {
         print('page - contributors.first: ${contributors.first}');
-        print('page - contributors.first.githubUser: ${contributors.first.githubUser}');
+        print('page - contributors.first.name: ${contributors.first.name}');
         print('page - contributors.first.imageUrl: ${contributors.first.imageUrl}');
         print('page - contributors.first.id: ${contributors.first.id}');
         print('page - contributors.first.url: ${contributors.first.url}');

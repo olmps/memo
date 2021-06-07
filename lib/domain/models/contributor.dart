@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 class Contributor extends Equatable {
   const Contributor({
     required this.id,
-    required this.githubUser,
+    required this.name,
     required this.url,
     required this.imageUrl,
   });
@@ -14,7 +14,7 @@ class Contributor extends Equatable {
   final String id;
 
   /// This [Contributor] github user with the [@]
-  final String githubUser;
+  final String name;
 
   /// This [Contributor] image url
   final String imageUrl;
@@ -23,5 +23,5 @@ class Contributor extends Equatable {
   final String url;
 
   @override
-  List<Object?> get props => [id, githubUser, imageUrl, url];
+  List<Object?> get props => [id, name, imageUrl, url];
 }
