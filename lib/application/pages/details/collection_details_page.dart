@@ -71,13 +71,15 @@ class CollectionDetailsPage extends HookWidget {
       final fixedBottomAction = ThemedBottomContainer(
         child: Container(
           color: memoTheme.neutralSwatch.shade800,
-          child: ElevatedButton(
-            onPressed: () {
-              final id = context.read(detailsCollectionId);
-              readCoordinator(context).navigateToCollectionExecution(id, isNestedNavigation: false);
-            },
-            child: Text(strings.detailsStudyNow.toUpperCase()),
-          ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+          child: SafeArea(
+            child: ElevatedButton(
+              onPressed: () {
+                final id = context.read(detailsCollectionId);
+                readCoordinator(context).navigateToCollectionExecution(id, isNestedNavigation: false);
+              },
+              child: Text(strings.detailsStudyNow.toUpperCase()),
+            ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+          ),
         ),
       );
 
