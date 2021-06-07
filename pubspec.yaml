@@ -8,7 +8,8 @@ publish_to: "none"
 version: 0.1.0+0
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.13.0 <3.0.0"
+  flutter: ^2.2.0
 
 dependencies:
   flutter:
@@ -44,7 +45,7 @@ dependencies:
   hooks_riverpod: ^0.13.0
 
   # Keep dependency locked, as we need it to be the exact same in `memo-editor`
-  flutter_quill: 1.2.2
+  flutter_quill: ^1.3.3
 
 dev_dependencies:
   flutter_test:
