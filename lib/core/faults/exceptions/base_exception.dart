@@ -16,7 +16,7 @@ abstract class BaseException extends Equatable implements Exception {
   final ExceptionType type;
 
   final String? debugInfo;
-  final dynamic? debugData;
+  final dynamic debugData;
 
   /// Unique instance to observe all [BaseException] instances
   ///
