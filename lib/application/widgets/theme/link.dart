@@ -20,6 +20,8 @@ class LinkButton extends HookWidget {
     required this.text,
     this.leading,
     this.trailing,
+    this.backgroundColor,
+    this.textStyle,
     Key? key,
   }) : super(key: key);
 
@@ -32,6 +34,12 @@ class LinkButton extends HookWidget {
   /// A trailing widget that comes after the [text] element
   final Widget? trailing;
 
+  /// Overrides the default theme backgroundColor
+  final Color? backgroundColor;
+
+  /// Overrides the default text style
+  final TextStyle? textStyle;
+
   @override
   Widget build(BuildContext context) {
     final linkContents = Row(
@@ -40,7 +48,13 @@ class LinkButton extends HookWidget {
           leading!,
           context.horizontalBox(Spacing.small),
         ],
-        Expanded(child: Text(text, maxLines: 2, overflow: TextOverflow.ellipsis)),
+        Expanded(
+            child: Text(
+          text,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: textStyle,
+        )),
         if (trailing != null) ...[
           context.horizontalBox(Spacing.small),
           trailing!,
@@ -48,14 +62,17 @@ class LinkButton extends HookWidget {
       ],
     );
 
-    final bgColor = useTheme().neutralSwatch.shade800;
+    final themeColor = useTheme().neutralSwatch.shade800;
 
     return Semantics(
       button: true,
       enabled: onTap != null,
       child: Material(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(dimens.cardBorderWidth)),
-        color: bgColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(dimens.cardBorderWidth),
+          side: BorderSide(color: themeColor),
+        ),
+        color: backgroundColor ?? themeColor,
         child: InkWell(
           onTap: onTap,
           child: linkContents.withAllPadding(context, Spacing.medium),
@@ -81,6 +98,9 @@ class ExternalLinkButton extends StatelessWidget {
     this.description,
     this.leading,
     this.onFailLaunchingUrl,
+    this.backgroundColor,
+    this.textStyle,
+    this.iconColor,
     Key? key,
   }) : super(key: key) {
     _allowedSchemes.firstWhere((scheme) => url.toLowerCase().startsWith(scheme), orElse: () {
@@ -98,19 +118,34 @@ class ExternalLinkButton extends StatelessWidget {
   /// A leading widget that comes before the [url] (or [description] if present) element
   final Widget? leading;
 
+  /// Overrides the default theme backgroundColor
+  final Color? backgroundColor;
+
+  /// The trailing icon color
+  final Color? iconColor;
+
+  /// The description text style
+  final TextStyle? textStyle;
+
   /// Callback that is triggered when the [url] has failed launching
   final void Function(UrlException exception)? onFailLaunchingUrl;
 
   @override
   Widget build(BuildContext context) {
     final linkImage = AssetImage(images.linkAsset);
-    final linkIcon = ImageIcon(linkImage, size: dimens.smallIconSize);
+    final linkIcon = ImageIcon(
+      linkImage,
+      size: dimens.smallIconSize,
+      color: iconColor,
+    );
 
     return LinkButton(
       onTap: isEnabled ? () => _handleUrlLaunch(url, onFailLaunchingUrl) : null,
       text: description ?? url,
       leading: leading,
       trailing: linkIcon,
+      backgroundColor: backgroundColor,
+      textStyle: textStyle,
     );
   }
 }

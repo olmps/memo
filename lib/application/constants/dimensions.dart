@@ -44,3 +44,11 @@ const double executionsTerminalBlur = 32;
 const double executionsCompletionDividerHeight = 1;
 
 const double executionsHeaderEmojiTextSize = 80;
+
+//
+// ContributorsButton
+//
+const double contributorsImageRadius = 18;
+const double contributorsButtonBorderWidth = 2;
+const double contributorsImagePadding = 20;
+const int maxContributorsImages = 5;
