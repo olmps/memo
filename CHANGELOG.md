@@ -10,6 +10,9 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## Fixed
+- Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
+
 ## [0.1.0-rc.2] - 2021-05-12
 
 ## Added
