@@ -1,3 +1,4 @@
+import 'package:memo/data/serializers/contributor_serializer.dart';
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
 import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/collection.dart';
@@ -12,9 +13,12 @@ class CollectionKeys {
   static const uniqueMemoExecutionsAmount = 'uniqueMemoExecutionsAmount';
   static const executionsAmounts = 'executionsAmounts';
   static const timeSpentInMillis = 'timeSpentInMillis';
+  static const contributors = 'contributors';
 }
 
 class CollectionSerializer implements Serializer<Collection, Map<String, dynamic>> {
+  final contributorSerializer = ContributorSerializer();
+
   @override
   Collection from(Map<String, dynamic> json) {
     final id = json[CollectionKeys.id] as String;
@@ -35,6 +39,9 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
 
     final timeSpentInMillis = json[CollectionKeys.timeSpentInMillis] as int?;
 
+    final contributors =
+        (json[CollectionKeys.contributors] as List<dynamic>).map(contributorSerializer.from).toList();
+
     return Collection(
       id: id,
       name: name,
@@ -45,6 +52,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
       uniqueMemoExecutionsAmount: uniqueMemoExecutionsAmount ?? 0,
       executionsAmounts: executionsAmounts ?? {},
       timeSpentInMillis: timeSpentInMillis ?? 0,
+      contributors: contributors,
     );
   }
 
@@ -58,6 +66,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
         CollectionKeys.uniqueMemosAmount: collection.uniqueMemosAmount,
         CollectionKeys.uniqueMemoExecutionsAmount: collection.uniqueMemoExecutionsAmount,
         CollectionKeys.executionsAmounts: collection.executionsAmounts.map((key, value) => MapEntry(key.raw, value)),
+        CollectionKeys.contributors: collection.contributors.map(contributorSerializer.to),
         CollectionKeys.timeSpentInMillis: collection.timeSpentInMillis,
       };
 }
