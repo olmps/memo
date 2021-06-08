@@ -57,7 +57,10 @@ class CollectionDetailsPage extends HookWidget {
       if (contributors.isNotEmpty) {
         final contributorsSection = contributors.length > 1
             ? MultipleContributorsButton(contributors)
-            : SingleContributorButton(contributors.first);
+            : SingleContributorButton(
+                contributors.first,
+                textStyle: TextStyle(color: memoTheme.neutralSwatch.shade200),
+              );
 
         sections.add(contributorsSection);
       }

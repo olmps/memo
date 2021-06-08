@@ -48,7 +48,19 @@ const double executionsHeaderEmojiTextSize = 80;
 //
 // ContributorsButton
 //
-const double contributorsImageRadius = 18;
+const double contributorsSmallImageRadius = 18;
+const double contributorsLargeImageRadius = 25;
+const double contributorsImageBorderWidth = 4;
 const double contributorsButtonBorderWidth = 2;
-const double contributorsImagePadding = 20;
+const double contributorsImagePadding = 24;
+const double contributorsButtonHorizontalPadding = 14;
+const double contributorsButtonVerticalPadding = 4;
 const int maxContributorsImages = 5;
+
+//
+// BottomSheet
+//
+const double dragIndicatorWidth = 40;
+const double dragIndicatorHeight = 3;
+const double bottomSheetDragIndicatorRadius = 5;
+const double minBottomSheetHeight = 300;
