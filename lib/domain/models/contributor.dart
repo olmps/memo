@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+// ignore: comment_references
 /// One of the [Contributor]'s in the [Collection]
 @immutable
 class Contributor extends Equatable {
