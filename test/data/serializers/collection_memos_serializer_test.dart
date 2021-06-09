@@ -19,8 +19,8 @@ void main() {
       const Contributor(
         id: 'id_1',
         name: 'name',
-        url: 'imageUrl',
-        imageUrl: 'url',
+        url: 'url',
+        imageUrl: 'imageUrl',
       )
     ],
     memosMetadata: [
