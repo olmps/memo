@@ -63,4 +63,5 @@ const int maxContributorsImages = 5;
 const double dragIndicatorWidth = 40;
 const double dragIndicatorHeight = 3;
 const double bottomSheetDragIndicatorRadius = 5;
+const double bottomSheetOffset = 50;
 const double minBottomSheetHeight = 300;
