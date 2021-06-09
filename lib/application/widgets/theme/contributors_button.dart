@@ -13,22 +13,24 @@ class MultipleContributorsButton extends HookWidget {
 
   final List<Contributor> contributors;
 
-  void _showBottomSheet(BuildContext context, Color backgroundColor) {
+  void _showBottomSheet(BuildContext context, Color backgroundColor, Color imageBackgroundColor) {
     context.showDraggableScrollableModalBottomSheet<void>(
-      child: ListView.builder(
-        itemCount: contributors.length,
-        itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: dimens.contributorsButtonVerticalPadding,
-                  horizontal: dimens.contributorsButtonHorizontalPadding,
-                ),
-                child: SingleContributorButton(
-                  contributors[index],
-                  imageRadius: dimens.contributorsLargeImageRadius,
-                  backgroundColor: backgroundColor,
-                ),
-              ),
-            ),
+      child: Column(
+        children: contributors
+            .map((contributor) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: dimens.contributorsButtonVerticalPadding,
+                    horizontal: dimens.contributorsButtonHorizontalPadding,
+                  ),
+                  child: SingleContributorButton(
+                    contributor,
+                    imageRadius: dimens.contributorsLargeImageRadius,
+                    backgroundColor: backgroundColor,
+                    imageBackgroundColor: imageBackgroundColor,
+                  ),
+                ))
+            .toList(),
+      ),
       title: strings.contributorsTitle,
     );
   }
@@ -38,8 +40,6 @@ class MultipleContributorsButton extends HookWidget {
     final memoTheme = useTheme();
 
     final themeColor = memoTheme.neutralSwatch.shade200;
-    final backgroundThemeColor = memoTheme.neutralSwatch.shade900;
-    final imageBackgroundColor = memoTheme.neutralSwatch.shade800;
     final description = strings.numOfContributors(contributors.length);
     final maxImages =
         contributors.length > dimens.maxContributorsImages ? dimens.maxContributorsImages : contributors.length;
@@ -52,14 +52,14 @@ class MultipleContributorsButton extends HookWidget {
             Padding(
               padding: EdgeInsets.only(right: index * dimens.contributorsImagePadding),
               child: CircleAvatar(
-                backgroundColor: backgroundThemeColor,
+                backgroundColor: memoTheme.neutralSwatch.shade900,
                 radius: dimens.contributorsSmallImageRadius + dimens.contributorsImageBorderWidth,
                 child: CircleAvatar(
                   radius: dimens.contributorsSmallImageRadius,
                   backgroundImage: NetworkImage(
                     contributor.imageUrl,
                   ),
-                  backgroundColor: imageBackgroundColor,
+                  backgroundColor: memoTheme.neutralSwatch.shade800,
                 ),
               ),
             )))
@@ -74,9 +74,13 @@ class MultipleContributorsButton extends HookWidget {
     );
 
     return LinkButton(
-      onTap: () => _showBottomSheet(context, imageBackgroundColor),
+      onTap: () => _showBottomSheet(
+        context,
+        memoTheme.neutralSwatch.shade800,
+        memoTheme.neutralSwatch.shade900,
+      ),
       text: description,
-      backgroundColor: backgroundThemeColor,
+      backgroundColor: memoTheme.neutralSwatch.shade900,
       textStyle: TextStyle(color: themeColor),
       trailing: trailing,
     );
@@ -87,16 +91,23 @@ class SingleContributorButton extends HookWidget {
   const SingleContributorButton(
     this.contributor, {
     this.backgroundColor,
+    this.imageBackgroundColor,
     this.imageRadius,
     this.textStyle,
   });
 
   final Contributor contributor;
 
+  /// The button background color, if not present, the default value will be set
   final Color? backgroundColor;
 
+  /// The color presented while the [contributor] image loads
+  final Color? imageBackgroundColor;
+
+  /// The radius of the [contributor] image
   final double? imageRadius;
 
+  /// The text style of the [contributor] name
   final TextStyle? textStyle;
 
   @override
@@ -104,7 +115,7 @@ class SingleContributorButton extends HookWidget {
     final memoTheme = useTheme();
 
     final iconColor = memoTheme.neutralSwatch.shade200;
-    final imageBackgroundColor = memoTheme.neutralSwatch.shade800;
+    final avatarBackgroundColor = imageBackgroundColor ?? memoTheme.neutralSwatch.shade800;
     final url = contributor.url;
     final description = contributor.name;
     final leading = CircleAvatar(
@@ -112,7 +123,7 @@ class SingleContributorButton extends HookWidget {
       backgroundImage: NetworkImage(
         contributor.imageUrl,
       ),
-      backgroundColor: imageBackgroundColor,
+      backgroundColor: avatarBackgroundColor,
     );
 
     return ExternalLinkButton(
