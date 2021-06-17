@@ -29,8 +29,8 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
     final rawMemos = List<Map<String, dynamic>>.from(json[CollectionMemosKeys.memosMetadata] as List);
     final memosMetadata = rawMemos.map(memoMetadataSerializer.from).toList();
 
-    final contributors =
-        (json[CollectionMemosKeys.contributors] as List<dynamic>).map(contributorSerializer.from).toList();
+    final rawContributors = List<Map<String, dynamic>>.from(json[CollectionMemosKeys.contributors] as List);
+    final contributors = rawContributors.map(contributorSerializer.from).toList();
 
     return CollectionMemos(
       id: id,

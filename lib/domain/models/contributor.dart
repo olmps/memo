@@ -5,11 +5,7 @@ import 'package:meta/meta.dart';
 /// One of the [Contributor]'s in the [Collection]
 @immutable
 class Contributor extends Equatable {
-  const Contributor({
-    required this.name,
-    required this.url,
-    required this.imageUrl,
-  });
+  const Contributor({required this.name, required this.url, required this.imageUrl});
 
   final String name;
 

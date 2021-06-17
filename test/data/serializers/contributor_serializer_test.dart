@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/data/serializers/contributor_serializer.dart';
 import 'package:memo/domain/models/contributor.dart';
 
@@ -13,10 +12,10 @@ void main() {
     imageUrl: 'imageUrl',
   );
 
-  dynamic contributorFromCollection() => fixtures.collection()[CollectionKeys.contributors].first;
+  Map<String, dynamic> contributorFromCollection() => fixtures.contributors();
 
   test('ContributorSerializer should correctly encode/decode a Contributor from a collection', () {
-    final dynamic rawContributor = contributorFromCollection();
+    final rawContributor = contributorFromCollection();
 
     final decodedCollection = serializer.from(rawContributor);
     expect(decodedCollection, testContributor);
@@ -27,15 +26,15 @@ void main() {
 
   test('ContributorSerializer should fail to decode without required properties', () {
     expect(() {
-      final dynamic rawContributor = contributorFromCollection()..remove(ContributorKeys.name);
+      final rawContributor = contributorFromCollection()..remove(ContributorKeys.name);
       serializer.from(rawContributor);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final dynamic rawContributor = contributorFromCollection()..remove(ContributorKeys.url);
+      final rawContributor = contributorFromCollection()..remove(ContributorKeys.url);
       serializer.from(rawContributor);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final dynamic rawContributor = contributorFromCollection()..remove(ContributorKeys.imageUrl);
+      final rawContributor = contributorFromCollection()..remove(ContributorKeys.imageUrl);
       serializer.from(rawContributor);
     }, throwsA(isA<TypeError>()));
   });

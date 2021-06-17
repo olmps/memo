@@ -31,11 +31,13 @@ void main() {
     ],
   );
 
-  Map<String, dynamic> fixtureWithMemos() =>
-      fixtures.collectionMemos()..[CollectionMemosKeys.memosMetadata] = [fixtures.memoCollectionMetadata()];
+  Map<String, dynamic> fixtureWithMemosAndContributors() =>
+      fixtures.collectionMemos()
+      ..[CollectionMemosKeys.memosMetadata] = [fixtures.memoCollectionMetadata()]
+      ..[CollectionMemosKeys.contributors] = [fixtures.contributors()];
 
   test('CollectionMemosSerializer should correctly encode/decode a CollectionMemos', () {
-    final rawCollection = fixtureWithMemos();
+    final rawCollection = fixtureWithMemosAndContributors();
 
     final decodedCollection = serializer.from(rawCollection);
     expect(decodedCollection, testCollection);
@@ -46,27 +48,27 @@ void main() {
 
   test('CollectionMemosSerializer should fail to decode without required properties', () {
     expect(() {
-      final rawCollection = fixtureWithMemos()..remove(CollectionMemosKeys.id);
+      final rawCollection = fixtureWithMemosAndContributors()..remove(CollectionMemosKeys.id);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtureWithMemos()..remove(CollectionMemosKeys.name);
+      final rawCollection = fixtureWithMemosAndContributors()..remove(CollectionMemosKeys.name);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtureWithMemos()..remove(CollectionMemosKeys.description);
+      final rawCollection = fixtureWithMemosAndContributors()..remove(CollectionMemosKeys.description);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtureWithMemos()..remove(CollectionMemosKeys.category);
+      final rawCollection = fixtureWithMemosAndContributors()..remove(CollectionMemosKeys.category);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtureWithMemos()..remove(CollectionMemosKeys.tags);
+      final rawCollection = fixtureWithMemosAndContributors()..remove(CollectionMemosKeys.tags);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtureWithMemos()..remove(CollectionMemosKeys.memosMetadata);
+      final rawCollection = fixtureWithMemosAndContributors()..remove(CollectionMemosKeys.memosMetadata);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
   });

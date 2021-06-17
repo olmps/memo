@@ -25,8 +25,11 @@ void main() {
     uniqueMemosAmount: 1,
   );
 
+  Map<String, dynamic> fixtureWitContributors() =>
+      fixtures.collection()..[CollectionKeys.contributors] = [fixtures.contributors()];
+
   test('CollectionSerializer should correctly encode/decode a Collection', () {
-    final rawCollection = fixtures.collection();
+    final rawCollection = fixtureWitContributors();
 
     final decodedCollection = serializer.from(rawCollection);
     expect(decodedCollection, testCollection);
@@ -37,33 +40,33 @@ void main() {
 
   test('CollectionSerializer should fail to decode without required properties', () {
     expect(() {
-      final rawCollection = fixtures.collection()..remove(CollectionKeys.id);
+      final rawCollection = fixtureWitContributors()..remove(CollectionKeys.id);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove(CollectionKeys.name);
+      final rawCollection = fixtureWitContributors()..remove(CollectionKeys.name);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove(CollectionKeys.description);
+      final rawCollection = fixtureWitContributors()..remove(CollectionKeys.description);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove(CollectionKeys.category);
+      final rawCollection = fixtureWitContributors()..remove(CollectionKeys.category);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove(CollectionKeys.tags);
+      final rawCollection = fixtureWitContributors()..remove(CollectionKeys.tags);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
     expect(() {
-      final rawCollection = fixtures.collection()..remove(CollectionKeys.uniqueMemosAmount);
+      final rawCollection = fixtureWitContributors()..remove(CollectionKeys.uniqueMemosAmount);
       serializer.from(rawCollection);
     }, throwsA(isA<TypeError>()));
   });
 
   test('CollectionSerializer should decode with optional properties', () {
-    final rawCollection = fixtures.collection()
+    final rawCollection = fixtureWitContributors()
       ..[CollectionKeys.uniqueMemoExecutionsAmount] = 1
       ..[CollectionKeys.executionsAmounts] = {
         MemoDifficulty.easy.raw: 1,
@@ -81,10 +84,10 @@ void main() {
       category: 'Category',
       contributors: const [
         Contributor(
-        name: 'name',
-        url: 'url',
-        imageUrl: 'imageUrl',
-      )
+          name: 'name',
+          url: 'url',
+          imageUrl: 'imageUrl',
+        )
       ],
       tags: const ['Tag 1', 'Tag 2'],
       uniqueMemosAmount: 1,

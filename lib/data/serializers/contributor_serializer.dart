@@ -7,7 +7,7 @@ class ContributorKeys {
   static const imageUrl = 'imageUrl';
 }
 
-class ContributorSerializer implements Serializer<Contributor, dynamic> {
+class ContributorSerializer implements Serializer<Contributor, Map<String, dynamic>> {
   @override
   // ignore: avoid_annotating_with_dynamic
   Contributor from(dynamic json) {
