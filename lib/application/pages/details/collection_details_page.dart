@@ -20,8 +20,7 @@ class CollectionDetailsPage extends HookWidget {
     final state = useCollectionDetailsState();
 
     if (state is LoadedCollectionDetailsState) {
-      // ignore: omit_local_variable_types
-      final List<Widget> sections = [];
+      final sections = <Widget>[];
 
       final heroCollectionCard = ThemedTopContainer(
         child: buildHeroCollectionCardFromItem(

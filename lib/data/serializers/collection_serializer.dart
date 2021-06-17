@@ -39,8 +39,8 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
 
     final timeSpentInMillis = json[CollectionKeys.timeSpentInMillis] as int?;
 
-    final contributors =
-        (json[CollectionKeys.contributors] as List<dynamic>).map(contributorSerializer.from).toList();
+    final rawContributors = json[CollectionKeys.contributors] as List;
+    final contributors = rawContributors.map(contributorSerializer.from).toList();
 
     return Collection(
       id: id,

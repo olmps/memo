@@ -8,7 +8,6 @@ import '../../fixtures/fixtures.dart' as fixtures;
 void main() {
   final serializer = ContributorSerializer();
   const testContributor = Contributor(
-    id: 'id_1',
     name: 'name',
     url: 'url',
     imageUrl: 'imageUrl',
@@ -27,10 +26,6 @@ void main() {
   });
 
   test('ContributorSerializer should fail to decode without required properties', () {
-    expect(() {
-      final dynamic rawContributor = contributorFromCollection()..remove(ContributorKeys.id);
-      serializer.from(rawContributor);
-    }, throwsA(isA<TypeError>()));
     expect(() {
       final dynamic rawContributor = contributorFromCollection()..remove(ContributorKeys.name);
       serializer.from(rawContributor);

@@ -5,7 +5,6 @@
   "category": "Category",
   "contributors": [
     {
-      "uniqueId": "id_1",
       "name": "name",
       "url": "url",
       "imageUrl": "imageUrl"

@@ -2,7 +2,6 @@ import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/contributor.dart';
 
 class ContributorKeys {
-  static const id = 'uniqueId';
   static const name = 'name';
   static const url = 'url';
   static const imageUrl = 'imageUrl';
@@ -12,13 +11,11 @@ class ContributorSerializer implements Serializer<Contributor, dynamic> {
   @override
   // ignore: avoid_annotating_with_dynamic
   Contributor from(dynamic json) {
-    final id = json[ContributorKeys.id] as String;
     final name = json[ContributorKeys.name] as String;
     final url = json[ContributorKeys.url] as String;
     final imageUrl = json[ContributorKeys.imageUrl] as String;
 
     return Contributor(
-      id: id,
       name: name,
       url: url,
       imageUrl: imageUrl,
@@ -27,7 +24,6 @@ class ContributorSerializer implements Serializer<Contributor, dynamic> {
 
   @override
   Map<String, dynamic> to(Contributor contributor) => <String, dynamic>{
-        ContributorKeys.id: contributor.id,
         ContributorKeys.name: contributor.name,
         ContributorKeys.url: contributor.url,
         ContributorKeys.imageUrl: contributor.imageUrl,

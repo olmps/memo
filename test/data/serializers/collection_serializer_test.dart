@@ -16,7 +16,6 @@ void main() {
     category: 'Category',
     contributors: const [
       Contributor(
-        id: 'id_1',
         name: 'name',
         url: 'url',
         imageUrl: 'imageUrl',
@@ -82,7 +81,6 @@ void main() {
       category: 'Category',
       contributors: const [
         Contributor(
-        id: 'id_1',
         name: 'name',
         url: 'url',
         imageUrl: 'imageUrl',
