@@ -30,6 +30,34 @@ class MultipleContributorsButton extends HookWidget {
 
     final maxImages = contributors.length > _maxContributorsImage ? _maxContributorsImage : contributors.length;
 
+    final contributorsImageDiameter = (dimens.contributorSmallImageRadius * 2) + dimens.contributorsImageBorderWidth;
+
+    MapEntry<int, Widget> _buildContributorAvatar(int index, Contributor contributor) => MapEntry(
+          index,
+          Padding(
+            padding: EdgeInsets.only(
+              right: index * context.rawSpacing(Spacing.large),
+            ),
+            child: Container(
+              height: contributorsImageDiameter,
+              width: contributorsImageDiameter,
+              padding: const EdgeInsets.all(dimens.contributorsImageBorderWidth), // borde width
+              decoration: BoxDecoration(
+                color: theme.neutralSwatch.shade900, // border color
+                shape: BoxShape.circle,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(dimens.contributorImageRadius),
+                child: FadeInImage(
+                  placeholder: AssetImage(images.userAsset),
+                  image: NetworkImage(contributor.imageUrl),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+          ),
+        );
+
     final contributorsImages =
         contributors.sublist(0, maxImages).asMap().map(_buildContributorAvatar).values.toList().reversed.toList();
 
@@ -42,7 +70,6 @@ class MultipleContributorsButton extends HookWidget {
       onTap: () => _showBottomSheet(
         context,
         theme.neutralSwatch.shade800,
-        theme.neutralSwatch.shade900,
       ),
       text: strings.numOfContributors(contributors.length),
       backgroundColor: theme.neutralSwatch.shade900,
@@ -51,54 +78,23 @@ class MultipleContributorsButton extends HookWidget {
     );
   }
 
-  MapEntry<int, Widget> _buildContributorAvatar(int index, Contributor contributor) {
-    final theme = useTheme();
-
-    return MapEntry(
-      index,
-      Padding(
-        padding: EdgeInsets.only(right: index * dimens.contributorsImagePadding),
-        child: Container(
-          width: dimens.smallIconSize,
-          height: dimens.smallIconSize,
-          padding: const EdgeInsets.all(dimens.contributorsImageBorderWidth), // borde width
-          decoration: BoxDecoration(
-            color: theme.neutralSwatch.shade800, // border color
-            shape: BoxShape.circle,
-          ),
-          child: CircleAvatar(
-            child: FadeInImage(
-              placeholder: AssetImage(images.userAsset),
-              image: NetworkImage(contributor.imageUrl),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showBottomSheet(BuildContext context, Color backgroundColor, Color imageBackgroundColor) {
+  void _showBottomSheet(BuildContext context, Color backgroundColor) {
     context.showDraggableScrollableModalBottomSheet<void>(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: dimens.bottomSheetOffset),
-        child: Column(
-          children: contributors
-              .map(
-                (contributor) => SingleContributorButton(
-                  contributor,
-                  imageRadius: dimens.iconSize,
-                  backgroundColor: backgroundColor,
-                  imageBackgroundColor: imageBackgroundColor,
-                ).withSymmetricalPadding(
-                  context,
-                  horizontal: Spacing.small,
-                  vertical: Spacing.xxSmall,
-                ),
-              )
-              .toList(),
-        ),
-      ),
+      child: Column(
+        children: contributors
+            .map(
+              (contributor) => SingleContributorButton(
+                contributor,
+                imageRadius: dimens.contributorImageRadius,
+                backgroundColor: backgroundColor,
+              ).withSymmetricalPadding(
+                context,
+                horizontal: Spacing.small,
+                vertical: Spacing.xxSmall,
+              ),
+            )
+            .toList(),
+      ).withOnlyPadding(context, bottom: Spacing.xxxLarge),
       title: strings.contributorsTitle,
     );
   }
@@ -110,7 +106,6 @@ class SingleContributorButton extends HookWidget {
   const SingleContributorButton(
     this.contributor, {
     this.backgroundColor,
-    this.imageBackgroundColor,
     this.imageRadius,
     this.textStyle,
   });
@@ -119,9 +114,6 @@ class SingleContributorButton extends HookWidget {
 
   /// The button background color, if not present, the default value will be set
   final Color? backgroundColor;
-
-  /// The color presented while the [contributor] image loads
-  final Color? imageBackgroundColor;
 
   /// The radius of the [contributor] image
   final double? imageRadius;
@@ -133,11 +125,15 @@ class SingleContributorButton extends HookWidget {
   Widget build(BuildContext context) {
     final theme = useTheme();
 
-    final leading = CircleAvatar(
-      child: FadeInImage(
-        placeholder: AssetImage(images.userAsset),
-        image: NetworkImage(contributor.imageUrl),
-        fit: BoxFit.cover,
+    final leading = ClipRRect(
+      borderRadius: BorderRadius.circular(dimens.iconSize),
+      child: CircleAvatar(
+        radius: imageRadius ?? dimens.contributorSmallImageRadius,
+        child: FadeInImage(
+          placeholder: AssetImage(images.userAsset),
+          image: NetworkImage(contributor.imageUrl),
+          fit: BoxFit.fill,
+        ),
       ),
     );
 
@@ -145,7 +141,7 @@ class SingleContributorButton extends HookWidget {
       contributor.url,
       description: contributor.name,
       leading: leading,
-      backgroundColor: imageBackgroundColor ?? theme.neutralSwatch.shade800,
+      backgroundColor: backgroundColor,
       textStyle: textStyle,
       iconColor: theme.neutralSwatch.shade200,
     );

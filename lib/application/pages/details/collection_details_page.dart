@@ -59,6 +59,7 @@ class CollectionDetailsPage extends HookWidget {
             : SingleContributorButton(
                 contributors.first,
                 textStyle: TextStyle(color: memoTheme.neutralSwatch.shade200),
+                backgroundColor: memoTheme.neutralSwatch.shade900,
               );
 
         sections.add(contributorsSection);

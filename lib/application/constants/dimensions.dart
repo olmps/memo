@@ -50,7 +50,8 @@ const double executionsHeaderEmojiTextSize = 80;
 //
 const double contributorsImageBorderWidth = 4;
 const double contributorsButtonBorderWidth = 2;
-const double contributorsImagePadding = 26;
+const double contributorSmallImageRadius = 18;
+const double contributorImageRadius = 25;
 
 //
 // BottomSheet
@@ -58,5 +59,4 @@ const double contributorsImagePadding = 26;
 const double dragIndicatorWidth = 40;
 const double dragIndicatorHeight = 3;
 const double bottomSheetDragIndicatorRadius = 5;
-const double bottomSheetOffset = 50;
 const double minBottomSheetHeight = 300;
