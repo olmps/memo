@@ -7,6 +7,7 @@ import 'package:memo/application/widgets/theme/link.dart';
 import 'package:memo/domain/models/contributor.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
+import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/utils/bottom_sheet.dart';
 
 /// An alternative to the [SingleContributorButton]
@@ -32,7 +33,7 @@ class MultipleContributorsButton extends HookWidget {
     final contributorsImages =
         contributors.sublist(0, maxImages).asMap().map(_buildContributorAvatar).values.toList().reversed.toList();
 
-    final trailing = Stack(
+    final trailingAvatarsStack = Stack(
       alignment: Alignment.centerRight,
       children: contributorsImages,
     );
@@ -46,7 +47,7 @@ class MultipleContributorsButton extends HookWidget {
       text: strings.numOfContributors(contributors.length),
       backgroundColor: theme.neutralSwatch.shade900,
       textStyle: TextStyle(color: theme.neutralSwatch.shade200),
-      trailing: trailing,
+      trailing: trailingAvatarsStack,
     );
   }
 
@@ -58,16 +59,18 @@ class MultipleContributorsButton extends HookWidget {
       Padding(
         padding: EdgeInsets.only(right: index * dimens.contributorsImagePadding),
         child: Container(
-          width: dimens.contributorsSmallImageRadius,
-          height: dimens.contributorsSmallImageRadius,
+          width: dimens.smallIconSize,
+          height: dimens.smallIconSize,
           padding: const EdgeInsets.all(dimens.contributorsImageBorderWidth), // borde width
           decoration: BoxDecoration(
             color: theme.neutralSwatch.shade800, // border color
             shape: BoxShape.circle,
           ),
           child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              contributor.imageUrl,
+            child: FadeInImage(
+              placeholder: AssetImage(images.userAsset),
+              image: NetworkImage(contributor.imageUrl),
+              fit: BoxFit.cover,
             ),
           ),
         ),
@@ -77,21 +80,24 @@ class MultipleContributorsButton extends HookWidget {
 
   void _showBottomSheet(BuildContext context, Color backgroundColor, Color imageBackgroundColor) {
     context.showDraggableScrollableModalBottomSheet<void>(
-      child: Column(
-        children: contributors
-            .map(
-              (contributor) => SingleContributorButton(
-                contributor,
-                imageRadius: dimens.contributorsLargeImageRadius,
-                backgroundColor: backgroundColor,
-                imageBackgroundColor: imageBackgroundColor,
-              ).withSymmetricalPadding(
-                context,
-                horizontal: Spacing.small,
-                vertical: Spacing.xxSmall,
-              ),
-            )
-            .toList(),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: dimens.bottomSheetOffset),
+        child: Column(
+          children: contributors
+              .map(
+                (contributor) => SingleContributorButton(
+                  contributor,
+                  imageRadius: dimens.iconSize,
+                  backgroundColor: backgroundColor,
+                  imageBackgroundColor: imageBackgroundColor,
+                ).withSymmetricalPadding(
+                  context,
+                  horizontal: Spacing.small,
+                  vertical: Spacing.xxSmall,
+                ),
+              )
+              .toList(),
+        ),
       ),
       title: strings.contributorsTitle,
     );
@@ -127,25 +133,21 @@ class SingleContributorButton extends HookWidget {
   Widget build(BuildContext context) {
     final theme = useTheme();
 
-    final iconColor = theme.neutralSwatch.shade200;
-    final avatarBackgroundColor = imageBackgroundColor ?? theme.neutralSwatch.shade800;
-    final url = contributor.url;
-    final description = contributor.name;
     final leading = CircleAvatar(
-      radius: imageRadius ?? dimens.contributorsSmallImageRadius,
-      backgroundImage: NetworkImage(
-        contributor.imageUrl,
+      child: FadeInImage(
+        placeholder: AssetImage(images.userAsset),
+        image: NetworkImage(contributor.imageUrl),
+        fit: BoxFit.cover,
       ),
-      backgroundColor: avatarBackgroundColor,
     );
 
     return ExternalLinkButton(
-      url,
-      description: description,
+      contributor.url,
+      description: contributor.name,
       leading: leading,
-      backgroundColor: backgroundColor,
+      backgroundColor: imageBackgroundColor ?? theme.neutralSwatch.shade800,
       textStyle: textStyle,
-      iconColor: iconColor,
+      iconColor: theme.neutralSwatch.shade200,
     );
   }
 }

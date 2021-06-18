@@ -18,6 +18,9 @@ enum ImageKey {
 
   // illustrations
   logo,
+
+  // placeholders
+  user,
 }
 
 extension ImageKeyPath on ImageKey {
@@ -40,6 +43,8 @@ extension ImageKeyPath on ImageKey {
         return '$_iconsRoot/trending_up_arrow.png';
       case ImageKey.logo:
         return '$_illustrationsRoot/logo.png';
+      case ImageKey.user:
+        return '$_placeholdersRoot/user.png';
     }
   }
 }
@@ -55,3 +60,6 @@ final trendingUpArrowAsset = ImageKey.trendingUpArrow.path;
 
 const _illustrationsRoot = '$_imgsRoot/illustrations';
 final logoAsset = ImageKey.logo.path;
+
+const _placeholdersRoot = '$_imgsRoot/placeholders';
+final userAsset = ImageKey.user.path;

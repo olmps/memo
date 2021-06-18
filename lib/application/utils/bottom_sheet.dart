@@ -26,7 +26,7 @@ extension BottomSheetExtension on BuildContext {
   /// If [isDismissible] is `false`, all drag interactions are disabled and the caller must handle its dismissal, like
   /// some close button or any other action that will eventually dismiss this modal. Also, no dragIndicator is drawn,
   /// to corroborate with the no-dragging behavior.
-  /// 
+  ///
   /// The [child] must have a size to fit whitin the SingleChildScrollView
   Future<T?> showDraggableScrollableModalBottomSheet<T>({
     required Widget child,
@@ -123,8 +123,8 @@ class _ModalBottomSheet extends HookWidget {
             header,
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: dimens.bottomSheetOffset),
-                child: child),
+                child: child,
+              ),
             ),
           ],
         ),
