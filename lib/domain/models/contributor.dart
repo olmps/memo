@@ -11,7 +11,7 @@ class Contributor extends Equatable {
 
   final String imageUrl;
 
-  /// An external url - chosen by the collection contributor - which is linked within the `SingleContributorButton`
+  /// An external url which references a website from the user choice to be used in self-promotion contexts
   final String url;
 
   @override

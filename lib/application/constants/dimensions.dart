@@ -48,11 +48,9 @@ const double executionsHeaderEmojiTextSize = 80;
 //
 // ContributorsButton
 //
-const double contributorsSmallImageRadius = 18;
-const double contributorsLargeImageRadius = 25;
 const double contributorsImageBorderWidth = 4;
 const double contributorsButtonBorderWidth = 2;
-const double contributorsImagePadding = 24;
+const double contributorsImagePadding = 26;
 
 //
 // BottomSheet
