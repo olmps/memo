@@ -62,6 +62,7 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           PROVISIONS_CERTIFICATES_REPO: ${{ secrets.PROVISIONS_CERTIFICATES_REPO }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
 
       # Retrieves keystore.jks and key.properties files from Github secrets. Both are used to sign the Android app
       # before publishing it to Google Play console
