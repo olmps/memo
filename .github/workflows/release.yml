@@ -51,8 +51,10 @@ jobs:
       # Retrieves iOS & Android Firebase Google Services file from Secrets. Both are required to build the app
       - name: Setup Dependencies
         run: |
-          echo "${{ secrets.IOS_GOOGLE_SERVICES }}" > ios/Runner/GoogleService-Info.plist
-          echo "${{ secrets.ANDROID_GOOGLE_SERVICES }}" > android/app/google-services.json
+          echo "${{ secrets.ANDROID_ENCODED_GOOGLE_SERVICES }}" > encoded_android_google_services
+          openssl base64 -in encoded_android_google_services -out android/app/google-services.json -d
+          echo "${{ secrets.IOS_ENCODED_GOOGLE_SERVICES }}" > encoded_ios_google_services
+          openssl base64 -in encoded_ios_google_services -out ios/Runner/GoogleService-Info.plist -d
 
       # Build an release iOS app to App Store Connect. More info about the steps in ios/fastlane/Fastfile file
       - name: Release iOS App
