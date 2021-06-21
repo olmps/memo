@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/data/gateways/application_bundle.dart';
+import 'package:memo/data/repositories/analytics_monitor.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_execution_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
@@ -57,7 +59,11 @@ class AppVMImpl extends AppVM {
     // Run all isolate dependencies, which are required by most of the application's core services/repositories
     final firstClassDependencies = await Future.wait<dynamic>([
       sembast.openDatabase(),
+      Firebase.initializeApp(),
     ]);
+
+    // Forward uncaught flutter errors to analytics monitor
+    FlutterError.onError = AnalyticsMonitorImpl.instance.recordFlutterError;
 
     // Ideally, we shouldn't let a Data and Domain layers components be instantiated in an application component (VM), but due to how
     // all "state-management" libraries work (in response to Flutter's widget-centric design), it's almost impossible to
