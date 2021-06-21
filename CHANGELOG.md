@@ -10,6 +10,10 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## Added
+- `Firebase Crashlytics` dependency;
+- `AnalyticsMonitor`, which controls app errors logging and custom events.
+  
 ## Fixed
 - Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
 - Contributors button at the Collection Details Page that redirects the user to the contributor given link
