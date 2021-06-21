@@ -12,7 +12,11 @@ a beta or production release, they must be documented here).
 
 ## Added
 - `Firebase Crashlytics` dependency;
-- `AnalyticsMonitor`, which controls app errors logging and custom events.
+- `AnalyticsMonitor`, which controls app errors logging and custom events;
+- Updated `release` workflow by adding dSYM upload to Crashlytics.
+
+## Updated
+- Bumped `strict` version.
   
 ## Fixed
 - Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
