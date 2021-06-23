@@ -15,10 +15,10 @@
 // - https://github.com/flutter/flutter/issues/34111
 // - https://github.com/flutter/flutter/issues/45009
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 extension BottomSheetExtension on BuildContext {
   /// Wraps a [showModalBottomSheet] behavior that snaps its content based on [child] size
@@ -69,66 +69,27 @@ extension BottomSheetExtension on BuildContext {
       enableDrag: isDismissible,
       isScrollControlled: true,
       builder: (context) {
-        return _ModalBottomSheet(
-          header: header,
-          isDismissible: isDismissible,
-          title: title,
-          leadingWidget: leadingWidget,
-          trailingWidget: trailingWidget,
-          backgroundColor: backgroundColor,
-          child: child,
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: deviceHeight * 0.6,
+            minHeight: dimens.minBottomSheetHeight,
+          ),
+          child: Container(
+            color: backgroundColor ?? read(themeController.state).neutralSwatch.shade900,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                header,
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: child,
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
-    );
-  }
-}
-
-class _ModalBottomSheet extends HookWidget {
-  const _ModalBottomSheet({
-    required this.child,
-    required this.header,
-    this.isDismissible = true,
-    this.title,
-    this.leadingWidget,
-    this.trailingWidget,
-    this.backgroundColor,
-  });
-
-  final Widget child;
-
-  final Widget header;
-
-  final String? title;
-
-  final Widget? leadingWidget;
-
-  final Widget? trailingWidget;
-
-  final bool isDismissible;
-
-  final Color? backgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: context.deviceHeight * 0.6,
-        minHeight: dimens.minBottomSheetHeight,
-      ),
-      child: Container(
-        color: backgroundColor ?? useTheme().neutralSwatch.shade900,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            header,
-            Flexible(
-              child: SingleChildScrollView(
-                child: child,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
