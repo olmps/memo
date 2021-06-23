@@ -1,16 +1,27 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:memo/application/app.dart';
 import 'package:memo/application/view-models/app_vm.dart';
-import 'package:memo/data/repositories/analytics_monitor.dart';
+import 'package:memo/core/env.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final appVM = AppVMImpl();
+  final env = envMetadata();
 
+  final crashlytics = FirebaseCrashlytics.instance;
+
+  await Firebase.initializeApp();
+  await crashlytics.setCrashlyticsCollectionEnabled(!env.isDev);
+  FlutterError.onError = crashlytics.recordFlutterError;
+
+  // Wraps `AppRoot` in a guarded zone where all errors are reported to `crashlytics.recordError`
   runZonedGuarded(() {
+    final appVM = AppVMImpl();
+
     runApp(AppRoot(appVM));
-  }, AnalyticsMonitorImpl.instance.recordZoneError);
+  }, crashlytics.recordError);
 }

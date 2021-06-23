@@ -12,7 +12,6 @@ a beta or production release, they must be documented here).
 
 ## Added
 - `Firebase Crashlytics` dependency;
-- `AnalyticsMonitor`, which controls app errors logging and custom events;
 - `env` file that manages application environment state.
   
 ## Updated
