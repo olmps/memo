@@ -77,7 +77,6 @@ flutter:
     - assets/collections/
     - assets/images/icons/
     - assets/images/illustrations/
-    - assets/images/placeholders/
     - assets/licenses/
 
   fonts:

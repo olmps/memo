@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-// ignore: comment_references
-/// One of the [Contributor]'s in the [Collection]
+/// One of the [Contributor]'s in the `Collection`
 @immutable
 class Contributor extends Equatable {
   const Contributor({required this.name, required this.url, required this.imageUrl});
