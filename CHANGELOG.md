@@ -12,6 +12,9 @@ a beta or production release, they must be documented here).
 
 ## Fixed
 - Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
+- Contributors button at the Collection Details Page that redirects the user to the contributor given link
+  - Persistency of the contributors list from the collection json
+  - BuildContext extension to show a default Bottom Sheet that addapts to the height
 
 ## [0.1.0-rc.2] - 2021-05-12
 
