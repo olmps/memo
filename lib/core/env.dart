@@ -45,7 +45,7 @@ enum SupportedPlatform { android, ios }
 /// Retrieves the current environment metadata using the environment arguments
 EnvMetadata envMetadata() {
   // ignore: do_not_use_environment
-  const rawEnv = String.fromEnvironment('APP_ENV');
+  const rawEnv = String.fromEnvironment('ENV');
   final env = parseEnv(rawEnv);
 
   return EnvMetadataImpl(env);
