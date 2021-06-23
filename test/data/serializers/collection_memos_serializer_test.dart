@@ -17,7 +17,6 @@ void main() {
     tags: const ['Tag 1', 'Tag 2'],
     contributors: [
       const Contributor(
-        id: 'id_1',
         name: 'name',
         url: 'url',
         imageUrl: 'imageUrl',

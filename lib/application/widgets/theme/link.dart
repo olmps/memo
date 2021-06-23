@@ -49,12 +49,13 @@ class LinkButton extends HookWidget {
           context.horizontalBox(Spacing.small),
         ],
         Expanded(
-            child: Text(
-          text,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: textStyle,
-        )),
+          child: Text(
+            text,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: textStyle,
+          ),
+        ),
         if (trailing != null) ...[
           context.horizontalBox(Spacing.small),
           trailing!,

@@ -6,23 +6,18 @@ import 'package:meta/meta.dart';
 @immutable
 class Contributor extends Equatable {
   const Contributor({
-    required this.id,
     required this.name,
     required this.url,
     required this.imageUrl,
   });
 
-  final String id;
-
-  /// This [Contributor] github user with the [@]
   final String name;
 
-  /// This [Contributor] image url
   final String imageUrl;
 
-  /// URL that links to this particular [Contributor]
+  /// An external url - chosen by the collection contributor - which is linked within the `SingleContributorButton`
   final String url;
 
   @override
-  List<Object?> get props => [id, name, imageUrl, url];
+  List<Object?> get props => [name, imageUrl, url];
 }

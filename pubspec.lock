@@ -358,7 +358,11 @@ packages:
       name: node_preamble
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.0.0"
+=======
+    version: "2.0.1"
+>>>>>>> 7e8f717 (Implementing initial pull request reviews)
   package_config:
     dependency: transitive
     description:

@@ -206,5 +206,6 @@ const faqUrl = 'https://github.com/olmps/memo/blob/main/FAQ_ptBR.md';
 //
 // Contributors
 //
-String numOfContributors(int num) => '$num contribuidores';
 const contributorsTitle = 'Contribuidores';
+
+String numOfContributors(int num) => '$num ${contributorsTitle.toLowerCase()}';
