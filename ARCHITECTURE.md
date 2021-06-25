@@ -502,6 +502,10 @@ no more multiple `main.dart` files and such stuff. Simply run:
 If you are using `vscode` IDE, there is the [launch configuration files](.vscode/launch.json) for you to auto run and
 debug the application.
 
+The environment is managed by `EnvMetadata` implementation, located in [`env.dart` file](./lib/core/env.dart). It reads 
+`ENV` flag and provides metadata that are dependent from the current running environment - like database URLs for 
+example - to the rest of the application.
+
 And that's it, the currently supported environments are: `DEV` and `PROD`.
 
 ### Release

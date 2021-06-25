@@ -12,7 +12,7 @@ a beta or production release, they must be documented here).
 
 ## Added
 - `Firebase Crashlytics` dependency;
-- `env` file that manages application environment state.
+- `EnvMetadata` and its respective implementation `EnvMetadataImpl` that manages application environment state.
   
 ## Updated
 - `release` workflow by adding dSYM upload to Crashlytics.
