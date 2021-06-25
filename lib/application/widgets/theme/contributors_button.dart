@@ -28,7 +28,7 @@ class MultipleContributorsButton extends HookWidget {
 
     final maxImages = contributors.length > _maxContributorsImage ? _maxContributorsImage : contributors.length;
 
-    final contributorsImageDiameter = (dimens.contributorSmallImageRadius * 2) + dimens.contributorsImageBorderWidth;
+    const contributorsImageDiameter = (dimens.contributorSmallImageRadius * 2) + dimens.contributorsImageBorderWidth;
 
     Widget _buildContributorAvatar(int index, Contributor contributor) => Padding(
           padding: EdgeInsets.only(
