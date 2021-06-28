@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:memo/domain/models/collection.dart';
+import 'package:memo/domain/models/contributor.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
 
 /// Groups a [CollectionMetadata] with its [memosMetadata]
@@ -14,6 +15,7 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
     required this.description,
     required this.category,
     required this.tags,
+    required this.contributors,
     required this.memosMetadata,
     int uniqueMemoExecutionsAmount = 0,
   })  : _uniqueMemoExecutionsAmount = uniqueMemoExecutionsAmount,
@@ -38,6 +40,9 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
   final List<String> tags;
 
   @override
+  final List<Contributor> contributors;
+
+  @override
   int get uniqueMemosAmount => memosMetadata.length;
 
   @override
@@ -57,6 +62,7 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
         description,
         category,
         tags,
+        contributors,
         _uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
         memosMetadata,

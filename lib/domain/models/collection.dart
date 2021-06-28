@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/memo_execution.dart';
+import 'package:memo/domain/models/contributor.dart';
 import 'package:meta/meta.dart';
 
 /// Defines all metadata of a collection (group) of its associated `Memo`s
@@ -18,6 +19,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
     required this.category,
     required this.tags,
     required this.uniqueMemosAmount,
+    required this.contributors,
     this.uniqueMemoExecutionsAmount = 0,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
@@ -46,6 +48,9 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   final List<String> tags;
 
   @override
+  final List<Contributor> contributors;
+
+  @override
   final int uniqueMemosAmount;
 
   @override
@@ -64,6 +69,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
         description,
         category,
         tags,
+        contributors,
         uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
         ...super.props,
@@ -81,6 +87,8 @@ abstract class CollectionMetadata {
   ///
   /// This is useful in cases where we must match [Collection.tags] with each available resource(s)
   List<String> get tags;
+
+  List<Contributor> get contributors;
 
   /// The total amount of unique `Memo`s associated with this [Collection]
   int get uniqueMemosAmount;

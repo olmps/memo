@@ -4,6 +4,13 @@
   "description": "\"Git é um sistema de controle de versões distribuído, usado principalmente no desenvolvimento de software, mas pode ser usado para registrar o histórico de edições de qualquer tipo de arquivo. O Git foi inicialmente projetado e desenvolvido por Linus Torvalds para o desenvolvimento do kernel Linux, mas foi adotado por muitos outros projetos.\" - Wikipedia, 2021.",
   "category": "Versionamento",
   "tags": ["git", "versionamento"],
+  "contributors": [
+    {
+      "name": "@matuella",
+      "url": "https://github.com/matuella",
+      "imageUrl": "https://avatars.githubusercontent.com/u/13678134?v=4"
+    }
+  ],
   "memos": [
     {
       "uniqueId": "03a5f9b4-b424-4010-8027-1ef22c7480e7",

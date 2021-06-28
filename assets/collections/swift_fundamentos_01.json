@@ -4,6 +4,13 @@
   "description": "\"Swift é uma linguagem de programação desenvolvida pela Apple para desenvolvimento no iOS, macOS, watchOS, tvOS e Linux. O compilador usa a infraestrutura do LLVM e é distribuído junto do Xcode desde a versão 6.\" - Wikipedia, 2021",
   "category": "Swift",
   "tags": ["swift", "linguagem de programação"],
+  "contributors": [
+    {
+      "name": "@matuella",
+      "url": "https://github.com/matuella",
+      "imageUrl": "https://avatars.githubusercontent.com/u/13678134?v=4"
+    }
+  ],
   "memos": [
     {
       "uniqueId": "ad51a74c-b271-482c-944e-dfb9055eeb48",

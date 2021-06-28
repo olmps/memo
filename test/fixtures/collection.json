@@ -3,6 +3,7 @@
   "name": "My Collection",
   "description": "This collection represents a collection.",
   "category": "Category",
+  "contributors": [],
   "tags": ["Tag 1", "Tag 2"],
   "uniqueMemosAmount": 1,
   "uniqueMemoExecutionsAmount": 0,

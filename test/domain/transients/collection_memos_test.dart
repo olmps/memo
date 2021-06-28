@@ -12,6 +12,7 @@ void main() {
       name: 'name',
       description: 'description',
       category: 'category',
+      contributors: const [],
       tags: const [],
       memosMetadata:
           memosMetadata ?? [MemoCollectionMetadata(uniqueId: '1', rawAnswer: const [], rawQuestion: const [])],

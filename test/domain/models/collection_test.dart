@@ -14,6 +14,7 @@ void main() {
       name: 'name',
       description: 'description',
       category: 'category',
+      contributors: const [],
       tags: const [],
       uniqueMemosAmount: uniqueMemosAmount,
       executionsAmounts: executionsAmounts,

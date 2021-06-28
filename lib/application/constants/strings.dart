@@ -202,3 +202,10 @@ const partyPopper = '\u{1F389}';
 // URLs
 //
 const faqUrl = 'https://github.com/olmps/memo/blob/main/FAQ_ptBR.md';
+
+//
+// Contributors
+//
+const contributorsTitle = 'Contribuidores';
+
+String numOfContributors(int num) => '$num ${contributorsTitle.toLowerCase()}';
