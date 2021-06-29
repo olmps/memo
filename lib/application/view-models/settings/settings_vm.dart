@@ -26,6 +26,9 @@ const _items = {
     LinkSettingsItem(description: 'Startup Life', url: 'https://startuplife.com.br/'),
     LinkSettingsItem(description: 'Pingback', url: 'https://pingback.com/about'),
   ],
+  SettingsSection.community: [
+    LinkSettingsItem(description: 'Discord', url: 'https://discord.gg/E9eHrpA2'),
+  ],
   SettingsSection.organizers: [
     LinkSettingsItem(description: 'Lucas Montano', url: 'https://www.youtube.com/channel/UCyHOBY6IDZF9zOKJPou2Rgg'),
     LinkSettingsItem(description: 'Olympus', url: 'https://olmps.co/'),
@@ -41,7 +44,7 @@ abstract class SettingsItem extends Equatable {
 }
 
 /// Available settings sections
-enum SettingsSection { legal, help, sponsors, organizers }
+enum SettingsSection { legal, help, sponsors, community, organizers }
 
 /// Named settings that links to external sources but have a locale-specific naming and url linking
 enum NamedLinkSettings { termsAndPrivacyPolicy, faq }

@@ -10,6 +10,13 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## Added
+- `Firebase Crashlytics` dependency;
+- `EnvMetadata` and its respective implementation `EnvMetadataImpl` that manages application environment state.
+  
+## Updated
+- `release` workflow by adding dSYM upload to Crashlytics.
+
 ## Fixed
 - Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
 - Contributors button at the Collection Details Page that redirects the user to the contributor given link

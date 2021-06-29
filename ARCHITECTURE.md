@@ -499,7 +499,11 @@ no more multiple `main.dart` files and such stuff. Simply run:
 
 `flutter run --dart-define=ENV=MY_ENVIRONMENT`
 
-If you are using `vscode` IDE, there is the [launch configuration files](.vscode/launch.json) for you to auto run and
+During runtime, environment properties are provided through `EnvMetadata` implementation, located in 
+[`env.dart` file](./lib/core/env.dart). It uses this same `ENV` flag to provide the respective environment's metadata, 
+such as server URLs.
+
+If you are using `vscode` IDE, there is the [launch configuration files](.vscode/launch.json) for you to auto run and 
 debug the application.
 
 And that's it, the currently supported environments are: `DEV` and `PROD`.

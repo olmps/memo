@@ -90,9 +90,20 @@ platform :ios do
 
     # Run flutter build with release mode
     sh("flutter", "build", "ipa", "--release", "--dart-define=ENV=PROD", "--export-options-plist=ios/exportOptions.plist")
+    
+    # Zip dSYMs
+    sh(
+      "zip", 
+      "/Users/runner/work/memo/memo/build/ios/archive/Runner.xcarchive/dSYMs.zip", 
+      "/Users/runner/work/memo/memo/build/ios/archive/Runner.xcarchive/dSYMs"
+    )
 
     # Upload dSYM files to Firebae Crashlytics
-    # TODO
+    upload_symbols_to_crashlytics(
+      app_id: ENV["FIREBASE_APP_ID"],
+      dsym_path: "/Users/runner/work/memo/memo/build/ios/archive/Runner.xcarchive/dSYMs.zip",
+      binary_path: "/Users/runner/work/memo/memo/ios/Pods/FirebaseCrashlytics/upload-symbols",
+    )
 
     # Upload to Testflight
     changelog = File.read("Changelog.txt")

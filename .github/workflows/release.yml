@@ -48,6 +48,14 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: replace
 
+      # Retrieves iOS & Android Firebase Google Services file from Secrets. Both are required to build the app
+      - name: Setup Dependencies
+        run: |
+          echo "${{ secrets.ANDROID_ENCODED_GOOGLE_SERVICES }}" > encoded_android_google_services
+          openssl base64 -in encoded_android_google_services -out android/app/google-services.json -d
+          echo "${{ secrets.IOS_ENCODED_GOOGLE_SERVICES }}" > encoded_ios_google_services
+          openssl base64 -in encoded_ios_google_services -out ios/Runner/GoogleService-Info.plist -d
+
       # Build an release iOS app to App Store Connect. More info about the steps in ios/fastlane/Fastfile file
       - name: Release iOS App
         run: cd ios && fastlane release --verbose
@@ -62,6 +70,7 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           PROVISIONS_CERTIFICATES_REPO: ${{ secrets.PROVISIONS_CERTIFICATES_REPO }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
 
       # Retrieves keystore.jks and key.properties files from Github secrets. Both are used to sign the Android app
       # before publishing it to Google Play console

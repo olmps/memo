@@ -87,6 +87,8 @@ String settingsDescriptionForSection(SettingsSection section) {
       return 'Ajuda';
     case SettingsSection.sponsors:
       return 'Patrocinadores';
+    case SettingsSection.community:
+      return 'Comunidade';
     case SettingsSection.organizers:
       return 'Organizadores';
   }
