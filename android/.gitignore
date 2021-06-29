@@ -17,3 +17,6 @@ key.properties
 
 # Fastlane Reports
 fastlane/*.xml
+
+# Firebase Google Services
+app/google-services.json
