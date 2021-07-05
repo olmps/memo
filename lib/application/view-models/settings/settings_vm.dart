@@ -1,15 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final settingsVM = Provider((_) => SettingsVM());
+final settingsVM = Provider((_) => SettingsVMImpl());
 
-class SettingsVM {
-  SettingsVM()
+abstract class SettingsVM {
+  List<SettingsItem> get items;
+}
+
+class SettingsVMImpl implements SettingsVM {
+  SettingsVMImpl()
       : items = _items.entries
             .map((entry) => [SettingsSectionItem(entry.key), ...entry.value])
             .expand((element) => element)
             .toList();
 
+  @override
   final List<SettingsItem> items;
 }
 
