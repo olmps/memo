@@ -12,9 +12,8 @@ Future<void> main() async {
 
   final env = envMetadata();
 
-  final crashlytics = FirebaseCrashlytics.instance;
-
   await Firebase.initializeApp();
+  final crashlytics = FirebaseCrashlytics.instance;
   await crashlytics.setCrashlyticsCollectionEnabled(!env.isDev);
   FlutterError.onError = crashlytics.recordFlutterError;
 
