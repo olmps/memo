@@ -26,8 +26,8 @@ Table of contents
       - [`services/`](#services)
       - [`transients/`](#transients)
     - [`data/`](#data)
-      - [`gateways/`](#gateways)
       - [`repositories/`](#repositories)
+      - [`gateways/`](#gateways)
       - [`serializers/`](#serializers)
     - [`core/`](#core)
       - [`faults/`](#faults)
@@ -35,7 +35,7 @@ Table of contents
     - [`utils/`](#utils-1)
     - [`fixtures/`](#fixtures)
   - [`web/`](#web)
-- [Extra](#extra)
+- [Relevant Topics](#relevant-topics)
   - [Why `river_pod` and not "x" state management library?](#why-river_pod-and-not-x-state-management-library)
   - [Why `sembast` and not "x" database?](#why-sembast-and-not-x-database)
   - [Why `mocktail` and not `mockito`?](#why-mocktail-and-not-mockito)
@@ -46,7 +46,8 @@ Table of contents
   - [App Icon](#app-icon)
   - [Local collections and resources versioning](#local-collections-and-resources-versioning)
   - [Environment](#environment)
-    - [Release](#release)
+  - [Firebase](#firebase)
+  - [Release](#release)
 
 ## `.vscode/`
 
@@ -135,8 +136,8 @@ update old ones and keep those nasty bugs away.
 The picture above gives us a really simplified overview of each major layer that gives shape to this application.
 
 If you don't want to dig in on what each part is responsible of (and why), here is a TLDR:
-  - `application`: all interface elements alongside its view models (may contain validation and such business logic), 
-  the latter which communicates with the `domain`;
+  - `application`: all interface elements (widgets) alongside its view models (may contain validation and such business 
+  logic), the latter which communicates with the `domain`;
   - `domain`: handles most of the business logic and if necessary, make the respective calls to the `data` layer;
   - `data`: retrieves and modifies any data, without the knowledge of any other layers whatsoever. This is the
   lower-boundary of our application that communicates with external frameworks and libraries;
@@ -219,7 +220,7 @@ below (as a child) of a `MaterialApp`.
 
 Same as the [`widgets`](#widgets/), but requiring a `ThemeController` as a parent. It also (usually) means that they
 depend on the `flutter/material` library as well. This is because the current theme implementation is tightly coupled to
-the flutter's implementation of the material framework - do not mistake, this is an intended decision, as the material
+the flutter's implementation of the material framework - make no mistake, this is an intended decision, as the material
 framework provide an enormous amount of useful features by default, mainly related to accessibility and animations.
 
 #### `view_models/`
@@ -228,6 +229,9 @@ The boundary between the [`application/`](#application) and [`domain/`](#domain)
 in each class), always should be built upon an interface (following the DiP) and should never - ever - know anything
 about the UI, meaning the `flutter` framework - but maybe some constant stuff like `Platform` and core
 meta-functionality, but never anything related to the layout per-se.
+
+They should never depend on each other, meaning that no `VM` class should ever be nested, as to avoid circular
+dependencies.
 
 The `VM`s are the only structures in [`application/`](#application) that communicates with inner layers, more
 specifically, with the [`domain/`](#domain). In the process of achieving this, it will inevitably leak some of the core
@@ -272,7 +276,8 @@ A domain model - a set of structures that represent a business object.
 #### `services/`
 
 The boundary between the [`domain/`](#domain) and [`data/`](#data). Each service (suffixed with `Service` in each
-class) should always be built upon an interface (following the DiP).
+class) should always be built upon an interface (following the DiP) and should never depend on each other, meaning that
+no `Service` class should ever be nested, as to avoid circular dependencies.
 
 The `services/` should contain all the heavy business logic associated with each `model` in our project. They are
 usually split to represent each [`models/`](#models) related business logic, but this could be split in even smaller
@@ -286,6 +291,8 @@ specifically, through the [`repositories/`](#repositories).
 Just like the [`models/`](#models), the `transients` represent a set of business structures, although there's a
 clear distinction between these and `models` - they exist only in memory, meaning that they make sense only in some
 particular contexts required by the application's lifecycle.
+
+<!-- TODO(matuella): Add an example, this is too broad of a definition -->
 
 ### `data/`
 
@@ -309,24 +316,32 @@ but *separating the domain model from this exact copy (DTO) doesn't provide any 
 architecture* (I like [this answer in StackExchange](https://softwareengineering.stackexchange.com/a/388545) about the
 same exact issue).
 
+#### `repositories/`
+
+Interfaces the access to external libraries - that crosses the boundary of our application - to the
+[`services`](#services). The `repositories` can be considered like *interface adapters*, allowing an independency when
+making changes to the implemented technologies, affecting only this layer (and obviously the technology implementation
+itself).
+
+Each of these *adapters* are suffixed with `Repository`, built upon interfaces (following the DiP), and should never
+depend on each other, meaning that no `Repository` class should ever be nested, as to avoid circular dependencies.
+
+There are use-cases where multiple repositories require making use of the exact same abstraction of some third party
+library, such as accessing a local database, which requires much more than simply importing an external package. In
+these cases, a `Repository` should be injected with such abstraction, namedly the [`gateways`](#gateways), as to not
+repeat ourselves too much when dealing with major third parties.
+
 #### `gateways/`
 
-Raw access to libraries, databases and all external dependency that crosses the boundary of our application to anything
-that lives outside of the project.
+As commented in [`repositories`](#repositories), these are pure/raw access to libraries, databases and all external
+dependency that crosses the boundary of our application, which can be used solely by these same `repositories` - because
+a greater abstraction turned out to be necessary.
 
-These should be built like any other major structure, through interfaces and following the DiP.
+These should be built like any other major structure, through interfaces, following the DiP and do not depend on each
+other - to avoid circular dependencies.
 
 Also, because gateways are "rare naming" occurrence in most architectures,
 [here is the reference of why](https://martinfowler.com/eaaCatalog/gateway.html).
-
-#### `repositories/`
-
-Interfaces the implementation of a [`gateway`](#gateways) to not expose the particularities of such external
-dependencies to the [`services`](#services). The `repositories` can be considered like *interface adapters*, allowing
-an independency when making changes to the implemented technologies, affecting only this layer (and obviously the
-technology implementation itself).
-
-Each of these *adapters* are suffixed with `Repository` and are built upon interfaces (following the DiP).
 
 #### `serializers/`
 
@@ -372,7 +387,7 @@ Stores all required (and generated) files to output builds for the Web platform.
 
 ---
 
-# Extra
+# Relevant Topics
 
 These are points that aren't directly related to the folder structure and each responsibility, but things that also
 permeates the knowledge required to fully understand this architecture.
@@ -508,7 +523,25 @@ debug the application.
 
 And that's it, the currently supported environments are: `DEV` and `PROD`.
 
-### Release
+## Firebase
+
+Because this project depends on [Firebase](https://firebase.google.com/), a third-party backend-as-a-service (BaaS), it
+requires to be setup as well, otherwise you won't be able to run your own instance of `Memo` locally. The setup is
+pretty simple, you just have to [put your own `GoogleServices-Info.plist` (iOS) and/or `google-services.json` (Android)
+in their respective folders](https://firebase.flutter.dev/docs/overview#installation) and *voilà*, you're good to go.
+
+As of today (06/07/2021), these files are not checked in source control. This is because they aren't meant to be used
+in your local environment, as it could create extra unnecessary costs and could - possibly - generate inconsistencies
+while using the dependent Firebase services in these early stages of the project, like leaking your locally-modified
+code exceptions into Crashlytics, which would make things harder for everyone to actually know what's going on.
+
+Although in the future, we would like for them to be used in your local environment just like they are used in the
+production application. It's just that we aren't fully aware of the consequences yet.
+
+Nonetheless, if you want to know how to setup your own Firebase project, check out the 
+[FlutterFire docs](https://firebase.flutter.dev/docs/overview/).
+
+## Release
 
 The release process is fully-automated using Github Actions with Fastlane.
 The [release workflow](.github/workflows/release.yml) script triggers each time a new tag is published, and begins the
