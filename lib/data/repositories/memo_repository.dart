@@ -2,24 +2,23 @@ import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:memo/data/serializers/memo_serializer.dart';
 import 'package:memo/domain/models/memo.dart';
 
-/// Handles all read, write and serialization operations pertaining to one or multiple [Memo]
+/// Handles all IO and serialization operations associated with [Memo]s.
 abstract class MemoRepository {
-  /// Retrieves all available [Memo] that belongs to a `Collection` with id [collectionId]
+  /// Retrieves all [Memo]s that have their [Memo.collectionId] set to [collectionId].
   Future<List<Memo>> getAllMemos({required String collectionId});
 
-  /// Retrieves all available [Memo] that belongs to any of the `Collection`s with [collectionIds]
+  /// Retrieves all [Memo]s that have their [Memo.collectionId] set to any of the [collectionIds].
   Future<List<Memo>> getAllMemosByAnyCollectionId({required List<String> collectionIds});
 
-  /// Batch put a list of [memos]
+  /// Puts a list of [memos].
   ///
-  /// If [updatesOnlyCollectionMetadata] is `true`, updates only those properties related to the
-  /// `MemoCollectionMetadata`.
+  /// If [updatesOnlyCollectionMetadata] is `true`, updates only those properties related to `MemoCollectionMetadata`.
   Future<void> putMemos(List<Memo> memos, {required bool updatesOnlyCollectionMetadata});
 
-  /// Batch remove a list of memos by its respective [ids]
+  /// Removes a list of memos by their respective [ids].
   Future<void> removeMemosByIds(List<String> ids);
 
-  /// Retrieves a list of memos by its respective [ids]
+  /// Retrieves a list of memos by their respective [ids].
   Future<List<Memo?>> getMemosByIds(List<String> ids);
 }
 

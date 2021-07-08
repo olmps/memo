@@ -1,19 +1,19 @@
 import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:package_info/package_info.dart';
 
-/// Handles all read, write and serialization operations pertaining to this application's versioning
+/// Handles all IO and serialization operations associated with the application's versioning
 abstract class VersionRepository {
-  /// Retrieves the latest application version
+  /// Retrieves the latest application version.
   Future<String> getCurrentApplicationVersion();
 
-  /// Retrieves the last stored application version
+  /// Retrieves the last stored application version.
   ///
-  /// May return `null` if the application version was never stored before
+  /// Returns `null` if the application version was never stored before.
   Future<String?> getStoredApplicationVersion();
 
-  /// Uses the current application version to update the stored application version
+  /// Uses the current application version to update the stored application version.
   ///
-  /// This is nothing but a helper to call [getCurrentApplicationVersion] and store its returning value.
+  /// A helper to simply call [getCurrentApplicationVersion] and store its returning value.
   Future<void> updateToLatestApplicationVersion();
 }
 

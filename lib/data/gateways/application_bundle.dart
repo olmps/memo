@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-/// Exposes read access to all application-specific assets
+/// Exposes **read** access to all application's assets.
 abstract class ApplicationBundle {
-  /// Loads a JSON stored in [path]
+  /// Loads a JSON stored in [path].
   Future<dynamic> loadJson(String path);
 
-  /// Retrieves a list of all assets file name's that starts with [path]
+  /// Retrieves a list of all assets file-paths that start with [path].
   ///
-  /// Let's say that we have the following folder structure:
+  /// I.e.:
   /// ```
   /// - assets
   ///   - my_first_folder
@@ -27,9 +27,8 @@ abstract class ApplicationBundle {
   /// ]
   /// ```
   ///
-  /// The same value returned above would also work if we called with `assets/my_first_folder/file`,
-  /// `assets/my_first_folder/fil`, `assets/my_first_folder/fi` or even `assets/my_first_folder/f`. This happens because
-  /// the evaluations are made by running through all application files and applying [path] as prefix filter.
+  /// The same value above would work if we called `loadAssetsListPath` with `assets/my_first_folder/file`,
+  /// `assets/my_first_folder/fil`, `assets/my_first_folder/fi` or even `assets/my_first_folder/f`.
   Future<List<String>> loadAssetsListPath(String path);
 }
 
@@ -37,7 +36,7 @@ class ApplicationBundleImpl extends ApplicationBundle {
   ApplicationBundleImpl(this._assetBundle);
   final AssetBundle _assetBundle;
 
-  /// Flutter's auto-generated file that provides info for all assets stored within the application
+  /// Flutter's auto-generated file that provides info for all assets stored within the application.
   final String _assetsManifest = 'AssetManifest.json';
 
   @override

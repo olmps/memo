@@ -5,34 +5,26 @@ import 'package:memo/data/gateways/sembast_database.dart';
 import 'package:memo/data/serializers/resource_serializer.dart';
 import 'package:memo/domain/models/resource.dart';
 
-/// Handles all read, write and serialization operations pertaining to a [Resource]
+/// Handles all IO and serialization operations associated with [Resource]s.
 abstract class ResourceRepository {
-  /// Put all [Resource]
+  /// Puts a list of [resources].
   ///
-  /// Any existing [resources] will be overridden and if not present, will be added.
+  /// If a [Resource] with [Resource.id] already exists, it will be overridden.
   Future<void> putResources(List<Resource> resources);
 
-  /// Retrieves all available [Resource]
+  /// Retrieves all database-stored [Resource]s.
   ///
   /// The optional [associatedTags] filters all resources that contain **at least** one of the tags.
   ///
   /// I.e.:
-  /// If we have a [Resource.tags] that is represented by `['tag 1', 'tag 2']`, calling:
-  ///
-  /// ```
-  /// getAllResources(associatedTags: ['tag 1']);
-  /// ```
-  ///
-  /// would return our example [Resource], as it contains at least one of the [associatedTags].
+  /// A [Resource.tags] of value `['tag 1', 'tag 2']`, will be returned when calling:
+  /// `getAllResources(associatedTags: ['tag 1']);`.
   Future<List<Resource>> getAllResources({List<String>? associatedTags});
 
-  /// Batch remove a list of resources by its respective [ids]
+  /// Removes a list of resources by their respective [ids].
   Future<void> removeResourcesByIds(List<String> ids);
 
-  /// Retrieves all locally stored [Resource]
-  ///
-  /// The difference between this and [getAllResources] is that, in this context, local means file-related objects,
-  /// contrary to the database-related ones.
+  /// Retrieves all file-stored [Resource]s.
   Future<List<Resource>> getAllLocalResources();
 }
 

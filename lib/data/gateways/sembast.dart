@@ -9,10 +9,10 @@ import 'package:sembast/sembast_io.dart';
 const _schemaVersion = 1;
 const _dbName = 'memo_sembast.db';
 
-/// Opens this application's [Database], creating a new one if nonexistent
+/// Opens this application's [Database], creating a new one if nonexistent.
 Future<Database> openDatabase() async {
   final dir = await getApplicationDocumentsDirectory();
-  // Make sure that the application documents directory exists
+  // Make sure that the application documents directory exists.
   await dir.create(recursive: true);
 
   final dbPath = path.join(dir.path, _dbName);
@@ -22,7 +22,7 @@ Future<Database> openDatabase() async {
 
 @visibleForTesting
 Future<void> applyMigrations(Database db, int oldVersion, int newVersion) async {
-  // Call the necessary migrations in order
+  // Call the necessary migrations in order.
 }
 
 //

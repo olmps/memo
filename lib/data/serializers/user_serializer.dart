@@ -15,7 +15,6 @@ class UserSerializer implements Serializer<User, Map<String, dynamic>> {
 
     final rawExecutionsAmounts = json[UserKeys.executionsAmounts] as Map<String, dynamic>?;
     final executionsAmounts =
-        // ignore: avoid_annotating_with_dynamic
         rawExecutionsAmounts?.map((key, dynamic value) => MapEntry(memoDifficultyFromRaw(key), value as int));
 
     final timeSpentInMillis = json[UserKeys.timeSpentInMillis] as int?;

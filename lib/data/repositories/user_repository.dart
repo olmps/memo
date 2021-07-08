@@ -7,21 +7,20 @@ import 'package:memo/data/serializers/memo_difficulty_parser.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/user.dart';
 
-/// Handles all read, write and serialization operations pertaining to a [User]
+/// Handles all IO and serialization operations associated with [User]s.
 abstract class UserRepository {
-  /// Retrieves the current [User] and keeps listening to any changes made to it
+  /// Streams the current [User], which emits a new event when any change occurs.
   Future<Stream<User>> listenToUser();
 
-  /// Retrieves the current [User]
+  /// Retrieves the current [User].
   Future<User?> getUser();
 
-  /// Creates a new pristine [User]
+  /// Creates a new pristine [User].
+  ///
+  /// There can only be a single [User], overridding the existing one if called multiple times.
   Future<void> createUser();
 
-  /// Updates the [User] with the execution-related arguments
-  ///
-  /// Any update made to these properties, will override the current value, so make sure to update with the latest
-  /// corresponding values.
+  /// Updates the current [User] with execution-related arguments.
   Future<void> updateExecution({required Map<MemoDifficulty, int> executionsAmounts, required int timeSpentInMillis});
 }
 

@@ -6,11 +6,12 @@ import 'package:sembast/sembast.dart' as sembast;
 
 export 'package:sembast/sembast.dart' show Finder, Filter;
 
-/// Sembast implementation for an atomic database transaction
+/// Sembast implementation for an atomic database transaction.
 ///
-/// Currently, there is no support for multiple transactions running simultaneously, so if necessary, run a transaction
-/// once, then run another after completing the first one. A [InconsistentStateError] is thrown if multiple transactions
-/// are running in parallel.
+/// Currently, there is no support for multiple transactions running simultaneously. If necessary, run a transaction
+/// once, then run another after completing the first one.
+///
+/// Throws an [InconsistentStateError] if multiple transactions are ran in parallel.
 abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
   SembastTransactionHandler(this.db);
 
@@ -41,16 +42,14 @@ abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
   }
 }
 
-/// An optional [sembast.Transaction] can be provided to make sure that all changes made in a single transaction are
-/// atomic.
-
-/// Handles the local persistence to the database
+/// Handles the local persistence to the database.
 abstract class SembastDatabase extends SembastTransactionHandler {
   SembastDatabase(sembast.Database db) : super(db);
 
-  /// Adds an [object] to the [store], using a [id]
+  /// Adds an [object] to the [store], using a [id].
   ///
   /// If there is already an object with the same [id], the default behavior is to merge all of its fields.
+  ///
   /// [shouldMerge] should be `false` if pre-existing fields should not be merged.
   Future<void> put({
     required String id,
@@ -59,9 +58,10 @@ abstract class SembastDatabase extends SembastTransactionHandler {
     bool shouldMerge = true,
   });
 
-  /// Adds a list of [objects] to the [store], using their respective [ids]
+  /// Adds a list of [objects] to the [store], using their respective [ids].
   ///
-  /// If there is already one or more objects with the same [ids], the default behavior is to merge all of its fields.
+  /// If there is already one or more objects with the same [ids], defaults to merging all of its fields.
+  ///
   /// [shouldMerge] should be `false` if pre-existing fields should not be merged.
   Future<void> putAll({
     required List<String> ids,
@@ -70,27 +70,27 @@ abstract class SembastDatabase extends SembastTransactionHandler {
     bool shouldMerge = true,
   });
 
-  /// Deletes the value with [id] from the [store]
+  /// Deletes the value with [id] from the [store].
   Future<void> remove({required String id, required String store});
 
-  /// Deletes all objects with the following [ids] from the [store]
+  /// Deletes all objects with the following [ids] from the [store].
   Future<void> removeAll({required List<String> ids, required String store});
 
-  /// Retrieves an object with [id] from the [store]
+  /// Retrieves an object with [id] from the [store].
   ///
-  /// Returns `null` if the key doesn't exist
+  /// Returns `null` if the key doesn't exist.
   Future<Map<String, dynamic>?> get({required String id, required String store});
 
-  /// Retrieves all objects within [store]
+  /// Retrieves all objects within [store].
   Future<List<Map<String, dynamic>>> getAll({required String store, sembast.Finder? finder});
 
-  /// Retrieves all objects with the following [ids] from the [store]
+  /// Retrieves all objects with the following [ids] from the [store].
   Future<List<Map<String, dynamic>?>> getAllByIds({required List<String> ids, required String store});
 
-  /// Retrieves a stream of all the [store] objects, triggered whenever any update occurs to this [store]
+  /// Retrieves a stream of all the [store] objects, triggered whenever any update occurs to this [store].
   Future<Stream<List<Map<String, dynamic>>>> listenAll({required String store});
 
-  /// Retrieves a stream of a single [store] object, triggered whenever any update occurs to this object's [id]
+  /// Retrieves a stream of a single [store] object, triggered whenever any update occurs to this object's [id].
   Future<Stream<Map<String, dynamic>?>> listenTo({required String id, required String store});
 }
 
@@ -154,14 +154,14 @@ class SembastDatabaseImpl extends SembastDatabase {
   @override
   Future<Stream<List<Map<String, dynamic>>>> listenAll({required String store}) async {
     final storeMap = sembast.stringMapStoreFactory.store(store);
-    // Maps a list of `sembast` snapshot records into a list of objects
+    // Maps a list of `sembast` snapshot records into a list of objects.
     return storeMap.query().onSnapshots(db).map((snapshots) => snapshots.map((record) => record.value).toList());
   }
 
   @override
   Future<Stream<Map<String, dynamic>?>> listenTo({required String id, required String store}) async {
     final storeMap = sembast.stringMapStoreFactory.store(store);
-    // Maps a single `sembast` snapshot record into an object
+    // Maps a single `sembast` snapshot record into an object.
     return storeMap.record(id).onSnapshot(db).map((snapshot) => snapshot?.value);
   }
 }
