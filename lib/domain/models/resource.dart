@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 import 'package:meta/meta.dart';
 
-/// A simple [url] empowered by useful metadata, which are used to link this with any `Collection`
+/// Enhances the usage of a single [url] with associated properties, like [tags] and [type]
 @immutable
 class Resource extends Equatable {
   Resource({required this.id, required this.description, required this.tags, required this.type, required this.url})
@@ -10,19 +10,16 @@ class Resource extends Equatable {
 
   final String id;
 
+  /// Human-readable description for this description.
   final String description;
 
-  /// List of tags that can associate with this [Resource]
-  ///
-  /// This is useful in cases where we must match a `Collection.tags` with each available resources
+  /// Abstract tags that are used to group and identify this resource.
   final List<String> tags;
 
-  /// Metadata that describes which type of [url] this resource refers to
-  ///
-  /// Example types: "video", "article", etctera.
+  /// Describes which type of [url] this resource refers to.
   final ResourceType type;
 
-  /// URL that links to this particular [Resource]
+  /// URL that links to this particular [Resource].
   final String url;
 
   @override

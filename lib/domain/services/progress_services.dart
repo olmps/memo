@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:memo/data/repositories/user_repository.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
-/// Handles all domain-specific operations pertaining to the user's progress
+/// Handles all domain-specific operations associated with the user's progress.
 abstract class ProgressServices {
-  /// Retrieves the [MemoExecutionsMetadata] for this `User` and keeps listening to any changes made to them
+  /// Streams the current `User`, which emits a new event when any change occurs.
   Future<Stream<MemoExecutionsMetadata>> listenToUserProgress();
 }
 

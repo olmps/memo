@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// Fundamental fields that defines a `Memo` when relating to a `Collection`
+/// Metadata for a memo that belongs to a collection.
 class MemoCollectionMetadata with EquatableMixin {
   MemoCollectionMetadata({required this.uniqueId, required this.rawQuestion, required this.rawAnswer})
       : assert(rawQuestion.isNotEmpty),
@@ -8,21 +8,23 @@ class MemoCollectionMetadata with EquatableMixin {
         assert(rawAnswer.isNotEmpty),
         assert(rawAnswer.first.isNotEmpty);
 
-  /// Identifies a global unique id (unique both in the parent's `Collection` and through all other `Memo`)
+  /// A global unique id.
+  ///
+  /// This id must be unique both in the parent's `Collection` and through all other `Memo`.
   final String uniqueId;
 
-  /// Raw representation of a `Memo` question
+  /// Raw representation of a `Memo` question.
   ///
-  /// Because a question may be composed of an arbitrary amount of styled elements, each raw "block", "piece", or even
-  /// an "element", will have a completely different structure from each other. In this scenario, a [List] of [Map]
-  /// (which is usually a JSON) is a reasonable fit for this  customized structure.
+  /// A question may be composed of an arbitrary amount of styled elements. Each of these elements - an untyped `Map` -
+  /// are a raw representation of this styled element, allowing each to have a completely different structure from the
+  /// other.
   final List<Map<String, dynamic>> rawQuestion;
 
   /// Raw representation of a `Memo` answer
   ///
-  /// Because an answer may be composed of an arbitrary amount of styled elements, each raw "block", "piece", or even
-  /// an "element", will have a completely different structure from each other. In this scenario, a [List] of [Map]
-  /// (which is usually a JSON) is a reasonable fit for this  customized structure.
+  /// An answer may be composed of an arbitrary amount of styled elements. Each of these elements - an untyped `Map` -
+  /// are a raw representation of this styled element, allowing each to have a completely different structure from the
+  /// other.
   final List<Map<String, dynamic>> rawAnswer;
 
   @override

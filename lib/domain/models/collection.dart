@@ -4,12 +4,9 @@ import 'package:memo/domain/models/memo_execution.dart';
 import 'package:memo/domain/models/contributor.dart';
 import 'package:meta/meta.dart';
 
-/// Defines all metadata of a collection (group) of its associated `Memo`s
+/// Metadata for a collection (group) of its associated `Memo`s.
 ///
-/// A [Collection] not only holds the metadata for a group of `Memo`s (like [name], [category] and [description]) but
-/// also deal with all the information about its executed `Memo`s, like [uniqueMemosAmount],
-/// [uniqueMemoExecutionsAmount], and by extending the [MemoExecutionsMetadata], which are all a byproduct of the act of
-/// executing an arbitrary number of `Memo`s.
+/// Through [MemoExecutionsMetadata], this class also includes properties that describes its executed `Memo`s.
 @immutable
 class Collection extends MemoExecutionsMetadata with EquatableMixin implements CollectionMetadata {
   Collection({
@@ -56,10 +53,10 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   @override
   final int uniqueMemoExecutionsAmount;
 
-  /// `true` if this [Collection] has never executed any `Memo`
+  /// `true` if this [Collection] has never executed any `Memo`.
   bool get isPristine => uniqueMemoExecutionsAmount == 0;
 
-  /// `true` if this [Collection] has executed (at least once) all of its `Memo`s
+  /// `true` if this [Collection] has executed (at least once) all of its `Memo`s.
   bool get isCompleted => uniqueMemoExecutionsAmount == uniqueMemosAmount;
 
   @override
@@ -76,23 +73,22 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
       ];
 }
 
-/// Represents all `Collection` metadata
+/// Metadata for a collection.
 abstract class CollectionMetadata {
   String get id;
   String get name;
   String get description;
   String get category;
 
-  /// List of tags that can associate with this `Resource`
-  ///
-  /// This is useful in cases where we must match [Collection.tags] with each available resource(s)
+  /// Abstract tags that are used to group and identify this collection.
   List<String> get tags;
 
+  /// Contributors (or owners) that have created (or made changes) to this collection.
   List<Contributor> get contributors;
 
-  /// The total amount of unique `Memo`s associated with this [Collection]
+  /// Total amount of unique `Memo`s associated with this collection.
   int get uniqueMemosAmount;
 
-  /// The total amount of unique `Memo`s (associated with this [Collection]) that have been executed at least once
+  /// Total amount of unique `Memo`s associated with this collection that have been executed at least once.
   int get uniqueMemoExecutionsAmount;
 }
