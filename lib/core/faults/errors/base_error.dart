@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-/// Core [Error] class - every class that represent an [Error] should extend from [BaseError].
+/// Core [Error] class - every class that represents an [Error] should extend from [BaseError].
 ///
 /// The difference between throwing an [Error] and an [Exception] can be found in their respective declarations in
 /// `dart:core`.
