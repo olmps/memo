@@ -8,14 +8,15 @@ void main() {
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int uniqueMemoExecutionsAmount = 0,
     int timeSpentInMillis = 0,
+    List<Contributor>? contributors,
   }) {
     return Collection(
       id: 'id',
       name: 'name',
       description: 'description',
       category: 'category',
-      contributors: const [],
       tags: const [],
+      contributors: contributors ?? const [Contributor(name: 'name')],
       uniqueMemosAmount: uniqueMemosAmount,
       executionsAmounts: executionsAmounts,
       uniqueMemoExecutionsAmount: uniqueMemoExecutionsAmount,
@@ -54,6 +55,15 @@ void main() {
     expect(
       () {
         newCollection(uniqueMemoExecutionsAmount: 2);
+      },
+      throwsAssertionError,
+    );
+  });
+
+  test('Collection should not allow zero contributors', () {
+    expect(
+      () {
+        newCollection(contributors: []);
       },
       throwsAssertionError,
     );

@@ -1,10 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
 import 'package:memo/domain/transients/collection_memos.dart';
 
 void main() {
   CollectionMemos newCollectionMemos({
     List<MemoCollectionMetadata>? memosMetadata,
+    List<Contributor>? contributors,
     int uniqueMemoExecutionsAmount = 0,
   }) {
     return CollectionMemos(
@@ -12,8 +14,8 @@ void main() {
       name: 'name',
       description: 'description',
       category: 'category',
-      contributors: const [],
       tags: const [],
+      contributors: contributors ?? const [Contributor(name: 'name')],
       memosMetadata:
           memosMetadata ?? [MemoCollectionMetadata(uniqueId: '1', rawAnswer: const [], rawQuestion: const [])],
       uniqueMemoExecutionsAmount: uniqueMemoExecutionsAmount,
@@ -42,6 +44,15 @@ void main() {
     expect(
       () {
         newCollectionMemos().addToExecutionsAmount(-1);
+      },
+      throwsAssertionError,
+    );
+  });
+
+  test('CollectionMemos should not allow zero contributors', () {
+    expect(
+      () {
+        newCollectionMemos(contributors: []);
       },
       throwsAssertionError,
     );
