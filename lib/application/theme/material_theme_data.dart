@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Creates a new `ThemeData` with customized sub-themes
-///
-/// All arguments are used for a couple of definitions, some are more broadly used in different sub-themes (like
-/// [neutralSwatch]), while others (like [iconSize]) are used for only a specific theme.
+/// Creates a new `ThemeData` with customized flutter themes.
 ThemeData buildThemeData({
   required MaterialColor primarySwatch,
   required MaterialColor secondarySwatch,
@@ -81,6 +78,12 @@ ThemeData buildThemeData({
     actionTextColor: secondarySwatch.shade400,
   );
 
+  final bottomSheetTheme = BottomSheetThemeData(
+    backgroundColor: neutralSwatch.shade900,
+    clipBehavior: Clip.antiAlias,
+    shape: RoundedRectangleBorder(borderRadius: roundedRectElementsRadius),
+  );
+
   return ThemeData(
     brightness: brightness,
     colorScheme: colorScheme,
@@ -96,6 +99,7 @@ ThemeData buildThemeData({
     bottomNavigationBarTheme: bottomNavTheme,
     iconTheme: iconTheme,
     snackBarTheme: snackBarTheme,
+    bottomSheetTheme: bottomSheetTheme,
   );
 }
 
