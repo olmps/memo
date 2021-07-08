@@ -92,9 +92,8 @@ String settingsDescriptionForSection(SettingsSection section) {
 
 String settingsUrlForNamedLink(NamedLinkSettings link) {
   switch (link) {
-    // TODO(matuella): Add link when available
     case NamedLinkSettings.termsAndPrivacyPolicy:
-      return 'https://google.com.br/';
+      return 'https://memobeta.webflow.io/terms-of-service';
     case NamedLinkSettings.faq:
       return faqUrl;
   }
