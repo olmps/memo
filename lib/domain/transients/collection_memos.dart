@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:memo/domain/models/collection.dart';
-import 'package:memo/domain/models/contributor.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
 
 /// Groups a [CollectionMetadata] with its [memosMetadata].
@@ -17,8 +16,9 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
     required this.memosMetadata,
     int uniqueMemoExecutionsAmount = 0,
   })  : _uniqueMemoExecutionsAmount = uniqueMemoExecutionsAmount,
-        assert(memosMetadata.isNotEmpty, 'Must not be an empty list of memos'),
-        assert(uniqueMemoExecutionsAmount >= 0, 'must be a positive (or zero) integer');
+        assert(memosMetadata.isNotEmpty, 'must not be an empty list of memos'),
+        assert(uniqueMemoExecutionsAmount >= 0, 'must be a positive (or zero) integer'),
+        assert(contributors.isNotEmpty, 'must have at least one contributor');
 
   final List<MemoCollectionMetadata> memosMetadata;
 

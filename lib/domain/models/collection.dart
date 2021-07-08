@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/memo_execution.dart';
-import 'package:memo/domain/models/contributor.dart';
 import 'package:meta/meta.dart';
 
 /// Metadata for a collection (group) of its associated `Memo`s.
@@ -27,6 +26,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
           uniqueMemosAmount >= uniqueMemoExecutionsAmount,
           'executions should never exceed the unique total amount',
         ),
+        assert(contributors.isNotEmpty, 'must have at least one contributor'),
         super(timeSpentInMillis, executionsAmounts);
 
   @override
@@ -91,4 +91,22 @@ abstract class CollectionMetadata {
 
   /// Total amount of unique `Memo`s associated with this collection that have been executed at least once.
   int get uniqueMemoExecutionsAmount;
+}
+
+/// A collection contributor.
+@immutable
+class Contributor extends Equatable {
+  const Contributor({required this.name, this.url, this.imageUrl});
+
+  /// Name identifer for this contributor.
+  final String name;
+
+  /// Avatar image url for this contributor.
+  final String? imageUrl;
+
+  /// A self-promotion url for this contributor, like a github profile, portfolio website, etcetera.
+  final String? url;
+
+  @override
+  List<Object?> get props => [name, imageUrl, url];
 }
