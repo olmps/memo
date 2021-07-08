@@ -37,21 +37,18 @@ const _items = {
   ],
 };
 
-/// Base class to be implemented by any metadata related to a [SettingsSection]
-///
-/// The purpose of this class and its subclasses are only to make the UI work easier and more agnostic to any possible
-/// logic, being responsible solely for rendering the layout given each metadata.
+/// Base class of metadata related to a [SettingsSection].
 abstract class SettingsItem extends Equatable {
   const SettingsItem();
 }
 
-/// Available settings sections
+/// Available settings sections.
 enum SettingsSection { legal, help, sponsors, organizers }
 
-/// Named settings that links to external sources but have a locale-specific naming and url linking
+/// Named settings that links to external sources but have a locale-specific naming and url linking.
 enum NamedLinkSettings { termsAndPrivacyPolicy, faq }
 
-/// Named settings that have a locale-specific naming and custom navigation behavior
+/// Named settings that have a locale-specific naming and custom navigation behavior.
 enum NamedCustomSettings { licenses }
 
 class SettingsSectionItem extends SettingsItem {
@@ -67,7 +64,7 @@ abstract class SettingsContent extends SettingsItem {
   const SettingsContent();
 }
 
-/// Generic settings item that should open an external [url]
+/// Generic settings item that should open an external [url].
 class LinkSettingsItem extends SettingsContent {
   const LinkSettingsItem({required this.description, required this.url});
   final String description;

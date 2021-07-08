@@ -1,12 +1,10 @@
-// This is a temporary constants file related to all strings
+// This is a temporary constants file related to all strings.
 //
 // Even if the v1 for memo will only be available in ptBR, splitting random strings throughout the code will make it
 // hard when we decide to support multiple locales.
 //
-// Also, when new locales are added to the application, we can still maintain a single point of entry for all strings
-// just like this file, but we have to consider that we will possibly need access to the BuildContext, as this is where
-// the runtime locale is determined.
-
+// When new locales are added to the application, we can still maintain a single point of entry for all strings just
+// like this file, but having to consider the need to use the BuildContext, where the runtime locale is determined.
 import 'package:memo/application/view-models/home/collections_vm.dart';
 import 'package:memo/application/view-models/settings/settings_vm.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
@@ -185,8 +183,8 @@ const minutesSymbol = 'm';
 //
 // Unicode Emojis
 //
-// The list below follows the [unicode.org spec](https://unicode.org/emoji/charts/full-emoji-list.html), so that we
-// don't expose vendor-specific emojis, thus failing to render on some specific platforms.
+// Following the [unicode.org spec](https://unicode.org/emoji/charts/full-emoji-list.html), as to not expose
+// vendor-specific emojis, thus failing to render on some specific platforms.
 const memo = '\u{1F4DD}';
 const books = '\u{1F4DA}';
 const television = '\u{1F4FA}';

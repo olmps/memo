@@ -1,7 +1,7 @@
-import 'package:meta/meta.dart';
-
-// This file gives us a - somewhat - more type-safe usage of images assets
+// Type-safe usage of images assets.
+//
 // All raw images paths belong here and must be only accessed through this file.
+import 'package:meta/meta.dart';
 
 const _imgsRoot = 'assets/images';
 

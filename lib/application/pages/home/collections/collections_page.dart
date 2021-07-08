@@ -18,14 +18,13 @@ class CollectionsPage extends HookWidget {
       initialIndex: initialState.segmentIndex,
     );
 
-    // Adds listener once (in the first build call)
     useEffect(() {
       void tabListener() {
         final currentState = context.read(collectionsVM.state);
 
-        // We want to update only when the indexIsChanging AND if the current tab index is different from the index of
-        // the current segment. This check is mandatory because this listener is called multiple times by the tab
-        // controller.
+        // Mandatory check because this listener is called multiple times by the tab controller.
+        //
+        // Should only call the VM when the `indexIsChanging` AND if the current segment is different.
         if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
           final newTab = availableSegments.elementAt(collectionsTabController.index);
           context.read(collectionsVM).updateCollectionsSegment(newTab);
@@ -56,12 +55,12 @@ class CollectionsPage extends HookWidget {
         break;
     }
 
-    // Not using `Tab` widget as it implicitly adds a material's hard-coded height
+    // Not using flutter's `Tab` widget as it implicitly adds a material's hard-coded height.
     return Text(text);
   }
 }
 
-/// Handles the [CollectionsPage] visible contents, given the current [collectionsVM] state
+/// [CollectionsPage] visible contents, given the current [collectionsVM] state.
 class CollectionsContents extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -74,7 +73,7 @@ class CollectionsContents extends HookWidget {
       final items = state.collectionItems;
 
       if (items.isEmpty) {
-        // Empty state for the current segment
+        // Empty state for the current segment.
         widget = Center(
           child: Text(
             strings.collectionsEmptySegment(state.currentSegment),

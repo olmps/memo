@@ -1,43 +1,43 @@
 import 'dart:math';
 import 'package:flutter/widgets.dart';
 
-/// Min size reinforced in all progress indicators
+/// Min size reinforced in all progress indicators.
 const _progressMinSize = 40.0;
 
-/// Required interface to allow a [StatefulWidget] to hold a [AnimatableProgressState]
+/// Required interface to allow a [StatefulWidget] to use the [AnimatableProgressState].
 abstract class AnimatableProgress extends StatefulWidget {
   const AnimatableProgress({Key? key}) : super(key: key);
 
-  /// The initial value (of completeness) for this progress
+  /// The initial value (of completeness) for this progress.
   ///
   /// The value must range betweeen `0.0` and `1.0`.
   double get value;
 
-  /// The animation curve for any progress update made to this widget
+  /// The animation curve for any progress update made to this widget.
   Curve get animationCurve;
 
-  /// The duration for the progress animation to complete
+  /// The duration for the progress animation to complete.
   Duration get animationDuration;
 }
 
-/// Defines the required properties to draw a progress indicator
+/// Defines the required properties to draw a progress indicator.
 abstract class ProgressPainter {
-  /// The stroke width for both main progress line (and background if present)
+  /// The stroke width for both main progress line (and background if present).
   double get lineSize;
 
-  /// Stroke color used to draw the main progress line
+  /// Stroke color used to draw the main progress line.
   Color get lineColor;
 
-  /// Optional stroke color used to draw the background progress line
+  /// Optional stroke color used to draw the background progress line.
   Color? get lineBackgroundColor;
 }
 
-/// Generic state handling of all progress indicators
+/// Generic state handling for all progress indicators.
 ///
-/// This [State] works as following:
-///   - Animate to the initial value when its [initState] is called;
-///   - Animates to the updated value when [didUpdateWidget] is called;
-///   - Dispose of the [animationController] when the implementing widget is also disposed.
+/// This [State]:
+///   - Animates to the initial value when its [initState] is called.
+///   - Animates to the updated value when [didUpdateWidget] is called.
+///   - Disposes the [animationController] when the implementing widget is also disposed (is `super.dispose` is called).
 @visibleForTesting
 abstract class AnimatableProgressState<T extends AnimatableProgress> extends State<T>
     with SingleTickerProviderStateMixin {
@@ -70,14 +70,13 @@ abstract class AnimatableProgressState<T extends AnimatableProgress> extends Sta
   }
 }
 
-/// A customizable linear progress indicator
+/// A customizable linear progress indicator.
 ///
-/// This component is an alternative to the `LinearProgressIndicator`, provided by the `flutter/material` framework.
-/// It allows further customization that isn't provided  by the material's components interfaces.
+/// An alternative to the `LinearProgressIndicator`, provided by the `flutter/material` framework, allowing further
+/// customization that isn't provided by the material's components interfaces.
 ///
-/// To exemplify the customizations, the [AnimatableLinearProgress] uses a [CustomPainter] to draw itself, so it can
-/// change the desired [StrokeCap] to the drawn progress lines (which is something we can't achieve if using the
-/// material one).
+/// As an example to these customizations, the [AnimatableLinearProgress] uses a [CustomPainter] to draw itself, so it
+/// can change the desired [StrokeCap] to the drawn progress lines.
 class AnimatableLinearProgress extends AnimatableProgress implements ProgressPainter {
   const AnimatableLinearProgress({
     required this.value,
@@ -109,17 +108,17 @@ class AnimatableLinearProgress extends AnimatableProgress implements ProgressPai
   @override
   final double lineSize;
 
-  /// Label describing this widget - for accessibility concerns
+  /// Label describing this widget - for accessibility.
   final String? semanticLabel;
 
-  /// Constraints this linear progress width
+  /// Constraints this linear progress width.
   final double? minWidth;
 
   @override
   _AnimatableLinearProgressState createState() => _AnimatableLinearProgressState();
 }
 
-/// Implements the [AnimatableProgressState] for a linear-styled progress indicator
+/// Implements the [AnimatableProgressState] for a linear-styled progress indicator.
 class _AnimatableLinearProgressState extends AnimatableProgressState<AnimatableLinearProgress> {
   CustomPaint _progressPaintBuilder(BuildContext context, Widget? child) {
     return CustomPaint(
@@ -152,7 +151,7 @@ class _AnimatableLinearProgressState extends AnimatableProgressState<AnimatableL
   }
 }
 
-/// Draws a linear progress with the specified arguments
+/// Draws a linear progress with the specified arguments.
 class _LinearProgressPainter extends CustomPainter implements ProgressPainter {
   const _LinearProgressPainter({
     required this.value,
@@ -181,7 +180,7 @@ class _LinearProgressPainter extends CustomPainter implements ProgressPainter {
       ..strokeCap = StrokeCap.round;
 
     // Instead of simply start from 0 up to until the endPoint, we have to make sure that our line starts drawing inside
-    // the bounds (read more here https://github.com/flutter/flutter/issues/31202)
+    // the bounds (read more here https://github.com/flutter/flutter/issues/31202).
     final lineSizeOffset = lineSize / 2;
 
     final startPoint = Offset(lineSizeOffset, lineSizeOffset);
@@ -204,14 +203,13 @@ class _LinearProgressPainter extends CustomPainter implements ProgressPainter {
       oldDelegate.lineBackgroundColor != lineBackgroundColor;
 }
 
-/// A customizable circular progress indicator
+/// A customizable circular progress indicator.
 ///
-/// This component is an alternative to the `CircularProgressIndicator`, provided by the `flutter/material` framework.
-/// It allows further customization that isn't provided  by the material's components interfaces.
+/// An alternative to the `CircularProgressIndicator`, provided by the `flutter/material` framework, allowing further
+/// customization that isn't provided by the material's components interfaces.
 ///
-/// To exemplify the customizations, the [AnimatableCircularProgress] uses a [CustomPainter] to draw itself, so it can
-/// change the desired [StrokeCap] to the drawn progress lines (which is something we can't achieve if using the
-/// material one).
+/// As an example to these customizations, the [AnimatableCircularProgress] uses a [CustomPainter] to draw itself, so it
+/// can change the desired [StrokeCap] to the drawn progress lines.
 class AnimatableCircularProgress extends AnimatableProgress implements ProgressPainter {
   const AnimatableCircularProgress({
     required this.value,
@@ -243,17 +241,17 @@ class AnimatableCircularProgress extends AnimatableProgress implements ProgressP
   @override
   final double lineSize;
 
-  /// Label describing this widget - for accessibility concerns
+  /// Label describing this widget - for accessibility.
   final String? semanticLabel;
 
-  /// Constraints this circular progress size (both width and height)
+  /// Constraints this circular progress size (both width and height).
   final double? minSize;
 
   @override
   _AnimatableCircularProgressState createState() => _AnimatableCircularProgressState();
 }
 
-/// Implements the [AnimatableProgressState] for a circular-styled progress indicator
+/// Implements the [AnimatableProgressState] for a circular-styled progress indicator.
 class _AnimatableCircularProgressState extends AnimatableProgressState<AnimatableCircularProgress> {
   CustomPaint _progressPaintBuilder(BuildContext context, Widget? child) {
     return CustomPaint(
@@ -286,7 +284,7 @@ class _AnimatableCircularProgressState extends AnimatableProgressState<Animatabl
   }
 }
 
-/// Draws a circular progress with the specified arguments
+/// Draws a circular progress with the specified arguments.
 class _CircularProgressPainter extends CustomPainter implements ProgressPainter {
   const _CircularProgressPainter({
     required this.value,
@@ -314,7 +312,7 @@ class _CircularProgressPainter extends CustomPainter implements ProgressPainter 
       ..strokeCap = StrokeCap.round;
 
     if (lineBackgroundColor != null) {
-      // Draw progress background stroke
+      // Draw progress background stroke.
       canvas.drawArc(
         Offset.zero & size,
         _degreesToRadians(0),
@@ -325,7 +323,7 @@ class _CircularProgressPainter extends CustomPainter implements ProgressPainter 
     }
 
     if (value > 0) {
-      // Draw progress stroke
+      // Draw progress stroke.
       canvas.drawArc(
         Offset.zero & size,
         _degreesToRadians(-90),

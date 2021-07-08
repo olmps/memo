@@ -20,23 +20,23 @@ final collectionExecutionVM = StateNotifierProvider.autoDispose.family<Collectio
 abstract class CollectionExecutionVM extends StateNotifier<CollectionExecutionState> {
   CollectionExecutionVM(CollectionExecutionState state) : super(state);
 
-  /// Marks the current [Memo] with the [difficulty]
+  /// Marks the current [Memo] with the [difficulty].
   ///
-  /// Always trigger a new [LoadedCollectionExecutionState] update with the selected [difficulty]
+  /// Always trigger a new [LoadedCollectionExecutionState] update with the selected [difficulty].
   ///
-  /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState]
+  /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState].
   void markCurrentMemoDifficulty(MemoDifficulty difficulty);
 
-  /// Go forward with the next suitable contents
+  /// Go forward with the next suitable contents.
   ///
-  /// There are two scenarios where we should allow an execution to go forward:
-  ///   1. there is a question being displayed and it should provide the answer for this question; or when
-  ///   2. there is an answer contents being displayed, **with the according marked difficulty**, and it should proceed
-  /// to next question (or change its state to a [FinishedCollectionExecutionState] if there are no more memos left). In
-  /// this same case, if `nextContents` is requested while displaying an answer with no marked answer, it won't do
-  /// anything.
+  /// An execution can fetch its next contents when:
+  ///   - a question is being displayed and its answer should be displayed; or
+  ///   - the displaying answer has its difficulty already marked and it should proceed to next question. If there are
+  /// no more memos left, updates the state to [FinishedCollectionExecutionState].
   ///
-  /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState]
+  /// Do nothing if none of the criteria above isn't met.
+  ///
+  /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState].
   Future<void> nextContents();
 }
 
@@ -77,17 +77,17 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
 
     final loadedState = state as LoadedCollectionExecutionState;
 
-    // If there is a `markedAnswer`, we assume that this is a request to forward with the last marked difficulty
+    // Assume this is a request to forward with the last marked difficulty.
     if (loadedState.markedAnswer != null) {
       await _confirmMarkedMemo(loadedState.markedAnswer!);
     } else {
-      // Otherwise, we expect it to be a request to display the question
+      // Otherwise, it's considered a request to display the question.
       final currentMemo = _memos[_executions.length];
       state = loadedState.copyWith(isDisplayingQuestion: false, currentContents: currentMemo.rawAnswer);
     }
   }
 
-  /// Makes the according updates to the internal control properties of an execution
+  /// Makes the according updates to the internal control properties of an execution.
   Future<void> _confirmMarkedMemo(MemoDifficulty answer) async {
     final currentMemo = _memos[_executions.length];
 
@@ -103,7 +103,7 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
     _executions.add(execution);
 
     // If the `executions` update makes this `_isFinished` to true, we have to update this state to a
-    // `FinishedCollectionExecutionState`
+    // `FinishedCollectionExecutionState`.
     if (_isFinished) {
       state = LoadingCollectionExecutionState();
       await executionServices.addExecutions(_executions, collectionId: collectionId);
@@ -134,7 +134,7 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
         );
       }
     } else {
-      // Otherwise we proceed with the next available memo and start counting a new start date
+      // Otherwise we proceed with the next available memo and start counting a new start date.
       final completionValue = _executions.length / _memos.length;
       final nextMemo = _memos[_executions.length];
 
@@ -188,7 +188,7 @@ class LoadedCollectionExecutionState extends CollectionExecutionState {
 
   final MemoDifficulty? markedAnswer;
 
-  /// A value ranging from `0` to `1` representing how close the user is to finishing the current execution
+  /// A value ranging from `0` to `1` representing how close the user is to finishing the current execution.
   final double completionValue;
 
   LoadedCollectionExecutionState copyWith({

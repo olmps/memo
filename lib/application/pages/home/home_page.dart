@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: _AppBar(bottomTab),
-      // IndexedStack to retain each page state, more specifically, to preserving scrolling
+      // IndexedStack to retain each page state - to preserving scrolling.
       body: IndexedStack(
         index: tabIndex,
         children: [
@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// A custom app bar as `PreferredSizeWidget`, to conform to the requirements of a `Scaffold.appBar`
+// Implementing a `PreferredSizeWidget` to conform to the requirements of a `Scaffold.appBar`.
 class _AppBar extends HookWidget implements PreferredSizeWidget {
   const _AppBar(this._tab);
 

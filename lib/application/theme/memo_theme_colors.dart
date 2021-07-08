@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-// Constant colors that represent the respective swatches, prefixed with the theme it should be associated with.
+// List of `MaterialColor` implementations for all theme's swatches.
 //
-// I.e.: `buildClassic...` is the prefix signature of all swatches used by the `MemoTheme.classic` theme.
+// Each `build` is prefixed with the theme it should be associated with, I.e.: `buildClassic...` is the prefix signature
+// of all swatches used by `MemoTheme.classic`.
 
 //
 // MemoTheme.classic

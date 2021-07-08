@@ -35,7 +35,7 @@ class _CollectionExecutionPageState extends State<CollectionExecutionPage> {
           collectionName: state.collectionName,
           markedAnswer: state.markedAnswer,
           onDifficultyMarked: readExecutionVM(context).markCurrentMemoDifficulty,
-          onActionTapped: allowsActionTap ? readExecutionVM(context).nextContents : null,
+          onActionPressed: allowsActionTap ? readExecutionVM(context).nextContents : null,
         ),
       );
     }
@@ -96,7 +96,7 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
     );
   }
 
-  /// Displays an [AlertDialog] to reinforce the discard of the current execution
+  /// Displays an [AlertDialog] to reinforce the discard of the current execution.
   Future<void> _showCloseDialog(BuildContext context) async {
     await showDialog<dynamic>(
       context: context,
@@ -106,14 +106,13 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
           content: const Text(strings.executionDiscardStudyDescription),
           actions: [
             TextButton(
-              // If yes is selected, we must discard the current displayed route, which will also dismiss this
-              // uncontrolled dialog
+              // Discards the current displayed route, which will also dismiss this uncontrolled dialog.
               onPressed: readCoordinator(context).pop,
               child: Text(strings.yes.toUpperCase()),
             ),
             TextButton(
-              // But if no is selected (and because this dialog is not added/controlled by our coordinator) we should
-              // dismiss it by calling the Material's navigator, because this is considered an uncontrolled dialog
+              // Dismiss it by calling the Material's navigator, because this is an uncontrolled dialog (a dialog that
+              // wasn't added/controlled by our coordinator).
               onPressed: Navigator.of(context).pop,
               child: Text(strings.no.toUpperCase()),
             ),

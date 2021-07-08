@@ -1,9 +1,8 @@
 import 'package:layoutr/common_layout.dart';
 
-/// Raw values for the [Spacing]
+/// Raw values for the [Spacing] from the `layoutr` package.
 ///
-/// The values below are used for all device's sizes, meaning that this application is not implementing custom spacings
-/// for devices with different ratios/sizes.
+/// Custom spacings aren't used in this application, so the values below are used for all device's sizes.
 ///
 /// - `xxxSmall = 2`
 /// - `xxSmall = 4`

@@ -59,7 +59,7 @@ class LoadedProgressState extends ProgressState {
     required this.totalExecutions,
   });
 
-  /// Total time spent in all memos (in milliseconds)
+  /// Total time spent in all memos (in milliseconds).
   final int timeSpentInMillis;
   TimeProgress get timeProgress => TimeProgress.fromDuration(Duration(milliseconds: timeSpentInMillis));
 
@@ -70,14 +70,14 @@ class LoadedProgressState extends ProgressState {
   List<Object?> get props => [timeSpentInMillis, executionsPercentage, totalExecutions];
 }
 
-/// Helper that excludes time components with zero-values
+/// Custom time representation that excludes components with zero-values.
 ///
-/// This not only exclude values that are have a value of `0`, but also implicitly compress to the smallest possible
-/// representable value. So, if we have a `Duration` with `60` minutes, this would be compressed in a single hour.
+/// Compresses each individual component into the smallest possible value and excludes all components that have a value
+/// of zero.
 ///
 /// I.e.:
 ///
-/// Scenario 1:
+/// Example 1:
 /// ```
 /// final duration = Duration(seconds: 10, minutes: 10);
 /// final timeProgress = TimeProgress.fromDuration(duration);
@@ -87,7 +87,7 @@ class LoadedProgressState extends ProgressState {
 /// timeProgress.seconds == 10; // true
 /// ```
 ///
-/// Scenario 2:
+/// Example 2:
 /// ```
 /// final duration = Duration(hours: 1, seconds: 180);
 /// final timeProgress = TimeProgress.fromDuration(duration);
@@ -97,7 +97,7 @@ class LoadedProgressState extends ProgressState {
 /// timeProgress.seconds == null; // true
 /// ```
 ///
-/// Scenario 3:
+/// Example 3:
 /// ```
 /// final duration = Duration(minutes: 61, microseconds: 200);
 /// final timeProgress = TimeProgress.fromDuration(duration);
@@ -107,9 +107,6 @@ class LoadedProgressState extends ProgressState {
 /// timeProgress.seconds == null; // true
 /// ```
 class TimeProgress {
-  // Private constructor, we don't want direct instantiation of this class
-  TimeProgress._({required this.hours, required this.minutes, required this.seconds});
-
   factory TimeProgress.fromDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
@@ -122,13 +119,15 @@ class TimeProgress {
     );
   }
 
+  TimeProgress._({required this.hours, required this.minutes, required this.seconds});
+
   final int? hours;
   final int? minutes;
   final int? seconds;
 
-  /// `true` only when the [seconds] component is present
+  /// `true` only when the [seconds] component is present.
   bool get hasOnlySeconds => hours == null && minutes == null;
 
-  /// `true` if all time components are `null`
+  /// `true` if all time components are `null`.
   bool get isEmpty => hours == null && minutes == null && seconds == null;
 }

@@ -69,7 +69,7 @@ class SettingsPage extends HookWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (context) => Theme(
-          // cardColor is used by the LicensePage to draw its background color
+          // `cardColor` is used by the LicensePage to draw its background color.
           data: Theme.of(context).copyWith(cardColor: licensePageBackgroundColor),
           child: const LicensePage(),
         ),

@@ -19,13 +19,12 @@ extension RawLicenseKey on LicenseKey {
   String get path => 'assets/licenses/$raw.txt';
 }
 
-/// Lazily updates the `LicenseRegistry` to include unspecified third party licenses
+/// Lazily updates `LicenseRegistry` to include unspecified third party licenses.
 ///
-/// While flutter include all `pubspec` related licenses in the registry by default, there are a couple that are used
-/// _indirectly_, thus needing to be added manually into the `LicenseRegistry`.
-///
-/// Also, this update is only actually called by the Flutter's framework when requested.
+/// By default, flutter includes all `pubspec` licenses in the registry, though others that are used  _indirectly_ must
+/// be added manually to the `LicenseRegistry`.
 void addLicenseRegistryUpdater(AssetBundle bundle) {
+  // Only called by the Flutter's framework when requested.
   LicenseRegistry.addLicense(() async* {
     final licensesFutures = LicenseKey.values.map((license) => _generateLicense(bundle, license)).toList();
     yield* Stream.fromFutures(licensesFutures);

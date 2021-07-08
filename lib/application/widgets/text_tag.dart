@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 
-/// Creates a new [Text] that resembles a tag
+/// Creates a new [Text] that resembles a tag.
 ///
-/// It's important to no confuse this tag-styled component with the material's `Chip`, which is used in more complex
-/// - usually interactable - scenarios.
+/// Do not confuse this tag-styled component with the material's `Chip`, the latter is used in more complex - usually
+/// interactable - scenarios.
 class TextTag extends StatelessWidget {
   const TextTag(
     this.text, {

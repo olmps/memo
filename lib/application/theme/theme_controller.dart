@@ -9,14 +9,14 @@ import 'package:memo/application/theme/memo_theme_data.dart';
 
 final themeController = StateNotifierProvider<ThemeController>((_) => ThemeController());
 
-/// Provides management for all theme-related operations
+/// Controls theme-related operations.
 ///
-/// This controller is responsible for notifying all listeners when its [StateNotifier.state] has been updated (usually
-/// when [changeTheme] is called), so all dependencies can be rebuilt with the latest information about the theme.
+/// Responsible for notifying all listeners when its [StateNotifier.state] has been updated (usually when [changeTheme]
+/// is called), so all dependencies can be rebuilt with the latest information about the theme.
 ///
 /// See also:
-///  - [MemoTheme] - enumerator defining all possible (but not necessarily available) themes;
-///  - [MemoThemeData] - wrapper for all custom `ThemeData` properties.
+///  - [MemoTheme], enumerator defining all possible (but not necessarily in [availableThemes]) themes.
+///  - [MemoThemeData], wrapper for all custom theme properties.
 class ThemeController extends StateNotifier<MemoThemeData> {
   ThemeController([MemoThemeData? value]) : super(value ?? _defaultThemeData);
 
@@ -31,9 +31,9 @@ class ThemeController extends StateNotifier<MemoThemeData> {
     neutralSwatch: _neutralSwatchFor(MemoTheme.classic),
   );
 
-  /// Updates the current [state] with a new instance of [MemoThemeData], using the [theme] argument
+  /// Updates the current [state] with a new instance of [MemoThemeData], using the [theme] argument.
   ///
-  /// If the [theme] argument is the same contained in the current state, nothing happens.
+  /// If [theme] is the same as the current state, does nothing.
   void changeTheme(MemoTheme theme) {
     if (theme == state.theme) {
       return;
@@ -84,16 +84,10 @@ class ThemeController extends StateNotifier<MemoThemeData> {
   }
 }
 
-/// Syntax sugar for _hooking_ the [themeController] state instance in a `HookWidget`
-///
-/// It's important to state that, just like any other `useProvider` call, the [useTheme] must also be called
-/// directly in the `build` method of a `HookWidget`.
+/// Syntax sugar for _hooking_ the [themeController] state instance in a hook widget build.
 MemoThemeData useTheme() => useProvider(themeController.state);
 
-/// Syntax sugar for _hooking_ the [themeController] provider instance in a `HookWidget`
-///
-/// It's important to state that, just like any other `useProvider` call, the [useThemeController] must also be called
-/// directly in the `build` method of a `HookWidget`.
+/// Syntax sugar for _hooking_ the [themeController] provider instance in a hook widget build.
 ThemeController useThemeController() => useProvider(themeController);
 
 MaterialColor _primarySwatchFor(MemoTheme theme) {

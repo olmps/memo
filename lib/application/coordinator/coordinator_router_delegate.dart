@@ -4,23 +4,21 @@ import 'package:memo/application/coordinator/routes.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
-/// Core class to glue our [RoutesCoordinator] to the [Router] ecosystem, in this case, the [RouterDelegate]
-///
-/// This delegate essentially connects our [RoutesCoordinator] implementation to the lifecycle of [Router], meaning that
-/// we can intermediate all the [Router]/[Navigator] configuration through a single core class, the [RoutesCoordinator].
+/// Core class that glues our [RoutesCoordinator] to flutter's [Router]/[Navigator] lifecycles, using the
+/// [RouterDelegate].
 ///
 /// See also:
-///   - [RoutesCoordinator], where all the heavy navigation management is handled;
-///   - `CoordinatorInformationParser`, which provides a type-safe way to parse [Router] locations.
+///   - [RoutesCoordinator], where all the heavy navigation management is handled.
+///   - `CoordinatorInformationParser`, providing a type-safe way to parse [Router] locations.
 class CoordinatorRouterDelegate extends RouterDelegate<AppPath>
     with
         ChangeNotifier, // ignore: prefer_mixin
         PopNavigatorRouterDelegateMixin<AppPath> {
   CoordinatorRouterDelegate(RoutesCoordinator coordinator) : _coordinator = coordinator {
-    // Pass along any updates from the RouterDelegate to our coordinator, so we can keep things synchronized
+    // Pass along any updates from the RouterDelegate to our coordinator, so we can keep things synchronized.
     //
-    // We also can't use providers (we have to store the coordinator and attach a manual listener) because we must use
-    // it in methods other than build, like in `currentConfiguration` and `setNewRoutePath` overrides.
+    // Can't use providers (have to store the coordinator and attach a manual listener) because it must be called in
+    // methods other than build, like in `currentConfiguration` and `setNewRoutePath` overrides.
     _coordinator.addListener(notifyListeners);
   }
 
@@ -35,12 +33,9 @@ class CoordinatorRouterDelegate extends RouterDelegate<AppPath>
     );
   }
 
+  // Ignore calls to this method, as `RouteInformationProvider` should be directly injected in the root `MaterialApp`.
   @override
-  Future<void> setInitialRoutePath(AppPath configuration) {
-    // TODO(matuella): This doesn't seems right, but because we are passing our own `RouteInformationProvider` in the
-    // root `MaterialApp`, this will be called once again, thus resetting the navigation.
-    return SynchronousFuture(null);
-  }
+  Future<void> setInitialRoutePath(AppPath configuration) => SynchronousFuture(null);
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => _coordinator.navigatorKey;
@@ -51,8 +46,6 @@ class CoordinatorRouterDelegate extends RouterDelegate<AppPath>
   @override
   Future<void> setNewRoutePath(AppPath configuration) => SynchronousFuture(_coordinator.setNewRoutePath(configuration));
 
-  // `avoid_annotating_with_dynamic` conflicting with `implicit-dynamic`
-  // ignore: avoid_annotating_with_dynamic
   bool _onPopPage(Route<dynamic> route, dynamic result) {
     final didPop = route.didPop(result);
     if (!didPop) {
