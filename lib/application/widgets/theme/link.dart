@@ -9,11 +9,7 @@ import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/core/faults/exceptions/url_exception.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
-/// Button themed for scenarios where its tap action links to some other resource (usually opening
-/// external-to-the-application contents)
-///
-/// See also:
-///   - [ExternalLinkButton] which already implements an URL handling.
+/// Decorates a text link, themed like a button, with custom layout specs.
 class LinkButton extends HookWidget {
   const LinkButton({
     required this.onTap,
@@ -28,16 +24,16 @@ class LinkButton extends HookWidget {
   final VoidCallback? onTap;
   final String text;
 
-  /// A leading widget that comes before the [text] element
+  /// A widget that is displayed before the [text] element.
   final Widget? leading;
 
-  /// A trailing widget that comes after the [text] element
+  /// A widget that is displayed after the [text] element.
   final Widget? trailing;
 
-  /// Overrides the default theme backgroundColor
+  /// Overrides the default `backgroundColor`.
   final Color? backgroundColor;
 
-  /// Overrides the default text style
+  /// Overrides the default text's `textStyle`.
   final TextStyle? textStyle;
 
   @override
@@ -68,15 +64,18 @@ class LinkButton extends HookWidget {
     return Semantics(
       button: true,
       enabled: onTap != null,
-      child: Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(dimens.cardBorderWidth),
-          side: BorderSide(color: themeColor),
-        ),
-        color: backgroundColor ?? themeColor,
-        child: InkWell(
-          onTap: onTap,
-          child: linkContents.withAllPadding(context, Spacing.medium),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(dimens.cardBorderWidth),
+        child: Material(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(dimens.cardBorderWidth),
+            side: BorderSide(color: themeColor),
+          ),
+          color: backgroundColor ?? themeColor,
+          child: InkWell(
+            onTap: onTap,
+            child: linkContents.withAllPadding(context, Spacing.medium),
+          ),
         ),
       ),
     );
@@ -88,20 +87,19 @@ class LinkButton extends HookWidget {
 /// This could also accept `http`, `tel`, `mail` and `sms`, although we don't have a reason to allow those schemes.
 const List<String> _allowedSchemes = ['https:'];
 
-/// A custom-layout button that opens an external (non-application scope) link
+/// Decorates an URL text link themed like a button, with custom layout specs.
 ///
-/// See also:
-///   - [ExternalLinkTextButton] for simpler use-cases that only require a text button.
-class ExternalLinkButton extends StatelessWidget {
-  ExternalLinkButton(
+/// Pressing this widget will open the [url] using the respective platform's browser, when [isEnabled] is set to `true`
+/// (default).
+class UrlLinkButton extends StatelessWidget {
+  UrlLinkButton(
     this.url, {
     this.isEnabled = true,
-    this.description,
     this.leading,
     this.onFailLaunchingUrl,
+    this.text,
     this.backgroundColor,
     this.textStyle,
-    this.iconColor,
     Key? key,
   }) : super(key: key) {
     _allowedSchemes.firstWhere((scheme) => url.toLowerCase().startsWith(scheme), orElse: () {
@@ -113,47 +111,45 @@ class ExternalLinkButton extends StatelessWidget {
   final String url;
   final bool isEnabled;
 
-  /// Overrides the [url] value as the [LinkButton.text] with a more descriptive text for this link
-  final String? description;
-
-  /// A leading widget that comes before the [url] (or [description] if present) element
+  /// A widget that is displayed before the [url] (or [text] if present) element.
   final Widget? leading;
 
-  /// Overrides the default theme backgroundColor
+  /// Callback that is triggered when [url] has failed launching.
+  final void Function(UrlException exception)? onFailLaunchingUrl;
+
+  /// Overrides the displaying link's text [url] value with this value.
+  final String? text;
+
+  /// Overrides the default `backgroundColor`.
   final Color? backgroundColor;
 
-  /// The trailing icon color
-  final Color? iconColor;
-
-  /// The description text style
+  /// Overrides the default text's `textStyle`.
   final TextStyle? textStyle;
-
-  /// Callback that is triggered when the [url] has failed launching
-  final void Function(UrlException exception)? onFailLaunchingUrl;
 
   @override
   Widget build(BuildContext context) {
     final linkImage = AssetImage(images.linkAsset);
-    final linkIcon = ImageIcon(linkImage, size: dimens.smallIconSize, color: iconColor);
+    final linkIcon = ImageIcon(linkImage, size: dimens.smallIconSize);
 
     return LinkButton(
       onTap: isEnabled ? () => _handleUrlLaunch(url, onFailLaunchingUrl) : null,
-      text: description ?? url,
+      text: text ?? url,
       leading: leading,
       trailing: linkIcon,
-      backgroundColor: backgroundColor,
       textStyle: textStyle,
+      backgroundColor: backgroundColor,
     );
   }
 }
 
-/// A custom-layout text button that opens an external (non-application scope) link
+/// Decorates an URL text link themed like an underlined text, with custom layout specs.
 ///
-/// See also:
-///   - [ExternalLinkButton] for use-cases that required a more emphatic button action.
-class ExternalLinkTextButton extends HookWidget {
-  ExternalLinkTextButton(
+/// Pressing this widget will open the [url] using the respective platform's browser, when [isEnabled] is set to `true`
+/// (default).
+class UnderlinedUrlLink extends HookWidget {
+  UnderlinedUrlLink(
     this.url, {
+    this.isEnabled = true,
     this.text,
     this.onFailLaunchingUrl,
     Key? key,
@@ -165,23 +161,28 @@ class ExternalLinkTextButton extends HookWidget {
   }
 
   final String url;
+  final bool isEnabled;
 
-  /// Overrides the [url] value as the text for this widget, usually with a more descriptive text for the [url]
+  /// Overrides the displaying link's text [url] value with this value.
   final String? text;
 
-  /// Callback that is triggered when the [url] has failed launching
+  /// Callback that is triggered when [url] has failed launching.
   final void Function(UrlException exception)? onFailLaunchingUrl;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => _handleUrlLaunch(url, onFailLaunchingUrl),
-      child: Text(
-        text ?? url,
-        style: Theme.of(context)
-            .textTheme
-            .caption
-            ?.copyWith(color: useTheme().neutralSwatch.shade300, decoration: TextDecoration.underline),
+    return Semantics(
+      button: true,
+      enabled: isEnabled,
+      child: InkWell(
+        onTap: isEnabled ? () => _handleUrlLaunch(url, onFailLaunchingUrl) : null,
+        child: Text(
+          text ?? url,
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              ?.copyWith(color: useTheme().neutralSwatch.shade300, decoration: TextDecoration.underline),
+        ),
       ),
     );
   }

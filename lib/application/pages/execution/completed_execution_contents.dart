@@ -119,10 +119,10 @@ class CompletedExecutionContents extends HookWidget {
         ),
         context.verticalBox(Spacing.medium),
         if (showsRecallLevelLink)
-          ExternalLinkTextButton(
+          UrlLinkButton(
             strings.faqUrl,
             text: strings.executionWhatIsRecallLevel,
-            onFailLaunchingUrl: context.showExceptionSnackBar,
+            onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
           ),
       ],
     );
