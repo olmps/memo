@@ -12,10 +12,9 @@ import 'package:memo/application/utils/license_update.dart';
 import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 
-/// "Pre-load" root widget for the application
+/// "Pre-load" root widget for the application.
 ///
-/// This widget is a wrapper to provide (and load) an instance of [AppState], while showing a splash screen while it's
-/// loading for any external/internal dependencies.
+/// A wrapper that loads and injects all dependencies using [AppVM].
 class AppRoot extends StatelessWidget {
   const AppRoot(this.vm);
   final AppVM vm;
@@ -34,7 +33,7 @@ class AppRoot extends StatelessWidget {
             return CommonLayoutWidget(
               spacings: spacings,
               child: ProviderScope(
-                // Override all `Provider` and `ScopedProvider` that are late-initialized
+                // Override all `Provider` and `ScopedProvider` that are late-initialized.
                 overrides: [
                   collectionServices.overrideWithValue(state.collectionServices),
                   executionServices.overrideWithValue(state.executionServices),
@@ -52,10 +51,10 @@ class AppRoot extends StatelessWidget {
   }
 }
 
-/// Loaded root widget for the application
+/// Loaded root widget for the application.
 ///
-/// After [AppRoot] is done with the loading, [_LoadedAppRoot] takes place (of the [SplashPage]) as the root of our
-/// application (and have all late-initialized providers available to it).
+/// After [AppRoot] is done loading, [_LoadedAppRoot] takes place (of the [SplashPage]) as the root of our application,
+/// with all injected dependencies.
 class _LoadedAppRoot extends StatefulHookWidget {
   @override
   _LoadedAppRootState createState() => _LoadedAppRootState();
@@ -68,9 +67,8 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
   Widget build(BuildContext context) {
     final coordinator = readCoordinator(context);
 
-    // Must keep stored the `PlatformRouteInformationProvider`, otherwise when this widget rebuilds (for any reason),
-    // the current route will be reset to our "root". Not sure if this is the best approach, but this new Router API
-    // sure is confusing.
+    // Store `PlatformRouteInformationProvider`, otherwise when this widget rebuilds (for any reason), the current route
+    // will be reset to "root". Not sure if this is the best approach.
     _routeInformationParser ??= PlatformRouteInformationProvider(
       initialRouteInformation: RouteInformation(location: coordinator.currentRoute),
     );
