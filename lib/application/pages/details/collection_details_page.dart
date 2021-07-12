@@ -49,7 +49,7 @@ class CollectionDetailsPage extends HookWidget {
           NeutralTextTag(strings.detailsTotalMemos(state.memosAmount).toUpperCase()),
           context.verticalBox(Spacing.large),
           if (state.contributors.length > 1)
-            MultiContributorsView(state.contributors + state.contributors)
+            MultiContributorsView(state.contributors)
           else
             SingleContributorView(state.contributors.first),
         ],
