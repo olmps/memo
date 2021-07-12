@@ -34,7 +34,7 @@ abstract class CollectionExecutionVM extends StateNotifier<CollectionExecutionSt
   ///   - the displaying answer has its difficulty already marked and it should proceed to next question. If there are
   /// no more memos left, updates the state to [FinishedCollectionExecutionState].
   ///
-  /// Do nothing if none of the criteria above isn't met.
+  /// Do nothing if none of the criteria above is met.
   ///
   /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState].
   Future<void> nextContents();
