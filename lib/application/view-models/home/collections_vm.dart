@@ -77,7 +77,7 @@ class CollectionsVMImpl extends CollectionsVM {
   /// To sort its contents, a `Map` is created to segment the [metadata] using the categories, and then flatten this
   /// `Map` into a single list, containing both keys and values.
   List<ItemMetadata> _mapMetadataToItems(List<CollectionItem> metadata) {
-    // This is a `LinkedHashMap` instance, so order is preserved.
+    // Default `Map` is a `LinkedHashMap`, order is preserved.
     final metadataPerCategory = <String, List<CollectionItem>>{};
     metadata.forEach((metadata) {
       final category = metadata.category;
