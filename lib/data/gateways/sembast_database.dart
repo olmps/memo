@@ -46,7 +46,7 @@ abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
 abstract class SembastDatabase extends SembastTransactionHandler {
   SembastDatabase(sembast.Database db) : super(db);
 
-  /// Adds an [object] to the [store], using a [id].
+  /// Adds an [object] to the [store], using an [id].
   ///
   /// If there is already an object with the same [id], the default behavior is to merge all of its fields.
   ///
