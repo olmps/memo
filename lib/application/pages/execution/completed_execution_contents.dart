@@ -18,13 +18,13 @@ import 'package:memo/application/widgets/theme/link.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
-/// Contents (non-Scaffold) of a execution that has been completed
+/// Contents (non-Scaffold) of a execution that has been completed.
 class CompletedExecutionContents extends HookWidget {
   const CompletedExecutionContents(this.state, {required this.onBackTap});
 
   final FinishedCollectionExecutionState state;
 
-  /// Callback for a non-appbar tap to back
+  /// Callback for a non-appbar tap to back.
   final VoidCallback onBackTap;
 
   @override
@@ -65,7 +65,7 @@ class CompletedExecutionContents extends HookWidget {
       children: [
         _buildSectionTitle(context, strings.executionYourPerformance),
         context.verticalBox(Spacing.medium),
-        // Wrapping in an `IntrinsicHeight`, otherwise the child will vertically expand to infinity
+        // Wrapping in an `IntrinsicHeight`, otherwise the child will vertically expand to infinity.
         IntrinsicHeight(
           child: _PerformanceIndicators(
             difficultiesIndicators: state.availableDifficulties,
@@ -166,7 +166,7 @@ class _Header extends HookWidget {
   }
 }
 
-/// Displays a list of horizontal progress indicators, given the answers in this execution session
+/// Displays a list of horizontal progress indicators, given the answers in this execution session.
 class _PerformanceIndicators extends HookWidget {
   const _PerformanceIndicators({
     required this.difficultiesIndicators,
@@ -176,10 +176,10 @@ class _PerformanceIndicators extends HookWidget {
 
   final List<MemoDifficulty> difficultiesIndicators;
 
-  /// Requests the percentage (from `0` to `1`) of answers for this `MemoDifficulty`
+  /// Requests the percentage (from `0` to `1`) of answers for this `MemoDifficulty`.
   final double Function(MemoDifficulty) answerValueForDifficulty;
 
-  /// Requests a readable representation of this answer's value percentage
+  /// Requests a readable representation of this answer's value percentage.
   final String Function(MemoDifficulty) readableAnswersForDifficulty;
 
   @override
@@ -219,7 +219,7 @@ class _PerformanceIndicators extends HookWidget {
           .mapIndexed(
             (index, widget) => [
               Flexible(child: widget),
-              // Make sure to not add a padding to the last element
+              // Make sure to not add a padding to the last element.
               if (index != performanceIndicators.length - 1) context.horizontalBox(Spacing.xxxLarge),
             ],
           )

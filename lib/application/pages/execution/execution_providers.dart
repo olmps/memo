@@ -3,19 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 
-/// Provides an overridable collection id to be used in the scope of a collection execution
+/// Overridable collection id used in the scope of a collection execution
 ///
-/// There is no default value (meaning `null`) for this [ScopedProvider], it must always be supplied to any widget that
-/// uses it
+/// Throws an `UnsupportedError` if the consuming context don't override this provider
 final executionCollectionId = ScopedProvider<String>(null);
 
-/// Syntax sugar for **reading** the current [CollectionExecutionVM] instance
+/// Syntax sugar for `context.read` the current [CollectionExecutionVM] provider.
 CollectionExecutionVM readExecutionVM(BuildContext context) {
   final collectionId = context.read(executionCollectionId);
   return context.read(collectionExecutionVM(collectionId));
 }
 
-/// Syntax sugar for calling [useProvider] with both [collectionExecutionVM] and [executionCollectionId] providers
+/// Syntax sugar for calling [useProvider] with both [collectionExecutionVM] and [executionCollectionId] providers.
 CollectionExecutionState useCollectionExecutionState() {
   final collectionId = useProvider(executionCollectionId);
   return useProvider(collectionExecutionVM(collectionId).state);

@@ -15,12 +15,13 @@ final coordinatorProvider = Provider<RoutesCoordinator>(
 
 RoutesCoordinator readCoordinator(BuildContext context) => context.read(coordinatorProvider);
 
-/// Coordinates the logic of the visible [Page]s stack based on locations (or URIs)
+/// Coordinates the the visible [Page]s stack based on a list of locations (or URIs).
 ///
-/// This coordinator is built to handle one side of the two-way communication between [RoutesCoordinator] (this class,
-/// the core logic) and `CoordinatorRouterDelegate` (OS navigation intentions), by providing type-safe locations through
-/// `CoordinatorInformationParser` and [AppPath], with the objective to have complete control of Flutter's [Route] and
-/// [Navigator].
+/// Handles one side of the two-way communication between [RoutesCoordinator] (this class, the core logic) and
+/// `CoordinatorRouterDelegate` (OS navigation intentions) by providing type-safe locations through
+/// `CoordinatorInformationParser` and [AppPath].
+///
+/// This coordinator responsibility it to take complete control of Flutter's [Route] and [Navigator].
 class RoutesCoordinator extends ChangeNotifier {
   RoutesCoordinator({required this.navigatorKey})
       : _pages = [
@@ -33,14 +34,14 @@ class RoutesCoordinator extends ChangeNotifier {
 
   final GlobalKey<NavigatorState> navigatorKey;
 
-  /// Shared key between the multiple home pages
+  /// Shared key between the multiple home pages.
   static const _homeKey = ValueKey('Home');
 
-  /// Descending ordered (visibles come last) stack of visible/existing pages
+  /// Descending-ordered (visibles come last) stack of visible/existing pages.
   List<Page> get pages => List.unmodifiable(_pages);
   List<Page> _pages;
 
-  /// The path respective to the the current visible page
+  /// Type-safe representation to the the current visible page.
   AppPath get currentPath => parseRoute(currentRoute);
 
   /// Raw value for [currentPath]
@@ -54,17 +55,17 @@ class RoutesCoordinator extends ChangeNotifier {
     return currentRoute;
   }
 
-  /// Notifies this coordinator to pop the [page]
+  /// Notifies this coordinator to pop the [page].
   void didPop(Page page) {
     _pages.remove(page);
     notifyListeners();
   }
 
-  /// Updates the current route to [path], making the required changes to the pages stack
+  /// Updates the current route to [path], making the required changes to the pages stack.
   void setNewRoutePath(AppPath path) {
     if (path is HomePath) {
       // Any path inheriting HomePath should be considered as the root of our application, so when navigating to it, we
-      // remove any other visible pages
+      // remove any other visible pages.
       if (currentPath.formattedPath != path.formattedPath) {
         _pages = [];
 
@@ -79,7 +80,7 @@ class RoutesCoordinator extends ChangeNotifier {
 
         _addPage(HomePage(bottomTab: homeTab), name: path.formattedPath, customKey: _homeKey);
       } else {
-        // Otherwise we simply remove all pages other than the matched one
+        // Otherwise we simply remove all pages other than the matched one.
         _pages.removeRange(1, _pages.length);
       }
     }
@@ -112,15 +113,14 @@ class RoutesCoordinator extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Adds a new page to the top of the current stack (last in [_pages] list)
+  /// Adds a new page to the top of the current stack (last in [_pages] list).
   ///
-  /// - [isFullscreen] changes the type of navigation that this page is shown;
+  /// - [isFullscreen] changes the type of navigation that this page is shown.
   /// - [customKey] overrides the custom key for this page (which is creating a `ValueKey` from the [name] argument).
   void _addPage(Widget widget, {required String name, bool isFullscreen = true, ValueKey<String>? customKey}) {
     final pageKey = customKey ?? ValueKey(name);
 
-    // Usually, there can't be multiple pages with the same key in the pages stack. If this is the case, the usage of
-    // `Key` to manage the existing pages must be reevaluated
+    // There can't be multiple pages with the same key in the pages stack.
     final pagesWithSameKey = _pages.where((page) => page.key == pageKey);
     if (pagesWithSameKey.isNotEmpty) {
       throw InconsistentStateError.coordinator(
@@ -133,7 +133,7 @@ class RoutesCoordinator extends ChangeNotifier {
     );
   }
 
-  /// Inserts a page in any position of the stack ([_pages] list)
+  /// Inserts a page in any position of the stack ([_pages] list).
   // ignore: unused_element
   void _insertPage(Widget widget, {required int index, required String name}) {
     _pages.insert(

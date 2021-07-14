@@ -1,7 +1,7 @@
-import 'package:meta/meta.dart';
-
-// This file gives us a - somewhat - more type-safe usage of font assets
+// Type-safe usage of font assets.
+//
 // All raw font families belong here and must be only accessed through this file.
+import 'package:meta/meta.dart';
 
 @visibleForTesting
 enum FontKey {

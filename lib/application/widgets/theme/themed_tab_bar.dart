@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 
-/// Decorates a [TabBar] with custom layout specs
+/// Decorates a [TabBar] with custom layout specs.
 class ThemedTabBar extends HookWidget {
   const ThemedTabBar({required this.controller, required this.tabs, Key? key}) : super(key: key);
 
@@ -24,7 +24,7 @@ class ThemedTabBar extends HookWidget {
       indicatorColor: selectedColor,
     );
 
-    /// Bottom indicator line that crosses the full element's width
+    /// Bottom indicator line that crosses the full element's width.
     final bottomInsetBorder = Container(height: borderHeight, color: unselectedColor);
     return Stack(
       children: [

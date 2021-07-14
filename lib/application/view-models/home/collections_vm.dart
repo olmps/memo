@@ -12,17 +12,16 @@ final collectionsVM = StateNotifierProvider<CollectionsVM>((ref) {
   return CollectionsVMImpl(ref.read(collectionServices));
 });
 
-/// Segment used to filter the current state of the [CollectionsVM]
+/// Segment used to filter the current state of the [CollectionsVM].
 enum CollectionsSegment { explore, review }
 const availableSegments = CollectionsSegment.values;
 
 abstract class CollectionsVM extends StateNotifier<CollectionsState> {
   CollectionsVM(CollectionsState state) : super(state);
 
-  /// Updates the current [state] with [segment]
+  /// Updates the current [state] with [segment].
   ///
-  /// Changing the current state's [segment] implies that the displayed collections should be filtered to match the
-  /// respective conditions for this specific [CollectionsSegment].
+  /// Changing this [segment] also updates the displayed collections based on this [CollectionsSegment].
   Future<void> updateCollectionsSegment(CollectionsSegment segment);
 }
 
@@ -54,13 +53,12 @@ class CollectionsVMImpl extends CollectionsVM {
     });
   }
 
-  /// Updates the [state] with [_cachedCollectionItems] filtered to a `CollectionsSegment`
+  /// Updates the [state] with [_cachedCollectionItems] filtered to a `CollectionsSegment`.
   ///
-  /// If [segment] is `null`, the current [state]'s segment is used ([CollectionsState.currentSegment]).
+  /// If [segment] is `null`, the current [state] segment ([CollectionsState.currentSegment]) is used.
   void _updateToLoadedStateWithCachedMetadata({CollectionsSegment? segment}) {
     final normalizedSegment = segment ?? state.currentSegment;
 
-    // Filters all the `CollectionItem` given the `segment`
     final filteredMetadata = _cachedCollectionItems.where((metadata) {
       switch (normalizedSegment) {
         case CollectionsSegment.explore:
@@ -74,13 +72,12 @@ class CollectionsVMImpl extends CollectionsVM {
     state = LoadedCollectionsState(items, currentSegment: normalizedSegment);
   }
 
-  /// Maps all [metadata] to its sorted [ItemMetadata] list
+  /// Maps all [metadata] to its sorted [ItemMetadata] list.
   ///
-  /// To sort its contents, a `Map` is created to segment (meaning the key) its [metadata] in the same respective
-  /// categories, and then flatten this `Map` entries into a single list, containing both keys and values, in a sorted
-  /// fashion.
+  /// To sort its contents, a `Map` is created to segment the [metadata] using the categories, and then flatten this
+  /// `Map` into a single list, containing both keys and values.
   List<ItemMetadata> _mapMetadataToItems(List<CollectionItem> metadata) {
-    // It's a `LinkedHashMap` instance, so order is preserved.
+    // Default `Map` is a `LinkedHashMap`, order is preserved.
     final metadataPerCategory = <String, List<CollectionItem>>{};
     metadata.forEach((metadata) {
       final category = metadata.category;

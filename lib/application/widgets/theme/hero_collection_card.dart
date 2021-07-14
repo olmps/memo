@@ -6,10 +6,9 @@ import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
 const _collectionCardTag = 'collection_card';
 
-/// Creates a [CollectionCard] from [item], wrapping it in a [Hero] element
+/// Creates a [CollectionCard] from [item], wrapping it in a [Hero] element.
 ///
-/// When using this widget-wrapper, there should be at least two distinct pages wrapping the same element, otherwise it
-/// won't work properly, as per [Hero] documentation.
+/// To use [Hero] properly, at least two distinct pages must have this same [item].
 Widget buildHeroCollectionCardFromItem(
   CollectionItem item, {
   required EdgeInsets padding,

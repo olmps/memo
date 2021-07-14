@@ -2,10 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:memo/domain/transients/collection_status.dart';
 import 'package:meta/meta.dart';
 
-/// Base class to be implemented to any metadata related to a `Collection`
-///
-/// The purpose of this class and its subclasses are only to make the UI work easier and more agnostic to any possible
-/// logic, being responsible solely for rendering the layout given each metadata.
+/// Base class of metadata related to a `Collection`.
 @immutable
 abstract class ItemMetadata extends Equatable {}
 
@@ -29,7 +26,7 @@ abstract class CollectionItem extends ItemMetadata {
   List<Object?> get props => [id, name, category, tags];
 }
 
-/// Represents a Collection that have been fully executed - meaning, no pristine memos are left
+/// Represents a collection that have been fully executed - where no pristine memos are left.
 class CompletedCollectionItem extends CollectionItem {
   CompletedCollectionItem({
     required this.recallLevel,
@@ -46,7 +43,7 @@ class CompletedCollectionItem extends CollectionItem {
   List<Object?> get props => [...super.props, recallLevel];
 }
 
-/// Represents a Collection that hasn't been fully executed - meaning, there are still pristine memos left
+/// Represents a collection that hasn't been fully executed - there are still pristine memos left.
 class IncompleteCollectionItem extends CollectionItem {
   IncompleteCollectionItem({
     required this.executedUniqueMemos,
@@ -68,7 +65,7 @@ class IncompleteCollectionItem extends CollectionItem {
   List<Object?> get props => [...super.props, executedUniqueMemos, totalUniqueMemos];
 }
 
-/// Uses the [CollectionStatus] properties to instantiate a corresponding [CollectionItem]
+/// Uses the [CollectionStatus] properties to instantiate a corresponding [CollectionItem].
 CollectionItem mapStatusToMetadata(CollectionStatus status) {
   final collection = status.collection;
   if (status.memoryRecall != null) {

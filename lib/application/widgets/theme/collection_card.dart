@@ -10,7 +10,7 @@ import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 import 'package:memo/application/widgets/theme/themed_text_tag.dart';
 
-/// Represents a collection card
+/// Represents a collection card.
 ///
 /// See also:
 ///   - `buildHeroCollectionCardFromItem`, which creates this exact same card but for [Hero] transitions.
@@ -28,24 +28,25 @@ class CollectionCard extends HookWidget {
   })  : assert(tags.isNotEmpty),
         super(key: key);
 
-  /// Name for this collection
+  /// Name for this collection.
   final String name;
 
-  /// Name for this collection
+  /// List of tags associated with this collection.
   final List<String> tags;
 
-  /// If this widget should draw a border for this card
+  /// If this widget should draw a border for this card.
   final bool hasBorder;
 
+  /// Padding added between the card contents and its edges.
   final EdgeInsets padding;
 
-  /// Auxiliar description to describe this collection's progress
+  /// Auxiliar description to describe this collection's progress.
   final String? progressDescription;
 
-  /// Raw value for this collection's generic progress value - ranging from 0 to 1
+  /// Raw value for this collection's generic progress value - ranging from 0 to 1.
   final double? progressValue;
 
-  /// Accessibility description for this progress
+  /// Accessibility description for this progress.
   final String? progressSemanticLabel;
 
   final VoidCallback? onTap;
@@ -62,7 +63,7 @@ class CollectionCard extends HookWidget {
       ],
     );
 
-    // We are not using the `Card` widget because we need to customize the background with border + painter
+    // We are not using the `Card` widget because we need to customize the background with border + painter.
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -151,7 +152,7 @@ class CollectionCard extends HookWidget {
   }
 }
 
-/// Custom background painter for a Card that represents a `Collection`
+/// Custom background painter for a Card that represents a `Collection`.
 class _CollectionCardBackgroundPainter extends CustomPainter {
   _CollectionCardBackgroundPainter({required this.horizontalLineColor, required this.ovalGradientColors});
 
@@ -160,7 +161,7 @@ class _CollectionCardBackgroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Clip any additional drawings that exceed this bounds, like blurs
+    // Clip any additional drawings that exceed this bounds, like blurs.
     canvas.clipRect(Offset.zero & size);
 
     _drawMultipleHorizontalLines(canvas, size);
@@ -184,13 +185,13 @@ class _CollectionCardBackgroundPainter extends CustomPainter {
         [0, 0.5, 1],
       );
 
-    // A horizontal line occurs every height+spacing points in height
+    // A horizontal line occurs every height+spacing points in height.
     const repeatDistance = horizontalLineSpacing + horizontalLineHeight;
     final totalLines = (size.height / repeatDistance).truncate();
     for (var lineIndex = 0; lineIndex <= totalLines; lineIndex++) {
       final double dy = lineIndex * 3; // ignore: omit_local_variable_types
 
-      // Keep drawing full-width horizontal lines in the y axis, respecting the `totalLines`
+      // Keep drawing full-width horizontal lines in the y axis, respecting the `totalLines`.
       canvas.drawLine(Offset(0, dy), Offset(size.width, dy), horizontalLinePaint);
     }
   }
@@ -198,7 +199,7 @@ class _CollectionCardBackgroundPainter extends CustomPainter {
   void _drawOvalGradient(Canvas canvas, Size size) {
     final ovalGradientPaint = Paint()
       ..blendMode = ui.BlendMode.hardLight
-      // Makes the blur relative to the size's width, otherwise we might see some inconsistencies in "larger" elements
+      // Makes the blur relative to the size's width, otherwise we might see some inconsistencies in "larger" elements.
       ..maskFilter = ui.MaskFilter.blur(BlurStyle.normal, size.width)
       ..shader = ui.Gradient.linear(
         Offset.zero,
@@ -206,7 +207,7 @@ class _CollectionCardBackgroundPainter extends CustomPainter {
         ovalGradientColors,
       );
 
-    // Draws a simple oval-shaped gradient that fits the whole size
+    // Draws a simple oval-shaped gradient that fits the whole size.
     canvas.drawOval(Offset.zero & size, ovalGradientPaint);
   }
 

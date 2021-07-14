@@ -17,7 +17,7 @@ class CollectionsListView extends StatelessWidget {
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
-        // Builds the respective widget based on the item's `ItemMetadata` subtype
+        // Builds the respective widget based on the item's `ItemMetadata` subtype.
         final item = items[index];
 
         if (item is CollectionsCategoryMetadata) {
@@ -37,7 +37,7 @@ class CollectionsListView extends StatelessWidget {
   }
 }
 
-/// A header that is used when representing a category of multiple `Collection`s
+/// Header representing a category of multiple `Collection`s.
 class _CollectionsSectionHeader extends HookWidget {
   const _CollectionsSectionHeader({required this.title, Key? key}) : super(key: key);
 

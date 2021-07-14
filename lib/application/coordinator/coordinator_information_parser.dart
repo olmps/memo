@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:memo/application/coordinator/routes.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
-/// Custom type-safe layer implementation for [Router] route parsing
+/// Custom type-safe layer implementation for [Router].
 ///
 /// See also:
-///   - `RoutesCoordinator`, where all the heavy navigation management is handled;
-///   - `CoordinatorRouterDelegate`, which intermediates the communication between the `RoutesCoordinator` and the OS.
+///   - `RoutesCoordinator`, where all the heavy navigation management is handled.
+///   - `CoordinatorRouterDelegate`, intermediating the communication between the `RoutesCoordinator` and the platform.
 class CoordinatorInformationParser extends RouteInformationParser<AppPath> {
   @override
   Future<AppPath> parseRouteInformation(RouteInformation routeInformation) async {
@@ -16,7 +16,7 @@ class CoordinatorInformationParser extends RouteInformationParser<AppPath> {
       return SynchronousFuture(parseRoute(location));
     }
 
-    throw InconsistentStateError.coordinator('RouteInformation.location should never be null');
+    throw InconsistentStateError.coordinator('`RouteInformation.location` should never be null');
   }
 
   @override

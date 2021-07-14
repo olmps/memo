@@ -27,8 +27,8 @@ class CollectionDetailsPage extends HookWidget {
           state.metadata,
           padding: EdgeInsets.only(
             // The top spacing must take into consideration both the safe area and the toolbar height, as this page's
-            // scaffold `extendBodyBehindAppBar` is set to `true`, meaning that this collection card will be placed behind
-            // the app bar
+            // scaffold `extendBodyBehindAppBar` is set to `true`, thus this collection card will be placed behind
+            // the app bar.
             top: context.rawSpacing(Spacing.large) + kToolbarHeight + MediaQuery.of(context).padding.top,
             right: context.rawSpacing(Spacing.small),
             bottom: context.rawSpacing(Spacing.large),
@@ -106,6 +106,9 @@ class CollectionDetailsPage extends HookWidget {
       return Scaffold(
         appBar: AppBar(title: const Text(strings.details)),
         extendBodyBehindAppBar: true,
+        // By using the `bottomNavigationBar`, this widgets height will be padded accordingly to conform to any scroll
+        // view in this scaffold's `body`.
+        bottomNavigationBar: fixedBottomAction,
         body: Column(
           children: [
             heroCollectionCard,
@@ -114,7 +117,7 @@ class CollectionDetailsPage extends HookWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  // Iterate through all sections and add a suitable top spacing
+                  // Iterate through all sections and add a suitable top spacing.
                   children: sections
                       .map((section) => [context.verticalBox(Spacing.xLarge), section])
                       .expand((element) => element)
@@ -124,9 +127,6 @@ class CollectionDetailsPage extends HookWidget {
             ),
           ],
         ),
-        // By using the `bottomNavigationBar`, this widgets height will be padded accordingly to conform to any scroll
-        // view in this scaffold's `body`
-        bottomNavigationBar: fixedBottomAction,
       );
     }
 

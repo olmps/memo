@@ -5,7 +5,7 @@ import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/widgets/animatable_progress.dart';
 
-/// Centers a styled [Text] element above a [AnimatableCircularProgress] with [progressValue]
+/// Centers a styled [Text] element above a [AnimatableCircularProgress] with [progressValue].
 class CircularLabeledProgress extends HookWidget {
   const CircularLabeledProgress({
     required this.progressValue,

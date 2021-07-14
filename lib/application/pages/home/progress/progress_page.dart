@@ -41,7 +41,7 @@ class ProgressPage extends HookWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // Wrapping in an `IntrinsicHeight`, otherwise the column will vertically expand to infinity
+          // Wrapping in an `IntrinsicHeight`, otherwise the column will vertically expand to infinity.
           IntrinsicHeight(child: firstRowParallelContainers),
           for (final difficulty in loadedState.executionsPercentage.keys) ...[
             context.verticalBox(Spacing.medium),
@@ -94,10 +94,9 @@ class ProgressPage extends HookWidget {
     );
   }
 
-  /// Creates a [FittedBox] that styles its [texts] argument with in an interspaced fashion
+  /// Creates a [FittedBox] that styles its [texts] argument in an interspaced fashion.
   ///
-  /// For each text (index) in [texts] a style for that particular text is specified, wrapping it all around a single
-  /// [TextSpan], which corresponds to the child of the [FittedBox].
+  /// For each text in [texts], a style is specified based on its index being an odd/even number.
   Widget _buildAlternateStyleTextBox(BuildContext context, {required List<String> texts}) {
     assert(texts.isNotEmpty);
 
@@ -115,28 +114,27 @@ class ProgressPage extends HookWidget {
       );
     }
 
-    // Use a `FittedBox` to resize its text width if not enough horizontal space is available
+    // Use a `FittedBox` to resize its text width if not enough horizontal space is available.
     return FittedBox(child: Text.rich(TextSpan(children: spans), maxLines: 1));
   }
 }
 
-/// Generic container that wraps a progress-related information
+/// Generic container that wraps progress-related information.
 class _ProgressContainer extends HookWidget {
   const _ProgressContainer({required this.title, required this.description, this.leading, Key? key}) : super(key: key);
 
-  /// Optional leading widget before the textual contents of this widget
+  /// Optional leading widget before the textual contents of this widget.
   final Widget? leading;
 
-  /// Primary emphasized for this widget
   final Widget title;
 
-  /// Additional description that goes below the [title]
+  /// Additional description that goes below [title].
   final String description;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    // Vertical wrapper for both `title` (with `titleSuffix` if available) and `description`
+    // Vertical wrapper for both `title` (with `titleSuffix` if available) and `description`.
     final leftContents = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
