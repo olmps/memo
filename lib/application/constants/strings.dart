@@ -50,6 +50,13 @@ const detailsResourcesWarning =
 const detailsStudyNow = 'Estudar agora';
 
 //
+// Contributors
+//
+const detailsContributors = 'Contribuidores';
+
+String totalContributors(int value) => '$value ${detailsContributors.toLowerCase()}';
+
+//
 // Execution
 //
 const executionQuestion = 'Questão';
@@ -201,10 +208,3 @@ const partyPopper = '\u{1F389}';
 // URLs
 //
 const faqUrl = 'https://github.com/olmps/memo/blob/main/FAQ_ptBR.md';
-
-//
-// Contributors
-//
-const contributorsTitle = 'Contribuidores';
-
-String numOfContributors(int num) => '$num ${contributorsTitle.toLowerCase()}';

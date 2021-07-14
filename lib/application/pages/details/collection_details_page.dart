@@ -7,7 +7,7 @@ import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/details/collection_details_vm.dart';
-import 'package:memo/application/widgets/theme/contributors_button.dart';
+import 'package:memo/application/pages/details/contributor_view.dart';
 import 'package:memo/application/widgets/theme/hero_collection_card.dart';
 import 'package:memo/application/widgets/theme/resources_list.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
@@ -47,23 +47,15 @@ class CollectionDetailsPage extends HookWidget {
           Text(state.description),
           context.verticalBox(Spacing.small),
           NeutralTextTag(strings.detailsTotalMemos(state.memosAmount).toUpperCase()),
+          context.verticalBox(Spacing.large),
+          if (state.contributors.length > 1)
+            MultiContributorsView(state.contributors)
+          else
+            SingleContributorView(state.contributors.first),
         ],
       );
 
       sections.add(descriptionSection);
-
-      final contributors = state.contributors;
-      if (contributors.isNotEmpty) {
-        final contributorsSection = contributors.length > 1
-            ? MultipleContributorsButton(contributors)
-            : SingleContributorButton(
-                contributors.first,
-                textStyle: TextStyle(color: memoTheme.neutralSwatch.shade200),
-                backgroundColor: memoTheme.neutralSwatch.shade900,
-              );
-
-        sections.add(contributorsSection);
-      }
 
       final resources = state.resources;
       final resourcesSection = Column(

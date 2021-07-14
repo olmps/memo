@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
 import 'package:memo/domain/enums/resource_type.dart';
-import 'package:memo/domain/models/contributor.dart';
 import 'package:memo/domain/models/resource.dart';
 import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/services/resource_services.dart';
@@ -18,17 +17,6 @@ final collectionDetailsVM = StateNotifierProvider.family<CollectionDetailsVM, St
     resourceServices: ref.read(resourceServices),
   ),
 );
-
-class ResourceInfo extends Equatable {
-  const ResourceInfo(this.type, {required this.description, required this.url});
-
-  final ResourceType type;
-  final String description;
-  final String url;
-
-  @override
-  List<Object?> get props => [type, description, url];
-}
 
 abstract class CollectionDetailsVM extends StateNotifier<CollectionDetailsState> {
   CollectionDetailsVM(CollectionDetailsState state) : super(state);
@@ -52,7 +40,7 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
     final stream = await collectionServices.listenToCollectionStatus(collectionId: collectionId);
 
     _listener = stream.listen((collectionStatus) async {
-      // Uses the collection tags to fetch all associated resources
+      // Uses the collection tags to fetch all associated resources.
       final tags = collectionStatus.collection.tags;
       _associatedResources ??= await resourceServices.getResourcesWithAnyTags(tags);
       final mappedResources = _associatedResources!
@@ -65,9 +53,18 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
           )
           .toList();
 
+      final contributors = collectionStatus.collection.contributors
+          .map(
+            (contributor) => ContributorInfo(
+              name: contributor.name,
+              imageUrl: contributor.imageUrl,
+              url: contributor.url,
+            ),
+          )
+          .toList();
+
       final description = collectionStatus.collection.description;
       final memosAmount = collectionStatus.collection.uniqueMemosAmount;
-      final contributors = collectionStatus.collection.contributors;
 
       state = LoadedCollectionDetailsState(
         metadata: mapStatusToMetadata(collectionStatus),
@@ -106,5 +103,27 @@ class LoadedCollectionDetailsState extends CollectionDetailsState {
   final String description;
   final int memosAmount;
   final List<ResourceInfo> resources;
-  final List<Contributor> contributors;
+  final List<ContributorInfo> contributors;
+}
+
+class ResourceInfo extends Equatable {
+  const ResourceInfo(this.type, {required this.description, required this.url});
+
+  final ResourceType type;
+  final String description;
+  final String url;
+
+  @override
+  List<Object?> get props => [type, description, url];
+}
+
+class ContributorInfo extends Equatable {
+  const ContributorInfo({required this.name, required this.imageUrl, required this.url});
+
+  final String name;
+  final String? imageUrl;
+  final String? url;
+
+  @override
+  List<Object?> get props => [name, imageUrl, url];
 }

@@ -31,16 +31,16 @@ class SettingsPage extends HookWidget {
               style: Theme.of(context).textTheme.subtitle1,
             ).withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.xxSmall);
           } else if (item is LinkSettingsItem) {
-            return ExternalLinkButton(
+            return UrlLinkButton(
               item.url,
-              description: item.description,
-              onFailLaunchingUrl: context.showExceptionSnackBar,
+              text: item.description,
+              onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedLinkSettingsItem) {
-            return ExternalLinkButton(
+            return UrlLinkButton(
               strings.settingsUrlForNamedLink(item.linkSettings),
-              description: strings.settingsDescriptionForNamedLink(item.linkSettings),
-              onFailLaunchingUrl: context.showExceptionSnackBar,
+              text: strings.settingsDescriptionForNamedLink(item.linkSettings),
+              onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedCustomSettingsItem) {
             final navigationImage = AssetImage(images.chevronRightAsset);

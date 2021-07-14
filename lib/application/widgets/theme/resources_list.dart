@@ -7,10 +7,10 @@ import 'package:memo/application/widgets/theme/link.dart';
 
 import 'package:memo/domain/enums/resource_type.dart';
 
-/// Represents a list of resources
+/// Represents a list of resources.
 ///
 /// See also:
-///   - [ExternalLinkButton] which represents each resource item in this list, tappable to their respective URLs.
+///   - [UrlLinkButton], which represents each resource item in this list, tappable to their respective URLs.
 class ResourcesList extends StatelessWidget {
   const ResourcesList({
     required this.itemCount,
@@ -46,11 +46,11 @@ class ResourcesList extends StatelessWidget {
           style: const TextStyle(fontSize: dimens.resourceLinkEmojiTextSize),
         );
 
-        return ExternalLinkButton(
+        return UrlLinkButton(
           url,
-          description: description,
+          text: description,
           leading: leadingEmoji,
-          onFailLaunchingUrl: context.showExceptionSnackBar,
+          onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
         ).withOnlyPadding(context, top: index != 0 ? Spacing.xSmall : null);
       },
     );
