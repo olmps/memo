@@ -60,8 +60,6 @@ How this application works from inside and how it interacts with external depend
 
 ## Background
 
-This project was built with the help of the sponsors below:
-
 If you're interested in checking out an overview about how we dealt with this project's software process (inside our team),
 check out [.process/](.process/README.md) (sorry, for now only in ptBR).
 
@@ -74,6 +72,8 @@ See [CONTRIBUTING](CONTRIBUTING.md) for details about how to contribute to the p
 Memo is published under [BSD 3-Clause](LICENSE).
 
 ## Sponsors
+
+This project was built with the help of the sponsors below:
 
 - [Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover): Discover is a free way of learning how to code.
 - [Startup Life Podcast](https://bit.ly/lucas-montano-startup-life): Your tech, business, and innovation Podcast.

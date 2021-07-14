@@ -10,18 +10,31 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## [0.1.0-rc.3] - 2021-07-14
+
 ## Added
-- `Firebase Crashlytics` dependency;
-- `EnvMetadata` and its respective implementation `EnvMetadataImpl` that manages application environment state.
+- `Contributor` model and its `ContributorSerializer` serializer.
+- `EnvMetadata` and its respective implementation that provides application's environment constants.
+- `SettingsSection.community` with `LinkSettingsItem` to discord.
+- `showSnappableDraggableModalBottomSheet` utility.
+- `MultiContributorsView` and `SingleContributorView` widgets.
+- `Firebase` and `FirebaseCrashlytics` to record unexpected crashes, errors and exceptions.
   
 ## Updated
-- `release` workflow by adding dSYM upload to Crashlytics.
+- All files documentations, including standardizing communication.
+- `CollectionMemos` and `Collection` now have a `contributors` property, exposing all associated contributors with that
+particular collection.
+- `LoadedCollectionDetailsState` now also provides a list of `ContributorInfo` associated with that `Collection`.
+- `LinkButton` widget now exposes `backgroundColor` and `textStyle` properties.
+- `ExternalLinkButton` widget now exposes `iconColor`, `backgroundColor` and `textStyle` properties.
+- `scaffold_messenger` to receive a `BuildContext` instead of extending it - improves code auto-completion.
+- `Fastfile` to upload iOS symbols to Crashlytics.
+- Existing collections with their respective contributors.
 
 ## Fixed
 - Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
-- Contributors button at the Collection Details Page that redirects the user to the contributor given link
-  - Persistency of the contributors list from the collection json
-  - BuildContext extension to show a default Bottom Sheet that addapts to the height
+- Missing `SettingsVM` interface.
+- Hero animations built through  `buildHeroCollectionCardFromItem` weren't using an unique `Hero.tag`.
 
 ## [0.1.0-rc.2] - 2021-05-12
 
