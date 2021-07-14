@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:meta/meta.dart';
 
-/// Application's configuration and metadata
+/// Application's configuration and metadata.
 abstract class EnvMetadata {
-  /// Current application environment
+  /// Current application environment.
   Env get env;
 
-  /// Current application platform
+  /// Current application platform.
   SupportedPlatform get platform;
 
-  /// Utility that is `true` when running in [Env.dev]
+  /// `true` when running in [Env.dev].
   bool get isDev;
 }
 
@@ -36,13 +36,13 @@ class EnvMetadataImpl implements EnvMetadata {
   }
 }
 
-/// Application's supported environments
+/// Application's supported environments.
 enum Env { dev, prod }
 
-/// Application's supported platforms
+/// Application's supported platforms.
 enum SupportedPlatform { android, ios }
 
-/// Retrieves the current environment metadata using the environment arguments
+/// Retrieves the current environment metadata using environment arguments.
 EnvMetadata envMetadata() {
   // ignore: do_not_use_environment
   const rawEnv = String.fromEnvironment('ENV');
@@ -53,7 +53,7 @@ EnvMetadata envMetadata() {
 
 /// Parses a `raw` string to a [Env].
 ///
-/// If the `raw` parameter doesn't match any pre-mapped [Env], an [InconsistentStateError] is thrown.
+/// Throws an [InconsistentStateError] if [raw] doesn't match any pre-mapped [Env].
 @visibleForTesting
 Env parseEnv(String raw) {
   switch (raw) {

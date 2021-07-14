@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 typedef ExceptionObserver = void Function(BaseException exception);
 
-/// The core [Exception] class - every class that represent an [Exception] should extend from [BaseException].
+/// The core [Exception] class - every class that represents an [Exception] should extend from [BaseException].
 ///
 /// The difference between throwing an [Error] and an [Exception] can be found in their respective declarations in
 /// `dart.core`.
@@ -18,7 +18,7 @@ abstract class BaseException extends Equatable implements Exception {
   final String? debugInfo;
   final dynamic debugData;
 
-  /// Unique instance to observe all [BaseException] instances
+  /// Unique instance to observe all [BaseException] instances.
   ///
   /// This observer is called whenever the constructor body - of a new [BaseException] instance - runs.
   static ExceptionObserver? observer;
