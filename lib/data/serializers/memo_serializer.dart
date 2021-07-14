@@ -26,7 +26,6 @@ class MemoSerializer implements Serializer<Memo, Map<String, dynamic>> {
 
     final rawExecutionsAmounts = json[MemoKeys.executionsAmounts] as Map<String, dynamic>?;
     final executionsAmounts =
-        // ignore: avoid_annotating_with_dynamic
         rawExecutionsAmounts?.map((key, dynamic value) => MapEntry(memoDifficultyFromRaw(key), value as int));
 
     final timeSpentInMillis = json[MemoKeys.timeSpentInMillis] as int?;

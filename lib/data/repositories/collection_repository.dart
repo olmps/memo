@@ -11,31 +11,27 @@ import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/transients/collection_memos.dart';
 
-/// Handles all read, write and serialization operations pertaining to one or multiple [Collection]
+/// Handles all IO and serialization operations associated with [Collection]s.
 abstract class CollectionRepository {
-  /// Retrieves a [Collection] with the [id] argument
+  /// Retrieves a [Collection] of [id].
   Future<Collection> getCollection({required String id});
 
-  /// Retrieves all available [Collection] and keeps listening to any changes made to them
+  /// Streams all [Collection]s and emits a new event when any change occurs to any of them.
   Future<Stream<List<Collection>>> listenToAllCollections();
 
-  /// Retrieves a [Collection] with [id] and keeps listening to any changes
+  /// Streams a [Collection] - of [id] - which emits a new event when any change occurs.
   Future<Stream<Collection?>> listenToCollection({required String id});
 
-  /// Retrieves all [CollectionMemos]
+  /// Retrieves all [CollectionMemos].
   Future<List<CollectionMemos>> getAllCollectionMemos();
 
-  /// Put all [Collection] with a list of [CollectionMemos]
+  /// Puts a list of [Collection] using a list of [collections] ([CollectionMemos]).
   ///
-  /// All [collections] match their respective [Collection] using the [CollectionMetadata.id] - if already existing
+  /// Each [CollectionMemos] will match its respective [Collection] using the [CollectionMetadata.id] - if already
+  /// existing, a new [Collection] will be added otherwise.
   Future<void> putCollectionsWithCollectionMemos(List<CollectionMemos> collections);
 
-  /// Updates a [Collection] (of [id]) with the execution-related arguments
-  ///
-  /// Any update made to these properties, will override the current value, so make sure to update with the latest
-  /// corresponding values.
-  ///
-  /// Because an execution may not update the [uniqueExecutionsAmount], this value is optional.
+  /// Updates a [Collection] - of [id] - with execution-related arguments.
   Future<void> updateExecution({
     required String id,
     required Map<MemoDifficulty, int> executionsAmounts,

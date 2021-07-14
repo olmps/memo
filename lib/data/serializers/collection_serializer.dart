@@ -34,7 +34,6 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
 
     final rawExecutionsAmounts = json[CollectionKeys.executionsAmounts] as Map<String, dynamic>?;
     final executionsAmounts =
-        // ignore: avoid_annotating_with_dynamic
         rawExecutionsAmounts?.map((key, dynamic value) => MapEntry(memoDifficultyFromRaw(key), value as int));
 
     final timeSpentInMillis = json[CollectionKeys.timeSpentInMillis] as int?;
