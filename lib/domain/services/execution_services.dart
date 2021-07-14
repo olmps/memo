@@ -9,23 +9,21 @@ import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/memo.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 
-/// Handles all domain-specific operations pertaining to the act of executing a [Collection] and its [Memo]s
+/// Handles all domain-specific operations associated with [Memo]'s executions.
 abstract class ExecutionServices {
-  /// Retrieves a suitable chunk of [Memo]s before an execution session of the [Collection] of [collectionId]
+  /// Retrieves the next executable chunk of [Memo]s associated with a [Collection] of [collectionId]
   ///
-  /// To retrieve this chunk, it first sorts all the [Memo]s belonging to the referenced [Collection] by memoryRecall
-  /// (also, if they are pristine, they take priority), and then chunks it using the execution chunk setting given the
-  /// current `User`.
+  /// This chunk size is determined by the current `User` properties and sorted by the [Memo]s with lowest memory recall
+  /// (though pristines takes priority).
   Future<List<Memo>> getNextExecutableMemosChunk({required String collectionId});
 
-  /// Adds new [executions] to be associated with all of the application's dependencies
+  /// Adds a list of [executions]
   ///
-  /// When adding a new list of [executions] - for the following [Collection] of [collectionId] -, multiple dependencies
-  /// (or locations) are required to be updated with this new metadata:
+  /// When adding a new list of [executions], multiple dependencies are impacted:
   ///   - an `User`, that holds the "application-wide" stats for executions;
   ///   - a `Collection`, that holds the "collection-wide" stats for executions;
   ///   - the respective `Memo`s that were executed, also with the individual stats for each respective execution; and
-  ///   - a list of `MemoExecution`s that serves as plain history for these [executions].
+  ///   - a list of `MemoExecution`s that serves as an immutable history for these [executions].
   Future<void> addExecutions(List<MemoExecution> executions, {required String collectionId});
 }
 
@@ -57,7 +55,7 @@ class ExecutionServicesImpl implements ExecutionServices {
     final pristineMemos = <Memo>[];
     final executedMemos = <Memo>[];
 
-    // Segment the memos by pristine/not-pristine, as the former takes priority
+    // Segment the memos by pristine/not-pristine, as the former takes priority.
     allCollectionMemos.forEach((memo) {
       if (memo.isPristine) {
         pristineMemos.add(memo);
@@ -66,21 +64,21 @@ class ExecutionServicesImpl implements ExecutionServices {
       }
     });
 
-    // If we have enough pristine memos, we don't need to calculate each memory recall
+    // If we have enough pristine memos, we don't need to calculate each memory recall.
     if (pristineMemos.length >= chunkGoal) {
       return pristineMemos.sublist(0, chunkGoal);
     }
 
     final executedMemoPerRecall =
-        // We can use the bang operator here because all executedMemos surely are not pristine, which is the only condition
-        // that the evaluation returns `null`
+        // We can use the bang operator here because all executedMemos surely are not pristine, which is the only
+        // condition that the evaluation returns `null`.
         executedMemos.asMap().map((key, value) => MapEntry(memoryServices.evaluateMemoryRecall(value)!, value));
 
     final sortedRecallKeys = executedMemoPerRecall.keys.toList()
       ..sort((recallA, recallB) => recallA.compareTo(recallB));
 
     // Otherwise we start with all the existing pristine memos and keep adding the remaining sorted-by-recall memos
-    // until the chunk has met its required size (or if there are no more memos to be added)
+    // until the chunk has met its required size (or if there are no more memos to be added).
     final executableMemosChunk = pristineMemos;
     while (chunkGoal > executableMemosChunk.length && executedMemoPerRecall.isNotEmpty) {
       final lessRecalledMemoKey = sortedRecallKeys.first;
@@ -111,7 +109,7 @@ class ExecutionServicesImpl implements ExecutionServices {
       totalTimeSpent += execution.timeSpentInMillis;
 
       // Creates a copy of the memo associated with this execution (same id) and with the new execution-related
-      // properties
+      // properties.
       final associatedMemo = allCollectionMemos.firstWhere((memo) => memo.uniqueId == execution.uniqueId);
       final associatedMemoExecutionAmounts = associatedMemo.executionsAmounts;
       final memoCurrentValue = associatedMemoExecutionAmounts[execution.markedDifficulty] ?? 0;
@@ -123,12 +121,12 @@ class ExecutionServicesImpl implements ExecutionServices {
       );
       updatedMemos.add(updatedMemo);
 
-      // Update the unique count if this memo has never been executed before
+      // Update the unique count if this memo has never been executed before.
       if (associatedMemo.isPristine) {
         newUniqueMemos++;
       }
 
-      // Update the total count for the specific difficulty execution
+      // Update the total count for the specific difficulty execution.
       final totalExecutionsDifficultyAmount = executionsAmounts[execution.markedDifficulty] ?? 0;
       executionsAmounts[execution.markedDifficulty] = totalExecutionsDifficultyAmount + 1;
     });
@@ -138,7 +136,7 @@ class ExecutionServicesImpl implements ExecutionServices {
     final userUpdatedExecutions = userMetadata.executionsAmounts;
     final collectionUpdatedExecutions = associatedCollection.executionsAmounts;
 
-    // Uses the `executionsAmounts` to get the updated `executionsAmount` for the user and the associated collection
+    // Uses the `executionsAmounts` to get the updated `executionsAmount` for the user and the associated collection.
     executionsAmounts.forEach((key, value) {
       final userCurrentValue = userUpdatedExecutions[key] ?? 0;
       userUpdatedExecutions[key] = userCurrentValue + value;
@@ -147,8 +145,7 @@ class ExecutionServicesImpl implements ExecutionServices {
       collectionUpdatedExecutions[key] = collectionCurrentValue + value;
     });
 
-    // Dispatch all updates simultaneously
-
+    // Dispatch all updates simultaneously.
     await transactionHandler.runInTransaction(() async {
       await Future.wait([
         executionsRepo.addExecutions(executions),

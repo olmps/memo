@@ -5,22 +5,23 @@ import 'package:memo/domain/isolated_services/memory_recall_services.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/transients/collection_status.dart';
 
-/// Handles all domain-specific operations pertaining to one or multiple [Collection]
+/// Handles all domain-specific operations associated with [Collection]s.
 abstract class CollectionServices {
-  /// Retrieves all available [CollectionStatus] and keeps listening to any changes made to them
+  /// Streams all [CollectionStatus]es and emits a new event when any change occurs to any of them.
   Future<Stream<List<CollectionStatus>>> listenToAllCollectionsStatus();
 
-  /// Retrieves the [Collection] (with [collectionId]) current memory recall ratio
+  /// Retrieves a [Collection] (with [collectionId]) memory recall estimative.
   ///
-  /// This value ranges from `0` to `1`, meaning lesser the value, worse is the memory recall.
+  /// The returned value is the average of all [Collection]'s memos memory recall, ranging from `0` to `1`, meaning
+  /// lesser the value, worse is the memory recall.
   ///
   /// If [Collection.isPristine], this will return `0`.
   Future<double> getCollectionMemoryRecall({required String collectionId});
 
-  /// Retrieves a [Collection] with the following [id]
+  /// Retrieves a [Collection] of [id].
   Future<Collection> getCollectionById(String id);
 
-  /// Retrieves a [CollectionStatus] with [collectionId] and keeps listening to any changes
+  /// Streams a [CollectionStatus] - of [collectionId] - which emits a new event when any change occurs.
   Future<Stream<CollectionStatus>> listenToCollectionStatus({required String collectionId});
 }
 
@@ -35,7 +36,7 @@ class CollectionServicesImpl implements CollectionServices {
   @override
   Future<Stream<List<CollectionStatus>>> listenToAllCollectionsStatus() async {
     final collectionsStream = await collectionRepo.listenToAllCollections();
-    // Asynchronously transform the stream due to the async calculations
+    // Asynchronously transform the stream due to the async calculations.
     return collectionsStream.asyncMap(
       (collections) {
         final mappedStatuses = collections.map(_mapCollectionToCollectionStatus).toList();

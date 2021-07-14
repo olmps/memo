@@ -3,13 +3,13 @@ import 'dart:math';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/memo.dart';
 
-/// Handles all domain-specific operations pertaining to the concept of Memory Recall
+/// Handles all domain-specific operations associated with "Memory Recall".
 abstract class MemoryRecallServices {
-  /// Given a [memo] and the current time of this call, estimates a memory recall for this memo
+  /// Given a [memo] and the current time of this call (now), estimates a memory recall for this memo.
   ///
-  /// The returned `double` ranges from `0` to `1`, but because it's an exponential operation, it should never reach
-  /// those integers values, just approximate them if the memory recall is really low (meaning close to `0`) or if
-  /// it's really recent/high (close to `1`).
+  /// Returns a value ranging from `0` to `1`, though never reaching an absolute value of `0` or `1`.
+  ///
+  /// The memory recall is considered really low if it's close to `0` or recent/high if closer to `1`.
   ///
   /// This may return `null` if [Memo.isPristine] is `true`, meaning that it has no execution to execute the recall
   /// calculation.
@@ -34,58 +34,60 @@ class MemoryRecallServicesImpl implements MemoryRecallServices {
     );
   }
 
-  /// Estimates an arbitrary value for a particular memory pertaining to (one or more) executions of a single `Memo`
+  /// Estimates an arbitrary value for a memory belonging to (one or more) executions of an individual `Memo`.
   ///
   /// The formula is strongly based on the
   /// [supermemo's "Forgetting Cruve"](https://supermemo.guru/wiki/Forgetting_curve), which is one of the elements that
-  /// supermemo's algorithm uses, although we are using it as a heavy influence in our primary - and only - formula, to
-  /// estimate how often one should see one `Memo`.
+  /// supermemo's algorithm uses, although here, we are using it as a heavy influence in our primary - and only -
+  /// formula.
   ///
   /// ### The Formula
   ///
   /// Latex representation: `R = e^{-t/S}`, where:
-  /// - `R` is our memory recall;
-  /// - [e] base of the natural logarithms;
-  /// - `t` time since the last execution for this memo;
+  /// - `R` is our memory recall.
+  /// - [e] base of the natural logarithms.
+  /// - `t` time since the last execution for this memo.
   /// - `S` stability - or strength - for this memo.
   ///
   /// #### `t` variable
   ///
-  /// To evaluate time, `t`, we use the total time spent since the last execution (represented by
-  /// [millisSinceLastExecution]), and divide it by the total time in a day, giving us a factor that increases linearly
-  /// as the time goes by (with a millisecond of granularity).
+  /// To evaluate time `t`, we use the total time spent since last execution ([millisSinceLastExecution]), and divide it
+  /// by the total time in a day, giving us a factor that increases linearly as the time goes by (with a millisecond of
+  /// granularity).
   ///
   /// #### `s` variable
   ///
-  /// Represents the last answer through a raw value (higher the value, higher the difficulty), where it cannot
-  /// be lower than `Dmin`.
+  /// Represents the last answer through a raw value (higher the value, higher the difficulty), where it cannot be lower
+  /// than `Dmin`.
   ///
   /// `s = max(Dmax - D, Dmin)`
   ///
   /// Where `D` is the value for the last difficulty (represented by [lastDifficulty]) and `Dmax` is the
-  /// `MemoDifficulty` with the highest possible value - meaning, the hardest - and `Dmin` is the
-  /// `MemoDifficulty` with the lowest possible value - meaning, the easiest.
+  /// `MemoDifficulty` with the highest possible value - the hardest - and `Dmin` is the `MemoDifficulty` with the
+  /// lowest possible value - the easiest.
   ///
+  // TODO(matuella): Solve the below:
   /// Ideally, it would be something more the average of all the difficulties in the past, but we haven't found a
   /// decent way to represent this in this equation, because we must find a non-subjective way to make the last
   /// responses take a more relevant weight when comparing to the past ones.
   ///
   /// ##### `r` variable
   ///
-  /// Each time a `Memo` is executed, we count this as a repetition factor - a simple integer. That's what `r`
-  /// represents, the total amount of times it was repeated (represented by [totalRepetitions]) - each new repetition
-  /// should strengthen the recall probability.
+  /// Each time a `Memo` is executed, we count this as a repetition factor - an integer. That's what `r` represents, the
+  /// total amount of times it was repeated ([totalRepetitions]) - each new repetition should strengthen the recall
+  /// probability.
   ///
   /// ##### `k` constant
   ///
   /// This is an extra multiplying factor to both `s` and `r`.
   ///
+  // TODO(matuella): Solve the below:
   /// So, this constant doesn't have a mathematical fundamentation, but because we found that the curve was decaying too
   /// fast, this was an alternative to prolongate the forgetting curve to a value that we expected to be more concise.
   ///
   /// #### `R` value
   ///
-  /// Returns a floating value ranging from `0` to `1`.
+  /// A floating value **ranging** from `0` to `1`, although never an exact `0` or `1` integer.
   ///
   /// The higher, the better is the probability of recalling a `Memo` that meets these conditions.
   ///

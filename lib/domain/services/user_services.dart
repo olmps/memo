@@ -1,8 +1,8 @@
 import 'package:memo/data/repositories/user_repository.dart';
 
-/// Handles all domain-specific operations pertaining a `User`
+/// Handles all domain-specific operations associated with an `User`.
 abstract class UserServices {
-  /// If there is no existing `User`, creates one
+  /// Creates a new `User` if there is no existing one.
   Future<void> createUserIfNeeded();
 }
 

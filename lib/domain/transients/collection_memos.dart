@@ -3,11 +3,9 @@ import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/contributor.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
 
-/// Groups a [CollectionMetadata] with its [memosMetadata]
+/// Groups a [CollectionMetadata] with its [memosMetadata].
 ///
-/// This transient also have a mutable behavior through [addToExecutionsAmount], allowing updates to be made to
-/// [uniqueMemoExecutionsAmount]
-// ignore: must_be_immutable
+/// This transient has a mutable behavior that allows updates to be made to [uniqueMemoExecutionsAmount].
 class CollectionMemos extends CollectionMetadata with EquatableMixin {
   CollectionMemos({
     required this.id,

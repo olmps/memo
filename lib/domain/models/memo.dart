@@ -4,11 +4,15 @@ import 'package:memo/domain/models/memo_collection_metadata.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 import 'package:meta/meta.dart';
 
-/// Defines a unit of a `Collection`
+/// Metadata for an unit of a collection - a `Memo`.
 ///
-/// A [Memo] simply wraps a [rawQuestion] and its respective [rawAnswer]. Because each [Memo] can be executed an
-/// infinite amount of times, its purpose is to store the most recent version of its question/answer with useful
-/// execution's metadata, like [lastExecution] and by extending [MemoExecutionsMetadata].
+/// Stores the latest answer/question for this `Memo`, which can change over time.
+///
+/// Through [MemoExecutionsMetadata], this class also includes properties that describes its associated executions.
+///
+/// See also:
+///   - `Collection`, which groups all metadata for the execution of its multiple associated `Memo`.
+///   - `MemoExecution`, which represents an individual execution of a `Memo`.
 @immutable
 // ignore: avoid_implementing_value_types
 class Memo extends MemoExecutionsMetadata with EquatableMixin implements MemoCollectionMetadata {
@@ -35,14 +39,14 @@ class Memo extends MemoExecutionsMetadata with EquatableMixin implements MemoCol
   @override
   final List<Map<String, dynamic>> rawAnswer;
 
-  /// Parent's `Collection.id`
+  /// Parent collection's id.
   final String collectionId;
 
   final MemoExecution? lastExecution;
   DateTime? get lastExecuted => lastExecution?.finished;
   MemoDifficulty? get lastMarkedDifficulty => lastExecution?.markedDifficulty;
 
-  /// `true` if this [Memo] was never executed
+  /// `true` if this [Memo] was never executed.
   bool get isPristine => lastExecution == null;
 
   @override
