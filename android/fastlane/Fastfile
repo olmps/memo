@@ -7,7 +7,7 @@ platform :android do
     sh("flutter", "clean")
 
     # Run tests
-    sh("flutter", "test", "test")
+    sh("flutter", "test", "../../")
 
     # Run Analyzer
     sh("flutter", "analyze", ".")
