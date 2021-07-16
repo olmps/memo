@@ -10,7 +10,13 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
-## [0.1.0-rc.3] - 2021-07-14
+## [0.1.0] - 2021-07-16
+
+## Added
+- `bdd_fundamentos_01`, `fundamentos_scrum`, `guia_scrum`, `kotlin_fundamentos_01` and `manifesto_agil` collections.
+Thanks to all contributors!
+
+## [0.1.0-rc.3] - 2021-07-15
 
 ## Added
 - `Contributor` model and its `ContributorSerializer` serializer.
