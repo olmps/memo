@@ -1,0 +1,519 @@
+{
+  "id": "668acab2-8778-462c-9a15-56898fae152a",
+  "name": "BDD - Fundamentos",
+  "description": "Existem diversos paradigmas de desenvolvimento de software. Dentre estes, está o desenvolvimento orientado a comportamento (BDD). Neste deck, vamos conhecer um pouco sobre o BDD, uma das melhores formas de otimizar tanto seu processo de desenvolvimento quanto o produto final gerado.",
+  "category": "Testes",
+  "tags": ["tests", "bdd"],
+  "contributors": [
+    {
+      "name": "Nicolas Nascimento",
+      "url": "https://www.linkedin.com/in/nicolas--nascimento/",
+      "imageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQHOzPm007XS9w/profile-displayphoto-shrink_200_200/0/1555863188183?e=1631750400&v=beta&t=KcS2mMzIC3qoCEnHVc2O4qFRzEXUmu_TDDazZ7HBvNY"
+    }
+  ],
+  "memos": [
+    {
+      "uniqueId": "03c9a8d5-9e27-4ec2-8a3c-7bf20431b823",
+      "question": [
+        {
+          "insert": "Os cenários no desenvolvimento orientado a comportamente (BDD) segue o fomato DADO-QUANDO-ENTÃO, popularlmente conhecido como ___.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Os cenários no desenvolvimento orientado a comportamente (BDD) segue o fomato DADO-QUANDO-ENTÃO, popularlmente conhecido como "
+        },
+        {
+          "insert": "Gherkin",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0792cbe8-db94-40a4-8284-5652d7b8e9f9",
+      "question": [
+        {
+          "insert": "Para facilitar o processo de desenvolvimento de software, existem diversas bibliotecas de suporte ao BDD. Um dos mais adotados é o ___.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Para facilitar o processo de desenvolvimento de software, existem diversas bibliotecas de suporte ao BDD. Um dos mais adotados é o "
+        },
+        {
+          "insert": "Cucumber",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0db91cad-7289-49f9-bce5-caea0296ce8a",
+      "question": [
+        {
+          "insert": "O ___ e o ___ devem colaborar para a criação dos cenários de uma user story.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O "
+        },
+        {
+          "insert": "time de desenvolvimento",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " e o "
+        },
+        {
+          "insert": "time de negócios",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " devem colaborar para a criação dos cenários de uma user story.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "1c1bd79b-476a-4e97-aea5-40da115313ee",
+      "question": [
+        {
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se ___ que especifiquem as interação e/ou interferência dos usuários.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se "
+        },
+        {
+          "insert": "ações",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " que especifiquem as interação e/ou interferência dos usuários.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3941e2c8-702d-4306-8c7a-245ad69a5e89",
+      "question": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) faz uso de ciclos de ___ para o desenvolvimento das features de baixo nível.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) faz uso de ciclos de "
+        },
+        {
+          "insert": "TDD",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " para o desenvolvimento das features de baixo nível.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3b8f6c59-04aa-444e-932a-ffb3eff0db9d",
+      "question": [
+        {
+          "insert": "Além de o código criado ser coberto por testes, o desenvolvimento orientado a comportamento (BDD) garante que só desenvolvamos ____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Além de o código criado ser coberto por testes, o desenvolvimento orientado a comportamento (BDD) garante que só desenvolvamos "
+        },
+        {
+          "insert": "o que o cliente deseja.",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "640d7590-8d32-4e82-9c37-c2fc473c1ed2",
+      "question": [
+        {
+          "insert": "Um cenário no desenvolvimento orientado a comportamento (BDD) também pode ser exemplificado como \"estado-inicial\"-\"___\"-\"estado-final\".\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um cenário no desenvolvimento orientado a comportamento (BDD) também pode ser exemplificado como \"estado-inicial\"-\""
+        },
+        {
+          "insert": "ação",
+          "attributes": {
+            "underline": true,
+            "bold": true
+          }
+        },
+        {
+          "insert": "\"-\"estado-final\".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6c98f630-d175-4038-abab-5f5804688dc6",
+      "question": [
+        {
+          "insert": "Os cenários no desenvolvimento orientado a comportamento (BDD) devem ser baseados em ___ de aplicação de uma user story.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Os cenários no desenvolvimento orientado a comportamento (BDD) devem ser baseados em "
+        },
+        {
+          "insert": "exemplos reais",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " de aplicação de uma user story.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6e11a103-cfe7-4a05-84f1-e6d0eb4aaf4b",
+      "question": [
+        {
+          "insert": "Um dos motivos pelos quais times de software podem considerar o desenvolvimento orientado a comportamento (BDD) oneroso é o alto custo de manutenção dos ___.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um dos motivos pelos quais times de software podem considerar o desenvolvimento orientado a comportamento (BDD) oneroso é o alto custo de manutenção dos "
+        },
+        {
+          "insert": "cenários",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "7bdf94ad-0942-40fd-ba07-9c1bbdc2b6b7",
+      "question": [
+        {
+          "insert": "Assim como o desenvolvimento orientado a testes (TDD), uma das garantias do desenvolvimento orientado a comportamente (BDD) é  ____, visto que os testes que não apresentavam falhas irão falhar.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Assim como o desenvolvimento orientado a testes (TDD), uma das garantias do desenvolvimento orientado a comportamente (BDD) é "
+        },
+        {
+          "insert": "detecção de problemas no código assim que acontecem",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", visto que os testes que não apresentavam falhas irão falhar.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "8a196ecb-722f-4337-93ab-0520163ca216",
+      "question": [
+        {
+          "insert": "Um dos principais benefícios do desenvolvimento orientado a comportamento (BDD) é evitar ___, garantido que apenas o míinimo de código seja desenvolvido.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um dos principais benefícios do desenvolvimento orientado a comportamento (BDD) é evitar "
+        },
+        {
+          "insert": "desperdícios",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", garantido que apenas o míinimo de código seja desenvolvido.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "a0f911af-d24a-42bc-a10e-5393651f2b5d",
+      "question": [
+        {
+          "insert": "No desenvolvimento orientado a comportamento (BDD), para facilitar a colaboração entre times com especialidades distintas, há a necessidade de se estabelecer uma ___, um dicionário de termos relativos ao projeto.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "No desenvolvimento orientado a comportamento (BDD), para facilitar a colaboração entre times com especialidades distintas, há a necessidade de se estabelecer uma "
+        },
+        {
+          "insert": "linguagem ubíqua",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", um dicionário de termos relativos ao projeto.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ac0451d6-aea7-49c9-a74f-2c2610c063c3",
+      "question": [
+        {
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se ____ que especifiquem o estado final do sistema posteriomente a execução das ações.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se "
+        },
+        {
+          "insert": "resultados",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " que especifiquem o estado final do sistema posteriomente a execução das ações.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "c0454b77-369b-450b-beb3-451c625fab9d",
+      "question": [
+        {
+          "insert": "No desenvolvimento orientado a comportamento (BDD), cada user story relevante no projeto deve ser expandida com o uso de ____. Estes são exemplos reais relativos aquela user story e devem ser derivados de discussão com o time de negócio/produto.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "No desenvolvimento orientado a comportamento (BDD), cada user story relevante no projeto deve ser expandida com o uso de "
+        },
+        {
+          "insert": "cenários",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". Estes são exemplos reais relativos aquela user story e devem ser derivados de discussão com o time de negócio/produto.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "c69f1f76-0c49-41e4-8447-18b3d3026d6f",
+      "question": [
+        {
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se ___ que especifiquem o que deve ter ocorrido antes de realização das ações do cenário.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se "
+        },
+        {
+          "insert": "pré-condições",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " que especifiquem o que deve ter ocorrido antes de realização das ações do cenário.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "c8bf56c1-1947-4c3c-ab18-423e2bcb62a3",
+      "question": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) pode ser aplicado em ___ as etapas do desenvolvimento de software.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) pode ser aplicado em "
+        },
+        {
+          "insert": "todas",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " as etapas do desenvolvimento de software.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "cd81f081-0f09-4e88-90b7-48491f2680ae",
+      "question": [
+        {
+          "insert": "Há dois grandes motivos pelos quais projetos de software falham. Ou construimos o software ____ ou não construiímos o software ____. O desenvolvimento orientado a comportamento (BDD) é uma das formas de evitar isso\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Há dois grandes motivos pelos quais projetos de software falham. Ou construimos o software "
+        },
+        {
+          "insert": "corretamente",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " ou não construiímos o software que "
+        },
+        {
+          "insert": "o cliente deseja",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". O desenvolvimento orientado a comportamento (BDD) é uma das formas de evitar isso\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e8a231a0-7adb-4470-9688-15806a4d63ff",
+      "question": [
+        {
+          "insert": "Os ___, derivados dos cenários, devem guiar o desenvolvimento durante um projeto que usa o desenvolvimento orientado a comportamento.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Os "
+        },
+        {
+          "insert": "testes de aceitação",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", derivados dos cenários, devem guiar o desenvolvimento durante um projeto que usa o desenvolvimento orientado a comportamento.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ed98f388-769e-444d-907b-f1c6c421f48e",
+      "question": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) foi inicialmente derivado do ____.  Posteriormente, contudo, teve seu uso adaptado para o desenvolvimento de software como um todo.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) foi inicialmente derivado do"
+        },
+        {
+          "insert": " desenvolvimento orientado a teste (TDD)",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".  Posteriormente, contudo, teve seu uso adaptado para o desenvolvimento de software como um todo.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ef00c99b-d4a8-47b2-8570-327c4b5c20ea",
+      "question": [
+        {
+          "insert": "O criador do desenvolvimento orientado a comportamento (BDD) é ___.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O idealizar do desenvolvimento orientado a comportamente é "
+        },
+        {
+          "insert": "Dan North.",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "f83c799d-a6e4-4258-b43f-347898da5213",
+      "question": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) tem na ___ um de seus maiores complicadores.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O desenvolvimento orientado a comportamento (BDD) tem na "
+        },
+        {
+          "insert": "manutenção",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " de cenários um de seus maiores complicadores.\n"
+        }
+      ]
+    }
+  ]
+}

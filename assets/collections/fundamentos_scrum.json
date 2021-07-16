@@ -1,0 +1,289 @@
+{
+  "id": "caadc900-220d-40d5-b7f1-26553f13c03f",
+  "name": "Fundamentos do Scrum",
+  "description": "O Scrum é um framework de gerenciamento de projetos, da organização ao desenvolvimento ágil de produtos complexos e adaptativos com o mais alto valor possível, através de várias técnicas, utilizado desde o início de 1990 e que atualmente é utilizado em mais de 60% dos projetos ágeis em todo o mundo. - Wikipedia, 2021",
+  "category": "Scrum",
+  "tags": ["agile", "scrum"],
+  "contributors": [
+    {
+      "name": "Olympus",
+      "url": "https://www.olmps.co",
+      "imageUrl": "https://avatars.githubusercontent.com/u/83961675?v=4"
+    }
+  ],
+  "memos": [
+    {
+      "uniqueId": "03173c24-00e5-4fb2-8c1a-e5455c211b81",
+      "question": [
+        {
+          "insert": "O nome do scrum é baseado em\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um termo do Rugby. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "0d3495f6-e850-489b-a451-bc2aa1e3d162",
+      "question": [
+        {
+          "insert": "O gráfico de Sprint Burn down mostra\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O progresso da sprint como uma linha que vai decrescendo a medida que o número de tarefas no backlog reduzem \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "18fdf07e-d2ad-4223-8769-048396aacc82",
+      "question": [
+        {
+          "insert": "Planning poker\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "É uma metodologia onde o time usa cartas com valores seguindo a sequencia de fibonacci para estimar o tamanho de cada tarefa. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "199e7344-e7a1-43b5-87de-799f2e06b0e6",
+      "question": [
+        {
+          "insert": "O time de desenvolvimento faz\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O trabalho de análise, design, desenvolvimento e teste\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "2208c3d6-b7f7-4568-a022-5312f49b2d38",
+      "question": [
+        {
+          "insert": "O product owner deve\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Representar os interesses do cliente e priorizar o backlog\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "43ad96c2-befa-42be-8f22-bd0f2906a31e",
+      "question": [
+        {
+          "insert": "As dailies devem ser reuniões rápidas que respondem 3 perguntas\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O que você fez ontem? O que fará hoje? Você tem algum impedimento?\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "4c64ee13-c364-409b-b76d-01be2de63491",
+      "question": [
+        {
+          "insert": "Uma User Story é\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Uma funcionalidade que foi requerida e escrita em linguagem que o time de desenvolvimento pode compreender\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "537ec21c-e581-4a96-a502-80c8a482c137",
+      "question": [
+        {
+          "insert": "O Sprint backlog é\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A lista de tarefas a serem completas na sprint atual \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "5585a511-144b-437f-9ab4-aa2d6dfc4a19",
+      "question": [
+        {
+          "insert": "DoD é a abreviatura de um termo inglês que significa\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Definition of done. Traduzindo: a definição de pronto da tarefa ou seja a descrição de todos critérios que o entregável deve ter pra ser aceito pelo PO.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "5acaa3a1-3fa4-4086-8df9-996ed64ba9ab",
+      "question": [
+        {
+          "insert": "A reunião de planejamento é onde\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "São definidas e priorizadas as tarefas da sprint a seguir\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6ad62fe2-1006-4a86-8ce1-bc76ec61525c",
+      "question": [
+        {
+          "insert": "Os stakeholders são\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Todas partes interessadas no projeto de alguma maneira sejam clientes ou investidores\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "8b8d5680-5092-4612-8173-dd5b34a22615",
+      "question": [
+        {
+          "insert": "O scrum master tem a responsabilidade de\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Remove impedimentos que estejam bloqueando o progresso do time, mantém os processos funcionando e ajuda a manter o time focado.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "91b4f235-ff49-4ec1-b2e7-c6ce5226c239",
+      "question": [
+        {
+          "insert": "Cada story é quebrado em itens menores e acionáveis que são chamados de\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Tarefas\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "9ebb9bd2-5894-46e3-b697-09045839689c",
+      "question": [
+        {
+          "insert": "Um Incremento é como é chamada\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A soma de todas as tarefas entregues em um formato testável pelos stakeholders\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "a1801243-7e0a-41e8-acd1-7b856433d004",
+      "question": [
+        {
+          "insert": "Ao final de toda sprint acontece uma \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Reunião de review \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ae824872-d7fe-4d2e-bce6-57460f4d39da",
+      "question": [
+        {
+          "insert": "As tarefas em geral não devem tomar mais que\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "1 dia e meio de trabalho\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e0e3af68-5000-4593-9dec-d28e251370ed",
+      "question": [
+        {
+          "insert": "Spike é um período de tempo separado para que\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O time pesquise e valide um conceito.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e65dc0ed-300c-4f85-9fef-b3d87b97782a",
+      "question": [
+        {
+          "insert": "O backlog de projeto é\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A lista de tarefas a serem priorizadas para o projeto ser finalizado\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ead73fe2-f9f4-4c19-8d2f-4572f0a7a4da",
+      "question": [
+        {
+          "insert": "Um Épico é\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um grupo de stories que juntos formam o produto completo.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "f24070f8-ece1-4172-8ff8-188848039f7d",
+      "question": [
+        {
+          "insert": "A Sprint representa\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um período de tempo definido pela equipe onde uma série de tarefas deverá ser completa. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "fedcfddc-0eeb-409c-94ab-e63bea0d8a54",
+      "question": [
+        {
+          "insert": "Na reunião de review é apresentado\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Uma demonstração de tudo que foi feito pelo time durante o período\n"
+        }
+      ]
+    }
+  ]
+}

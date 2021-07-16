@@ -1,0 +1,830 @@
+{
+  "id": "6413722e-aa5c-451d-9146-0d021f7ba955",
+  "name": "Guia do Scrum",
+  "description": "O guia do scrum é um documento pequeno, que descreve tudo o que existe no Scrum. Muitas pessoas que dizem conhecer o Scrum, nunca leram o documento. Não pode ser pela quantidade de páginas, que são menos de 20. O guia do scrum estabelece pilares, valores, artefatos, papéis e responsabilidades para que uma equipe possa organizar o seu fluxo de trabalho, encontrando formas de priorizar o trabalho a ser realizado, acompanhar dificuldades e progresso, revisar o trabalho feito e ainda garantir ações de melhoria ao longo do tempo.",
+  "category": "Scrum",
+  "tags": ["agile", "scrum"],
+  "contributors": [
+    {
+      "name": "Daniel Wildt",
+      "url": "https://www.linkedin.com/in/danielwildt",
+      "imageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQFYmdJJeE9gmA/profile-displayphoto-shrink_400_400/0/1517688960443?e=1631750400&v=beta&t=bpxRB_CL0-3CaT4nzadf1PKpSblm2I_Z7yjm6gEdaBM"
+    }
+  ],
+  "memos": [
+    {
+      "uniqueId": "115d82d0-8594-4835-bbc5-a4ed5a88e63d",
+      "question": [
+        {
+          "insert": "A qualidade é introduzida em uma equipe aumentando gradualmente a __________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A qualidade é introduzida em uma equipe aumentando gradualmente a "
+        },
+        {
+          "insert": "DEFINITION OF DONE (DOD)",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "1693b183-f9ec-4f32-9b09-a6c3ff643a06",
+      "question": [
+        {
+          "insert": "A equipe Scrum é responsável por todas atividades relacionadas ao produto, da _________ até a _________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A equipe Scrum é responsável por todas atividades relacionadas ao produto, da "
+        },
+        {
+          "insert": "PESQUISA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " até a "
+        },
+        {
+          "insert": "OPERAÇÃO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "1c443ea9-ebb3-4396-8980-3edad9780f76",
+      "question": [
+        {
+          "insert": "Scrum usa uma estrutura ________ e _________ para organizar previsibilidade e gerir riscos.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Scrum usa uma estrutura "
+        },
+        {
+          "insert": "ITERATIVA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "INCREMENTAL",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " para organizar previsibilidade e gerir riscos.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "2bb63b49-6902-42db-9b9d-4aedcbb43d72",
+      "question": [
+        {
+          "insert": "O Sprint Backlog é composto de uma motivação (__________), do que precisa ser feito (itens do product backlog) e um plano de ação para entregar o incremento (como).\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Sprint Backlog é composto de uma motivação "
+        },
+        {
+          "insert": "(META DA SPRINT",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": "), do que precisa ser feito (itens do product backlog) e um plano de ação para entregar o incremento (como).\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "30ca79ac-a7cc-4611-a709-f2ca65c74c9c",
+      "question": [
+        {
+          "insert": "A equipe Scrum transforma um pedaço do Product Backlog em um _________ durante uma Sprint. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A equipe Scrum transforma um pedaço do Product Backlog em um "
+        },
+        {
+          "insert": "INCREMENTO DE VALOR",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " durante uma Sprint. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "30de5696-fe50-4121-b3ee-191300950a05",
+      "question": [
+        {
+          "insert": "Os eventos Scrum são projetados para provocar _________. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Os eventos Scrum são projetados para provocar "
+        },
+        {
+          "insert": "MUDANÇAS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". A inspeção habilita a adaptação. A inspeção sem adaptação é considerada inútil. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3c82620e-c6a5-40e3-970e-5cf5e1626c79",
+      "question": [
+        {
+          "insert": "Um item de backlog não pode ser considerado parte de um ____________ a menos que atenda a _______________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um item de backlog não pode ser considerado parte de um "
+        },
+        {
+          "insert": "INCREMENTO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " a menos que atenda a "
+        },
+        {
+          "insert": "DEFINIÇÃO DE PRONTO (DoD)",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "4c6b1d5e-709c-4230-bc6c-39e9999c34f6",
+      "question": [
+        {
+          "insert": "O artefato que possui o necessário para melhorar o produto, através de uma lista ordenada e ____________, é o Product Backlog. É a única fonte de trabalho realizado pelo Scrum Team. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O artefato que possui o necessário para melhorar o produto, através de uma lista ordenada e "
+        },
+        {
+          "insert": "EMERGENTE",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", é o Product Backlog. É a única fonte de trabalho realizado pelo Scrum Team. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "5f700e2b-e9dd-40a2-a430-5ba01a23c636",
+      "question": [
+        {
+          "insert": "O Product Owner ________ o trabalho no Product Backlog.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Product Owner "
+        },
+        {
+          "insert": "ORDENA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " o trabalho no Product Backlog.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "61274af3-9afe-40eb-a363-a801c60083ce",
+      "question": [
+        {
+          "insert": "A _______ permite ter um conjunto de incrementos a serem trabalhados, transformando ideias em valor. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A "
+        },
+        {
+          "insert": "SPRINT",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " permite ter um conjunto de incrementos a serem trabalhados, transformando ideias em valor. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "65cbfeaa-8488-44cf-82d6-488f56a62f92",
+      "question": [
+        {
+          "insert": "Se forem mais do que 10 pessoas na equipe, considerar a reorganização em várias equipes Scrum focados no mesmo produto. Elas devem compartilhar: ___________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Se forem mais do que 10 pessoas na equipe, considerar a reorganização em várias equipes Scrum focados no mesmo produto. Elas devem compartilhar: "
+        },
+        {
+          "insert": "META DO PRODUTO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", "
+        },
+        {
+          "insert": "BACKLOG",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "PRODUCT OWNER",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6f9d8d54-4fb4-4c24-9a7a-074ba0a59a6c",
+      "question": [
+        {
+          "insert": "O Product Owner desenvolve e comunica a _________. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Product Owner desenvolve e comunica a "
+        },
+        {
+          "insert": "META DO PRODUTO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "86c29975-c238-4fc6-955e-05b49eb96fd8",
+      "question": [
+        {
+          "insert": "O framework Scrum é propositalmente ____________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O framework Scrum é propositalmente "
+        },
+        {
+          "insert": "INCOMPLETO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "885caefe-c311-4f94-936c-2841cce349b4",
+      "question": [
+        {
+          "insert": "Os três pilares empíricos do Scrum são: _________________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Os três pilares empíricos do Scrum são: "
+        },
+        {
+          "insert": "TRANSPARÊNCIA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", "
+        },
+        {
+          "insert": "INSPEÇÃO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " E "
+        },
+        {
+          "insert": "ADAPTAÇÃO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "925e009a-a64b-4816-8564-03ef1879faa1",
+      "question": [
+        {
+          "insert": "Entre as atividades de inspeção existentes no Scrum, a _________ permite visualizar o progresso em direção a meta da Sprint.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Entre as atividades de inspeção existentes no Scrum, a "
+        },
+        {
+          "insert": "DAILY SCRUM",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " permite visualizar o progresso em direção a meta da Sprint.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "94e5b0ec-440a-4a1a-a3df-a903a5105e3a",
+      "question": [
+        {
+          "insert": "O Scrum Master é responsável pela ________ do Scrum Team. Faz isso apoiando na melhoria de práticas aplicadas pelo Scrum Team.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Scrum Master é responsável pela "
+        },
+        {
+          "insert": "EFICÁCIA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " do Scrum Team. Faz isso apoiando na melhoria de práticas aplicadas pelo Scrum Team.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "95d94c9d-a4d6-4488-be61-edcaa3cfbb95",
+      "question": [
+        {
+          "insert": "Scrum é baseado no empirismo e __________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Scrum é baseado no empirismo e "
+        },
+        {
+          "insert": "LEAN THINKING.",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "b5db019f-9a39-482a-b667-93caf320bfb7",
+      "question": [
+        {
+          "insert": "__________ responde sobre o valor esperado, sobre o que pode ser feito e como o trabalho pode ser feito dentro da Sprint.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "SPRINT PLANNING",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " responde sobre o valor esperado, sobre o que pode ser feito e como o trabalho pode ser feito dentro da Sprint.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "bbec0d12-7c63-465e-8b56-d8367470fda8",
+      "question": [
+        {
+          "insert": "A equipe Scrum é formada por: __________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A equipe Scrum é formada por: "
+        },
+        {
+          "insert": "SCRUM MASTER",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", "
+        },
+        {
+          "insert": "PRODUCT OWNER",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "DEVELOPERS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "cf0b3244-d90d-49ad-a2a5-e37dd1326ce2",
+      "question": [
+        {
+          "insert": "O Scrum Team deve ter um tamanho para garantir agilidade e se permitir que conclua um trabalho significativo dentro de uma Sprint. Normalmente tem ________ pessoas.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Scrum Team deve ter um tamanho para garantir agilidade e se permitir que conclua um trabalho significativo dentro de uma Sprint. Normalmente tem "
+        },
+        {
+          "insert": "10 OU MENOS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " pessoas.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "d3b0ad5d-15c1-479e-a387-8fc422ac452d",
+      "question": [
+        {
+          "insert": "A adaptação se torna mais difícil quando as pessoas envolvidas não são ___________ ou auto-gerenciadas.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A adaptação se torna mais difícil quando as pessoas envolvidas não são "
+        },
+        {
+          "insert": "EMPODERADAS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " ou auto-gerenciadas.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "d8de17a0-d6f4-4c2b-86e0-2776479e647f",
+      "question": [
+        {
+          "insert": "O _________ cria, comunica e ordena os itens do Product Backlog.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O "
+        },
+        {
+          "insert": "PRODUCT OWNER",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " cria, comunica e ordena os itens do Product Backlog.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e0b970c7-e79a-4132-ae8f-7bac1c5ddc90",
+      "question": [
+        {
+          "insert": "Para validar o resultado do trabalho e determinar adaptações do trabalho realizado, existe um evento chamado _________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Para validar o resultado do trabalho e determinar adaptações do trabalho realizado, existe um evento chamado "
+        },
+        {
+          "insert": "SPRINT REVIEW",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". É um momento de avaliar o progresso em direção a Meta do Produto.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e3cbf502-834e-4882-932c-fac151748e45",
+      "question": [
+        {
+          "insert": "Scrum é baseado no ________ e __________. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Scrum é baseado no "
+        },
+        {
+          "insert": "EMPIRISMO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "LEAN THINKING",
+          "attributes": {
+            "underline": true,
+            "bold": true
+          }
+        },
+        {
+          "insert": ". O empirismo afirma que o conhecimento vem da experiência e da tomada de decisões com base no que é observado. O lean thinking reduz o desperdício e se concentra no essencial.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ed1f97b3-2bbc-4ff8-990d-c20a7b9824c9",
+      "question": [
+        {
+          "insert": "As equipes Scrum devem ser _________. Os membros possuem todas habilidades necessárias para realizar o trabalho de cada Sprint.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "As equipes Scrum devem ser "
+        },
+        {
+          "insert": "MULTIFUNCIONAIS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". Os membros possuem todas habilidades necessárias para realizar o trabalho de cada Sprint.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "f337bbd5-5f22-438e-8be8-51bd0fea1af7",
+      "question": [
+        {
+          "insert": "O evento que permite uma avaliação com relação a indivíduos, interações, processos, ferramentas e sua Definition of Done é a ____________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O evento que permite uma avaliação com relação a indivíduos, interações, processos, ferramentas e sua Definition of Done é a "
+        },
+        {
+          "insert": "SPRINT RETROSPECTIVE",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "f5b4f76a-09f5-41e4-ab14-53d68fd01f91",
+      "question": [
+        {
+          "insert": "Developers são responsáveis por criar o plano da Sprint, o _________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Developers são responsáveis por criar o plano da Sprint, o "
+        },
+        {
+          "insert": "SPRINT BACKLOG",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "f7c786e8-4150-490c-a704-ca712b52671f",
+      "question": [
+        {
+          "insert": "O foco principal da equipe Scrum é realizar o trabalho da Sprint, gerando _________ em direção ao que está definido como ______.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O foco principal da equipe Scrum é realizar o trabalho da Sprint, gerando "
+        },
+        {
+          "insert": "PROGRESSO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " em direção ao que está definido como "
+        },
+        {
+          "insert": "META",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ff19caf7-a8fa-4bcc-824f-014cb187ef99",
+      "question": [
+        {
+          "insert": "Os cinco valores do Scrum são: __________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Os cinco valores do Scrum são: "
+        },
+        {
+          "insert": "COMPROMISSO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", "
+        },
+        {
+          "insert": "FOCO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", "
+        },
+        {
+          "insert": "ABERTURA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", "
+        },
+        {
+          "insert": "RESPEITO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " e "
+        },
+        {
+          "insert": "CORAGEM",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,617 @@
+{
+  "id": "65ba997d-11dc-447e-bd07-4f80b23513f0",
+  "name": "Kotlin - Fundamentos",
+  "description": "Nessa coleção de memórias você vai ser introduzido na linguagem de programação Kotlin. Embora ler a documentação do Kotlin seja fácil e agradável, aprender por exemplos é um tipo diferente de diversão (confira os links abaixo).",
+  "category": "Kotlin",
+  "tags": ["kotlin", "linguagem de programação"],
+  "contributors": [
+    {
+      "name": "Lucas Montano",
+      "url": "https://www.youtube.com/channel/UCyHOBY6IDZF9zOKJPou2Rgg",
+      "imageUrl": "https://yt3.ggpht.com/ytc/AKedOLRvK0aTLwSM_RzdgKVTPy7nsu-KVtEOrJxUrqrQoyo=s176-c-k-c0x00ffffff-no-rj-mo"
+    }
+  ],
+  "memos": [
+    {
+      "uniqueId": "0cde072c-1eb4-4777-bebe-354ea1668d6d",
+      "question": [
+        {
+          "insert": "(_____) não é uma palavra-chave no Kotlin, embora seja amplamente utilizada no JAVA.\n\nUtilize companion object { } quando necessário.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "static",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " não é uma palavra-chave no Kotlin, embora seja amplamente utilizada no JAVA.\n\nJAVA"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "class MemoClass {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "  public static String collection() { return \"Kotlin\"; }"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "}"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "Kotlin"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "class MemoClass {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "  companion object {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "     fun collection() = \"Kotlin\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "  }"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "}"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "2af11291-7a9c-4160-9589-2b5d961189d8",
+      "question": [
+        {
+          "insert": "Um arquivo Kotlin vai possuir uma extensão ___ ou ___ .\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um arquivo Kotlin vai possuir uma extensão "
+        },
+        {
+          "insert": ".kt",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " ou "
+        },
+        {
+          "insert": ".kts",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " .\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "415f0708-87d1-4062-b782-5af3ed742f55",
+      "question": [
+        {
+          "insert": "Kotlin é desenvolvido pela _______.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Kotlin é desenvolvido pela JetBrains.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "4bd35a02-58cf-45ad-bd09-b35c4b60fec5",
+      "question": [
+        {
+          "insert": "fun\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "(fun) é palavra-chave que você usa para definir uma função no Kotlin.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "7372dc8f-6665-4555-9dce-9dec0b1fa2ab",
+      "question": [
+        {
+          "insert": "Conforme a complexidade da instrução condicional aumenta, é recomendável substituir a expressão if-else por uma expressão ____.\n\nval answerString: String = if (count == 42) {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    \"I have the answer.\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "} else if (count > 35) {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    \"The answer is close.\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "} else {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    \"The answer eludes me.\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "}"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Conforme a complexidade da instrução condicional aumenta, é recomendável substituir a expressão if-else por uma expressão when.\n\nval answerString = when {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    count == 42 -> \"I have the answer.\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    count > 35 -> \"The answer is close.\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    else -> \"The answer eludes me.\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "}"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "85464d75-cfcd-4ec7-a8be-b4ee7914abd1",
+      "question": [
+        {
+          "insert": "O Kotlin é ___ interoperável com a linguagem de programação Java.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Kotlin é 100% interoperável com a linguagem de programação Java.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "8d975672-0874-4edf-a2da-ea46713342e8",
+      "question": [
+        {
+          "insert": "É correto afirmar que Valor nulo não existe no Kotlin?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Não. Por padrão, as variáveis do Kotlin não podem conter valores nulos.\n\nSe você quiser que uma variável mantenha um valor nulo, use ? no tipo de dados para especificar que ela tem um tipo anulável.\n\nval name: String? = null"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "91eddde7-d5c7-450e-9256-c1321657c232",
+      "question": [
+        {
+          "insert": "?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Operador Elvis é usado para lidar com exceções nulas em Kotlin.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "971cef73-d157-4066-8496-603078d5503c",
+      "question": [
+        {
+          "insert": "O Kotlin é totalmente ____________ com a linguagem de programação Java. Sendo assim, é possível criar projetos usando o Kotlin na medida que quiser.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Kotlin é totalmente "
+        },
+        {
+          "insert": "interoperável",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " com a linguagem de programação Java. Sendo assim, é possível criar projetos usando o Kotlin na medida que quiser.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "b7c90ac1-db21-4196-99f0-c13b448c943c",
+      "question": [
+        {
+          "insert": "val message: String = Lucas Montano do canal Lucas Montano"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "val message: String = Lucas Montano do canal Lucas Montano"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "\nA variável mensagem de tipo String não poderá receber um novo valor após inicializada, por ter sido declarada como val.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "c5ac72d8-3cea-482e-b491-ee42507e2abe",
+      "question": [
+        {
+          "insert": "val languageName: String = null"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "\nUma variável de tipo de referência no Kotlin não pode reter um valor _____. E por conta disso a linguagem Kotlin é considerada segura.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Por padrão, as variáveis do Kotlin não podem reter valores "
+        },
+        {
+          "insert": "nulos",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". Isso significa que o snippet a seguir é inválido.\n\nval languageName: String = null"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "\nPara que uma variável mantenha um valor nulo, ela precisa ser do tipo anulável.\n\nval languageName: String? = null"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    },
+    {
+      "uniqueId": "caa48321-a8c6-477d-8a9d-b73c4fe5b4d4",
+      "question": [
+        {
+          "insert": "!!\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "fun main(canal: String?) {"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    println(\"Lucas Montano do canal\"  + canal!!)"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "}"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "O operador !! trata tudo no lado esquerdo como não nulo, portanto, neste caso, você está tratando canal como um String não nulo. Se o resultado da expressão à esquerda for nulo, seu app lançará um NullPointerException. \n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "d7b396c9-b0c8-4b30-bfea-65ed1085d505",
+      "question": [
+        {
+          "insert": "Inferência de tipo no Kotlin é responsabilidade do ________\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Inferência de tipo no Kotlin é responsabilidade "
+        },
+        {
+          "insert": "do compilador",
+          "attributes": {
+            "underline": true,
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n\nval languageName = \"Kotlin\""
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "\nComo o valor de Kotlin é do tipo String, o compilador infere que languageName também é um String. O Kotlin é uma linguagem estática. Isso significa que o tipo é resolvido no momento da compilação e nunca muda.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e0baddc3-6163-4554-8b0a-e2e59f5aa1c3",
+      "question": [
+        {
+          "insert": "O Kotlin usa duas palavras-chave diferentes para declarar variáveis. Qual a diferença entre as duas?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O Kotlin usa duas palavras-chave diferentes para declarar variáveis: val e var.\n\nUse val para uma variável cujo valor nunca muda. Não é possível reatribuir um valor a uma variável que tenha sido declarada usando val.\n\nUse var para uma variável cujo valor possa ser mudado.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e2783990-c353-4c85-8e1d-f29ec9f985fc",
+      "question": [
+        {
+          "insert": "Variável ______ é uma variável que não pode ser alterada, é somente leitura.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Variável imutável é uma variável que não pode ser alterada, é somente leitura.\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "fd0d8621-07d6-45f1-854f-6f8562e88f82",
+      "question": [
+        {
+          "insert": "Dados a função abaixo, o que você pode dizer sobre o seu tipo de retorno?\n\nfun printHello() { "
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    println(\"Hello, World!\") "
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "}"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ],
+      "answer": [
+        {
+          "insert": "No Kotlin, se uma função não retornar nenhum valor útil, seu tipo de retorno será Unit. O valor Unit  não precisa ser retornado explicitamente, mas a mesma função poderia ser representada como:\n"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "fun printHello() { "
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    println(\"Hello, World!\") "
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "    return Unit"
+        },
+        {
+          "insert": "\n\n",
+          "attributes": {
+            "code-block": true
+          }
+        },
+        {
+          "insert": "}"
+        },
+        {
+          "insert": "\n",
+          "attributes": {
+            "code-block": true
+          }
+        }
+      ]
+    }
+  ]
+}
