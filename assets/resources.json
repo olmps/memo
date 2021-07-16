@@ -68,5 +68,166 @@
     "tags": ["swift", "xcode"],
     "type": "unknown",
     "url": "https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html"
+  },
+  {
+    "id": "11",
+    "description": "Manifesto Ágil (site oficial)",
+    "tags": ["agile"],
+    "type": "unknown",
+    "url": "https://agilemanifesto.org/"
+  },
+  {
+    "id": "12",
+    "description": "A história do manifesto ágil (enUS)",
+    "tags": ["agile"],
+    "type": "article",
+    "url": "https://agilemanifesto.org/history.html"
+  },
+  {
+    "id": "13",
+    "description": "Daniel Wildt sobre princípios do Manifesto Ágil (parte 1)",
+    "tags": ["agile"],
+    "type": "video",
+    "url": "https://youtu.be/tmoRWy605Mg"
+  },
+  {
+    "id": "14",
+    "description": "Daniel Wildt sobre princípios do Manifesto Ágil (parte 2)",
+    "tags": ["agile"],
+    "type": "video",
+    "url": "https://youtu.be/z-ZRykB-lYo"
+  },
+  {
+    "id": "15",
+    "description": "Agile Alliance (enUS)",
+    "tags": ["agile"],
+    "type": "unknown",
+    "url": "https://www.agilealliance.org"
+  },
+  {
+    "id": "16",
+    "description": "Agile Alliance Brazil",
+    "tags": ["agile"],
+    "type": "unknown",
+    "url": "https://www.agilealliance.org/agilealliancebrazil"
+  },
+  {
+    "id": "17",
+    "description": "Agile Brazil (Conferência)",
+    "tags": ["agile"],
+    "type": "unknown",
+    "url": "https://twitter.com/agilebrazil"
+  },
+  {
+    "id": "18",
+    "description": "Daniel Wildt Ser multidisciplinar e o velho novo jeito de desenvolver produtos.",
+    "tags": ["agile"],
+    "type": "video",
+    "url": "https://youtu.be/IG5z3Sav8i8"
+  },
+  {
+    "id": "19",
+    "description": "Martin Fowler - The New Methodology (original)  (enUS).",
+    "tags": ["agile"],
+    "type": "article",
+    "url": "https://www.martinfowler.com/articles/newMethodologyOriginal.html"
+  },
+  {
+    "id": "20",
+    "description": "Scrum Guide 2020",
+    "tags": ["scrum"],
+    "type": "article",
+    "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-2.0.pdf"
+  },
+  {
+    "id": "21",
+    "description": "Princípios, Valores e o Essencial do Scrum (treinamento + ebook gratuitos)",
+    "tags": ["scrum"],
+    "type": "unknown",
+    "url": "https://blog.danielwildt.com/scrum-essencial/"
+  },
+  {
+    "id": "22",
+    "description": "Partiu Agile - Scrum",
+    "tags": ["scrum"],
+    "type": "video",
+    "url": "https://blog.danielwildt.com/partiuagile-temporada-1-scrum/"
+  },
+  {
+    "id": "23",
+    "description": "BDD in Action",
+    "tags": ["bdd"],
+    "type": "book",
+    "url": "https://www.amazon.com.br/dp/B09783HJDF/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1"
+  },
+  {
+    "id": "24",
+    "description": "Behavior Driven Development (Wikipedia)",
+    "tags": ["bdd"],
+    "type": "article",
+    "url": "https://en.wikipedia.org/wiki/Behavior-driven_development"
+  },
+  {
+    "id": "25",
+    "description": "Behavior-Driven Development (BDD) in iOS using Swift — Part 1",
+    "tags": ["bdd"],
+    "type": "article",
+    "url": "https://medium.com/swlh/behavior-driven-development-in-ios-using-swift-part-1-15bdff91ce4d"
+  },
+  {
+    "id": "26",
+    "description": "Behavior-Driven Development (BDD) in iOS using Swift — Part 2",
+    "tags": ["bdd"],
+    "type": "article",
+    "url": "https://medium.com/swlh/behavior-driven-development-in-ios-using-swift-part-2-a96e7866fbfc"
+  },
+  {
+    "id": "27",
+    "description": "Behavior-Driven Development (BDD) in iOS using Swift — Part 3",
+    "tags": ["bdd"],
+    "type": "article",
+    "url": "https://nicolasnascimento.medium.com/behavior-driven-development-in-ios-using-swift-part-3-48b3d990acaf"
+  },
+  {
+    "id": "28",
+    "description": "Desenvolver apps Android com o Kotlin",
+    "tags": ["kotlin"],
+    "type": "article",
+    "url": "https://developer.android.com/kotlin"
+  },
+  {
+    "id": "29",
+    "description": "Sintaxe básica do Kotlin",
+    "tags": ["kotlin"],
+    "type": "article",
+    "url": "https://kotlinlang.org/docs/basic-syntax.html"
+  },
+  {
+    "id": "30",
+    "description": "Aprenda Kotlin com exemplos",
+    "tags": ["kotlin"],
+    "type": "unknown",
+    "url": "https://play.kotlinlang.org/byExample/01_introduction/01_Hello%20world"
+  },
+  {
+    "id": "31",
+    "description": "Atomic Kotlin",
+    "tags": ["kotlin"],
+    "type": "book",
+    "url": "https://amzn.to/3i9JITm"
+  },
+  {
+    "id": "32",
+    "description": "Head First Kotlin",
+    "tags": ["kotlin"],
+    "type": "book",
+    "url": "https://amzn.to/2U8MpNb"
+  },
+  {
+    "id": "33",
+    "description": "Kotlin in Action",
+    "tags": ["kotlin"],
+    "type": "book",
+    "url": "https://amzn.to/3kCMcN5"
   }
 ]
