@@ -106,13 +106,9 @@ platform :ios do
     )
 
     # Upload to Testflight
-    changelog = File.read("Changelog.txt")
-
     upload_to_testflight(
       api_key: api_key,
       skip_waiting_for_build_processing: true,
-      distribute_external: true,
-      changelog: changelog,
       ipa: '../build/ios/ipa/Memo.ipa'
     )
   end

@@ -10,6 +10,9 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## Updated
+- `release` workflow to skip "wait for build processing" time.
+
 ## [0.1.0] - 2021-07-16
 
 ## Added
