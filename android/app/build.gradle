@@ -39,7 +39,7 @@ android {
         applicationId "com.olmps.memoClient"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 4
+        versionCode 5
         versionName flutterVersionName
     }
 
