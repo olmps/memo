@@ -29,7 +29,7 @@ they can (and probably will) change over time, discussions must be raised to tri
 we will think/question ourselves before taking an action that breaks any rational decision taken here. It is also
 effective to guide PR discussions.
 
-- [Setup](#setup): how the configure your local project;
+- [Setup](#setup): how to configure your local project;
 - [Architecture](#architecture): how this application works from inside;
 - [Background](#background): some background story about this project;
 - [Contributing & Good Practices](#contributing--good-practices): recommendation on how to write good code for this
