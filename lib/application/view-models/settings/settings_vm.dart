@@ -32,7 +32,7 @@ const _items = {
     LinkSettingsItem(description: 'Pingback', url: 'https://pingback.com/about'),
   ],
   SettingsSection.community: [
-    LinkSettingsItem(description: 'Discord', url: 'https://discord.gg/E9eHrpA2'),
+    LinkSettingsItem(description: 'Discord', url: 'https://discord.gg/4DUSWdYwYD'),
   ],
   SettingsSection.organizers: [
     LinkSettingsItem(description: 'Lucas Montano', url: 'https://www.youtube.com/channel/UCyHOBY6IDZF9zOKJPou2Rgg'),
