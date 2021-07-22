@@ -16,7 +16,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
+      
+      # Retrieves iOS & Android Firebase Google Services file from Secrets. Both are required to build the app
+      - name: Setup Dependencies
+        env:
+          ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_ENCODED_GOOGLE_SERVICES }}
+          IOS_GOOGLE_SERVICES: ${{ secrets.IOS_ENCODED_GOOGLE_SERVICES }}
+        run: |
+          echo "$ANDROID_GOOGLE_SERVICES" > encoded_android_google_services
+          openssl base64 -in encoded_android_google_services -out android/app/google-services.json -d
+          echo "$IOS_GOOGLE_SERVICES" > encoded_ios_google_services
+          openssl base64 -in encoded_ios_google_services -out ios/Runner/GoogleService-Info.plist -d
+          
       # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -35,14 +46,6 @@ jobs:
           flutter clean
           flutter analyze .
           flutter test test
-
-      # Retrieves iOS & Android Firebase Google Services file from Secrets. Both are required to build the app
-      - name: Setup Dependencies
-        run: |
-          echo "${{ secrets.ANDROID_ENCODED_GOOGLE_SERVICES }}" > encoded_android_google_services
-          openssl base64 -in encoded_android_google_services -out android/app/google-services.json -d
-          echo "${{ secrets.IOS_ENCODED_GOOGLE_SERVICES }}" > encoded_ios_google_services
-          openssl base64 -in encoded_ios_google_services -out ios/Runner/GoogleService-Info.plist -d
 
         # Build iOS app in production environment without code sign
       - name: Build iOS App
