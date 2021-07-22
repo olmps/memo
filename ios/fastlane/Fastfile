@@ -110,8 +110,10 @@ platform :ios do
 
     upload_to_testflight(
       api_key: api_key,
-      skip_waiting_for_build_processing: true,
       distribute_external: true,
+      groups: [
+        'External Testers'
+      ],
       changelog: changelog,
       ipa: '../build/ios/ipa/Memo.ipa'
     )
