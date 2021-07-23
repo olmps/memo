@@ -1,6 +1,6 @@
 require 'xcodeproj'
 
-project_file = 'Runner.xcodeproj'
+project_file = 'ios/Runner.xcodeproj'
 project = Xcodeproj::Project.open(project_file)
 project.main_group["Runner"].files.each do |file|
   if file.path.match(/^GoogleService-Info.plist/)
