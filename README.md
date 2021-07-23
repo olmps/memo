@@ -14,7 +14,7 @@ English | [Portuguese](README_ptbr.md)
 
 Monorepo for Memo.
 
-Test
+Test 2
 
 Memo is an open-source, programming-oriented [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)
 software (SRS) written in Flutter.
