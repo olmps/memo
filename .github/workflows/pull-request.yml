@@ -17,11 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # TODO(ggirotto)
-      - name: Setup Dependencies
-        run: |
-          ruby ios/pull_request.rb
-
       # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
       - name: Setup Java
         uses: actions/setup-java@v1

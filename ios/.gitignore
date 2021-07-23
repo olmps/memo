@@ -38,6 +38,3 @@ fastlane/README.md
 # IPA and Dsyms
 Runner.app.dSYM.zip
 Runner.ipa
-
-# Google Services Info.plist
-Runner/GoogleService-Info.plist
