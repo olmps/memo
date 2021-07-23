@@ -1,0 +1,302 @@
+{
+  "id": "starting_git",
+  "name": "Starting Git",
+  "description": "\"Git is software for tracking changes in any set of files, usually used for coordinating work among programmers collaboratively developing source code during software development. Git was created by Linus Torvalds in 2005 for development of the Linux kernel.\" - Wikipedia, 2021.",
+  "category": "Versioning",
+  "tags": ["git", "versioning"],
+  "contributors": [
+    {
+      "name": "@matuella",
+      "url": "https://github.com/matuella",
+      "imageUrl": "https://avatars.githubusercontent.com/u/13678134?v=4"
+    }
+  ],
+  "memos": [
+    {
+      "uniqueId": "f2477b5c-e9af-426a-851e-4b8a17db9eaf",
+      "question": [
+        {
+          "insert": "What is Git?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A distributed version control system\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "9e821dd1-b716-492b-8621-a456052fc8da",
+      "question": [
+        {
+          "insert": "Git handles its data (files) like they were a stream of _____.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "snapshots\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3cf45ed8-f6a3-4868-9acc-0f1f293de07a",
+      "question": [
+        {
+          "insert": "What is a commit?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A snapshot of the state of all files in git\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "aa4148b4-e5af-4006-95b7-c168f3ee043f",
+      "question": [
+        {
+          "insert": "Each commit, git takes a _____ of all files.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "snapshot\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "b251a7ec-6acb-44ad-bac5-c9dd94d8ed11",
+      "question": [
+        {
+          "insert": "Each commit, git saves a _____ for the snapshot of all files.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "reference\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "05e14326-30e2-4acb-9d78-24c94502236d",
+      "question": [
+        {
+          "insert": "Git applies a _____ cryptographic hash function to verify (checksum) its contents.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "SHA-1\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "b303cf20-2480-47ce-85a7-17c1bc8ea1a9",
+      "question": [
+        {
+          "insert": "What the following text looks like: c5c0cba68b55bc343b292366cf8981586e237dab\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "The result of applying a SHA-1 function on a text\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "4f780d5c-9e6b-4b61-b70f-b790b5006259",
+      "question": [
+        {
+          "insert": "Which are the 3 main file-states, in Git?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Modified, staged and committed\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "dbaed5ac-32ac-4f10-b069-4f1d032842ae",
+      "question": [
+        {
+          "insert": "What is a working tree / working directory?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "The directory with a copy of the repository\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "501659ae-5c03-4415-be53-92a758268815",
+      "question": [
+        {
+          "insert": "What is index / staging?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "File (or area) that contains all information about the next commit\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "55393230-3016-4e32-8557-6f596a2c38e0",
+      "question": [
+        {
+          "insert": "What is the state of a file that has a version in the git directory?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Committed\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "e91f5426-8696-4567-a070-94c9d7ad25ea",
+      "question": [
+        {
+          "insert": "What is the state of a file that was added to the staging area?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Staged\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "71895f54-4b6e-4fdd-89f1-2a7255b16cb2",
+      "question": [
+        {
+          "insert": "What is the state of a file that was updated but not added to the staging area?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Modified\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "8cbc7e8c-805b-4237-8dac-e5a7da775a02",
+      "question": [
+        {
+          "insert": "The command _____ _____ enables visualizing and attributting variables that controls local git behavior\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "git config\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6d9fd0a5-b1bc-4baf-a96b-4c4fa8057767",
+      "question": [
+        {
+          "insert": "It's really important to configure your name and email, because each commit uses this information to immutably _______ all _______ made by you\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "identify, commits\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "816900d8-654c-43c8-b4f2-551af9b695ee",
+      "question": [
+        {
+          "insert": "What is the difference between the command\n\ngit config --global user.name \"Git Master\"\n\nand the other command\n\ngit config user.name \"Git Master\"\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "With --global, your credential is stored forever in your local system\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "7e553b3a-c5aa-4a1d-8376-d7cc3fbbe590",
+      "question": [
+        {
+          "insert": "What is the goal of the following command\n\ngit config --global user.name \"Git Master\"\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "To configure - globally - the git user as \"Git Master\"\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "3186d6a5-0b4b-453b-9f33-c4dc7d516639",
+      "question": [
+        {
+          "insert": "What is the goal of the following command\n\ngit config --global user.email git.master@provider.com\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "To configure - globally - the git email as \"mestre.do.git@provedor.com.br\"\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "ab6b9b97-966c-45c5-a8ee-7f041632bffd",
+      "question": [
+        {
+          "insert": "What is the goal of the following command\n\ngit config --global core.editor emacs\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "To configure - globally - the default git text editor\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "6a336d41-807a-4782-9a55-72b0734c282d",
+      "question": [
+        {
+          "insert": "What is the command to list all git configurations?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "git config --list\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "b2af49a6-e6ba-4f03-9b7b-cfe170d99d3f",
+      "question": [
+        {
+          "insert": "What is the output of the following command\ngit config user.email\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Displays the user email saved in git\n"
+        }
+      ]
+    },
+    {
+      "uniqueId": "2d4b2cee-6800-4eb0-9de8-602cd71f1878",
+      "question": [
+        {
+          "insert": "What is the command to getting help (manual) for a git command?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "git help <command>\n"
+        }
+      ]
+    }
+  ]
+}
