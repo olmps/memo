@@ -185,6 +185,7 @@ class ExecutionTerminal extends HookWidget {
         horizontal: context.rawSpacing(Spacing.medium),
       ),
       autoFocus: false,
+      showCursor: false,
       readOnly: true,
       expands: false,
     );
