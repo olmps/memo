@@ -47,7 +47,6 @@ class AppRoot extends StatelessWidget {
           orElse: () => const MaterialApp(home: SplashPage()),
         );
       },
-      child: const MaterialApp(home: SplashPage()),
     );
   }
 }
