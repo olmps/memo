@@ -34,7 +34,3 @@ Runner/GeneratedPluginRegistrant.*
 # Fastlane auto-generated files
 fastlane/*.xml
 fastlane/README.md
-
-# IPA and Dsyms
-Runner.app.dSYM.zip
-Runner.ipa
