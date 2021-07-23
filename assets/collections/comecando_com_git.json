@@ -16,12 +16,12 @@
       "uniqueId": "03a5f9b4-b424-4010-8027-1ef22c7480e7",
       "question": [
         {
-          "insert": "Git\n"
+          "insert": "O que é o Git?\n"
         }
       ],
       "answer": [
         {
-          "insert": "Sistema de controle de versão distribuído\n"
+          "insert": "Um sistema de controle de versão distribuído\n"
         }
       ]
     },
@@ -29,12 +29,12 @@
       "uniqueId": "ef2c86e9-be54-46db-ae62-638a5dd4817b",
       "question": [
         {
-          "insert": "Git lida com os seus dados como se fossem _____ de seus arquivos.\n"
+          "insert": "Git lida com os seus dados como se fossem uma série de _____ de seus arquivos.\n"
         }
       ],
       "answer": [
         {
-          "insert": "uma série de fotografias (série de snapshots)\n"
+          "insert": "fotografias (snapshots)\n"
         }
       ]
     },
@@ -42,7 +42,7 @@
       "uniqueId": "96809017-5352-4840-9c33-06fa9b7d4707",
       "question": [
         {
-          "insert": "commit\n"
+          "insert": "O que é um commit?\n"
         }
       ],
       "answer": [
@@ -55,12 +55,12 @@
       "uniqueId": "375a17e2-a43b-4cfc-83e8-4b9a2e3ac1ec",
       "question": [
         {
-          "insert": "A cada commit, o git tira _____  de todos os arquivos.\n"
+          "insert": "A cada commit, o git tira uma _____  de todos os arquivos.\n"
         }
       ],
       "answer": [
         {
-          "insert": "uma fotografia (snapshot)\n"
+          "insert": "fotografia (snapshot)\n"
         }
       ]
     },
@@ -81,7 +81,7 @@
       "uniqueId": "0ba9ffdd-2937-47f3-a349-3a9000e2fc29",
       "question": [
         {
-          "insert": "O Git aplica um hash _____ para  verificar (checksum) seus conteúdos. \n"
+          "insert": "O Git aplica uma função de hash criptográfico _____ para verificar (checksum) seus conteúdos.\n"
         }
       ],
       "answer": [
@@ -94,12 +94,12 @@
       "uniqueId": "8b1d2fd4-6b62-4932-a197-d822e9b149c1",
       "question": [
         {
-          "insert": "c5c0cba68b55bc343b292366cf8981586e237dab\n"
+          "insert": "O que o seguinte texto se parece com: c5c0cba68b55bc343b292366cf8981586e237dab\n"
         }
       ],
       "answer": [
         {
-          "insert": "aparência de um texto (\"memo\") aplicando a função hash SHA-1\n"
+          "insert": "O resultado de um texto, aplicando a função hash SHA-1\n"
         }
       ]
     },
@@ -107,12 +107,12 @@
       "uniqueId": "4389e32f-eb66-48f2-b7fe-309c481329e4",
       "question": [
         {
-          "insert": "Os 3 principais estados do Git\n"
+          "insert": "Quais são os 3 principais estados de arquivos, dentro Git?\n"
         }
       ],
       "answer": [
         {
-          "insert": "modificado (modified), preparado (stage) e salvo (committed)\n"
+          "insert": "Modificado (modified), preparado (stage) e salvo (committed)\n"
         }
       ]
     },
@@ -120,12 +120,12 @@
       "uniqueId": "0653e8cb-44f8-47d3-aee5-0f79bff6107d",
       "question": [
         {
-          "insert": "Working tree / Working directory (diretório de trabalho)\n"
+          "insert": "O que é o Working tree / Working directory (diretório de trabalho)?\n"
         }
       ],
       "answer": [
         {
-          "insert": "diretório de uma cópia do repositório git\n"
+          "insert": "Diretório de uma cópia do repositório git\n"
         }
       ]
     },
@@ -133,12 +133,12 @@
       "uniqueId": "a6014e7a-777c-40ea-87af-4c7449c456eb",
       "question": [
         {
-          "insert": "index / staging (índice ou área de preparo)\n"
+          "insert": "O que é index / staging (índice ou área de preparo)?\n"
         }
       ],
       "answer": [
         {
-          "insert": "arquivo (ou área) que contém todas as informações sobre o seu próximo commit\n"
+          "insert": "Arquivo (ou área) que contém todas as informações sobre o seu próximo commit\n"
         }
       ]
     },
@@ -151,7 +151,7 @@
       ],
       "answer": [
         {
-          "insert": "salvo (committed)\n"
+          "insert": "Salvo (committed)\n"
         }
       ]
     },
@@ -164,7 +164,7 @@
       ],
       "answer": [
         {
-          "insert": "preparado (staged)\n"
+          "insert": "Preparado (staged)\n"
         }
       ]
     },
@@ -177,7 +177,7 @@
       ],
       "answer": [
         {
-          "insert": "modificado (modified)\n"
+          "insert": "Modificado (modified)\n"
         }
       ]
     },
@@ -185,7 +185,7 @@
       "uniqueId": "ff065ef5-1662-4267-b7fb-f1de1c30bb13",
       "question": [
         {
-          "insert": "O ___ _____ é uma ferramenta que visualiza e atribui variáveis que permitem o controle visual e comportamental do git\n"
+          "insert": "O comando _____ _____ permite visualizar e atribuir variáveis que permitem o controle visual e comportamental do git\n"
         }
       ],
       "answer": [
@@ -198,12 +198,12 @@
       "uniqueId": "9689f175-1fd5-4927-bc25-0bae65ff0869",
       "question": [
         {
-          "insert": "É muito importante configurar seu nome e email pois cada commit usa essa informação para _______________ \n"
+          "insert": "É muito importante configurar seu nome e email pois cada commit usa essa informação para ______, de forma imutável, os ______ feitos por você\n"
         }
       ],
       "answer": [
         {
-          "insert": "identificar, de forma imutável, os commits feitos por você\n"
+          "insert": "identificar, commits\n"
         }
       ]
     },
@@ -211,12 +211,12 @@
       "uniqueId": "8d53e6f0-f7f3-44a6-b8de-8b38a6875181",
       "question": [
         {
-          "insert": "Qual é a diferença entre\n\ngit config --global user.name \"Mestre do Git\"\n\ne\n\ngit config user.name \"Mestre do Git\"\n"
+          "insert": "Qual é a diferença entre o comando\n\ngit config --global user.name \"Mestre do Git\"\n\ne o outro comando\n\ngit config user.name \"Mestre do Git\"\n"
         }
       ],
       "answer": [
         {
-          "insert": "Com a opção --global, sua credencial fica salva para sempre no seu sistema\n"
+          "insert": "Com --global, sua credencial fica salva para sempre no seu sistema\n"
         }
       ]
     },
@@ -224,12 +224,12 @@
       "uniqueId": "3fd47834-f656-4deb-8ebb-4f136df5ed90",
       "question": [
         {
-          "insert": "git config --global user.name \"Mestre do Git\"\n"
+          "insert": "Qual é o objetivo do seguinte comando\n\ngit config --global user.name \"Mestre do Git\"\n"
         }
       ],
       "answer": [
         {
-          "insert": "Configura globalmente o usuário do git como \"Mestre do Git\"\n"
+          "insert": "Configurar globalmente o usuário do git como \"Mestre do Git\"\n"
         }
       ]
     },
@@ -237,12 +237,12 @@
       "uniqueId": "a7629f74-11ed-43d2-8aa5-bb1848bc2a6f",
       "question": [
         {
-          "insert": "git config --global user.email mestre.do.git@provedor.com.br\n"
+          "insert": "Qual é o objetivo do seguinte comando\n\ngit config --global user.email mestre.do.git@provedor.com.br\n"
         }
       ],
       "answer": [
         {
-          "insert": "Configura globalmente o email do git como \"mestre.do.git@provedor.com.br\"\n"
+          "insert": "Configurar globalmente o email do git como \"mestre.do.git@provedor.com.br\"\n"
         }
       ]
     },
@@ -250,12 +250,12 @@
       "uniqueId": "007e5805-2893-4ba0-9014-24aaff3a8077",
       "question": [
         {
-          "insert": "$ git config --global core.editor emacs\n"
+          "insert": "Qual é o objetivo do seguinte comand \n\ngit config --global core.editor emacs\n"
         }
       ],
       "answer": [
         {
-          "insert": "Configura o editor de texto padrão do git\n"
+          "insert": "Configurar o editor de texto padrão do git\n"
         }
       ]
     },
@@ -263,7 +263,7 @@
       "uniqueId": "2113e6d6-d788-4f50-a3ce-b539276a89fb",
       "question": [
         {
-          "insert": "Comando para listar todas as configurações do git\n"
+          "insert": "Qual é o comando para listar todas as configurações do git?\n"
         }
       ],
       "answer": [
@@ -276,12 +276,12 @@
       "uniqueId": "cc2e93e2-b0b6-406d-b4be-3268d30f19fa",
       "question": [
         {
-          "insert": "git config user.email\n"
+          "insert": "Qual é o resultado do seguinte comando \n\ngit config user.email\n"
         }
       ],
       "answer": [
         {
-          "insert": "Mostra o valor do email do usuário salvo no Git\n"
+          "insert": "Mostrar o valor do email do usuário salvo no Git\n"
         }
       ]
     },
@@ -289,7 +289,7 @@
       "uniqueId": "c87fcf0e-9a3e-432a-a9e4-724844c5e9fa",
       "question": [
         {
-          "insert": "Comando para visualizar o manual de ajuda do git\n"
+          "insert": "Qual é o comando para visualizar o manual de ajuda do git?\n"
         }
       ],
       "answer": [
