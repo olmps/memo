@@ -42,14 +42,6 @@ jobs:
           flutter analyze .
           flutter test test
 
-      # Retrieves iOS & Android Firebase Google Services file from Secrets. Both are required to build the app
-      - name: Setup Dependencies
-        run: |
-          echo "${{ secrets.ANDROID_ENCODED_GOOGLE_SERVICES }}" > encoded_android_google_services
-          openssl base64 -in encoded_android_google_services -out android/app/google-services.json -d
-          echo "${{ secrets.IOS_ENCODED_GOOGLE_SERVICES }}" > encoded_ios_google_services
-          openssl base64 -in encoded_ios_google_services -out ios/Runner/GoogleService-Info.plist -d
-
         # Build iOS app in production environment without code sign
       - name: Build iOS App
         run: flutter build ios --release --dart-define=ENV=PROD --no-codesign
