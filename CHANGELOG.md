@@ -15,9 +15,7 @@ a beta or production release, they must be documented here).
 
 ## Fixed
 - `AssetIconButton` padding now conforms to the correct specs.
-
-## Fixed
-- Removed misleading `QuillEditor` cursor in `readOnly` mode.
+- `QuillEditor` content overlapped by emojis container.
 
 ## [0.1.0] - 2021-07-16
 

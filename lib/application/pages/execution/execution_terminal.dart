@@ -12,11 +12,11 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
-/// Displays the [contents] of question/answer with actionable buttons to evalute its recall difficulty.
+/// Displays the [contents] of question/answer with actionable buttons to evaluate its recall difficulty.
 ///
 /// The naming comes from its layout resemblance of most terminal applications.
 class ExecutionTerminal extends HookWidget {
-  const ExecutionTerminal({
+  ExecutionTerminal({
     required this.contents,
     required this.isDisplayingQuestion,
     required this.collectionName,
@@ -46,6 +46,7 @@ class ExecutionTerminal extends HookWidget {
 
   String get _collectionTitle => '# $collectionName';
   String get _contentsDescription => '## ${isDisplayingQuestion ? strings.executionQuestion : strings.executionAnswer}';
+  final _terminalActionsKey = GlobalKey();
 
   /// Parses both collection title and description to `flutter-quill` format.
   List get _headerFormattedToQuill => <dynamic>[
@@ -158,6 +159,7 @@ class ExecutionTerminal extends HookWidget {
         child: Opacity(
           opacity: curvedController.value,
           child: _TerminalActions(
+            key: _terminalActionsKey,
             onDifficultyMarked: onDifficultyMarked,
             markedAnswer: markedAnswer,
           ),
@@ -169,20 +171,30 @@ class ExecutionTerminal extends HookWidget {
   /// Builds an animated `flutter_quill` editor that uses a [FadeTransition] to animate its contents.
   Widget _buildAnimatableQuillReadOnlyEditor(BuildContext context, AnimationController controller) {
     final quillDocument = quill_doc.Document.fromJson(_headerFormattedToQuill + contents);
+    final actionsContainerHeight = useState<double>(0);
 
     final quillController = QuillController(
       document: quillDocument,
       selection: const TextSelection.collapsed(offset: 0),
     );
 
+    // Updates `actionsContainerHeight` with `_TerminalActions` height once it's rendered
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final actionsContainerRenderBox = _terminalActionsKey.currentContext?.findRenderObject() as RenderBox?;
+      actionsContainerHeight.value = actionsContainerRenderBox?.size.height ?? 0;
+    });
+
     final quillEditor = QuillEditor(
       controller: quillController,
       focusNode: FocusNode(),
       scrollController: ScrollController(),
       scrollable: true,
-      padding: EdgeInsets.symmetric(
-        vertical: dimens.executionsTerminalFadeHeight,
-        horizontal: context.rawSpacing(Spacing.medium),
+      padding: EdgeInsets.only(
+        top: dimens.executionsTerminalFadeHeight,
+        left: context.rawSpacing(Spacing.medium),
+        right: context.rawSpacing(Spacing.medium),
+        // Adds `_TerminalActions` height as a bottom padding to ensure it doesn't cover the editor content
+        bottom: dimens.executionsTerminalFadeHeight + actionsContainerHeight.value,
       ),
       autoFocus: false,
       showCursor: false,
@@ -234,7 +246,7 @@ class _TerminalHeader extends StatelessWidget {
 }
 
 class _TerminalActions extends HookWidget {
-  const _TerminalActions({required this.onDifficultyMarked, this.markedAnswer});
+  const _TerminalActions({required this.onDifficultyMarked, this.markedAnswer, Key? key}) : super(key: key);
 
   final MemoDifficulty? markedAnswer;
   final void Function(MemoDifficulty difficulty) onDifficultyMarked;
