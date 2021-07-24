@@ -12,7 +12,9 @@ a beta or production release, they must be documented here).
 
 ## Updated
 - Android & iOS Fastfiles to automatically distribute uploaded builds to external testers.
-- `QuillEditor` removing cursor.
+
+## Fixed
+- Removed misleading `QuillEditor` cursor in `readOnly` mode.
 
 ## [0.1.0] - 2021-07-16
 
