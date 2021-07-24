@@ -23,6 +23,13 @@ jobs:
         with:
           java-version: ${{ env.java_version }}
 
+      # Caches Flutter repository so it can be reused by future workflows run
+      - name: Cache Flutter
+        uses: actions/cache@v2
+        with:
+          path: /Users/runner/hostedtoolcache/flutter
+          key: macos-flutter
+
       # Setup Flutter SDK with version `env.flutter_version`
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
