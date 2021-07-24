@@ -55,6 +55,12 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: replace
 
+      # Run pre-requisites to build both applications (iOS and Android)
+      - name: Analyze and run tests
+        run: |
+          flutter analyze .
+          flutter test test
+
       # Retrieves iOS & Android Firebase Google Services file from Secrets. Both are required to build the app
       - name: Setup Dependencies
         run: |

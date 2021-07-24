@@ -37,9 +37,8 @@ jobs:
           flutter-version: ${{ env.flutter_version }}
 
       # Run pre-requisites to build both applications (iOS and Android)
-      - name: Clean, Analyze and run tests
+      - name: Analyze and run tests
         run: |
-          flutter clean
           flutter analyze .
           flutter test test
 

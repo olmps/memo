@@ -6,12 +6,6 @@ platform :android do
     # Clean
     sh("flutter", "clean")
 
-    # Run tests
-    sh("flutter", "test", "../../")
-
-    # Run Analyzer
-    sh("flutter", "analyze", ".")
-
     # Bumps Version Code
     android_set_version_code()
 
