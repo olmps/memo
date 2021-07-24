@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:layoutr/layoutr.dart';
+import 'package:layoutr/common_layout.dart';
 
 const double _iconButtonDefaultSize = 24;
-const Spacing _iconButtonDefaultEdgeInsetsSpacing = Spacing.medium;
 
 /// Creates a new [IconButton] using an [asset].
 class AssetIconButton extends StatelessWidget {
@@ -29,7 +28,7 @@ class AssetIconButton extends StatelessWidget {
     // Even though `ImageIcon` already uses the theme to specify the icon size, we must enforce this through the
     // `IconButton` constructor, otherwise it will be overridden by the default argument.
     final normalizedIconSize = iconSize ?? Theme.of(context).iconTheme.size ?? _iconButtonDefaultSize;
-    final normalizedPadding = padding ?? EdgeInsets.all(context.rawSpacing(_iconButtonDefaultEdgeInsetsSpacing));
+    final normalizedPadding = padding ?? context.allInsets(Spacing.medium);
 
     return IconButton(
       icon: icon,

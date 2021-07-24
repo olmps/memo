@@ -12,7 +12,9 @@ a beta or production release, they must be documented here).
 
 ## Updated
 - Android & iOS Fastfiles to automatically distribute uploaded builds to external testers.
-- `AssetIconButton` default insets padding.
+
+## Fixed
+- `AssetIconButton` padding now conforms to the correct specs.
 
 ## Fixed
 - Removed misleading `QuillEditor` cursor in `readOnly` mode.
