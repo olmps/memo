@@ -34,3 +34,6 @@ Runner/GeneratedPluginRegistrant.*
 # Fastlane auto-generated files
 fastlane/*.xml
 fastlane/README.md
+
+# Google Services Info.plist
+Runner/GoogleService-Info.plist 
