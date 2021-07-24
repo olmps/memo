@@ -23,6 +23,12 @@ jobs:
         with:
           java-version: ${{ env.java_version }}
 
+      # Renames GoogleService-Info template file to the default file name. This template will provide mocked data to
+      # Firebase to allow the application build process finish successfully
+      - name: Setup GoogleService-Info plist
+        run: |
+          mv ios/Runner/GoogleService-Info-Template.plist ios/Runner/GoogleService-Info.plist
+
       # Setup Flutter SDK with version `env.flutter_version`
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
