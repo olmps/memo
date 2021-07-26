@@ -1,6 +1,12 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, '10.0'
 
+# Disable Firebase Analytics IDFA
+# Refs: 
+# - https://pub.dev/packages/firebase_analytics#ios-app-tracking-transparencyhttpsdeveloperapplecomdocumentationapptrackingtransparency
+# - https://firebase.google.com/docs/analytics/configure-data-collection?platform=ios#disable-IDFA-collection
+$FirebaseAnalyticsWithoutAdIdSupport = true
+
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
