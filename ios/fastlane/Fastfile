@@ -72,12 +72,6 @@ platform :ios do
     # Clean
     sh("flutter", "clean")
 
-    # Run tests
-    sh("flutter", "test", "../../")
-
-    # Run Analyzer
-    sh("flutter", "analyze", ".")
-
     # Increment the build number (use the latest build number for this version + 1)
     increment_build_number(
       build_number: latest_testflight_build_number(

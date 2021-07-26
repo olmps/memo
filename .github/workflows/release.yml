@@ -28,6 +28,13 @@ jobs:
         with:
           java-version: ${{ env.java_version }}
 
+      # Caches Flutter repository so it can be reused by future workflows run
+      - name: Cache Flutter
+        uses: actions/cache@v2
+        with:
+          path: /Users/runner/hostedtoolcache/flutter
+          key: macos-flutter
+
       # Setup Flutter SDK with version `env.flutter_version`
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
@@ -47,6 +54,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: replace
+
+      # Run pre-requisites to build both applications (iOS and Android)
+      - name: Analyze and run tests
+        run: |
+          flutter analyze .
+          flutter test test
 
       # Retrieves iOS & Android Firebase Google Services file from Secrets. Both are required to build the app
       - name: Setup Dependencies
