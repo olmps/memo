@@ -46,12 +46,8 @@ If you have Flutter setup locally, on the project's root folder, install pubspec
 
 ### Firebase dependencies
 
-Memo has Firebase dependencies that require a setup before the project can be run locally. The original 
-`GoogleServices-Info.plist` (iOS) and `google-services.json` (Android) are not checked in source control, which means 
-that you must provide your own Firebase project google service files to run the app.
-
-If you want to know how to setup your own Firebase project, check out the 
-[FlutterFire docs](https://firebase.flutter.dev/docs/overview/).
+Memo has Firebase dependencies that require a setup before the project can be run locally. More information about how to
+perform this setup and why it's necessary, refer to [ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
 
 ## Architecture
 
@@ -60,8 +56,8 @@ How this application works from inside and how it interacts with external depend
 
 ## Background
 
-If you're interested in checking out an overview about how we dealt with this project's software process (inside our team),
-check out [.process/](.process/README.md) (sorry, for now only in ptBR).
+If you're interested in checking out an overview about how we dealt with this project's software process (inside our 
+team), check out [.process/](.process/README.md) (sorry, for now only in ptBR).
 
 ## Contributing & Good Practices
 

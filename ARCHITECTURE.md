@@ -538,6 +538,9 @@ code exceptions into Crashlytics, which would make things harder for everyone to
 Although in the future, we would like for them to be used in your local environment just like they are used in the
 production application. It's just that we aren't fully aware of the consequences yet.
 
+You may notice the template file `GoogleService-Info-Template.plist`. Its only purpose is to allow our CI to build the 
+app through `pull_request` workflow, as it only contains mocked information.
+
 Nonetheless, if you want to know how to setup your own Firebase project, check out the 
 [FlutterFire docs](https://firebase.flutter.dev/docs/overview/).
 
