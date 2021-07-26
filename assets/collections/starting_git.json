@@ -185,7 +185,7 @@
       "uniqueId": "8cbc7e8c-805b-4237-8dac-e5a7da775a02",
       "question": [
         {
-          "insert": "The command _____ _____ enables visualizing and attributting variables that controls local git behavior\n"
+          "insert": "The command _____ _____ enables visualizing and attributing variables that controls local git behavior\n"
         }
       ],
       "answer": [
@@ -242,7 +242,7 @@
       ],
       "answer": [
         {
-          "insert": "To configure - globally - the git email as \"mestre.do.git@provedor.com.br\"\n"
+          "insert": "To configure - globally - the git email as \"git.master@provider.com\"\n"
         }
       ]
     },
