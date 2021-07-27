@@ -46,8 +46,8 @@ If you have Flutter setup locally, on the project's root folder, install pubspec
 
 ### Firebase dependencies
 
-Memo has Firebase dependencies that require a setup before the project can be run locally. More information about how to
-perform this setup and why it's necessary, refer to [ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
+Memo has Firebase dependencies that needs to be setup before running locally. More information on this in 
+[ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
 
 ## Architecture
 

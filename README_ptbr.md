@@ -46,9 +46,8 @@ comando `flutter pub get`.
 
 ### Dependências do Firebase
 
-O Memo depende de serviços do Firebase que necessitam ser configurados antes de rodar o projeto. Mais informações sobre
-como configurar essas dependências e o porquê elas são necessárias estão em 
-[ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
+O Memo possui dependências do Firebase que necessitam ser configuradas antes de rodar localmente. Mais informações sobre 
+isso em [ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
 
 ## Arquitetura
 
