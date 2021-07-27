@@ -44,6 +44,11 @@ Se você não tem ideia de como instalar o Flutter e rodá-lo localmente, dê um
 Agora, se você já tem o Flutter configurado localmente, na pasta raíz do projeto, instale as dependências através do
 comando `flutter pub get`.
 
+### Dependências do Firebase
+
+O Memo possui dependências do Firebase que necessitam ser configuradas antes de rodar localmente. Mais informações sobre 
+isso em [ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
+
 ## Arquitetura
 
 Como essa aplicação foi estruturada e como ela interage com dependência externas - escrito em detalhes em
