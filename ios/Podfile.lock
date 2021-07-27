@@ -1,38 +1,4 @@
 PODS:
-  - DKImagePickerController/Core (4.3.2):
-    - DKImagePickerController/ImageDataManager
-    - DKImagePickerController/Resource
-  - DKImagePickerController/ImageDataManager (4.3.2)
-  - DKImagePickerController/PhotoGallery (4.3.2):
-    - DKImagePickerController/Core
-    - DKPhotoGallery
-  - DKImagePickerController/Resource (4.3.2)
-  - DKPhotoGallery (0.0.17):
-    - DKPhotoGallery/Core (= 0.0.17)
-    - DKPhotoGallery/Model (= 0.0.17)
-    - DKPhotoGallery/Preview (= 0.0.17)
-    - DKPhotoGallery/Resource (= 0.0.17)
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Core (0.0.17):
-    - DKPhotoGallery/Model
-    - DKPhotoGallery/Preview
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Model (0.0.17):
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Preview (0.0.17):
-    - DKPhotoGallery/Model
-    - DKPhotoGallery/Resource
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Resource (0.0.17):
-    - SDWebImage
-    - SwiftyGif
-  - file_picker (0.0.1):
-    - DKImagePickerController/PhotoGallery
-    - Flutter
   - Firebase/AnalyticsWithoutAdIdSupport (8.3.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics/WithoutAdIdSupport (~> 8.3.0)
@@ -82,6 +48,13 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.4)
     - PromisesObjC (< 3.0, >= 1.2)
   - Flutter (1.0.0)
+  - flutter_inappwebview (0.0.1):
+    - Flutter
+    - flutter_inappwebview/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
   - GoogleAppMeasurement/WithoutAdIdSupport (8.3.0):
@@ -120,34 +93,32 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - OrderedSet (5.0.0)
   - package_info (0.0.1):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
   - PromisesObjC (1.2.12)
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
-  - SwiftyGif (5.4.0)
   - url_launcher (0.0.1):
+    - Flutter
+  - video_player (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - Flutter (from `Flutter`)
+  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - video_player (from `.symlinks/plugins/video_player/ios`)
 
 SPEC REPOS:
   trunk:
-    - DKImagePickerController
-    - DKPhotoGallery
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -158,13 +129,10 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - nanopb
+    - OrderedSet
     - PromisesObjC
-    - SDWebImage
-    - SwiftyGif
 
 EXTERNAL SOURCES:
-  file_picker:
-    :path: ".symlinks/plugins/file_picker/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -173,6 +141,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
   Flutter:
     :path: Flutter
+  flutter_inappwebview:
+    :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   image_picker:
@@ -183,11 +153,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
+  video_player:
+    :path: ".symlinks/plugins/video_player/ios"
 
 SPEC CHECKSUMS:
-  DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
-  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
   firebase_analytics: 960bf7a27a2bf7cd04cacce66962c13561efd0b8
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
@@ -198,18 +167,19 @@ SPEC CHECKSUMS:
   FirebaseCrashlytics: 3d83f2e8a47f476f47c82ff4536b169df6781271
   FirebaseInstallations: 1585729afc787877763208c2088ed84221161f77
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   GoogleAppMeasurement: de70802583dedceb0bca18172b345307e8f410b8
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
-  image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
+  image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
 
 PODFILE CHECKSUM: 93c13a6b510094ca189e0993ce1f80877faea644
 

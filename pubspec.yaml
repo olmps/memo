@@ -48,7 +48,10 @@ dependencies:
   hooks_riverpod: ^0.13.0
 
   # Keep dependency locked, as we need it to be the exact same in `memo-editor`
-  flutter_quill: ^1.3.3
+  flutter_quill:
+    git:
+      url: https://github.com/singerdmx/flutter-quill
+      ref: beta
 
 dev_dependencies:
   flutter_test:

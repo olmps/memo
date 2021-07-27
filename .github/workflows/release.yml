@@ -6,8 +6,9 @@ on:
       - published
 
 env:
-  flutter_version: "2.2.3"
+  flutter_version: "2.4.0-4.2.pre"
   java_version: "12.x"
+  flutter_channel: "beta"
 
 jobs:
   build:
@@ -40,6 +41,7 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ env.flutter_version }}
+          channel: ${{ env.flutter_channel }}
 
       # Uses `shimataro/ssh-key-action@v2` action to install Github SSH private key locally and setup github.com domain
       # as a known host.
