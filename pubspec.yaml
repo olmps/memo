@@ -68,6 +68,11 @@ dev_dependencies:
   ###
   flutter_launcher_icons: "^0.9.0"
 
+  ###
+  # Splash Screen auto-generator
+  ###
+  flutter_native_splash: "^1.1.8"
+
 flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -103,3 +108,13 @@ flutter_icons:
   image_path: "assets/icon.png"
   android: true
   ios: true
+
+flutter_native_splash:
+  image: assets/images/illustrations/logo.png
+  color: 1F1D28
+  # `flutter_native_splash` uses a less optimal method to create the splash screen that delays images placed in the
+  # `LaunchScreen` for a few seconds. We've manually fixed this issue by placing `logo.png` as an iOS resource in the
+  # PBX file.
+  # More information can be found at: https://developer.apple.com/forums/thread/19759
+  ios: false
+  web: false
