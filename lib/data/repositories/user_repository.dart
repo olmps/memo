@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/data/gateways/sembast_database.dart';
-import 'package:memo/data/serializers/user_serializer.dart';
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
+import 'package:memo/data/serializers/user_serializer.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/user.dart';
 

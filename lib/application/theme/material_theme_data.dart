@@ -89,7 +89,6 @@ ThemeData buildThemeData({
     colorScheme: colorScheme,
     textTheme: textTheme,
     primaryTextTheme: textTheme,
-    accentTextTheme: textTheme,
     scaffoldBackgroundColor: neutralSwatch.shade900,
     cardTheme: cardTheme,
     elevatedButtonTheme: elevatedButtonTheme,

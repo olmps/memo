@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/theme/theme_controller.dart';
 
 /// Decorates a [TabBar] with custom layout specs.
 class ThemedTabBar extends HookWidget {
