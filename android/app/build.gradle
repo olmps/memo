@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
-if (System.getenv("IS_SIGNING_ENABLED") == "true") {
+if (System.getenv("IS_SIGNING_ENABLED") == "true" || System.getenv("IS_SIGNING_ENABLED") == null) {
     apply plugin: 'com.google.gms.google-services'
     apply plugin: 'com.google.firebase.crashlytics'
 }
