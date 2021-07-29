@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:layoutr/common_layout.dart';
-import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/widgets/theme/link.dart';
 

@@ -7,8 +7,9 @@ on:
       - main
 
 env:
-  flutter_version: "2.2.3"
+  flutter_version: "2.4.0-4.2.pre"
   java_version: "12.x"
+  flutter_channel: "beta"
 
 jobs:
   build:
@@ -35,6 +36,7 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ env.flutter_version }}
+          channel: ${{ env.flutter_channel }}
 
       # Run pre-requisites to build both applications (iOS and Android)
       - name: Analyze and run tests
