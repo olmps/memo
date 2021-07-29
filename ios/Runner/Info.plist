@@ -16,6 +16,10 @@
 	<string>Memo</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<!-- Disable Apple ad network attribution registration -->
+	<!-- Ref: https://firebase.google.com/docs/analytics/get-started?platform=ios#optional_disable_apple_ad_network_attribution_registration -->
+	<key>GOOGLE_ANALYTICS_REGISTRATION_WITH_AD_NETWORK_ENABLED</key>
+	<false/>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>

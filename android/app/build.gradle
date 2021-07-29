@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         applicationId "com.olmps.memoClient"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 30
         versionCode 5
         versionName flutterVersionName

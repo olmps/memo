@@ -10,13 +10,14 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+### Added
+- Firebase Analytics SDK with no need for consent - disabled `AdId` collection.
+
 ## Updated
 - Android & iOS Fastfiles to automatically distribute uploaded builds to external testers.
 
 ## Fixed
 - `AssetIconButton` padding now conforms to the correct specs.
-
-## Fixed
 - Removed misleading `QuillEditor` cursor in `readOnly` mode.
 
 ## [0.1.0] - 2021-07-16
