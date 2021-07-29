@@ -14,7 +14,6 @@ import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 class CollectionsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final vm = context.read(collectionsVM);
     final initialState = context.read(collectionsVM.state);
     final collectionsTabController = useTabController(
       initialLength: availableSegments.length,
@@ -30,7 +29,7 @@ class CollectionsPage extends HookWidget {
         // Should only call the VM when the `indexIsChanging` AND if the current segment is different.
         if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
           final newTab = availableSegments.elementAt(collectionsTabController.index);
-          vm.updateCollectionsSegment(newTab);
+          context.read(collectionsVM).updateCollectionsSegment(newTab);
         }
       }
 
