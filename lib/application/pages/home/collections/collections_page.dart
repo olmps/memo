@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/layoutr.dart';
+import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/pages/home/collections/collections_list_view.dart';
 import 'package:memo/application/theme/theme_controller.dart';
@@ -12,6 +14,7 @@ import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 class CollectionsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final vm = context.read(collectionsVM);
     final initialState = context.read(collectionsVM.state);
     final collectionsTabController = useTabController(
       initialLength: availableSegments.length,
@@ -27,7 +30,7 @@ class CollectionsPage extends HookWidget {
         // Should only call the VM when the `indexIsChanging` AND if the current segment is different.
         if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
           final newTab = availableSegments.elementAt(collectionsTabController.index);
-          context.read(collectionsVM).updateCollectionsSegment(newTab);
+          vm.updateCollectionsSegment(newTab);
         }
       }
 
@@ -39,7 +42,11 @@ class CollectionsPage extends HookWidget {
     return Column(
       children: [
         ThemedTabBar(controller: collectionsTabController, tabs: tabs),
-        Expanded(child: CollectionsContents()),
+        Expanded(
+          child: _CollectionsContents(
+            (segment) => collectionsTabController.animateTo(segment.index),
+          ),
+        ),
       ],
     );
   }
@@ -61,7 +68,11 @@ class CollectionsPage extends HookWidget {
 }
 
 /// [CollectionsPage] visible contents, given the current [collectionsVM] state.
-class CollectionsContents extends HookWidget {
+class _CollectionsContents extends HookWidget {
+  const _CollectionsContents(this.onUpdateSegment);
+
+  final Function(CollectionsSegment segment) onUpdateSegment;
+
   @override
   Widget build(BuildContext context) {
     final state = useProvider(collectionsVM.state);
@@ -73,14 +84,7 @@ class CollectionsContents extends HookWidget {
       final items = state.collectionItems;
 
       if (items.isEmpty) {
-        // Empty state for the current segment.
-        widget = Center(
-          child: Text(
-            strings.collectionsEmptySegment(state.currentSegment),
-            style: Theme.of(context).textTheme.subtitle1?.copyWith(color: useTheme().neutralSwatch.shade300),
-            textAlign: TextAlign.center,
-          ),
-        );
+        widget = _CollectionsEmptyState(onUpdateSegment, currentSegment: state.currentSegment);
       } else {
         widget = CollectionsListView(items);
       }
@@ -89,5 +93,53 @@ class CollectionsContents extends HookWidget {
     }
 
     return widget.withSymmetricalPadding(context, horizontal: Spacing.medium);
+  }
+}
+
+/// [CollectionsPage] empty state, given the current [collectionsVM] state.
+class _CollectionsEmptyState extends HookWidget {
+  const _CollectionsEmptyState(this.onUpdateSegment, {required this.currentSegment});
+
+  final Function(CollectionsSegment segment) onUpdateSegment;
+  final CollectionsSegment currentSegment;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final theme = useTheme();
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          images.folderIllustrationAsset,
+          height: dimens.collectionsEmptyStateImageSize,
+          width: dimens.collectionsEmptyStateImageSize,
+          fit: BoxFit.fill,
+          color: theme.neutralSwatch.shade700,
+        ),
+        context.verticalBox(Spacing.xLarge),
+        Text(
+          strings.collectionsEmptyTitleSegment(currentSegment),
+          style: textTheme.headline6,
+          textAlign: TextAlign.center,
+        ),
+        context.verticalBox(Spacing.medium),
+        Text(
+          strings.collectionsEmptyMessageSegment(currentSegment),
+          style: textTheme.bodyText2?.copyWith(color: theme.neutralSwatch.shade400),
+          textAlign: TextAlign.center,
+        ),
+        context.verticalBox(Spacing.xLarge),
+        ElevatedButton(
+          onPressed: () {
+            final oppositeSegment =
+                currentSegment == CollectionsSegment.explore ? CollectionsSegment.review : CollectionsSegment.explore;
+            onUpdateSegment(oppositeSegment);
+          },
+          child: Text(strings.collectionsStartNow.toUpperCase(), style: textTheme.button),
+        )
+      ],
+    ).withAllPadding(context, Spacing.large);
   }
 }
