@@ -29,6 +29,7 @@ class ThemeController extends StateNotifier<MemoThemeData> {
     primarySwatch: _primarySwatchFor(MemoTheme.classic),
     secondarySwatch: _secondarySwatchFor(MemoTheme.classic),
     neutralSwatch: _neutralSwatchFor(MemoTheme.classic),
+    negativeSwatch: _negativeSwatchFor(MemoTheme.classic),
   );
 
   /// Updates the current [state] with a new instance of [MemoThemeData], using the [theme] argument.
@@ -44,6 +45,7 @@ class ThemeController extends StateNotifier<MemoThemeData> {
       primarySwatch: _primarySwatchFor(theme),
       secondarySwatch: _secondarySwatchFor(theme),
       neutralSwatch: _neutralSwatchFor(theme),
+      negativeSwatch: _negativeSwatchFor(theme),
     );
   }
 
@@ -108,5 +110,12 @@ MaterialColor _neutralSwatchFor(MemoTheme theme) {
   switch (theme) {
     case MemoTheme.classic:
       return colors.buildClassicNeutralSwatch();
+  }
+}
+
+MaterialColor _negativeSwatchFor(MemoTheme theme) {
+  switch (theme) {
+    case MemoTheme.classic:
+      return colors.buildClassicNegativeSwatch();
   }
 }
