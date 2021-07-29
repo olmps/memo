@@ -21,14 +21,23 @@ const collectionsReviewTab = 'Revisar';
 
 const collectionsSectionHeaderSeeAll = 'Ver todos';
 
-String collectionsEmptySegment(CollectionsSegment segment) {
+const collectionsStartNow = 'Começar Agora';
+
+String collectionsEmptyTitleSegment(CollectionsSegment segment) {
   switch (segment) {
     case CollectionsSegment.explore:
-      return 'Parabéns, você explorou todas as coleções!\n\n'
-          'Você ainda pode aperfeiçoar seu aprendizado na aba de "$collectionsReviewTab".';
+      return 'Parabéns, você explorou todas as coleções!';
     case CollectionsSegment.review:
-      return 'Você ainda não tem nenhuma coleção para revisar.\n\n'
-          'Uma coleção só entra em revisão após terminar todos os seus respectivos memos pelo menos uma vez.';
+      return 'Nenhuma coleção para revisar';
+  }
+}
+
+String collectionsEmptyMessageSegment(CollectionsSegment segment) {
+  switch (segment) {
+    case CollectionsSegment.explore:
+      return 'Você ainda pode aperfeiçoar seu aprendizado na aba de "$collectionsReviewTab".';
+    case CollectionsSegment.review:
+      return 'Uma coleção só entra em revisão após terminar todos os seus respectivos memos pelo menos uma vez.';
   }
 }
 

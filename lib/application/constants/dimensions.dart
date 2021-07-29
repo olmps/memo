@@ -23,6 +23,7 @@ const double smallIconSize = 16;
 // CollectionsPage
 //
 const double collectionsLinearProgressLineWidth = 12;
+const double collectionsEmptyStateImageSize = 96;
 
 //
 // ProgressPage
