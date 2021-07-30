@@ -106,25 +106,27 @@ class ExecutionTerminal extends HookWidget {
       child: Text(actionText.toUpperCase()),
     );
 
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: dimens.executionsTerminalBorderRadius,
-        border: Border.all(
-          color: borderColor,
-          width: dimens.executionsTerminalBorderWidth,
+    return SafeArea(
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: dimens.executionsTerminalBorderRadius,
+          border: Border.all(
+            color: borderColor,
+            width: dimens.executionsTerminalBorderWidth,
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(child: contentsStack),
-          buttonDivider,
-          actionButton.withSymmetricalPadding(context, vertical: Spacing.small),
-        ],
-      ),
-    ).withAllPadding(context, Spacing.xSmall);
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(child: contentsStack),
+            buttonDivider,
+            actionButton.withSymmetricalPadding(context, vertical: Spacing.small),
+          ],
+        ),
+      ).withAllPadding(context, Spacing.xSmall),
+    );
   }
 
   Future<void> _animateActionTapped({
