@@ -75,7 +75,7 @@ const executionNext = 'Próxima';
 const executionCheckAnswer = 'Ver resposta';
 
 const executionDiscard = 'Descartar';
-const executionBackToStudy = 'Voltar ao estudo';
+const executionBackToStudy = 'Voltar ao Estudo';
 const executionDiscardStudy = 'Descartar Estudo';
 const executionDiscardStudyDescription =
     'Se você encerrar seu estudo, perderá todo o seu progresso.\nDeseja prosseguir?';

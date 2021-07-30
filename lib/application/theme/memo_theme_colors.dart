@@ -46,17 +46,17 @@ MaterialColor buildClassicSecondarySwatch() {
   );
 }
 
-MaterialColor buildClassicNegativeSwatch() {
-  const defaultNegative = Color(0xFFE63D70);
+MaterialColor buildClassicDestructiveSwatch() {
+  const defaultDestructive = Color(0xFFE63D70);
   return MaterialColor(
-    defaultNegative.value,
+    defaultDestructive.value,
     const {
       50: Color(0xFFFFEDF3),
       100: Color(0xFFFFC6D7),
       200: Color(0xFFFF9FBC),
       300: Color(0xFFFF78A0),
       400: Color(0xFFFF5185),
-      500: defaultNegative,
+      500: defaultDestructive,
       600: Color(0xFFC42A58),
       700: Color(0xFFA21A43),
       800: Color(0xFF800E30),

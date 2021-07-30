@@ -14,7 +14,7 @@ class MemoThemeData {
     required this.primarySwatch,
     required this.secondarySwatch,
     required this.neutralSwatch,
-    required this.negativeSwatch,
+    required this.destructiveSwatch,
   });
 
   final MemoTheme theme;
@@ -22,5 +22,5 @@ class MemoThemeData {
   final MaterialColor primarySwatch;
   final MaterialColor secondarySwatch;
   final MaterialColor neutralSwatch;
-  final MaterialColor negativeSwatch;
+  final MaterialColor destructiveSwatch;
 }
