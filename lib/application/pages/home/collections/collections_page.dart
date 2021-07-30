@@ -43,7 +43,10 @@ class CollectionsPage extends HookWidget {
         ThemedTabBar(controller: collectionsTabController, tabs: tabs),
         Expanded(
           child: _CollectionsContents(
-            (segment) => collectionsTabController.animateTo(segment.index),
+            onSegmentSwapRequested: () {
+              final nextIndex = (collectionsTabController.index + 1) % availableSegments.length;
+              collectionsTabController.animateTo(nextIndex);
+            },
           ),
         ),
       ],
@@ -68,9 +71,10 @@ class CollectionsPage extends HookWidget {
 
 /// [CollectionsPage] visible contents, given the current [collectionsVM] state.
 class _CollectionsContents extends HookWidget {
-  const _CollectionsContents(this.onUpdateSegment);
+  const _CollectionsContents({required this.onSegmentSwapRequested});
 
-  final Function(CollectionsSegment segment) onUpdateSegment;
+  /// {@macro onSegmentSwapRequested}
+  final VoidCallback onSegmentSwapRequested;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +87,11 @@ class _CollectionsContents extends HookWidget {
       final items = state.collectionItems;
 
       if (items.isEmpty) {
-        widget = _CollectionsEmptyState(onUpdateSegment, currentSegment: state.currentSegment);
+        widget = _CollectionsEmptyState(
+          onSegmentSwapRequested: onSegmentSwapRequested,
+          title: strings.collectionsEmptyTitleSegment(state.currentSegment),
+          description: strings.collectionsEmptyMessageSegment(state.currentSegment),
+        );
       } else {
         widget = CollectionsListView(items);
       }
@@ -95,12 +103,16 @@ class _CollectionsContents extends HookWidget {
   }
 }
 
-/// [CollectionsPage] empty state, given the current [collectionsVM] state.
 class _CollectionsEmptyState extends HookWidget {
-  const _CollectionsEmptyState(this.onUpdateSegment, {required this.currentSegment});
+  const _CollectionsEmptyState({required this.onSegmentSwapRequested, required this.title, required this.description});
 
-  final Function(CollectionsSegment segment) onUpdateSegment;
-  final CollectionsSegment currentSegment;
+  /// {@template onSegmentSwapRequested}
+  /// An empty-state request for a segment swap.
+  /// {@endtemplate}
+  final VoidCallback onSegmentSwapRequested;
+
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
@@ -111,31 +123,23 @@ class _CollectionsEmptyState extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-          images.folderIllustrationAsset,
-          height: dimens.collectionsEmptyStateImageSize,
-          width: dimens.collectionsEmptyStateImageSize,
-          fit: BoxFit.fill,
+          images.folderBigAsset,
+          height: dimens.collectionsEmptyStateSize,
+          width: dimens.collectionsEmptyStateSize,
+          fit: BoxFit.contain,
           color: theme.neutralSwatch.shade700,
         ),
         context.verticalBox(Spacing.xLarge),
-        Text(
-          strings.collectionsEmptyTitleSegment(currentSegment),
-          style: textTheme.headline6,
-          textAlign: TextAlign.center,
-        ),
+        Text(title, style: textTheme.headline6, textAlign: TextAlign.center),
         context.verticalBox(Spacing.medium),
         Text(
-          strings.collectionsEmptyMessageSegment(currentSegment),
+          description,
           style: textTheme.bodyText2?.copyWith(color: theme.neutralSwatch.shade400),
           textAlign: TextAlign.center,
         ),
         context.verticalBox(Spacing.xLarge),
         ElevatedButton(
-          onPressed: () {
-            final oppositeSegment =
-                currentSegment == CollectionsSegment.explore ? CollectionsSegment.review : CollectionsSegment.explore;
-            onUpdateSegment(oppositeSegment);
-          },
+          onPressed: onSegmentSwapRequested,
           child: Text(strings.collectionsStartNow.toUpperCase(), style: textTheme.button),
         )
       ],
