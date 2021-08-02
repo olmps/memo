@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Reinforces that these rules should block all operations, unless explicitly allowed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // `true` if the request is authenticated.
+    function isAuthenticated() { return request.auth != null && request.auth.uid != null; }
+
+    match /users/{userId} {
+      // `true` if the request is being made by the document's owner.
+      function isOwner() { return isAuthenticated() && request.auth.uid == userId; }
+
+      allow read, write: if isOwner();
+
+      match /collections/{doc} {
+        allow read, write: if isOwner();
+
+        match /memos/{doc} {
+          allow read, write: if isOwner();
+        }
+      }
+
+      match /collections_categories/{doc} {
+        allow read, write: if isOwner();
+      }
+
+      match /collections_executions/{doc} {
+        allow read, write: if isOwner();
+
+        match /memos_executions/{doc} {
+          allow read, write: if isOwner();
+        }
+      }
+    }
+
+    match /collections/{doc} {
+      allow read: if isAuthenticated();
+
+      match /memos/{doc} {
+        allow read: if isAuthenticated();
+      }
+    }
+
+    match /collections_categories/{doc} {
+      allow read: if isAuthenticated();
+    }
+  }
+}
