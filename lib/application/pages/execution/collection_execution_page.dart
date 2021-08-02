@@ -32,13 +32,15 @@ class _CollectionExecutionPageState extends State<CollectionExecutionPage> {
       final allowsActionTap = state.isDisplayingQuestion || state.markedAnswer != null;
       return Scaffold(
         appBar: _ExecutionAppBar(state.completionValue),
-        body: ExecutionTerminal(
-          contents: state.currentContents,
-          isDisplayingQuestion: state.isDisplayingQuestion,
-          collectionName: state.collectionName,
-          markedAnswer: state.markedAnswer,
-          onDifficultyMarked: readExecutionVM(context).markCurrentMemoDifficulty,
-          onActionPressed: allowsActionTap ? readExecutionVM(context).nextContents : null,
+        body: SafeArea(
+          child: ExecutionTerminal(
+            contents: state.currentContents,
+            isDisplayingQuestion: state.isDisplayingQuestion,
+            collectionName: state.collectionName,
+            markedAnswer: state.markedAnswer,
+            onDifficultyMarked: readExecutionVM(context).markCurrentMemoDifficulty,
+            onActionPressed: allowsActionTap ? readExecutionVM(context).nextContents : null,
+          ),
         ),
       );
     }
