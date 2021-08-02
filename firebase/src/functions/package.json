@@ -1,0 +1,12 @@
+{
+  "name": "memo-firebase-functions",
+  "main": "dist/functions/index.js",
+  "engines": {
+    "node": "14"
+  },
+  "private": true,
+  "dependencies": {
+    "firebase-admin": "^9.11.0",
+    "firebase-functions": "^3.14.1"
+  }
+}
