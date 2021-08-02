@@ -1,0 +1,10 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "collection_executions",
+      "fieldPath": "executions",
+      "indexes": []
+    }
+  ]
+}
