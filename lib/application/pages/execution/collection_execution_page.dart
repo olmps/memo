@@ -11,9 +11,12 @@ import 'package:memo/application/pages/execution/completed_execution_contents.da
 import 'package:memo/application/pages/execution/execution_providers.dart';
 import 'package:memo/application/pages/execution/execution_terminal.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/utils/bottom_sheet.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
+import 'package:memo/application/widgets/theme/destructive_button.dart';
+import 'package:memo/application/widgets/theme/secondary_button.dart';
 
 class CollectionExecutionPage extends StatefulHookWidget {
   @override
@@ -67,7 +70,7 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
     if (completionValue != null) {
       final actions = Row(
         children: [
-          AssetIconButton(images.closeAsset, onPressed: () => _showCloseDialog(context)),
+          AssetIconButton(images.closeAsset, onPressed: () => _showCloseSheet(context)),
           Expanded(child: _buildCompletionProgress()),
         ],
       );
@@ -96,29 +99,26 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
     );
   }
 
-  /// Displays an [AlertDialog] to reinforce the discard of the current execution.
-  Future<void> _showCloseDialog(BuildContext context) async {
-    await showDialog<dynamic>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text(strings.executionDiscardStudy),
-          content: const Text(strings.executionDiscardStudyDescription),
-          actions: [
-            TextButton(
-              // Discards the current displayed route, which will also dismiss this uncontrolled dialog.
-              onPressed: readCoordinator(context).pop,
-              child: Text(strings.yes.toUpperCase()),
-            ),
-            TextButton(
-              // Dismiss it by calling the Material's navigator, because this is an uncontrolled dialog (a dialog that
-              // wasn't added/controlled by our coordinator).
-              onPressed: Navigator.of(context).pop,
-              child: Text(strings.no.toUpperCase()),
-            ),
-          ],
-        );
-      },
+  /// Displays an bottom sheet alert to reinforce the discard of the current execution.
+  Future<void> _showCloseSheet(BuildContext context) async {
+    final textTheme = Theme.of(context).textTheme;
+
+    return showSnappableDraggableModalBottomSheet(
+      context,
+      isDismissible: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(strings.executionDiscardStudy, style: textTheme.subtitle1),
+          context.verticalBox(Spacing.xLarge),
+          Text(strings.executionDiscardStudyDescription, style: textTheme.bodyText1),
+          context.verticalBox(Spacing.xxxLarge),
+          DestructiveButton(
+              onPressed: readCoordinator(context).pop, child: Text(strings.executionDiscard.toUpperCase())),
+          context.verticalBox(Spacing.medium),
+          SecondaryButton(onPressed: Navigator.of(context).pop, child: Text(strings.executionBackToStudy.toUpperCase()))
+        ],
+      ).withAllPadding(context, Spacing.medium),
     );
   }
 }

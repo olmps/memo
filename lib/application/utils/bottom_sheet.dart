@@ -4,13 +4,7 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
 
-/// Wraps a [showModalBottomSheet] behavior that resizes itself content based on [child] size
-///
 /// Wraps a [showModalBottomSheet] behavior that snaps its content based on [child] size
-///
-/// If [isDismissible] is `false`, all drag interactions are disabled and the caller must handle its dismissal, like
-/// some close button or any other action that will eventually dismiss this modal. Also, no dragIndicator is drawn,
-/// to corroborate with the no-dragging behavior.
 ///
 /// If [isDismissible] is `false`, all drag interactions are disabled and the caller must handle its dismissal directly.
 /// Also, no dragIndicator is drawn.
@@ -62,7 +56,7 @@ Future<T?> showSnappableDraggableModalBottomSheet<T>(
             mainAxisSize: MainAxisSize.min,
             children: [
               header,
-              Flexible(child: child),
+              Flexible(child: SafeArea(child: child)),
             ],
           ),
         ),
