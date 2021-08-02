@@ -17,6 +17,7 @@ enum ImageKey {
   trendingUpArrow,
 
   // illustrations
+  folderBig,
   logo,
   userAvatar,
 }
@@ -39,6 +40,8 @@ extension ImageKeyPath on ImageKey {
         return '$_iconsRoot/settings.png';
       case ImageKey.trendingUpArrow:
         return '$_iconsRoot/trending_up_arrow.png';
+      case ImageKey.folderBig:
+        return '$_illustrationsRoot/folder_big.png';
       case ImageKey.logo:
         return '$_illustrationsRoot/logo.png';
       case ImageKey.userAvatar:
@@ -57,5 +60,6 @@ final settingsAsset = ImageKey.settings.path;
 final trendingUpArrowAsset = ImageKey.trendingUpArrow.path;
 
 const _illustrationsRoot = '$_imgsRoot/illustrations';
+final folderBigAsset = ImageKey.folderBig.path;
 final logoAsset = ImageKey.logo.path;
 final userAvatarAsset = ImageKey.userAvatar.path;
