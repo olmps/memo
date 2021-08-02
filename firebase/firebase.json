@@ -1,0 +1,35 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json",
+    "predeploy": [
+      "npm --prefix \"$PROJECT_DIR\" run firestore-rules-test"
+    ]
+  },
+  "functions": {
+    "source": "src/functions",
+    "predeploy": [
+      "npm --prefix \"$PROJECT_DIR\" run functions-build"
+    ]
+  },
+  "emulators": {
+    "storage": {
+      "port": 9199
+    },
+    "auth": {
+      "port": 9099
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "functions": {
+      "port": 5001
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
