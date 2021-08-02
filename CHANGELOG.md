@@ -10,25 +10,51 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## [0.2.0-rc.1] - 2021-08-02
+
 ### Added
 - Firebase Analytics SDK with no need for consent - disabled `AdId` collection.
+- A proper empty state for `CollectionsPage` - the `_CollectionsEmptyState`.
+- `DestructiveButton`, a customized button for destructive operations - with custom layout specs.
+- `MemoThemeData.destructiveSwatch` and a its respective destructive swatch for the classic theme.
 
-## Updated
+### Updated
 - Android & iOS Fastfiles to automatically distribute uploaded builds to external testers.
+- Both `pull-request` and `release` workflows now:
+  - Caches flutter's SDK.
+  - Run Flutter tests only once.
+  - Strategy used to authenticate with `GoogleService-Info` (only required in `release`, using an empty template in
+  `pull-request`).
+  - Uses the Flutter's beta channel + latest version, requirements of the animation jank fix.
+- Android `minSdkVersion` from `16` to `17` and `multiDexEnabled` to `true`, requirements of `flutter-quill` dependency.
+- iOS `MinimumOSVersion` from `8.0` to `9.0`, an apparent dependency on the latest beta channel version.
+- Flutter's SDK to `2.4.0-4.2.pre` to fix the animation jank.
+- `Fastfile` to use `--bundle-sksl-path` option, requirements of the animation jank fix.
+- When quitting the execution, `CollectionExecutionPage` now uses the `showSnappableDraggableModalBottomSheet` instead
+of `AlertDialog`.
 
-## Fixed
-- `AssetIconButton` padding now conforms to the correct specs.
-- Removed misleading `QuillEditor` cursor in `readOnly` mode.
+#### Collections
+
+- Cohesion improvements on `comecando_com_git`.
+
+### Fixed
+- Discord link was expired, now it's a permalink.
+- White screen before `SplashPage` was loaded (using `flutter_native_splash` and generating native splash screens).
+- `AssetIconButton` wasn't conforming to the correct layout specs.
+- Misleading `QuillEditor` cursor in `readOnly` mode.
+- Wrong iOS localization. `en` removed while we don't localize the app, only supports `pt-BR` for now.
+- [Possible Fix] Trying to use a pre-bundled shader strategy to fix all animation's jank.
+- `ExecutionTerminal` not respecting the device's safe area.
 
 ## [0.1.0] - 2021-07-16
 
-## Added
+### Added
 - `bdd_fundamentos_01`, `fundamentos_scrum`, `guia_scrum`, `kotlin_fundamentos_01` and `manifesto_agil` collections.
 Thanks to all contributors!
 
 ## [0.1.0-rc.3] - 2021-07-15
 
-## Added
+### Added
 - `Contributor` model and its `ContributorSerializer` serializer.
 - `EnvMetadata` and its respective implementation that provides application's environment constants.
 - `SettingsSection.community` with `LinkSettingsItem` to discord.
@@ -36,7 +62,7 @@ Thanks to all contributors!
 - `MultiContributorsView` and `SingleContributorView` widgets.
 - `Firebase` and `FirebaseCrashlytics` to record unexpected crashes, errors and exceptions.
   
-## Updated
+### Updated
 - All files documentations, including standardizing communication.
 - `CollectionMemos` and `Collection` now have a `contributors` property, exposing all associated contributors with that
 particular collection.
@@ -47,23 +73,23 @@ particular collection.
 - `Fastfile` to upload iOS symbols to Crashlytics.
 - Existing collections with their respective contributors.
 
-## Fixed
+### Fixed
 - Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
 - Missing `SettingsVM` interface.
 - Hero animations built through  `buildHeroCollectionCardFromItem` weren't using an unique `Hero.tag`.
 
 ## [0.1.0-rc.2] - 2021-05-12
 
-## Added
+### Added
 - `comecando_com_git`, `ecossistema_do_flutter` and `swift_fundamentos_01` collections.
 
-## Removed
+### Removed
 - `git_getting_started` collection.
 
-## Updated
+### Updated
 - Added new resources to `resources.json`.
 
-## Fixed
+### Fixed
 - Fixed [`release`](.github/workflows/release.yml) workflow to use personal access token when pushing changes to the
 repo.
 
