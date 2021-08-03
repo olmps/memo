@@ -33,9 +33,6 @@ a beta or production release, they must be documented here).
 - When quitting the execution, `CollectionExecutionPage` now uses the `showSnappableDraggableModalBottomSheet` instead
 of `AlertDialog`.
 
-### Fixed
-- `release` workflow to setup Flutter pub before archiving.
-
 #### Collections
 
 - Cohesion improvements on `comecando_com_git`.
