@@ -5,12 +5,15 @@ platform :android do
   lane :internal do
     # Clean
     sh("flutter", "clean")
-
+    
+    # Pub get
+    sh("flutter", "pub", "get")
+    
     # Bumps Version Code
     android_set_version_code()
 
     # Build the app
-    sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD", "--bundle-sksl-path android_animations.json")
+    sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD", "--bundle-sksl-path=android_animations.json")
 
     # Gets version info
     version_info = flutter_version(
