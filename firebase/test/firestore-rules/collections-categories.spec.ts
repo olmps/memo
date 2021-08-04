@@ -7,8 +7,8 @@ describe("collections_categories/", () => {
   let firestore: utils.ClientFirestore;
 
   describe("authenticated users", () => {
-    before(async () => {
-      firestore = await utils.createMyFirestore();
+    before(() => {
+      firestore = utils.createMyFirestore();
       collectionsRef = firestore.collection(collectionId);
     });
 
@@ -23,8 +23,8 @@ describe("collections_categories/", () => {
   });
 
   describe("unauthenticated users", () => {
-    before(async () => {
-      firestore = await utils.createFirestore();
+    before(() => {
+      firestore = utils.createFirestore();
       collectionsRef = firestore.collection(collectionId);
     });
 
