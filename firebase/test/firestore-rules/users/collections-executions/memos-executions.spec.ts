@@ -12,22 +12,25 @@ describe("users/{userId}/collections_executions/{doc}/memos_executions", () => {
       memosExecutionsRef = firestore.collection(collectionId(utils.myFirestoreUid));
     });
 
-    it("should be able to read its collections executions", async () => {
+    it("should be able to read its memos executions", async () => {
       await rulesTesting.assertSucceeds(memosExecutionsRef.get());
     });
 
-    it("should be denied to read other collections executions", async () => {
+    it("should be denied to read other memos executions", async () => {
       const othersMemosExecutions = firestore.collection(collectionId("any"));
       await rulesTesting.assertFails(othersMemosExecutions.get());
     });
 
-    it("should be able to write its collections executions", async () => {
+    it("should be able to write its memos executions", async () => {
+      await rulesTesting.assertSucceeds(memosExecutionsRef.add({}));
       await rulesTesting.assertSucceeds(memosExecutionsRef.doc().set({ any: "any" }));
     });
 
-    it("should be denied to write other collections executions", async () => {
+    it("should be denied to write other memos executions", async () => {
       const othersMemosExecutions = firestore.collection(collectionId("any"));
-      await rulesTesting.assertFails(othersMemosExecutions.get());
+
+      await rulesTesting.assertFails(othersMemosExecutions.add({}));
+      await rulesTesting.assertFails(othersMemosExecutions.doc().set({ any: "any" }));
     });
   });
 });
