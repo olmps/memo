@@ -22,12 +22,15 @@ describe("users/{userId}/collections_categories", () => {
     });
 
     it("should be able to write its collections categories", async () => {
+      await rulesTesting.assertSucceeds(collectionsCategoriesRef.add({}));
       await rulesTesting.assertSucceeds(collectionsCategoriesRef.doc().set({ any: "any" }));
     });
 
     it("should be denied to write other collections categories", async () => {
       const othersCategories = firestore.collection(collectionId("any"));
-      await rulesTesting.assertFails(othersCategories.get());
+
+      await rulesTesting.assertFails(othersCategories.add({}));
+      await rulesTesting.assertFails(othersCategories.doc().set({ any: "any" }));
     });
   });
 });
