@@ -15,11 +15,21 @@ English | [Portuguese](README_ptbr.md)
 Monorepo for Memo.
 
 Memo is an open-source, programming-oriented [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)
-software (SRS) written in Flutter.
+software (SRS) - created using Flutter and Firebase.
 
-> As of now, this project is designed to only output builds for Android and iOS. Even though, given the current
-> _stability_ of Flutter SDK for desktop (Windows, Linux and macOS) and web, there is a high probability that this
-> project will eventually support builds for all platforms.
+<div style='display: flex; align-items: center;'>
+  <a href="https://apps.apple.com/br/app/memo-estude-programa%C3%A7%C3%A3o/id1565438866?itsct=apps_box_badge&amp;itscg=30200">
+    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1626393600&h=43060d9f55f8fc9034f8109bd6bbe56e" alt="Download on the App Store" style="height: 83px;" />
+  </a>
+
+  <a href='https://play.google.com/store/apps/details?id=com.olmps.memoClient&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+    <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' style="width: 250px;" />
+  </a>
+</div>
+
+... or you can use the latest - beta - functionalities through:
+- [TestFlight - iOS](https://testflight.apple.com/join/Xc33YcGa).
+- [Google Play Beta Testing - Android](https://play.google.com/apps/testing/com.olmps.memoClient).
 
 ---
 
@@ -35,29 +45,29 @@ effective to guide PR discussions.
 - [Contributing & Good Practices](#contributing--good-practices): recommendation on how to write good code for this
   application;
 - [License](#license): how this software is licensed and how you may use it.
+- [Sponsors](#sponsors): who helped us to make this project a reality.
 
 ## Setup
 
-If you have no idea how to install Flutter and run it locally, check this
-[_Get started_](https://flutter.dev/docs/get-started/install).
+<!-- TODO(matuella): Add links referencing such setups after both are done -->
 
-If you have Flutter setup locally, on the project's root folder, install pubspec dependencies by running
-`flutter pub get`.
-
-### Firebase dependencies
-
-Memo has Firebase dependencies that needs to be setup before running locally. More information on this in 
-[ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
+It shouldn't be hard to run your own Memo setup locally, but you'll have to add Firebase in both [`firebase/`]() and
+[`flutter/`]() projects. These are really simple steps, but the TLDR is that you'll have to create a Firebase project;
+deploy the infrastructure specified in `firebase/`; and add the required Firebase files to run your own server/client
+instances.
 
 ## Architecture
 
-How this application works from inside and how it interacts with external dependencies - written in details in
-[ARCHITECTURE.md](ARCHITECTURE.md).
+The root [ARCHITECTURE.md](ARCHITECTURE.md) gives an overview of this application's architecture, although if you want
+to know how Memo works from the inside, go check out both [Flutter's ARCHITECTURE](flutter/ARCHITECTURE.md) and
+[Firebase's ARCHITECTURE](firebase/ARCHITECTURE.md) - these go through all of the nitty-gritty of each language toolkit,
+in-application layers (and its interactions), non-standard decisions, etcetera - literally explaining every major
+decision for each "ecosystem".
 
 ## Background
 
-If you're interested in checking out an overview about how we dealt with this project's software process (inside our 
-team), check out [.process/](.process/README.md) (sorry, for now only in ptBR).
+If you're interested in checking out an overview - of the first release, client-side only - about how we dealt with this
+project's software process, check out [.process/](.process/README.md) (sorry, only in ptBR).
 
 ## Contributing & Good Practices
 
