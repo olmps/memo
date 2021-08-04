@@ -7,8 +7,8 @@ describe("users/{userId}/collections_categories", () => {
   let firestore: utils.ClientFirestore;
 
   describe("owner users", () => {
-    before(async () => {
-      firestore = await utils.createMyFirestore();
+    before(() => {
+      firestore = utils.createMyFirestore();
       collectionsCategoriesRef = firestore.collection(collectionId(utils.myFirestoreUid));
     });
 
