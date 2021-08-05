@@ -1,6 +1,6 @@
-# Triggers on all changes committed to Pull Requests pointing to `main` branch
-name: Pull Request
+name: "[Flutter] Pull Request"
 
+# Triggers on all Pull Requests to `main` branch
 on:
   pull_request:
     branches:

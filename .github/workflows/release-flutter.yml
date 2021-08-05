@@ -1,5 +1,6 @@
-name: Release
+name: "[Flutter] Release"
 
+# Triggers on all published releases
 on:
   release:
     types:
