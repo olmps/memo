@@ -1,9 +1,6 @@
-# Architecture
-
 Table of contents
 - [Architecture](#architecture)
   - [`.vscode/`](#vscode)
-    - [Useful vscode extensions](#useful-vscode-extensions)
   - [`android/` - Android required files](#android---android-required-files)
   - [`ios/` - iOS required files](#ios---ios-required-files)
   - [`lib/` - Flutter application](#lib---flutter-application)
@@ -37,42 +34,29 @@ Table of contents
   - [`web/`](#web)
 - [Relevant Topics](#relevant-topics)
   - [Why `river_pod` and not "x" state management library?](#why-river_pod-and-not-x-state-management-library)
-  - [Why `sembast` and not "x" database?](#why-sembast-and-not-x-database)
   - [Why `mocktail` and not `mockito`?](#why-mocktail-and-not-mockito)
   - [`CoordinatorRouter` and `Router` (or Navigator 2.0)](#coordinatorrouter-and-router-or-navigator-20)
   - [Why manually importing the font, if there is the `google_fonts`?](#why-manually-importing-the-font-if-there-is-the-google_fonts)
   - [Importing Fonts](#importing-fonts)
   - [Exception handling](#exception-handling)
   - [App Icon](#app-icon)
-  - [Local collections and resources versioning](#local-collections-and-resources-versioning)
   - [Environment](#environment)
   - [Firebase](#firebase)
   - [Release](#release)
 
+# Architecture
+
 ## `.vscode/`
 
-While this project heavily enforces that vscode should be used, IntelliJ is also an alternative, although it won't
-provide the best experience with the setup made in this repository. If you still prefer to use it, there should be no
-problem at all, just make sure to follow the same guidelines specified in [`settings.json`](.vscode/settings.json).
+There is not much to add on top of the [General ARCHITECTURE.md .vscode section](//TODO), although for this Flutter
+project, the explanation for the recommended extensions:
 
-All configuration files exist in [`.vscode`](.vscode/) folder and **should be git-tracked**.
-
-  - [`launch.json`](.vscode/launch.json) is where all pre-configured command-line scripts are at, such as running a
-  debug dev environment;
-  - [`settings.json`](.vscode/settings.json) is responsible for the editor configurations, such as line-length, rules
-  and auto-format on save.
-
-### Useful vscode extensions
-
-- Dart (id: dart-code.dart-code);
-- Flutter (id: dart-code.flutter);
-- Awesome Flutter Snippets (id: nash.awesome-flutter-snippets) - frequently used snippets in any Flutter application;
+- Dart (id: dart-code.dart-code) - makes `Dart` development **way** more productive;
+- Flutter (id: dart-code.flutter) - makes `Flutter` development **way** more productive;
 - Brack Pair Color (id: coenraads.bracket-pair-colorizer) - useful when dealing with nested/verbose widgets.
 
 It's highly recommended to, at least, add the `Dart` and `Flutter` extension, as they provide an absurd amount of useful
 features.
-
-> You can copy the id and search in the vscode marketplace to find them.
 
 ## `android/` - Android required files
 
@@ -122,16 +106,13 @@ making things slower just to follow some principles that don't necessarily apply
 not make sense (or even be completely dumb) for some, but may be good for others.
 [Relevant xkcd](https://xkcd.com/927/).
 
-One extra thing: this is heavily influenced by a bunch personal opinion and experiences in some production projects
-that the team has worked on. This project's external dependencies will keep changing as the time goes on, Flutter will
-also keep evolving, and we have to adapt in a way to maintain consistency, integrity and scalability of our solution.
-So, it's probable that there is (or will be) better ways to achieve the same goals/objectives, and for this, we look
-into your help to make this project's architecture continuously provide a good developer experience to add new features,
-update old ones and keep those nasty bugs away.
+Please, keep the [General ARCHITECTURE.md](../ARCHITECTURE.md#one-last-thing) introduction in mind - there are a ton of
+personal opinions and experiences here. This means that there **will be better ways to build what we've done**, and it's
+what we are aiming for: your help to improve this architecture over the time.
 
 ### Overview
 
-![Simple Architecture Overview](.resources/00arch_overview_simple.png "Architecture Overview")
+![Simple Architecture Overview](../.resources/00arch_overview_flutter_simple.png "Simple Architecture Overview")
 
 The picture above gives us a really simplified overview of each major layer that gives shape to this application.
 
@@ -146,7 +127,7 @@ If you don't want to dig in on what each part is responsible of (and why), here 
 Now, if you want to take a closer inspection on each interaction of each layer, the image below might be more suited to
 comprehend exactly how each layer (and its exceptions) interacts/depends on others. 
 
-![Complex Architecture Overview](.resources/01arch_overview_complex.png "Architecture Overview")
+![Complex Architecture Overview](../.resources/01arch_overview_flutter_complex.png "Complex Architecture Overview")
 
 - The dotted arrow means a direct dependency, such as the connection between *View Models -> Services*. These
 connections require that the communication should always be made through an interface and following the
@@ -371,6 +352,9 @@ Due to some [limitations of the dart language](https://github.com/dart-lang/lang
 null-safety approach, [`mockito`](https://github.com/dart-lang/mockito) is now using a codegen to mock, which we
 honestly think that [`mocktail`](https://github.com/felangel/mocktail) is a better alternative.
 
+If you are using `vscode` IDE, you can call the `Dart: Run All Tests` command to run all tests and get a report on the
+results.
+
 ### `utils/`
 
 Shared functionality amongst all test cases.
@@ -399,13 +383,6 @@ they tend to be quite verbose (thus bloating the code) and limited in some scena
 particularities would be a long discussion, but
 [`river_pod` has a brief explanation](https://github.com/rrousselGit/river_pod#why-another-project-when-provider-already-exists)
 on why it solves such problems and why it's better to use it.
-
-## Why `sembast` and not "x" database?
-
-[`sembast`](https://github.com/tekartik/sembast.dart) is one of the few NoSQL databases that are really easy to use,
-supports web (in a parallel package) and provides a decent amount of functionality like reactivity and complex queries,
-with the addition of built-in support for migration. The library has its limitations due to its inherent nature, but we
-don't think that it will be an issue for this project.
 
 ## Why `mocktail` and not `mockito`?
 
@@ -484,32 +461,15 @@ signature is: `showExceptionSnackBar(BaseException exception)`.
 
 ## App Icon
 
-The application icon is auto-generated using a high-res single icon asset file alongside a commonly used package that
-uses this asset to generate for all platforms (`flutter-launcher-icons`).
+The icons are auto-generated using a high-res asset file by package (`flutter-launcher-icons`) that does this for all platforms.
 
-If you change the icon's asset, you have to run this tool again to make sure that the files are updated:
-
-```
-flutter pub run flutter_launcher_icons:main
-```
-
-## Local collections and resources versioning
-
-Because the current `memo` version only manages its data locally, it has no server to defer more complex use-cases, like
-syncing the user's list of `Collection`s (with its `Memo`s) and its `Resource`s.
-
-This sync is done whenever a new application version is deployed - by checking which was the last stored version. Then,
-when this version differs from the last stored one, runs through all the `assets/collections/` files to make the
-according additions, updates and removals. The same happens to `assets/resources.json`, but in this case, there is a
-single json file containing all the resources available to the application.
-
-This version check runs once every time the application opens, but the heavy computation only occurs when the current
-versus expected version differs. You can find more about this in the `VersionServices` implementation file.
+If you change the asset, you'll have to run this tool again to update the required files:
+`flutter pub run flutter_launcher_icons:main`
 
 ## Environment
 
-For different types of build environments, we don't use the common _flavors_, iOS schemas and all of that painful setup,
-due to the fact that, since Flutter `1.17`, we can now use command arguments to inject any variable in our application -
+For different types of build environments, we **don't** use flavors, iOS schemas and all of that painful setup, due to
+the fact that, since Flutter `1.17`, we can now use command arguments to inject any variable in our application -
 no more multiple `main.dart` files and such stuff. Simply run:
 
 `flutter run --dart-define=ENV=MY_ENVIRONMENT`
@@ -521,56 +481,46 @@ such as server URLs.
 If you are using `vscode` IDE, there is the [launch configuration files](.vscode/launch.json) for you to auto run and 
 debug the application.
 
-And that's it, the currently supported environments are: `DEV` and `PROD`.
+And that's it. The currently supported environments are: `DEV` and `PROD`.
 
 ## Firebase
 
-Because this project depends on [Firebase](https://firebase.google.com/), a third-party backend-as-a-service (BaaS), it
-requires to be setup as well, otherwise you won't be able to run your own instance of `Memo` locally. The setup is
-pretty simple, you just have to [put your own `GoogleServices-Info.plist` (iOS) and/or `google-services.json` (Android)
-in their respective folders](https://firebase.flutter.dev/docs/overview#installation) and *voilà*, you're good to go.
+Because this project depends on [Firebase](https://firebase.google.com/), it requires to be setup as well, otherwise
+you won't be able to run your own instance of `Memo` locally. The setup is pretty simple, you just have to
+[put your own `GoogleServices-Info.plist` (iOS) and/or `google-services.json` (Android) in their respective folders](https://firebase.flutter.dev/docs/overview#installation)
+and *voilà*, you're good to go.
 
-As of today (06/07/2021), these files are not checked in source control. This is because they aren't meant to be used
-in your local environment, as it could create extra unnecessary costs and could - possibly - generate inconsistencies
-while using the dependent Firebase services in these early stages of the project, like leaking your locally-modified
-code exceptions into Crashlytics, which would make things harder for everyone to actually know what's going on.
+As of today, these files are not checked in source control. This is because they aren't meant to be used in your local
+environment, as it could create extra unnecessary costs and could - possibly - generate inconsistencies while using the
+dependent Firebase services in these early stages of the project, like leaking your locally-modified code exceptions
+into Crashlytics, which would make things harder for everyone to actually know what's going on.
 
 Although in the future, we would like for them to be used in your local environment just like they are used in the
-production application. It's just that we aren't fully aware of the consequences yet.
+production application, it's just that we aren't fully aware of the consequences yet.
 
-You may notice the template file `GoogleService-Info-Template.plist`. Its only purpose is to allow our CI to build the 
-app through `pull_request` workflow, as it only contains mocked information.
+> This project includes a non-standard file called `GoogleService-Info-Template.plist`. Creating this blank
+> Firebase-config file allows the CI to build the app without using the production information.
 
-Nonetheless, if you want to know how to setup your own Firebase project, check out the 
+If you want to know how to setup your own Firebase project, check out the
 [FlutterFire docs](https://firebase.flutter.dev/docs/overview/).
 
 ## Release
 
-The release process is fully-automated using Github Actions with Fastlane.
-The [release workflow](.github/workflows/release.yml) script triggers each time a new tag is published, and begins the
-release process in all supported platforms. The release script prepares the environment to build and release all 
-app targets by setting up Flutter environment for iOS and Android platforms, setting up necessary private keys to fetch
-distribution certificates from an external Github Repository and other setup phases that are required to successfully 
-build and deploy the apps. All these phases are detailed explained in the 
-[release workflow script](.github/workflows/release.yml).
+The [release workflow](../.github/workflows/release-flutter.yml) is triggered each time a new Github tag is published,
+running the deploy process to all supported platforms. It prepares the environment to build and release all app targets
+by setting up Flutter environment, private information (like distribution certificates from an external repository) and
+other phases that are required to deploy Memo.
 
-The Github Actions triggers the script that begins the release process, but the heavy work is made by using 
-[Fastlane](https://fastlane.tools/) automation tool. Fastlane gives us a set of tools to automate all the heavy work
-of configuring a project environment to be deployed, build and deploy it to production. Every the release script from
-Github Actions finish the environment setup, we use Fastlane to run the targets tests, analyzer, bump the build version
-from the targets, build the projects and finally deploy them. We currently have Fastlane running for iOS and Android 
-targets, and the lanes that perform such tasks are described in details in both platforms Fastfile's:
+Under the hood, all of the heavy work is done by [Fastlane](https://fastlane.tools/). In simple terms, this tool
+automates the build and deploy to the platform's environment. After the deploy is completed, it bumps the build version
+from the targets. We currently have Fastlane running for [iOS](ios/fastlane/Fastfile) and
+[Android](android/fastlane/Fastfile) targets.
 
-- [iOS Fastfile](ios/fastlane/Fastfile)
-- [Android Fastfile](android/fastlane/Fastfile)
+> There's a catch to both iOS and Android build-versioning: the Android's build number is indefinitely incremented,
+> since it's not possible to reset an Android project build number, while iOS resets its build number every time a new 
+> version (major, minor or patch, doesn't matter) is bumped.
 
-The main difference between the mobile platforms is that Android build number is indefinitely incremented, since it's
-not allowed to reset an Android project build number, while iOS resets its build number every time the app version 
-changes. 
-
-You may notice that both platforms Fastfiles are quite different. This happens firstly because both platforms 
-environments are completely different - as an example of that, iOS requires provision profiles and certificates to 
-build and deploy the application, while Android requires a sign key to before deploying the app. They also differ 
-because there are some actions being used in iOS Fastlane that doesn't exists on Android - an example of that is that
-the iOS Fastlane uses an action to fetch the last used build number on TestFlight so it can increment it and deploy the
-next version, while Android just trust in the number that exists in the local `build.gradle`.
+You may notice that both platforms Fastfiles are quite different, and this is a consequence to the inherent difference
+between each environment. As an example, while iOS requires provision profiles and certificates, Android requires a sign
+key. Another one are the environment-specific actions: iOS uses an action to fetch the last build number to increment
+it, while Android can trust in the local `build.gradle` value.
