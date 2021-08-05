@@ -1,5 +1,5 @@
 # Run Flutter analyzer and all tests when a PR points to `main`.
-name: Analyze & Tests
+name: [Flutter] Analyze & Tests
 
 on:
   pull_request:

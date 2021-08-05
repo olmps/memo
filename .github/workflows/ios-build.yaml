@@ -1,5 +1,5 @@
 # Run iOS build when there are changes in `ios/` folder in a PR pointing to `main`.
-name: iOS Build
+name: [Flutter] iOS Build
 
 on:
   pull_request:

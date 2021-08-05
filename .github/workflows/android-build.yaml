@@ -1,5 +1,5 @@
 # Run Android AppBundle build when there are changes in `android/` folder in a PR pointing to `main`.
-name: Android Build
+name: [Flutter] Android Build
 
 on:
   pull_request:
