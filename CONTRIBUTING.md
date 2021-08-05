@@ -1,5 +1,10 @@
 # CONTRIBUTING
 
+## Collections
+
+TODO(matuella): Add how to contribute with the collections, alongside its guidelines. This will be added when the create
+collection functionality is added.
+
 ## Issues
 
 Whether you find a bug, something that is not clarified or a feature request, feel free to 
