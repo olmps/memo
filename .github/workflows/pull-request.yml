@@ -7,9 +7,9 @@ on:
       - main
 
 env:
-  flutter_version: "2.4.0-4.2.pre"
+  flutter_version: "2.2.3"
   java_version: "12.x"
-  flutter_channel: "beta"
+  flutter_channel: "stable"
 
 jobs:
   build:

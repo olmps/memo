@@ -13,7 +13,7 @@ platform :android do
     android_set_version_code()
 
     # Build the app
-    sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD", "--bundle-sksl-path=android_animations.json")
+    sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD")
 
     # Gets version info
     version_info = flutter_version(
