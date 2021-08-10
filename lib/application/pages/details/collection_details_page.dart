@@ -8,7 +8,7 @@ import 'package:memo/application/pages/details/contributor_view.dart';
 import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/details/collection_details_vm.dart';
-import 'package:memo/application/widgets/theme/hero_collection_card.dart';
+import 'package:memo/application/widgets/theme/item_collection_card.dart';
 import 'package:memo/application/widgets/theme/resources_list.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
 import 'package:memo/application/widgets/theme/themed_text_tag.dart';
@@ -23,7 +23,7 @@ class CollectionDetailsPage extends HookWidget {
       final sections = <Widget>[];
 
       final heroCollectionCard = ThemedTopContainer(
-        child: buildHeroCollectionCardFromItem(
+        child: buildCollectionCardFromItem(
           state.metadata,
           padding: EdgeInsets.only(
             // The top spacing must take into consideration both the safe area and the toolbar height, as this page's

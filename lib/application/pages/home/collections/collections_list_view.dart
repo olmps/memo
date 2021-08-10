@@ -4,7 +4,7 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
-import 'package:memo/application/widgets/theme/hero_collection_card.dart';
+import 'package:memo/application/widgets/theme/item_collection_card.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
 class CollectionsListView extends StatelessWidget {
@@ -24,7 +24,7 @@ class CollectionsListView extends StatelessWidget {
           return _CollectionsSectionHeader(title: item.name)
               .withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.small);
         } else if (item is CollectionItem) {
-          return buildHeroCollectionCardFromItem(
+          return buildCollectionCardFromItem(
             item,
             padding: context.symmetricInsets(vertical: Spacing.large, horizontal: Spacing.small),
             onTap: () => readCoordinator(context).navigateToCollectionDetails(item.id),

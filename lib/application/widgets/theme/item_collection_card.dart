@@ -4,12 +4,7 @@ import 'package:memo/application/view-models/item_metadata.dart';
 import 'package:memo/application/widgets/theme/collection_card.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
-const _collectionCardTag = 'collection_card';
-
-/// Creates a [CollectionCard] from [item], wrapping it in a [Hero] element.
-///
-/// To use [Hero] properly, at least two distinct pages must have this same [item].
-Widget buildHeroCollectionCardFromItem(
+Widget buildCollectionCardFromItem(
   CollectionItem item, {
   required EdgeInsets padding,
   bool hasBorder = true,
@@ -37,17 +32,14 @@ Widget buildHeroCollectionCardFromItem(
     throw InconsistentStateError.layout('Unsupported subtype (${item.runtimeType}) of `CollectionItem`');
   }
 
-  return Hero(
-    tag: '$_collectionCardTag-${item.id}',
-    child: CollectionCard(
-      name: item.name,
-      tags: item.tags,
-      padding: padding,
-      hasBorder: hasBorder,
-      progressDescription: progressDescription,
-      progressValue: progressValue,
-      progressSemanticLabel: progressSemanticLabel,
-      onTap: onTap,
-    ),
+  return CollectionCard(
+    name: item.name,
+    tags: item.tags,
+    padding: padding,
+    hasBorder: hasBorder,
+    progressDescription: progressDescription,
+    progressValue: progressValue,
+    progressSemanticLabel: progressSemanticLabel,
+    onTap: onTap,
   );
 }
