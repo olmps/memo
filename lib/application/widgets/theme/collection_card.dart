@@ -103,7 +103,11 @@ class CollectionCard extends HookWidget {
     final borderRadius = hasBorder ? dimens.genericRoundedElementBorderRadius : null;
 
     return BoxDecoration(
-      color: memoTheme.neutralSwatch.shade800,
+      gradient: const LinearGradient(
+        colors: colors.collectionCardGradient,
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
       border: border,
       borderRadius: borderRadius,
     );
@@ -165,7 +169,6 @@ class _CollectionCardBackgroundPainter extends CustomPainter {
     canvas.clipRect(Offset.zero & size);
 
     _drawMultipleHorizontalLines(canvas, size);
-    _drawOvalGradient(canvas, size);
   }
 
   void _drawMultipleHorizontalLines(Canvas canvas, Size size) {
@@ -194,21 +197,6 @@ class _CollectionCardBackgroundPainter extends CustomPainter {
       // Keep drawing full-width horizontal lines in the y axis, respecting the `totalLines`.
       canvas.drawLine(Offset(0, dy), Offset(size.width, dy), horizontalLinePaint);
     }
-  }
-
-  void _drawOvalGradient(Canvas canvas, Size size) {
-    final ovalGradientPaint = Paint()
-      ..blendMode = ui.BlendMode.hardLight
-      // Makes the blur relative to the size's width, otherwise we might see some inconsistencies in "larger" elements.
-      ..maskFilter = ui.MaskFilter.blur(BlurStyle.normal, size.width)
-      ..shader = ui.Gradient.linear(
-        Offset.zero,
-        Offset(size.width, size.height),
-        ovalGradientColors,
-      );
-
-    // Draws a simple oval-shaped gradient that fits the whole size.
-    canvas.drawOval(Offset.zero & size, ovalGradientPaint);
   }
 
   @override

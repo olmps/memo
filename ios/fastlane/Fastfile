@@ -86,7 +86,7 @@ platform :ios do
     )
 
     # Run flutter build with release mode
-    sh("flutter", "build", "ipa", "--release", "--dart-define=ENV=PROD", "--export-options-plist=ios/exportOptions.plist", "--bundle-sksl-path=ios_animations.json")
+    sh("flutter", "build", "ipa", "--release", "--dart-define=ENV=PROD", "--export-options-plist=ios/exportOptions.plist")
     
     # Zip dSYMs
     sh(

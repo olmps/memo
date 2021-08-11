@@ -10,6 +10,12 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+### Updated
+- Replaced oval gradient from `CollectionCard` with `LinearGradient` - fixes #162.
+
+### Removed
+- Hero animation from `CollectionCard`.
+
 ## [0.2.0-rc.1] - 2021-08-02
 
 ### Added
