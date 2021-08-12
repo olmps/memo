@@ -22,22 +22,11 @@ abstract class CollectionExecutionVM extends StateNotifier<CollectionExecutionSt
 
   /// Marks the current [Memo] with the [difficulty].
   ///
-  /// Always trigger a new [LoadedCollectionExecutionState] update with the selected [difficulty].
+  /// If the current execution still has more memos to be executed, returns the next one in the stack. When there are no
+  /// more memos left, returns `null` and updates the state to [FinishedCollectionExecutionState].
   ///
   /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState].
-  void markCurrentMemoDifficulty(MemoDifficulty difficulty);
-
-  /// Go forward with the next suitable contents.
-  ///
-  /// An execution can fetch its next contents when:
-  ///   - a question is being displayed and its answer should be displayed; or
-  ///   - the displaying answer has its difficulty already marked and it should proceed to next question. If there are
-  /// no more memos left, updates the state to [FinishedCollectionExecutionState].
-  ///
-  /// Do nothing if none of the criteria above is met.
-  ///
-  /// Throws an [InconsistentStateError] if the state is other than [LoadedCollectionExecutionState].
-  Future<void> nextContents();
+  Future<MemoMetadata?> markCurrentMemoDifficulty(MemoDifficulty difficulty);
 }
 
 class CollectionExecutionVMImpl extends CollectionExecutionVM {
@@ -61,34 +50,11 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
   bool get _isFinished => _memos.length == _executions.length;
 
   @override
-  void markCurrentMemoDifficulty(MemoDifficulty difficulty) {
-    if (state is! LoadedCollectionExecutionState) {
-      throw InconsistentStateError.viewModel('Cannot mark the current memo before finishing loading');
-    }
-
-    state = (state as LoadedCollectionExecutionState).copyWith(markedAnswer: difficulty);
-  }
-
-  @override
-  Future<void> nextContents() async {
+  Future<MemoMetadata?> markCurrentMemoDifficulty(MemoDifficulty difficulty) async {
     if (state is! LoadedCollectionExecutionState) {
       throw InconsistentStateError.viewModel('Cannot request next memo contents before finishing loading');
     }
 
-    final loadedState = state as LoadedCollectionExecutionState;
-
-    // Assume this is a request to forward with the last marked difficulty.
-    if (loadedState.markedAnswer != null) {
-      await _confirmMarkedMemo(loadedState.markedAnswer!);
-    } else {
-      // Otherwise, it's considered a request to display the question.
-      final currentMemo = _memos[_executions.length];
-      state = loadedState.copyWith(isDisplayingQuestion: false, currentContents: currentMemo.rawAnswer);
-    }
-  }
-
-  /// Makes the according updates to the internal control properties of an execution.
-  Future<void> _confirmMarkedMemo(MemoDifficulty answer) async {
     final currentMemo = _memos[_executions.length];
 
     final execution = MemoExecution(
@@ -98,7 +64,7 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
       finished: DateTime.now().toUtc(),
       rawQuestion: currentMemo.rawQuestion,
       rawAnswer: currentMemo.rawAnswer,
-      markedDifficulty: answer,
+      markedDifficulty: difficulty,
     );
     _executions.add(execution);
 
@@ -136,15 +102,13 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
     } else {
       // Otherwise we proceed with the next available memo and start counting a new start date.
       final completionValue = _executions.length / _memos.length;
-      final nextMemo = _memos[_executions.length];
 
-      state = LoadedCollectionExecutionState(
-        isDisplayingQuestion: true,
-        currentContents: nextMemo.rawQuestion,
-        completionValue: completionValue,
-        collectionName: _collection.name,
-      );
+      final loadedState = state as LoadedCollectionExecutionState;
+      state = loadedState.copyWith(completionValue: completionValue);
       _currentMemoStartDate = DateTime.now().toUtc();
+
+      final nextMemo = _memos[_executions.length];
+      return MemoMetadata(question: nextMemo.rawQuestion, answer: nextMemo.rawAnswer);
     }
   }
 
@@ -157,12 +121,23 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
     _collection = futures[0] as Collection;
     _memos = futures[1] as List<Memo>;
     state = LoadedCollectionExecutionState(
-      isDisplayingQuestion: true,
-      currentContents: _memos.first.rawQuestion,
+      initialMemo: MemoMetadata(question: _memos.first.rawQuestion, answer: _memos.first.rawAnswer),
       completionValue: 0,
       collectionName: _collection.name,
     );
   }
+}
+
+typedef RawMemoContents = List<Map<String, dynamic>>;
+
+class MemoMetadata extends Equatable {
+  const MemoMetadata({required this.question, required this.answer});
+
+  final RawMemoContents question;
+  final RawMemoContents answer;
+
+  @override
+  List<Object?> get props => [question, answer];
 }
 
 abstract class CollectionExecutionState extends Equatable {
@@ -173,40 +148,23 @@ abstract class CollectionExecutionState extends Equatable {
 class LoadingCollectionExecutionState extends CollectionExecutionState {}
 
 class LoadedCollectionExecutionState extends CollectionExecutionState {
-  LoadedCollectionExecutionState({
-    required this.isDisplayingQuestion,
-    required this.currentContents,
-    required this.completionValue,
-    required this.collectionName,
-    this.markedAnswer,
-  });
+  LoadedCollectionExecutionState(
+      {required this.initialMemo, required this.completionValue, required this.collectionName});
 
   final String collectionName;
-
-  final bool isDisplayingQuestion;
-  final List<Map<String, dynamic>> currentContents;
-
-  final MemoDifficulty? markedAnswer;
+  final MemoMetadata initialMemo;
 
   /// A value ranging from `0` to `1` representing how close the user is to finishing the current execution.
   final double completionValue;
 
-  LoadedCollectionExecutionState copyWith({
-    bool? isDisplayingQuestion,
-    List<Map<String, dynamic>>? currentContents,
-    double? completionValue,
-    MemoDifficulty? markedAnswer,
-  }) =>
-      LoadedCollectionExecutionState(
-        isDisplayingQuestion: isDisplayingQuestion ?? this.isDisplayingQuestion,
-        currentContents: currentContents ?? this.currentContents,
+  LoadedCollectionExecutionState copyWith({double? completionValue}) => LoadedCollectionExecutionState(
+        initialMemo: initialMemo,
         completionValue: completionValue ?? this.completionValue,
-        markedAnswer: markedAnswer ?? this.markedAnswer,
         collectionName: collectionName,
       );
 
   @override
-  List<Object?> get props => [collectionName, isDisplayingQuestion, currentContents, markedAnswer, completionValue];
+  List<Object?> get props => [collectionName, initialMemo, completionValue];
 }
 
 abstract class FinishedCollectionExecutionState extends CollectionExecutionState {
