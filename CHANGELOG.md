@@ -10,8 +10,19 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+## [0.2.0] - 2021-08-13
+
 ### Updated
-- Replaced oval gradient from `CollectionCard` with `LinearGradient` - fixes #162.
+- Several `ExecutionTerminal` enhancements:
+  - Allows the user to go back/forward on the same memo.
+  - The selected difficulty don't require a confirmation anymore - once it's selected, it animates to the next memo.
+
+### Fixed
+- Several `ExecutionTerminal` fixes:
+  - Actions overlapping in smaller devices.
+  - Inconsistent state when memos were executed too fast.
+  - Not following the expected layout specs.
+- Replaced oval gradient in `CollectionCard` with `LinearGradient`, attempting to solve performance issues.
 
 ### Removed
 - Hero animation from `CollectionCard`.
