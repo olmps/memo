@@ -23,25 +23,24 @@ class CollectionExecutionPage extends StatefulHookWidget {
   State<StatefulWidget> createState() => _CollectionExecutionPageState();
 }
 
-class _CollectionExecutionPageState extends State<CollectionExecutionPage> {
+class _CollectionExecutionPageState extends State<CollectionExecutionPage> with TickerProviderStateMixin {
+  TerminalController? _terminalController;
+
   @override
   Widget build(BuildContext context) {
     final state = useCollectionExecutionState();
 
     if (state is LoadedCollectionExecutionState) {
-      final allowsActionTap = state.isDisplayingQuestion || state.markedAnswer != null;
+      _terminalController ??= TerminalController(
+        initialMemo: state.initialMemo,
+        onDifficultyMarked: readExecutionVM(context).markCurrentMemoDifficulty,
+        collectionName: state.collectionName,
+        vsync: this,
+      );
+
       return Scaffold(
         appBar: _ExecutionAppBar(state.completionValue),
-        body: SafeArea(
-          child: ExecutionTerminal(
-            contents: state.currentContents,
-            isDisplayingQuestion: state.isDisplayingQuestion,
-            collectionName: state.collectionName,
-            markedAnswer: state.markedAnswer,
-            onDifficultyMarked: readExecutionVM(context).markCurrentMemoDifficulty,
-            onActionPressed: allowsActionTap ? readExecutionVM(context).nextContents : null,
-          ),
-        ),
+        body: SafeArea(child: ExecutionTerminal(controller: _terminalController!)),
       );
     }
 
@@ -116,7 +115,9 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
           Text(strings.executionDiscardStudyDescription, style: textTheme.bodyText1),
           context.verticalBox(Spacing.xxxLarge),
           DestructiveButton(
-              onPressed: readCoordinator(context).pop, child: Text(strings.executionDiscard.toUpperCase())),
+            onPressed: readCoordinator(context).pop,
+            child: Text(strings.executionDiscard.toUpperCase()),
+          ),
           context.verticalBox(Spacing.medium),
           SecondaryButton(onPressed: Navigator.of(context).pop, child: Text(strings.executionBackToStudy.toUpperCase()))
         ],

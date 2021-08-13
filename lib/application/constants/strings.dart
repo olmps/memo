@@ -71,7 +71,7 @@ String totalContributors(int value) => '$value ${detailsContributors.toLowerCase
 const executionQuestion = 'Questão';
 const executionAnswer = 'Resposta';
 
-const executionNext = 'Próxima';
+const executionCheckQuestion = 'Ver pergunta';
 const executionCheckAnswer = 'Ver resposta';
 
 const executionDiscard = 'Descartar';
