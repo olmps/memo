@@ -3,13 +3,15 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json",
     "predeploy": [
-      "npm --prefix \"$PROJECT_DIR\" run firestore-rules-test"
+      "npm --prefix \"$PROJECT_DIR\" run lint",
+      "npm --prefix \"$PROJECT_DIR\" run test:firestore-rules"
     ]
   },
   "functions": {
     "source": "src/functions",
     "predeploy": [
-      "npm --prefix \"$PROJECT_DIR\" run functions-build"
+      "npm --prefix \"$PROJECT_DIR\" run lint",
+      "npm --prefix \"$PROJECT_DIR\" run build:functions"
     ]
   },
   "emulators": {
