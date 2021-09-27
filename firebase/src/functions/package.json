@@ -1,6 +1,6 @@
 {
   "name": "memo-firebase-functions",
-  "main": "dist/functions/index.js",
+  "main": "dist/src/functions/index.js",
   "engines": {
     "node": "14"
   },
