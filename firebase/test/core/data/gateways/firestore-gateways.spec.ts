@@ -310,5 +310,46 @@ describe("FirestoreGateway", () => {
         assert(transactionMock.create.calledOnce);
       });
     });
+
+    describe("deleteDoc", () => {
+      let collectionMock: sinon.SinonStubbedInstance<firebase.firestore.CollectionReference>;
+      let collectionDocMock: sinon.SinonStubbedInstance<firebase.firestore.DocumentReference>;
+
+      beforeEach(() => {
+        collectionDocMock = createSinonStub(firebase.firestore.DocumentReference);
+        collectionDocMock.delete.resolves();
+
+        collectionMock = createCollectionMock();
+        collectionMock.doc.withArgs(fakeDocId).returns(collectionDocMock as any);
+      });
+
+      it("should delete an existing doc", async () => {
+        await firestoreGateway.deleteDoc({ id: fakeDocId, path: "collection" });
+
+        assert(collectionDocMock.delete.calledOnce);
+      });
+
+      it("should reject when doc delete throws", async () => {
+        collectionDocMock.delete.rejects();
+
+        await assert.rejects(
+          () => firestoreGateway.deleteDoc({ id: fakeDocId, path: "collection" }),
+          FirebaseFirestoreError
+        );
+        assert(collectionDocMock.delete.calledOnce);
+      });
+
+      it("should delete using the transaction when available", async () => {
+        const transactionMock = createTransactionMock();
+        transactionMock.delete.resolves();
+
+        await firestoreGateway.runTransaction(async () => {
+          await firestoreGateway.deleteDoc({ id: fakeDocId, path: "collection" });
+        });
+
+        assert(collectionDocMock.delete.notCalled);
+        assert(transactionMock.delete.calledOnce);
+      });
+    });
   });
 });
