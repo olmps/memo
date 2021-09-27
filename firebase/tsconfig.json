@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // Type Checking
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
@@ -10,25 +9,26 @@
     "noUnusedParameters": true,
     "strict": true,
     
-    // Modules
     "baseUrl": ".",
     "module": "CommonJS",
     "moduleResolution": "node",
 
-    // Emit
     "declaration": true,
     "declarationMap": true,
     "noEmit": true,
     "sourceMap": true,
 
-    // Interop Constraints
     "forceConsistentCasingInFileNames": true,
 
-    // Language and Environment
     "lib": ["ES2020"],
     "target": "ES2020",
 
-    // Completeness
     "skipLibCheck": true,
+
+    "paths": {
+      "@core*" : ["./src/core*", "./src/core"],
+      "@scripts*" : ["./src/scripts*", "./src/scripts"],
+      "@test*": ["./test*", "./test"],
+    },
   },
 }
