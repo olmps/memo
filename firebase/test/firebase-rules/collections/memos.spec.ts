@@ -1,38 +1,38 @@
 import * as rulesTesting from "@firebase/rules-unit-testing";
-import * as utils from "./utils";
+import * as utils from "@test/firebase-rules/utils";
 
-describe("collections/", () => {
-  const collectionId = "collections";
+describe("collections/{doc}/memos", () => {
+  const collectionId = "collections/any_id/memos";
   let collectionsRef: utils.CollectionReference;
-  let firestore: utils.ClientFirestore;
+  let firestore: utils.Firestore;
 
   describe("authenticated users", () => {
-    before(() => {
-      firestore = utils.createMyFirestore();
+    before(async () => {
+      firestore = await utils.createMyFirestore();
       collectionsRef = firestore.collection(collectionId);
     });
 
-    it("should be able to read collections", async () => {
+    it("should be able to read collections' memos", async () => {
       await rulesTesting.assertSucceeds(collectionsRef.get());
     });
 
-    it("should be denied to write any collection", async () => {
+    it("should be denied to write any collection memo", async () => {
       await rulesTesting.assertFails(collectionsRef.add({}));
       await rulesTesting.assertFails(collectionsRef.doc().set({ any: "any" }));
     });
   });
 
   describe("unauthenticated users", () => {
-    before(() => {
-      firestore = utils.createFirestore();
+    before(async () => {
+      firestore = await utils.createFirestore();
       collectionsRef = firestore.collection(collectionId);
     });
 
-    it("should be denied to read collections", async () => {
+    it("should be denied to read collections' memos", async () => {
       await rulesTesting.assertFails(collectionsRef.get());
     });
 
-    it("should be denied to write to any collection", async () => {
+    it("should be denied to write to any collection memo", async () => {
       await rulesTesting.assertFails(collectionsRef.add({}));
       await rulesTesting.assertFails(collectionsRef.doc().set({ any: "any" }));
     });
