@@ -48,7 +48,7 @@ Table of contents
 
 ## `.vscode/`
 
-There is not much to add on top of the [General ARCHITECTURE.md .vscode section](//TODO), although for this Flutter
+There is not much to add on top of the [General ARCHITECTURE.md .vscode section](../ARCHITECTURE.md), although for this Flutter
 project, the explanation for the recommended extensions:
 
 - Dart (id: dart-code.dart-code) - makes `Dart` development **way** more productive;
