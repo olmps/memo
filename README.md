@@ -71,9 +71,9 @@ project's software process, check out [.process/](.process/README.md) (sorry, on
 
 ## Contributing & Good Practices
 
-Memo is all about collections (the word that we are using for our flashcards), and it means **a lot of content**. The
-maintainers are slow creating these collections alone, not only because requires knowledge of various programming
-languages, concepts, processes, it also takes **a lot of time**.
+Memo is all about collections and memos (collections are an analogy for decks; memos are for flashcards), and it means
+**a lot of content**. The maintainers are slow creating these collections alone, not only because requires knowledge of
+various programming languages, frameworks, design patterns, concepts and processes, it also takes **a lot of time**.
 
 If you want to help by adding new content, updating outdated ones, correcting any mistakes, literally any improvement,
 you can check it out on [CONTRIBUTING](CONTRIBUTING.md) - and please, follow the guidelines, these include creating PRs,
