@@ -9,9 +9,9 @@ Table of Contents
 
 # Architecture
 
-Memo's architecture is quite simple, as it delegates all of the hardcore/complex foundations to its vendors. With that
-said, we still have to write a decent amount of code to reach our goals and, if we don't output quality code, things
-will get messy pretty quickly - yeah, Sherlock stuff here, like it's not a common ground for basically **any software**.
+Memo's architecture is quite simple, as it delegates all of the hardcore/complex foundations to its vendors. We still
+have to write a decent amount of code to reach our goals and, if we don't output quality code, things will get messy
+pretty quickly - yeah, Sherlock stuff here, like it's not a common ground for basically **any software**.
 
 In simple terms, `/flutter` is where all of our client-side source files will live - using Flutter as its engine to
 output binaries for all platforms that Memo support. For the server-side contents, Firebase is used, hence all files
@@ -50,10 +50,11 @@ provided to us through a simple API, we use some `Configuration Files` - things 
 
 ... but not less important: this is **heavily influenced** by a bunch personal opinions and experiences in some
 production projects that the team has worked on. This project's external dependencies will keep changing as the time
-goes on, Flutter and Firebase will also keep evolving, and we have to adapt in a way to maintain consistency, integrity
-and scalability of our solution. So, it's probable that there is (and will be) better ways to achieve the same
-goals/objectives. For this, we look into your help to make this project's architecture continuously provide a good
-developer experience to add new features, update old ones and keep those nasty bugs away.
+goes on, Flutter and Firebase will also keep evolving, and we have to adapt in a way to maintain **consistency,
+integrity and scalability** of our solution - and these are our goals for Memo.
+
+For this, we look into your help to make this project's architecture continuously provide a good developer experience to
+add new features, update old ones and keep those nasty bugs away.
 
 ## `.vscode/`
 
