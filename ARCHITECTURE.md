@@ -65,8 +65,7 @@ problem at all, just make sure to follow the same guidelines specified in
 [Firebase's `settings.json`](firebase/.vscode/settings.json), both which are prepared to automatically apply the
 standard style + format to all Memo's source files.
 
-All configuration files lives under the respective project's `.vscode` folder and - while there are some that will
-disagree with this decision - **should be git-tracked**.
+All configuration files lives under the respective project's `.vscode` folder and **should be git-tracked**.
 
   - `launch.json` is where common scripts for running the application (plus environment) can be found.
   - `settings.json` is responsible for the editor configurations, rules and auto-format on save.
