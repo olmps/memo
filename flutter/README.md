@@ -13,8 +13,9 @@ Source files for Memo's Flutter application.
 folder.
 3. Setup Firebase dependencies. More information on this in [ARCHITECTURE#firebase](flutter/ARCHITECTURE.md#firebase).
 
-
 ... and you're good to go - just run in any physical device, or a simulator/emulator.
+
+> For iOS physical devices, you may need to update the Signing & Capabilities to your personal developer account.
 
 ## Architecture
 
