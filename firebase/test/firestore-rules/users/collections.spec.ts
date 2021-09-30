@@ -22,15 +22,12 @@ describe("users/{userId}/collections", () => {
     });
 
     it("should be able to write its collections", async () => {
-      await rulesTesting.assertSucceeds(collectionsRef.add({}));
       await rulesTesting.assertSucceeds(collectionsRef.doc().set({ any: "any" }));
     });
 
     it("should be denied to write other collections", async () => {
       const othersCollections = firestore.collection(collectionId("any"));
-
-      await rulesTesting.assertFails(othersCollections.add({}));
-      await rulesTesting.assertFails(othersCollections.doc().set({ any: "any" }));
+      await rulesTesting.assertFails(othersCollections.get());
     });
   });
 });
