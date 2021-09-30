@@ -34,13 +34,6 @@ describe("FirestoreGateway", () => {
     return transactionMock;
   }
 
-  function createCollectionMock(): sinon.SinonStubbedInstance<firebase.firestore.CollectionReference> {
-    const collectionMock = createSinonStub(firebase.firestore.CollectionReference);
-    firestoreMock.collection.withArgs("collection").returns(collectionMock as any);
-
-    return collectionMock;
-  }
-
   const fakeObject = { test: "object" };
 
   describe("read", () => {
@@ -112,60 +105,6 @@ describe("FirestoreGateway", () => {
         });
 
         assert(collectionGroupMock.get.notCalled);
-        assert(transactionMock.get.calledOnce);
-      });
-    });
-
-    describe("getCollection", () => {
-      let collectionMock: sinon.SinonStubbedInstance<firebase.firestore.CollectionReference>;
-
-      beforeEach(() => {
-        docDataMock = createDocumentSnapshotMock(fakeObject);
-        querySnapshotMock = createQuerySnapshotMock();
-        collectionMock = createCollectionMock();
-      });
-
-      it("should return documents with an unfiltered call", async () => {
-        collectionMock.get.resolves(querySnapshotMock);
-        const val = await firestoreGateway.getCollection("collection");
-
-        assert(val.length === 1);
-        assert.deepStrictEqual(val[0], fakeObject);
-        assert(collectionMock.get.calledOnce);
-      });
-
-      it("should return documents with a filtered call", async () => {
-        collectionMock.get.resolves(querySnapshotMock);
-        const fakeFilters: QueryFilter[] = [{ field: "any", comparison: ">", value: "any" }];
-        collectionMock.where
-          .withArgs(fakeFilters[0]!.field, fakeFilters[0]!.comparison, fakeFilters[0]!.value)
-          .returns(collectionMock as any);
-
-        const val = await firestoreGateway.getCollection("collection", fakeFilters);
-
-        assert(val.length === 1);
-        assert.deepStrictEqual(val[0], fakeObject);
-        assert(collectionMock.get.calledOnce);
-      });
-
-      it("should reject when query get throws", async () => {
-        collectionMock.get.rejects();
-
-        await assert.rejects(() => firestoreGateway.getCollection("collection"), FirebaseFirestoreError);
-        assert(collectionMock.get.calledOnce);
-      });
-
-      it("should get from the transaction when available", async () => {
-        collectionMock.get.resolves(querySnapshotMock);
-
-        const transactionMock = createTransactionMock();
-        transactionMock.get.withArgs(collectionMock as any).resolves(querySnapshotMock as any);
-
-        await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.getCollection("collection");
-        });
-
-        assert(collectionMock.get.notCalled);
         assert(transactionMock.get.calledOnce);
       });
     });
