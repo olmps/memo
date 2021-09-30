@@ -27,11 +27,7 @@
     "skipLibCheck": true,
 
     "paths": {
-      "@data*" : ["./src/core/data*", "./src/core/data"],
-      "@domain*" : ["./src/core/domain*", "./src/core/domain"],
-      "@faults*" : ["./src/core/faults*", "./src/core/faults"],
-      "@middlewares*" : ["./src/core/middlewares*", "./src/core/middlewares"],
-      "@utils*" : ["./src/core/utils*", "./src/core/utils"],
+      "@core*" : ["./src/core*", "./src/core"],
       "@functions*" : ["./src/functions*", "./src/functions"],
       "@scripts*" : ["./src/scripts*", "./src/scripts"],
       "@test*": ["./test*", "./test"]
