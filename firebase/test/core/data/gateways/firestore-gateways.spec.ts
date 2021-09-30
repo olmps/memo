@@ -351,42 +351,5 @@ describe("FirestoreGateway", () => {
         assert(transactionMock.delete.calledOnce);
       });
     });
-
-    describe("runTransaction", () => {
-      it("should reject when any throw occurs in context", async () => {
-        createTransactionMock();
-
-        await assert.rejects(
-          () =>
-            firestoreGateway.runTransaction(async () => {
-              throw Error();
-            }),
-          FirebaseFirestoreError
-        );
-      });
-
-      it("should clear transaction when any throw occurs in context", async () => {
-        createTransactionMock();
-
-        try {
-          await firestoreGateway.runTransaction(async () => {
-            throw Error();
-          });
-        } catch (_) {
-          assert(!firestoreGateway.hasOngoingTransaction);
-        }
-      });
-
-      it("should clear transaction after context is fulfilled", async () => {
-        createTransactionMock();
-
-        const hadTransaction = await firestoreGateway.runTransaction(async () => {
-          return firestoreGateway.hasOngoingTransaction;
-        });
-
-        assert(hadTransaction);
-        assert(!firestoreGateway.hasOngoingTransaction);
-      });
-    });
   });
 });
