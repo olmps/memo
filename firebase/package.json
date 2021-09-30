@@ -15,18 +15,17 @@
     "lint:test": "eslint 'test/**/*.ts'",
     "deploy": "firebase deploy",
     "deploy:firestore": "firebase deploy --only firestore",
-    "deploy:functions": "firebase deploy --only functions",
     "test": "run-p test:*",
-    "test:firebase-rules": "firebase emulators:exec --only firestore 'mocha -r ts-node/register -r tsconfig-paths/register --file \"./test/firebase-rules/setup.ts\" --recursive \"./test/firebase-rules/**/*.spec.ts\" --timeout 10000 --exit'",
+    "test:firestore-rules": "firebase emulators:exec --only firestore 'mocha -r ts-node/register --file \"./test/firestore-rules/setup.ts\" --recursive \"./test/firestore-rules/**/*.spec.ts\" --timeout 10000 --exit'",
     "build": "run-p build:*",
     "build:functions": "tsc -p tsconfig.functions.json",
     "functions:serve": "run-s --print-label build:functions functions:start-emulators watch",
     "functions:fetch-env": "firebase functions:config:get > src/functions/.runtimeconfig.json",
     "functions:start-emulators": "firebase emulators:start --only auth,functions,firestore --inspect-functions",
-    "scripts:dummy-script": "ts-node -r tsconfig-paths/register src/scripts/dummy-script.ts"
+    "scripts:dummy-script": "ts-node src/scripts/dummy-script.ts"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "2.0.1",
+    "@firebase/rules-unit-testing": "^1.x",
     "@types/mocha": "^9.x",
     "@types/node": "^14.x",
     "@typescript-eslint/eslint-plugin": "^4.x",
@@ -37,7 +36,6 @@
     "mocha": "^9.x",
     "npm-run-all": "^4.x",
     "prettier": "^2.x",
-    "ts-node": "^10.x",
-    "tsconfig-paths": "^3.x"
+    "ts-node": "^10.x"
   }
 }

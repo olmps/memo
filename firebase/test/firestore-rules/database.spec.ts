@@ -1,11 +1,11 @@
 import * as rulesTesting from "@firebase/rules-unit-testing";
-import * as utils from "@test/firebase-rules/utils";
+import * as utils from "./utils";
 
 describe("databases/{database}/documents/", () => {
   const randomCollectionId = "any-random-collection";
   const randomDocId = "random-doc-id";
   let randomCollection: utils.CollectionReference;
-  let firestore: utils.Firestore;
+  let firestore: utils.ClientFirestore;
 
   describe("authenticated users", () => {
     before(() => {

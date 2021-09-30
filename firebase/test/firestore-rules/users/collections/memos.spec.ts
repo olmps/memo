@@ -1,10 +1,10 @@
 import * as rulesTesting from "@firebase/rules-unit-testing";
-import * as utils from "@test/firebase-rules/utils";
+import * as utils from "../../utils";
 
 describe("users/{userId}/collections/{doc}/memos", () => {
   const collectionId = (userId: string) => `users/${userId}/collections/any_id/memos`;
   let collectionsMemosCollection: utils.CollectionReference;
-  let firestore: utils.Firestore;
+  let firestore: utils.ClientFirestore;
 
   describe("owner users", () => {
     before(() => {

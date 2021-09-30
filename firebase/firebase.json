@@ -4,7 +4,7 @@
     "indexes": "firestore.indexes.json",
     "predeploy": [
       "npm --prefix \"$PROJECT_DIR\" run lint",
-      "npm --prefix \"$PROJECT_DIR\" run test:firebase-rules"
+      "npm --prefix \"$PROJECT_DIR\" run test:firestore-rules"
     ]
   },
   "functions": {
