@@ -37,7 +37,6 @@
     "eslint-config-prettier": "^8.x",
     "eslint-plugin-prettier": "^3.x",
     "firebase-admin": "9.11.0",
-    "firebase-tools": "9.11.0",
     "mocha": "^9.x",
     "npm-run-all": "^4.x",
     "prettier": "^2.x",
