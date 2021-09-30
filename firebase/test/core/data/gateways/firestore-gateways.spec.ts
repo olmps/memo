@@ -269,46 +269,5 @@ describe("FirestoreGateway", () => {
         assert(transactionMock.update.calledOnce);
       });
     });
-
-    describe("createDoc", () => {
-      let collectionMock: sinon.SinonStubbedInstance<firebase.firestore.CollectionReference>;
-      let collectionDocMock: sinon.SinonStubbedInstance<firebase.firestore.DocumentReference>;
-
-      beforeEach(() => {
-        collectionDocMock = createSinonStub(firebase.firestore.DocumentReference);
-        collectionDocMock.update.withArgs(fakeObject as any, undefined).resolves();
-
-        collectionMock = createCollectionMock();
-        collectionMock.doc.withArgs(fakeDocId).returns(collectionDocMock as any);
-      });
-
-      it("should create a new doc", async () => {
-        await firestoreGateway.createDoc({ id: fakeDocId, path: "collection", data: fakeObject });
-
-        assert(collectionDocMock.create.calledOnce);
-      });
-
-      it("should reject when doc create throws", async () => {
-        collectionDocMock.create.rejects();
-
-        await assert.rejects(
-          () => firestoreGateway.createDoc({ id: fakeDocId, path: "collection", data: fakeObject }),
-          FirebaseFirestoreError
-        );
-        assert(collectionDocMock.create.calledOnce);
-      });
-
-      it("should create using the transaction when available", async () => {
-        const transactionMock = createTransactionMock();
-        transactionMock.create.withArgs(collectionDocMock, fakeObject as any).resolves();
-
-        await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.createDoc({ id: fakeDocId, path: "collection", data: fakeObject });
-        });
-
-        assert(collectionDocMock.create.notCalled);
-        assert(transactionMock.create.calledOnce);
-      });
-    });
   });
 });
