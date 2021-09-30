@@ -42,7 +42,6 @@ describe("FirestoreGateway", () => {
   }
 
   const fakeObject = { test: "object" };
-  const fakeDocId = "any";
 
   describe("read", () => {
     let querySnapshotMock: sinon.SinonStubbedInstance<firebase.firestore.QuerySnapshot>;
@@ -167,59 +166,6 @@ describe("FirestoreGateway", () => {
         });
 
         assert(collectionMock.get.notCalled);
-        assert(transactionMock.get.calledOnce);
-      });
-    });
-
-    describe("getDoc", () => {
-      let collectionMock: sinon.SinonStubbedInstance<firebase.firestore.CollectionReference>;
-      let collectionDocMock: sinon.SinonStubbedInstance<firebase.firestore.DocumentReference>;
-
-      beforeEach(() => {
-        collectionDocMock = createSinonStub(firebase.firestore.DocumentReference);
-        collectionMock = createCollectionMock();
-        collectionMock.doc.withArgs(fakeDocId).returns(collectionDocMock as any);
-      });
-
-      it("should return an existing document", async () => {
-        docDataMock = createDocumentSnapshotMock(fakeObject);
-        collectionDocMock.get.resolves(docDataMock);
-
-        const val = await firestoreGateway.getDoc({ id: fakeDocId, path: "collection" });
-
-        assert.deepStrictEqual(val, fakeObject);
-        assert(collectionDocMock.get.calledOnce);
-      });
-
-      it("should return null when no document is found", async () => {
-        docDataMock = createDocumentSnapshotMock(undefined);
-        collectionDocMock.get.resolves(docDataMock);
-
-        const val = await firestoreGateway.getDoc({ id: fakeDocId, path: "collection" });
-
-        assert.deepStrictEqual(val, null);
-        assert(collectionDocMock.get.calledOnce);
-      });
-
-      it("should reject when doc get throws", async () => {
-        collectionDocMock.get.rejects();
-
-        await assert.rejects(
-          () => firestoreGateway.getDoc({ id: fakeDocId, path: "collection" }),
-          FirebaseFirestoreError
-        );
-        assert(collectionDocMock.get.calledOnce);
-      });
-
-      it("should get from the transaction when available", async () => {
-        const transactionMock = createTransactionMock();
-        transactionMock.get.withArgs(collectionDocMock).resolves(docDataMock);
-
-        await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.getDoc({ id: fakeDocId, path: "collection" });
-        });
-
-        assert(collectionDocMock.get.notCalled);
         assert(transactionMock.get.calledOnce);
       });
     });
