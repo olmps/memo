@@ -7,8 +7,8 @@ describe("users/", () => {
   let firestore: utils.ClientFirestore;
 
   describe("owner users", () => {
-    before(() => {
-      firestore = utils.createMyFirestore();
+    before(async () => {
+      firestore = await utils.createMyFirestore();
       usersRef = firestore.collection(collectionId);
     });
 

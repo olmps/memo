@@ -8,8 +8,8 @@ describe("databases/{database}/documents/", () => {
   let firestore: utils.ClientFirestore;
 
   describe("authenticated users", () => {
-    before(() => {
-      firestore = utils.createMyFirestore();
+    before(async () => {
+      firestore = await utils.createMyFirestore();
       randomCollection = firestore.collection(randomCollectionId);
     });
 
@@ -25,8 +25,8 @@ describe("databases/{database}/documents/", () => {
   });
 
   describe("unauthenticated users", () => {
-    before(() => {
-      firestore = utils.createFirestore();
+    before(async () => {
+      firestore = await utils.createFirestore();
       randomCollection = firestore.collection(randomCollectionId);
     });
 
