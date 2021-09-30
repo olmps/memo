@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^1.x",
+    "@firebase/testing": "^0.x",
     "@types/mocha": "^9.0.0",
     "@types/node": "^14.x",
     "@typescript-eslint/eslint-plugin": "^4.x",
