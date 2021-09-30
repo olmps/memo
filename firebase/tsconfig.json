@@ -12,7 +12,6 @@
     "baseUrl": ".",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
 
     "declaration": true,
     "declarationMap": true,
@@ -28,9 +27,8 @@
 
     "paths": {
       "@core*" : ["./src/core*", "./src/core"],
-      "@functions*" : ["./src/functions*", "./src/functions"],
       "@scripts*" : ["./src/scripts*", "./src/scripts"],
-      "@test*": ["./test*", "./test"]
+      "@test*": ["./test*", "./test"],
     },
   },
 }
