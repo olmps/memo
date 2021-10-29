@@ -4,12 +4,13 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 
-enum _ButtonState { normal, pressed, disabled }
+@visibleForTesting
+enum ButtonState { normal, pressed, disabled }
 
 /// A visually opinionated [ElevatedButton].
 ///
 /// Visually similar to Material's [ElevatedButton] but with custom disable/pressing behaviors and text style.
-class PrimaryElevatedButton extends StatelessWidget {
+class PrimaryElevatedButton extends HookWidget {
   const PrimaryElevatedButton({required this.text, this.backgroundColor, this.onPressed, this.leadingAsset});
 
   final String text;
@@ -26,13 +27,13 @@ class PrimaryElevatedButton extends StatelessWidget {
     final theme = useTheme();
     final color = backgroundColor ?? theme.primarySwatch;
 
-    Color? backgroundColorBuilder(_ButtonState state) {
+    Color? backgroundColorBuilder(ButtonState state) {
       switch (state) {
-        case _ButtonState.normal:
+        case ButtonState.normal:
           return color.shade400;
-        case _ButtonState.pressed:
+        case ButtonState.pressed:
           return color.shade500;
-        case _ButtonState.disabled:
+        case ButtonState.disabled:
           return color.shade500.withOpacity(0.4);
       }
     }
@@ -67,13 +68,13 @@ class SecondaryElevatedButton extends HookWidget {
     final theme = useTheme();
     final color = backgroundColor ?? theme.neutralSwatch;
 
-    Color? backgroundColorBuilder(_ButtonState state) {
+    Color? backgroundColorBuilder(ButtonState state) {
       switch (state) {
-        case _ButtonState.normal:
+        case ButtonState.normal:
           return color.shade700;
-        case _ButtonState.pressed:
+        case ButtonState.pressed:
           return color.shade800;
-        case _ButtonState.disabled:
+        case ButtonState.disabled:
           return color.shade800.withOpacity(0.4);
       }
     }
@@ -114,20 +115,20 @@ class CustomTextButton extends HookWidget {
     final buttonColorSwatch = color ?? theme.primarySwatch;
     final textTheme = Theme.of(context).textTheme.button!;
 
-    Color? buttonColor(_ButtonState state) {
+    Color? buttonColor(ButtonState state) {
       switch (state) {
-        case _ButtonState.normal:
+        case ButtonState.normal:
           return buttonColorSwatch.shade300;
-        case _ButtonState.pressed:
+        case ButtonState.pressed:
           return buttonColorSwatch.shade400;
-        case _ButtonState.disabled:
+        case ButtonState.disabled:
           return buttonColorSwatch.shade400.withOpacity(0.4);
       }
     }
 
-    Widget leadingAssetBuilder(_ButtonState state) => Image.asset(leadingAsset!, color: buttonColor(state));
+    Widget leadingAssetBuilder(ButtonState state) => Image.asset(leadingAsset!, color: buttonColor(state));
 
-    return _CustomButton(
+    return CustomButton(
       text: text,
       leadingWidgetBuilder: leadingAsset != null ? leadingAssetBuilder : null,
       onPressed: onPressed,
@@ -136,7 +137,7 @@ class CustomTextButton extends HookWidget {
   }
 }
 
-/// Wraps a [_CustomButton] to become similar to a [ElevatedButton].
+/// Wraps a [CustomButton] to become similar to a [ElevatedButton].
 ///
 /// Requires a [backgroundColorBuilder] to build accordingly to the button state.
 class _CustomElevatedButton extends StatelessWidget {
@@ -164,15 +165,15 @@ class _CustomElevatedButton extends StatelessWidget {
   final String? leadingAsset;
 
   /// Builds the button background color based on the button state.
-  final Color? Function(_ButtonState state) backgroundColorBuilder;
+  final Color? Function(ButtonState state) backgroundColorBuilder;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.button!;
 
-    Widget leadingAssetBuilder(_ButtonState state) => Image.asset(leadingAsset!, color: textTheme.color);
+    Widget leadingAssetBuilder(ButtonState state) => Image.asset(leadingAsset!, color: textTheme.color);
 
-    return _CustomButton(
+    return CustomButton(
       text: text,
       onPressed: onPressed,
       isPressedOverlayEnabled: true,
@@ -192,8 +193,9 @@ class _CustomElevatedButton extends StatelessWidget {
 ///   * [PrimaryElevatedButton] - The primary visually opinionated alternative to [ElevatedButton].
 ///   * [SecondaryElevatedButton] - The visually opinionated alternative to [ElevatedButton].
 ///   * [CustomTextButton] - The visually opinionated alternative to [TextButton].
-class _CustomButton extends StatefulWidget {
-  const _CustomButton({
+@visibleForTesting
+class CustomButton extends StatefulWidget {
+  const CustomButton({
     required this.text,
     this.onPressed,
     this.isPressedOverlayEnabled = false,
@@ -215,48 +217,49 @@ class _CustomButton extends StatefulWidget {
   final bool isPressedOverlayEnabled;
 
   /// Builds the button leading widget based on the button `state`.
-  final Widget Function(_ButtonState state)? leadingWidgetBuilder;
+  final Widget Function(ButtonState state)? leadingWidgetBuilder;
 
   /// Builds the button border based on the button `state`.
   ///
   /// If `null` no border is added.
-  final BoxBorder? Function(_ButtonState state)? borderBuilder;
+  final BoxBorder? Function(ButtonState state)? borderBuilder;
 
   /// Builds the button background color based on the button `state`.
   ///
   /// Will be overriden by [backgroundGradientBuilder] if implemented.
   /// If `null` no background color is added.
-  final Color? Function(_ButtonState state)? backgroundColorBuilder;
+  final Color? Function(ButtonState state)? backgroundColorBuilder;
 
   /// Builds the button background gradient based on the button `state`.
   ///
   /// Overrides [backgroundColorBuilder] if both are implemented.
   /// If `null` no background gradient is added.
-  final LinearGradient? Function(_ButtonState state)? backgroundGradientBuilder;
+  final LinearGradient? Function(ButtonState state)? backgroundGradientBuilder;
 
   /// Builds the button [text] style based on the button `state`.
   ///
   /// If `null` the default text theme is used.
-  final TextStyle? Function(_ButtonState state)? textStyleBuilder;
+  final TextStyle? Function(ButtonState state)? textStyleBuilder;
 
   @override
-  _CustomButtonState createState() => _CustomButtonState();
+  CustomButtonState createState() => CustomButtonState();
 }
 
-class _CustomButtonState extends State<_CustomButton> {
-  late _ButtonState state;
+@visibleForTesting
+class CustomButtonState extends State<CustomButton> {
+  late ButtonState state;
 
   @override
   void initState() {
-    state = widget.onPressed != null ? _ButtonState.normal : _ButtonState.disabled;
+    state = widget.onPressed != null ? ButtonState.normal : ButtonState.disabled;
     super.initState();
   }
 
   @override
-  void didUpdateWidget(covariant _CustomButton oldWidget) {
+  void didUpdateWidget(covariant CustomButton oldWidget) {
     if (widget.onPressed != oldWidget.onPressed) {
       setState(() {
-        state = widget.onPressed != null ? _ButtonState.normal : _ButtonState.disabled;
+        state = widget.onPressed != null ? ButtonState.normal : ButtonState.disabled;
       });
     }
     super.didUpdateWidget(oldWidget);
@@ -282,7 +285,7 @@ class _CustomButtonState extends State<_CustomButton> {
       onTap: widget.onPressed,
       onHighlightChanged: (isPressed) {
         setState(() {
-          state = isPressed ? _ButtonState.pressed : _ButtonState.normal;
+          state = isPressed ? ButtonState.pressed : ButtonState.normal;
         });
       },
       child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: rowWidgets)),
@@ -290,7 +293,7 @@ class _CustomButtonState extends State<_CustomButton> {
 
     return Semantics(
       button: true,
-      enabled: state != _ButtonState.disabled,
+      enabled: state != ButtonState.disabled,
       child: Container(
         height: dimens.minButtonHeight,
         decoration: BoxDecoration(

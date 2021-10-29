@@ -6,7 +6,7 @@ import '../../../utils/widget_pump.dart';
 void main() {
   group('Custom Buttons -', () {
     testWidgets('should be at the `normal` state with a `onPressed` argument and when not pressed', (tester) async {
-      final primaryButton = PrimaryElevatedButton(text: 'teste', onPressed: () {});
+      final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () {});
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
 
@@ -17,7 +17,7 @@ void main() {
 
     testWidgets('should be at the `disable` state with a `null` `onPressed` argument and when not pressed',
         (tester) async {
-      const primaryButton = PrimaryElevatedButton(text: 'teste');
+      const primaryButton = PrimaryElevatedButton(text: 'test');
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
 
@@ -27,7 +27,7 @@ void main() {
     });
 
     testWidgets('should be at the `pressed` state with a `onPressed` argument and when pressed', (tester) async {
-      final primaryButton = PrimaryElevatedButton(text: 'teste', onPressed: () {});
+      final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () {});
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
 
@@ -41,7 +41,7 @@ void main() {
     });
 
     testWidgets('should be at the `disable` state with a `null` `onPressed` argument and when pressed', (tester) async {
-      const primaryButton = PrimaryElevatedButton(text: 'teste');
+      const primaryButton = PrimaryElevatedButton(text: 'test');
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
 
