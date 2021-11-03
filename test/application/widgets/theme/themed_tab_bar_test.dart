@@ -37,6 +37,6 @@ void main() {
     expect(bottomLeftPosition, bottomLeftParentPosition);
     expect(bottomRightPosition, bottomRightParentPosition);
 
-    expect(size.height, dimens.tabBarBorderHeight);
+    expect(size.height, dimens.genericBorderHeight);
   });
 }
