@@ -11,7 +11,7 @@ import 'package:memo/application/theme/theme_controller.dart';
 /// The visual structure of this application text fields doesn't follow the material's guidelines. Although creating
 /// a custom [TextField] widget is not the ideal solution - since all [TextField] properties must be proxied through
 /// this component -, it's the only solution that enables the UI customization level that this widget requires.
-class CustomTextField extends StatefulHookWidget {
+class CustomTextField extends HookWidget {
   const CustomTextField({
     this.enabled = true,
     this.helperText,
@@ -78,36 +78,8 @@ class CustomTextField extends StatefulHookWidget {
   /// {@macro flutter.widgets.editableText.textAlign}
   final TextAlign textAlign;
 
-  @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
-}
-
-class _CustomTextFieldState extends State<CustomTextField> {
-  late TextEditingController controller;
-  late FocusNode focusNode;
-
-  bool get _hasErrorText => widget.errorText != null;
-  bool get _hasHelperText => widget.helperText != null;
-
-  @override
-  void initState() {
-    controller = widget.controller ?? TextEditingController();
-    focusNode = widget.focusNode ?? FocusNode();
-
-    focusNode.addListener(rebuildWidget);
-    controller.addListener(rebuildWidget);
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    focusNode.removeListener(rebuildWidget);
-    controller.removeListener(rebuildWidget);
-    super.dispose();
-  }
-
-  void rebuildWidget() => setState(() {});
+  bool get _hasErrorText => errorText != null;
+  bool get _hasHelperText => helperText != null;
 
   @override
   Widget build(BuildContext context) {
@@ -115,25 +87,38 @@ class _CustomTextFieldState extends State<CustomTextField> {
     final neutralSwatch = theme.neutralSwatch;
     final textTheme = Theme.of(context).textTheme;
 
+    final textFieldController = controller ?? useTextEditingController();
+    final textFieldFocus = focusNode ?? useFocusNode();
+
+    final hasFocus = textFieldFocus.hasFocus;
+    final hasText = textFieldController.text.isNotEmpty;
+    final labelStyle =
+        hasFocus || hasText ? textTheme.caption?.copyWith(color: neutralSwatch.shade300) : textTheme.subtitle1;
+
     final textField = Container(
       decoration: BoxDecoration(
         border: _hasErrorText ? Border.all(color: theme.destructiveSwatch, width: dimens.genericBorderHeight) : null,
         borderRadius: dimens.genericRoundedElementBorderRadius,
       ),
       child: TextField(
-        keyboardType: widget.keyboardType,
-        inputFormatters: widget.inputFormatters,
-        onChanged: widget.onChanged,
-        controller: controller,
-        focusNode: focusNode,
-        enabled: widget.enabled,
-        textAlign: widget.textAlign,
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
+        onChanged: onChanged,
+        controller: textFieldController,
+        focusNode: textFieldFocus,
+        enabled: enabled,
+        textAlign: textAlign,
         style: textTheme.bodyText2,
         cursorColor: theme.secondarySwatch.shade400,
         decoration: InputDecoration(
-          labelText: widget.labelText,
-          labelStyle: _labelStyle(context, textTheme, neutralSwatch),
-          suffixIcon: _buildSuffixIcon(neutralSwatch),
+          labelText: labelText,
+          labelStyle: labelStyle,
+          suffixIcon: _buildSuffixIcon(
+            hasFocus: textFieldFocus.hasFocus,
+            hasText: textFieldController.text.isNotEmpty,
+            neutralSwatch: theme.neutralSwatch,
+            onTap: textFieldController.clear,
+          ),
         ),
       ),
     );
@@ -145,38 +130,31 @@ class _CustomTextFieldState extends State<CustomTextField> {
         context.verticalBox(Spacing.xxxSmall),
         if (_hasErrorText || _hasHelperText)
           Text(
-            _hasErrorText ? widget.errorText! : widget.helperText!,
+            _hasErrorText ? errorText! : helperText!,
             style: textTheme.caption?.copyWith(color: _hasErrorText ? theme.destructiveSwatch : neutralSwatch.shade400),
           ).withOnlyPadding(context, left: Spacing.small)
       ],
     );
   }
 
-  Widget? _buildSuffixIcon(MaterialColor neutralSwatch) {
-    final hasText = controller.text.isNotEmpty;
-
-    if (hasText && focusNode.hasFocus && widget.showsClearIcon) {
+  Widget? _buildSuffixIcon({
+    required bool hasText,
+    required bool hasFocus,
+    required MaterialColor neutralSwatch,
+    required VoidCallback onTap,
+  }) {
+    if (hasText && hasFocus && showsClearIcon) {
       return IconButton(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         icon: Image.asset(images.clearAsset, color: neutralSwatch.shade400),
         onPressed: () {
-          controller.clear();
-          widget.onChanged?.call(null);
+          onTap();
+          onChanged?.call(null);
         },
       );
     } else {
-      return widget.suffixIcon;
-    }
-  }
-
-  TextStyle? _labelStyle(BuildContext context, TextTheme textTheme, MaterialColor neutralSwatch) {
-    final hasText = controller.text.isNotEmpty;
-
-    if (focusNode.hasFocus || hasText) {
-      return textTheme.caption?.copyWith(color: neutralSwatch.shade300);
-    } else {
-      return textTheme.subtitle1;
+      return suffixIcon;
     }
   }
 }
