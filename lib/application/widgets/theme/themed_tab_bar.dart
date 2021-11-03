@@ -15,7 +15,7 @@ class ThemedTabBar extends HookWidget {
     final memoTheme = useTheme();
     final selectedColor = memoTheme.secondarySwatch.shade400;
     final unselectedColor = memoTheme.neutralSwatch.shade700;
-    const borderHeight = dimens.tabBarBorderHeight;
+    const borderHeight = dimens.genericBorderHeight;
 
     final tabBar = TabBar(
       controller: controller,

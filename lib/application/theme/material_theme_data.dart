@@ -5,6 +5,7 @@ ThemeData buildThemeData({
   required MaterialColor primarySwatch,
   required MaterialColor secondarySwatch,
   required MaterialColor neutralSwatch,
+  required MaterialColor destructiveSwatch,
   required String textThemeFontFamily,
   required Color iconColor,
   required Color textColor,
@@ -13,6 +14,7 @@ ThemeData buildThemeData({
   required double minButtonHeight,
   required double iconSize,
   required EdgeInsets tabBarLabelPadding,
+  required EdgeInsets textFieldPadding,
 }) {
   final roundedCornersShape = RoundedRectangleBorder(borderRadius: roundedRectElementsRadius);
 
@@ -84,6 +86,16 @@ ThemeData buildThemeData({
     shape: RoundedRectangleBorder(borderRadius: roundedRectElementsRadius),
   );
 
+  final inputTheme = InputDecorationTheme(
+    fillColor: neutralSwatch.shade800,
+    filled: true,
+    contentPadding: textFieldPadding,
+    border: UnderlineInputBorder(
+      borderRadius: roundedRectElementsRadius,
+      borderSide: BorderSide.none,
+    ),
+  );
+
   return ThemeData(
     brightness: brightness,
     colorScheme: colorScheme,
@@ -99,6 +111,7 @@ ThemeData buildThemeData({
     iconTheme: iconTheme,
     snackBarTheme: snackBarTheme,
     bottomSheetTheme: bottomSheetTheme,
+    inputDecorationTheme: inputTheme,
   );
 }
 
