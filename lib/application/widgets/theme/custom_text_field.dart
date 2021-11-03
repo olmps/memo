@@ -87,13 +87,29 @@ class CustomTextField extends HookWidget {
     final neutralSwatch = theme.neutralSwatch;
     final textTheme = Theme.of(context).textTheme;
 
-    final textFieldController = controller ?? useTextEditingController();
-    final textFieldFocus = focusNode ?? useFocusNode();
+    final controller = this.controller ?? useTextEditingController();
+    final focusNode = this.focusNode ?? useFocusNode();
+    final hasFocus = useState(focusNode.hasFocus);
+    final hasText = useState(controller.text.isNotEmpty);
 
-    final hasFocus = textFieldFocus.hasFocus;
-    final hasText = textFieldController.text.isNotEmpty;
-    final labelStyle =
-        hasFocus || hasText ? textTheme.caption?.copyWith(color: neutralSwatch.shade300) : textTheme.subtitle1;
+    useEffect(() {
+      void focusUpdate() {
+        hasFocus.value = focusNode.hasFocus;
+        hasText.value = controller.text.isNotEmpty;
+      }
+
+      controller.addListener(focusUpdate);
+      focusNode.addListener(focusUpdate);
+
+      return () {
+        controller.removeListener(focusUpdate);
+        focusNode.removeListener(focusUpdate);
+      };
+    });
+
+    final labelStyle = hasFocus.value || hasText.value
+        ? textTheme.caption?.copyWith(color: neutralSwatch.shade300)
+        : textTheme.subtitle1;
 
     final textField = Container(
       decoration: BoxDecoration(
@@ -104,8 +120,8 @@ class CustomTextField extends HookWidget {
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
         onChanged: onChanged,
-        controller: textFieldController,
-        focusNode: textFieldFocus,
+        controller: controller,
+        focusNode: focusNode,
         enabled: enabled,
         textAlign: textAlign,
         style: textTheme.bodyText2,
@@ -114,10 +130,10 @@ class CustomTextField extends HookWidget {
           labelText: labelText,
           labelStyle: labelStyle,
           suffixIcon: _buildSuffixIcon(
-            hasFocus: textFieldFocus.hasFocus,
-            hasText: textFieldController.text.isNotEmpty,
+            hasFocus: hasFocus.value,
+            hasText: hasText.value,
             neutralSwatch: theme.neutralSwatch,
-            onTap: textFieldController.clear,
+            onTap: controller.clear,
           ),
         ),
       ),
