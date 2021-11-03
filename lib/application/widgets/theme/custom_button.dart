@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:layoutr/common_layout.dart';
-import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/theme/theme_controller.dart';
 
 @visibleForTesting
 enum ButtonState { normal, pressed, disabled }
@@ -137,9 +137,13 @@ class CustomTextButton extends HookWidget {
   }
 }
 
-/// Wraps a [CustomButton] to become similar to a [ElevatedButton].
+/// Wraps a [CustomButton] following a similar style to [ElevatedButton].
 ///
-/// Requires a [backgroundColorBuilder] to build accordingly to the button state.
+/// Reused by custom buttons implementations.
+/// See also:
+///
+///   * [PrimaryElevatedButton]
+///   * [SecondaryElevatedButton]
 class _CustomElevatedButton extends StatelessWidget {
   const _CustomElevatedButton({
     required this.text,
@@ -191,7 +195,7 @@ class _CustomElevatedButton extends StatelessWidget {
 /// See also:
 ///
 ///   * [PrimaryElevatedButton] - The primary visually opinionated alternative to [ElevatedButton].
-///   * [SecondaryElevatedButton] - The visually opinionated alternative to [ElevatedButton].
+///   * [SecondaryElevatedButton] - The secondary visually opinionated alternative to [ElevatedButton].
 ///   * [CustomTextButton] - The visually opinionated alternative to [TextButton].
 @visibleForTesting
 class CustomButton extends StatefulWidget {
