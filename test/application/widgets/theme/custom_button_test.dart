@@ -5,7 +5,7 @@ import '../../../utils/widget_pump.dart';
 
 void main() {
   group('Custom Buttons -', () {
-    testWidgets('should be at the `normal` state with a `onPressed` argument and when not pressed', (tester) async {
+    testWidgets('should init with `normal` state when `onPressed` is not null', (tester) async {
       final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () {});
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
@@ -15,8 +15,7 @@ void main() {
       expect(buttonState.state == ButtonState.normal, true);
     });
 
-    testWidgets('should be at the `disable` state with a `null` `onPressed` argument and when not pressed',
-        (tester) async {
+    testWidgets('should stay in `disable` state when `onPressed` is `null`', (tester) async {
       const primaryButton = PrimaryElevatedButton(text: 'test');
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
@@ -26,7 +25,7 @@ void main() {
       expect(buttonState.state == ButtonState.disabled, true);
     });
 
-    testWidgets('should be at the `pressed` state with a `onPressed` argument and when pressed', (tester) async {
+    testWidgets('should update to `pressed` state when tapped and `onPressed` is not `null`', (tester) async {
       final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () {});
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
@@ -40,7 +39,7 @@ void main() {
       expect(buttonState.state == ButtonState.pressed, true);
     });
 
-    testWidgets('should be at the `disable` state with a `null` `onPressed` argument and when pressed', (tester) async {
+    testWidgets("shouldn't change to `pressed` when tapped and `onPressed` is `null`", (tester) async {
       const primaryButton = PrimaryElevatedButton(text: 'test');
 
       await pumpMaterialScopedWithTheme(tester, primaryButton);
