@@ -108,7 +108,7 @@ class RichTextField extends HookWidget {
 class RichTextEditingController extends ChangeNotifier {
   RichTextEditingController({String? initialText}) : _richTextContent = initialText ?? '';
 
-  String _richTextContent = '';
+  String _richTextContent;
   String get richTextContent => _richTextContent;
 
   void update(String content) {
