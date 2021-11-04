@@ -144,7 +144,6 @@ class RichTextFieldModal extends HookWidget {
     final okButton = CustomTextButton(
       text: strings.ok.toUpperCase(),
       onPressed: Navigator.of(context).pop,
-      shrink: true,
     );
 
     return Column(

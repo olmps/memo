@@ -129,6 +129,7 @@ class CustomTextButton extends ConsumerWidget {
 
     return _CustomButton(
       text: text,
+      shrink: true,
       leadingWidgetBuilder: leadingAsset != null ? leadingAssetBuilder : null,
       onPressed: onPressed,
       textStyleBuilder: (state) => textTheme.copyWith(color: buttonColor(state)),
@@ -178,6 +179,7 @@ class _CustomElevatedButton extends StatelessWidget {
 
     return _CustomButton(
       text: text,
+      shrink: false,
       onPressed: onPressed,
       isPressedOverlayEnabled: true,
       backgroundColorBuilder: backgroundColorBuilder,
@@ -199,6 +201,7 @@ class _CustomElevatedButton extends StatelessWidget {
 class _CustomButton extends StatefulWidget {
   const _CustomButton({
     required this.text,
+    required this.shrink,
     this.onPressed,
     this.isPressedOverlayEnabled = false,
     this.leadingWidgetBuilder,
@@ -210,6 +213,9 @@ class _CustomButton extends StatefulWidget {
   ///
   /// Its style may be customized by implementing [textStyleBuilder].
   final String text;
+
+  /// Defines wether the button must stretch horizontally to fill the most of the available width.
+  final bool shrink;
 
   final VoidCallback? onPressed;
 
@@ -273,7 +279,13 @@ class _CustomButtonState extends State<_CustomButton> {
       onHighlightChanged: (isPressed) => setState(() {
         state = isPressed ? _ButtonState.pressed : _ButtonState.normal;
       }),
-      child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: rowWidgets)),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: widget.shrink ? MainAxisSize.min : MainAxisSize.max,
+          children: rowWidgets,
+        ),
+      ),
     );
 
     return Semantics(
