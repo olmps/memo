@@ -55,7 +55,7 @@ ThemeData buildThemeData({
     elevation: 0,
     iconTheme: iconTheme,
     backgroundColor: Colors.transparent,
-    titleTextStyle: textTheme.headline6,
+    titleTextStyle: textTheme.subtitle1,
     foregroundColor: Colors.white,
   );
 
