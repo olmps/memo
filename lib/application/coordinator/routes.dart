@@ -87,3 +87,16 @@ class SettingsPath extends AppPath {
   @override
   String get formattedPath => '/$name';
 }
+
+//
+// Update Collection
+//
+class UpdateCollectionPath extends AppPath {
+  UpdateCollectionPath({this.collectionId});
+  static const name = 'update_collection';
+
+  final String? collectionId;
+
+  @override
+  String get formattedPath => collectionId == null ? '/$name' : '/$name/$collectionId';
+}
