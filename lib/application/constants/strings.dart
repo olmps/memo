@@ -13,6 +13,8 @@ import 'package:memo/domain/enums/resource_type.dart';
 //
 // General
 //
+const memos = 'Memos';
+const next = 'Próximo';
 const oops = 'Oops';
 const tryAgain = 'Tente Novamente';
 
@@ -63,6 +65,13 @@ const detailsResources = 'Materiais de apoio';
 const detailsResourcesWarning =
     'Cuidado, estes materiais são referências para outros sites que não estão sob nosso controle';
 const detailsStudyNow = 'Estudar agora';
+
+//
+// Update Collection
+//
+const newCollection = 'Nova Coleção';
+const editCollection = 'Editar Coleção';
+const saveCollection = 'Salvar Coleção';
 
 //
 // Contributors
