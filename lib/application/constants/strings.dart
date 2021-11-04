@@ -11,6 +11,12 @@ import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 
 //
+// General
+//
+const oops = 'Oops';
+const tryAgain = 'Tente Novamente';
+
+//
 // Collections
 //
 const collectionsNavigationTab = 'Coleções';
