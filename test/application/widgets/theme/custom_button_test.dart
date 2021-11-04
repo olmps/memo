@@ -181,6 +181,26 @@ void main() {
       final buttonRenderBox = find.byType(CustomTextButton).first.evaluate().single.renderObject! as RenderBox;
       expect(buttonRenderBox.size.width, expectedWidth);
     });
+
+    testWidgets('Elevated buttons must fill available width', (tester) async {
+      const constrainedWidth = 140.0;
+      const primaryButton = SizedBox(width: constrainedWidth, child: PrimaryElevatedButton(text: 'test'));
+
+      await pumpMaterialScopedWithTheme(tester, primaryButton);
+
+      final buttonRenderBox = find.byType(PrimaryElevatedButton).first.evaluate().single.renderObject! as RenderBox;
+      expect(buttonRenderBox.size.width, constrainedWidth);
+    });
+
+    testWidgets('Text buttons must shrink based on its content', (tester) async {
+      const expectedWidth = 88.0;
+      const textButton = CustomTextButton(text: 'Text');
+
+      await pumpMaterialScopedWithTheme(tester, textButton);
+
+      final buttonRenderBox = find.byType(CustomTextButton).first.evaluate().single.renderObject! as RenderBox;
+      expect(buttonRenderBox.size.width, expectedWidth);
+    });
   });
 }
 
