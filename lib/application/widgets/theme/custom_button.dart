@@ -32,9 +32,9 @@ class PrimaryElevatedButton extends HookWidget {
         case ButtonState.normal:
           return color.shade400;
         case ButtonState.pressed:
-          return color.shade500;
+          return color;
         case ButtonState.disabled:
-          return color.shade500.withOpacity(0.4);
+          return color.withOpacity(0.4);
       }
     }
 
