@@ -8,6 +8,7 @@ import 'package:memo/application/pages/details/contributor_view.dart';
 import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/details/collection_details_vm.dart';
+import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/item_collection_card.dart';
 import 'package:memo/application/widgets/theme/resources_list.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
@@ -84,12 +85,12 @@ class CollectionDetailsPage extends HookWidget {
         child: Container(
           color: memoTheme.neutralSwatch.shade800,
           child: SafeArea(
-            child: ElevatedButton(
+            child: PrimaryElevatedButton(
               onPressed: () {
                 final id = context.read(detailsCollectionId);
                 readCoordinator(context).navigateToCollectionExecution(id, isNestedNavigation: false);
               },
-              child: Text(strings.detailsStudyNow.toUpperCase()),
+              text: strings.detailsStudyNow.toUpperCase(),
             ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
           ),
         ),
