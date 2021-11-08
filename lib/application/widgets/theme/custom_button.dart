@@ -27,7 +27,7 @@ class PrimaryElevatedButton extends HookWidget {
     final theme = useTheme();
     final color = backgroundColor ?? theme.primarySwatch;
 
-    Color? backgroundColorBuilder(ButtonState state) {
+    Color backgroundColorBuilder(ButtonState state) {
       switch (state) {
         case ButtonState.normal:
           return color.shade400;
@@ -68,7 +68,7 @@ class SecondaryElevatedButton extends HookWidget {
     final theme = useTheme();
     final color = backgroundColor ?? theme.neutralSwatch;
 
-    Color? backgroundColorBuilder(ButtonState state) {
+    Color backgroundColorBuilder(ButtonState state) {
       switch (state) {
         case ButtonState.normal:
           return color.shade700;
@@ -169,7 +169,7 @@ class _CustomElevatedButton extends StatelessWidget {
   final String? leadingAsset;
 
   /// Builds the button background color based on the button state.
-  final Color? Function(ButtonState state) backgroundColorBuilder;
+  final Color Function(ButtonState state) backgroundColorBuilder;
 
   @override
   Widget build(BuildContext context) {
