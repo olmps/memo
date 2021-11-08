@@ -17,7 +17,7 @@ void main() {
         const richTextField = RichTextField(title: Text('any'), placeholder: 'any');
         final expectedHeight = dimens.richTextFieldConstraints.minHeight;
 
-        await pumpMaterialScopedWithTheme(tester, richTextField);
+        await pumpThemedProviderScoped(tester, richTextField);
 
         final renderedField = find.byType(RichTextField).first.evaluate().single.renderObject! as RenderBox;
         expect(renderedField.size.height, expectedHeight);
@@ -29,7 +29,7 @@ void main() {
         final richTextField = RichTextField(title: const Text('any'), placeholder: 'any', controller: controller);
         final expectedHeight = dimens.richTextFieldConstraints.maxHeight;
 
-        await pumpMaterialScopedWithTheme(tester, richTextField);
+        await pumpThemedProviderScoped(tester, richTextField);
 
         final renderedField = find.byType(RichTextField).first.evaluate().single.renderObject! as RenderBox;
         expect(renderedField.size.height, expectedHeight);
@@ -41,7 +41,7 @@ void main() {
         const fakeTitle = 'Editor Title';
         const richTextField = RichTextField(title: Text(fakeTitle), placeholder: 'any');
 
-        await pumpMaterialScopedWithTheme(tester, richTextField);
+        await pumpThemedProviderScoped(tester, richTextField);
         await tester.tap(find.byType(RichTextField));
         await tester.pumpAndSettle();
 

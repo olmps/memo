@@ -140,6 +140,7 @@ String settingsDescriptionForNamedCustom(NamedCustomSettings custom) {
 //
 const yes = 'Sim';
 const no = 'Não';
+const ok = 'Ok';
 
 const recallLevel = 'Nível de Fixação';
 
