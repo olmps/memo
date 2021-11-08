@@ -1,5 +1,5 @@
 import 'package:memo/data/gateways/sembast_database.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// Handles all IO and serialization operations associated with the application's versioning
 abstract class VersionRepository {
