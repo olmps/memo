@@ -12,10 +12,11 @@ Future<void> pumpMaterialScoped(WidgetTester tester, Widget widget) => tester.pu
       ),
     );
 
-/// Wraps a [pumpMaterialScoped] with a [ProviderScope] that overrides [themeController].
-Future<void> pumpMaterialScopedWithTheme(WidgetTester tester, Widget widget) => tester.pumpWidget(
+/// Wraps a [pumpMaterialScoped] with a [ProviderScope] that overrides [themeController] and optional [overrides].
+Future<void> pumpThemedProviderScoped(WidgetTester tester, Widget widget, [List<Override> overrides = const []]) =>
+    tester.pumpWidget(
       ProviderScope(
-        overrides: [themeController.overrideWithValue(ThemeController())],
+        overrides: overrides..add(themeController.overrideWithValue(ThemeController())),
         child: MaterialApp(
           home: Scaffold(
             body: widget,
