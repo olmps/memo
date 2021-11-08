@@ -12,7 +12,7 @@ void main() {
       final textField = CustomTextField(controller: controller);
       const expectedText = 'any';
 
-      await pumpMaterialScopedWithTheme(tester, textField);
+      await pumpThemedProviderScoped(tester, textField);
       await tester.enterText(find.byType(CustomTextField), expectedText);
 
       expect(controller.text, expectedText);
@@ -22,7 +22,7 @@ void main() {
       final focusNode = FocusNode();
       final textField = CustomTextField(focusNode: focusNode);
 
-      await pumpMaterialScopedWithTheme(tester, textField);
+      await pumpThemedProviderScoped(tester, textField);
       expect(focusNode.hasFocus, false);
 
       await tester.tapAt(Offset.zero);
@@ -33,7 +33,7 @@ void main() {
       // ignore: avoid_redundant_argument_values
       const textField = CustomTextField(showsClearIcon: true);
 
-      await pumpMaterialScopedWithTheme(tester, textField);
+      await pumpThemedProviderScoped(tester, textField);
       var renderedTextField = find.byType(TextField).first.evaluate().single.widget as TextField;
       expect(renderedTextField.decoration!.suffixIcon, null);
 
@@ -50,7 +50,7 @@ void main() {
       final suffixIcon = Container(color: Colors.red);
       final textField = CustomTextField(suffixIcon: suffixIcon);
 
-      await pumpMaterialScopedWithTheme(tester, textField);
+      await pumpThemedProviderScoped(tester, textField);
 
       final renderedTextField = find.byType(TextField).first.evaluate().single.widget as TextField;
       expect(renderedTextField.decoration!.suffixIcon, suffixIcon);
@@ -60,7 +60,7 @@ void main() {
       final suffixIcon = Container(color: Colors.red);
       final textField = CustomTextField(suffixIcon: suffixIcon);
 
-      await pumpMaterialScopedWithTheme(tester, textField);
+      await pumpThemedProviderScoped(tester, textField);
       await tester.enterText(find.byType(CustomTextField), '');
 
       final renderedTextField = find.byType(TextField).first.evaluate().single.widget as TextField;
@@ -71,7 +71,7 @@ void main() {
       final suffixIcon = Container(color: Colors.red);
       final textField = CustomTextField(suffixIcon: suffixIcon, showsClearIcon: false);
 
-      await pumpMaterialScopedWithTheme(tester, textField);
+      await pumpThemedProviderScoped(tester, textField);
       await tester.enterText(find.byType(CustomTextField), 'any');
 
       final renderedTextField = find.byType(TextField).first.evaluate().single.widget as TextField;
@@ -82,7 +82,7 @@ void main() {
       final suffixIcon = Container(color: Colors.red);
       final textField = CustomTextField(suffixIcon: suffixIcon);
 
-      await pumpMaterialScopedWithTheme(tester, textField);
+      await pumpThemedProviderScoped(tester, textField);
       var renderedTextField = find.byType(TextField).first.evaluate().single.widget as TextField;
       expect(renderedTextField.decoration!.suffixIcon, suffixIcon);
 
@@ -100,7 +100,7 @@ void main() {
         const errorText = 'any';
         const textField = CustomTextField(errorText: errorText);
 
-        await pumpMaterialScopedWithTheme(tester, textField);
+        await pumpThemedProviderScoped(tester, textField);
 
         final errorTextWidget = find.text(errorText);
         expect(errorTextWidget, findsOneWidget);
@@ -111,7 +111,7 @@ void main() {
         const textField = CustomTextField(errorText: errorText);
         final expectedColor = ThemeController().state.destructiveSwatch;
 
-        await pumpMaterialScopedWithTheme(tester, textField);
+        await pumpThemedProviderScoped(tester, textField);
 
         final wrapperContainer = find.byType(Container).first.evaluate().single.widget as Container;
         final containerDecoration = wrapperContainer.decoration! as BoxDecoration;
@@ -128,7 +128,7 @@ void main() {
         const helperText = 'helper text';
         const textField = CustomTextField(errorText: errorText, helperText: helperText);
 
-        await pumpMaterialScopedWithTheme(tester, textField);
+        await pumpThemedProviderScoped(tester, textField);
 
         final errorTextWidget = find.text(errorText);
         final helperTextWidget = find.text(helperText);
@@ -143,7 +143,7 @@ void main() {
         const helperText = 'any';
         const textField = CustomTextField(helperText: helperText);
 
-        await pumpMaterialScopedWithTheme(tester, textField);
+        await pumpThemedProviderScoped(tester, textField);
 
         final helperTextWidget = find.text(helperText);
         expect(helperTextWidget, findsOneWidget);
