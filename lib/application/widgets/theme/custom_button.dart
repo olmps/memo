@@ -128,7 +128,7 @@ class CustomTextButton extends HookWidget {
 
     Widget leadingAssetBuilder(ButtonState state) => Image.asset(leadingAsset!, color: buttonColor(state));
 
-    return CustomButton(
+    return _CustomButton(
       text: text,
       leadingWidgetBuilder: leadingAsset != null ? leadingAssetBuilder : null,
       onPressed: onPressed,
@@ -177,7 +177,7 @@ class _CustomElevatedButton extends StatelessWidget {
 
     Widget leadingAssetBuilder(ButtonState state) => Image.asset(leadingAsset!, color: textTheme.color);
 
-    return CustomButton(
+    return _CustomButton(
       text: text,
       onPressed: onPressed,
       isPressedOverlayEnabled: true,
@@ -197,9 +197,8 @@ class _CustomElevatedButton extends StatelessWidget {
 ///   * [PrimaryElevatedButton] - The primary visually opinionated alternative to [ElevatedButton].
 ///   * [SecondaryElevatedButton] - The secondary visually opinionated alternative to [ElevatedButton].
 ///   * [CustomTextButton] - The visually opinionated alternative to [TextButton].
-@visibleForTesting
-class CustomButton extends StatefulWidget {
-  const CustomButton({
+class _CustomButton extends HookWidget {
+  const _CustomButton({
     required this.text,
     this.onPressed,
     this.isPressedOverlayEnabled = false,
@@ -246,64 +245,45 @@ class CustomButton extends StatefulWidget {
   final TextStyle? Function(ButtonState state)? textStyleBuilder;
 
   @override
-  CustomButtonState createState() => CustomButtonState();
-}
-
-@visibleForTesting
-class CustomButtonState extends State<CustomButton> {
-  late ButtonState state;
-
-  @override
-  void initState() {
-    state = widget.onPressed != null ? ButtonState.normal : ButtonState.disabled;
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant CustomButton oldWidget) {
-    if (widget.onPressed != oldWidget.onPressed) {
-      setState(() {
-        state = widget.onPressed != null ? ButtonState.normal : ButtonState.disabled;
-      });
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final initialState = onPressed != null ? ButtonState.normal : ButtonState.disabled;
+    final state = useState(initialState);
+
+    useEffect(() {
+      if (state.value != ButtonState.pressed) {
+        state.value = onPressed != null ? ButtonState.normal : ButtonState.disabled;
+      }
+    });
+
     final rowWidgets = <Widget>[];
 
-    if (widget.leadingWidgetBuilder != null) {
+    if (leadingWidgetBuilder != null) {
       rowWidgets.addAll([
-        widget.leadingWidgetBuilder!(state),
+        leadingWidgetBuilder!(state.value),
         context.horizontalBox(Spacing.xSmall),
       ]);
     }
 
-    rowWidgets.add(Text(widget.text, style: widget.textStyleBuilder?.call(state)));
+    rowWidgets.add(Text(text, style: textStyleBuilder?.call(state.value)));
 
     final buttonContent = InkWell(
       // Disables default splash/highlight animation
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: widget.onPressed,
-      onHighlightChanged: (isPressed) {
-        setState(() {
-          state = isPressed ? ButtonState.pressed : ButtonState.normal;
-        });
-      },
+      onTap: onPressed,
+      onHighlightChanged: (isPressed) => state.value = isPressed ? ButtonState.pressed : ButtonState.normal,
       child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: rowWidgets)),
     );
 
     return Semantics(
       button: true,
-      enabled: state != ButtonState.disabled,
+      enabled: state.value != ButtonState.disabled,
       child: Container(
         height: dimens.minButtonHeight,
         decoration: BoxDecoration(
-          border: widget.borderBuilder?.call(state),
-          color: widget.backgroundColorBuilder?.call(state),
-          gradient: widget.backgroundGradientBuilder?.call(state),
+          border: borderBuilder?.call(state.value),
+          color: backgroundColorBuilder?.call(state.value),
+          gradient: backgroundGradientBuilder?.call(state.value),
           borderRadius: dimens.genericRoundedElementBorderRadius,
         ),
         child: buttonContent,
