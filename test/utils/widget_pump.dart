@@ -16,7 +16,7 @@ Future<void> pumpMaterialScoped(WidgetTester tester, Widget widget) => tester.pu
 Future<void> pumpThemedProviderScoped(WidgetTester tester, Widget widget, [List<Override> overrides = const []]) =>
     tester.pumpWidget(
       ProviderScope(
-        overrides: overrides..add(themeController.overrideWithValue(ThemeController())),
+        overrides: List.from(overrides)..add(themeController.overrideWithValue(ThemeController())),
         child: MaterialApp(
           home: Scaffold(
             body: widget,
