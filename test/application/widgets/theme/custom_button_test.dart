@@ -12,57 +12,35 @@ void main() {
     const pressedColor = buttonColor;
     final disabledColor = buttonColor.withOpacity(0.4);
 
-    testWidgets('should inits with normal background color when onPressed is not null', (tester) async {
+    testWidgets('should init with normal background color when onPressed is not null', (tester) async {
       final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () {}, backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, primaryButton);
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, normalColor);
+      await _pumpWithBackgroundColor(tester, primaryButton, normalColor);
     });
 
     testWidgets('should update its background color when disabled', (tester) async {
       const primaryButton = PrimaryElevatedButton(text: 'test', backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, primaryButton);
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, disabledColor);
+      await _pumpWithBackgroundColor(tester, primaryButton, disabledColor);
     });
 
     testWidgets('should update its background color when pressed', (tester) async {
       final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () {}, backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, primaryButton);
-      await tester.startGesture(const Offset(0, 0));
-      await tester.pump();
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, pressedColor);
+      await _pumpAndPressWithBackgroundColor(tester, primaryButton, pressedColor);
     });
 
     testWidgets('should not update its background color when pressed without onPressed', (tester) async {
       const primaryButton = PrimaryElevatedButton(text: 'test', backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, primaryButton);
-      await tester.startGesture(const Offset(0, 0));
-      await tester.pump();
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, disabledColor);
+      await _pumpAndPressWithBackgroundColor(tester, primaryButton, disabledColor);
     });
 
     testWidgets('should trigger onPressed when tapped', (tester) async {
       var hasPressed = false;
       final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () => hasPressed = true);
 
-      await pumpProviderScoped(tester, primaryButton);
-      await tester.tap(find.byType(PrimaryElevatedButton));
-      await tester.pump();
+      await _pumpAndTap(tester, primaryButton);
 
       expect(hasPressed, true);
     });
@@ -74,57 +52,35 @@ void main() {
     final pressedColor = buttonColor.shade800;
     final disabledColor = buttonColor.shade800.withOpacity(0.4);
 
-    testWidgets('should inits with normal background color when onPressed is not null', (tester) async {
+    testWidgets('should init with normal background color when onPressed is not null', (tester) async {
       final secondaryButton = SecondaryElevatedButton(text: 'test', onPressed: () {}, backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, secondaryButton);
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, normalColor);
+      await _pumpWithBackgroundColor(tester, secondaryButton, normalColor);
     });
 
     testWidgets('should update its background color when disabled', (tester) async {
       const secondaryButton = SecondaryElevatedButton(text: 'test', backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, secondaryButton);
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, disabledColor);
+      await _pumpWithBackgroundColor(tester, secondaryButton, disabledColor);
     });
 
     testWidgets('should update its background color when pressed', (tester) async {
       final secondaryButton = SecondaryElevatedButton(text: 'test', onPressed: () {}, backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, secondaryButton);
-      await tester.startGesture(const Offset(0, 0));
-      await tester.pump();
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, pressedColor);
+      await _pumpAndPressWithBackgroundColor(tester, secondaryButton, pressedColor);
     });
 
     testWidgets('should not update its background color when pressed without onPressed', (tester) async {
       const secondaryButton = SecondaryElevatedButton(text: 'test', backgroundColor: buttonColor);
 
-      await pumpProviderScoped(tester, secondaryButton);
-      await tester.startGesture(const Offset(0, 0));
-      await tester.pump();
-
-      final buttonContainer = tester.widget(find.byType(Container)) as Container;
-      final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
-      expect(buttonDecoration.color, disabledColor);
+      await _pumpAndPressWithBackgroundColor(tester, secondaryButton, disabledColor);
     });
 
     testWidgets('should trigger onPressed when tapped', (tester) async {
       var hasPressed = false;
       final secondaryButton = SecondaryElevatedButton(text: 'test', onPressed: () => hasPressed = true);
 
-      await pumpProviderScoped(tester, secondaryButton);
-      await tester.tap(find.byType(SecondaryElevatedButton));
-      await tester.pump();
+      await _pumpAndTap(tester, secondaryButton);
 
       expect(hasPressed, true);
     });
@@ -136,7 +92,7 @@ void main() {
     final pressedColor = buttonColor.shade400;
     final disabledColor = buttonColor.shade400.withOpacity(0.4);
 
-    testWidgets('should inits with normal text color when onPressed is not null', (tester) async {
+    testWidgets('should init with normal text color when onPressed is not null', (tester) async {
       final textButton = CustomTextButton(text: 'test', onPressed: () {}, color: buttonColor);
 
       await pumpProviderScoped(tester, textButton);
@@ -157,9 +113,7 @@ void main() {
     testWidgets('should update its text color when pressed', (tester) async {
       final textButton = CustomTextButton(text: 'test', onPressed: () {}, color: buttonColor);
 
-      await pumpProviderScoped(tester, textButton);
-      await tester.startGesture(const Offset(0, 0));
-      await tester.pump();
+      await _pumpAndPress(tester, textButton);
 
       final text = tester.widget(find.byType(Text)) as Text;
       expect(text.style!.color, pressedColor);
@@ -168,9 +122,7 @@ void main() {
     testWidgets('should not update its text color when pressed without onPressed', (tester) async {
       const textButton = CustomTextButton(text: 'test', color: buttonColor);
 
-      await pumpProviderScoped(tester, textButton);
-      await tester.startGesture(const Offset(0, 0));
-      await tester.pump();
+      await _pumpAndPress(tester, textButton);
 
       final text = tester.widget(find.byType(Text)) as Text;
       expect(text.style!.color, disabledColor);
@@ -195,11 +147,41 @@ void main() {
       var hasPressed = false;
       final textButton = CustomTextButton(text: 'test', onPressed: () => hasPressed = true);
 
-      await pumpProviderScoped(tester, textButton);
-      await tester.tap(find.byType(CustomTextButton));
-      await tester.pump();
+      await _pumpAndTap(tester, textButton);
 
       expect(hasPressed, true);
     });
   });
+}
+
+/// Pumps [button] and asserts that its background color equals to [backgroundColor].
+Future<void> _pumpWithBackgroundColor(WidgetTester tester, Widget button, Color backgroundColor) async {
+  await pumpProviderScoped(tester, button);
+
+  final buttonContainer = tester.widget(find.byType(Container)) as Container;
+  final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
+  expect(buttonDecoration.color, backgroundColor);
+}
+
+/// Pumps [button] and taps it.
+Future<void> _pumpAndTap<T extends Widget>(WidgetTester tester, T button) async {
+  await pumpProviderScoped(tester, button);
+  await tester.tap(find.byType(T));
+  await tester.pump();
+}
+
+/// Pumps [button] and press (a single pointer down gesture) it.
+Future<void> _pumpAndPress<T extends Widget>(WidgetTester tester, T button) async {
+  await pumpProviderScoped(tester, button);
+  await tester.startGesture(const Offset(0, 0));
+  await tester.pump();
+}
+
+/// Pumps [button], press it and asserts that its background color equals to [backgroundColor].
+Future<void> _pumpAndPressWithBackgroundColor(WidgetTester tester, Widget button, Color backgroundColor) async {
+  await _pumpAndPress(tester, button);
+
+  final buttonContainer = tester.widget(find.byType(Container)) as Container;
+  final buttonDecoration = buttonContainer.decoration! as BoxDecoration;
+  expect(buttonDecoration.color, backgroundColor);
 }
