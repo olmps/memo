@@ -72,6 +72,14 @@ const editCollection = 'Editar Coleção';
 const saveCollection = 'Salvar Coleção';
 
 //
+// Tags Component
+//
+const tags = 'Tags';
+const tagsHint = 'Digite tags...';
+const suggestions = 'Sugestões';
+String addTags(int maxTags) => 'Adicionar Tags (máximo $maxTags)';
+
+//
 // Contributors
 //
 const detailsContributors = 'Contribuidores';

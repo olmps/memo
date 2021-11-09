@@ -58,6 +58,18 @@ const double dragIndicatorHeight = 4;
 const double minBottomSheetHeight = 300;
 
 //
+// Text Fields
+//
+const double minTextFieldHeight = 56;
+
+//
 // Rich Text Field
 //
-const richTextFieldConstraints = BoxConstraints(maxHeight: 148, minHeight: 56);
+const richTextFieldConstraints = BoxConstraints(maxHeight: 148, minHeight: minTextFieldHeight);
+
+//
+// Tags Dropdown
+//
+const double tagsCloseButtonSize = 12;
+const double tagsSuggestionLoadingSize = 12;
+const double tagsSuggestionLoadingStrokeWidth = 2;
