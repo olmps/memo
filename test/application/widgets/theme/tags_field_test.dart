@@ -228,7 +228,9 @@ void main() {
   });
 }
 
-/// TODO(ggirotto)
+/// Pumps [field] performing a tap on it to open the tags modal.
+///
+/// Optionally adds [tag] if not `null`.
 Future<void> _pumpWithTag({required TagsField field, required WidgetTester tester, String? tag}) async {
   await pumpThemedProviderScoped(tester, field);
   await tester.tap(find.byType(TagsField));
@@ -239,7 +241,7 @@ Future<void> _pumpWithTag({required TagsField field, required WidgetTester teste
   }
 }
 
-/// TODO(ggirotto)
+/// Adds [tag] to already pumped [field] widget.
 Future<void> _addTag({required TagsField field, required WidgetTester tester, required String tag}) async {
   await tester.enterText(find.byType(TextField).last, tag);
   await tester.testTextInput.receiveAction(TextInputAction.done);
