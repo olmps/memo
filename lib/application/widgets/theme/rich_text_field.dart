@@ -14,12 +14,9 @@ import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
 import 'package:tuple/tuple.dart';
 
-/// A [TextField] variation that supports rich text content.
+/// A [TextField] that follows most of WYSIWYG editors functionality.
 ///
-/// The field supports rich text content by opening a modal when tapped with an embedded `Quill Editor`.
-///
-/// The field also supports presenting rich text content, different from [TextField] which only supports simple
-/// text content. The field content height is limited by [dimens.richTextFieldConstraints].
+/// Supports presenting rich text content and opens a modal with a rich text editor when tapped.
 class RichTextField extends HookWidget {
   const RichTextField({required this.modalTitle, required this.placeholder, this.controller, this.focus});
 
