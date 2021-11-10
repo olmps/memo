@@ -196,7 +196,7 @@ class _CustomElevatedButton extends StatelessWidget {
 ///   * [PrimaryElevatedButton] - The primary visually opinionated alternative to [ElevatedButton].
 ///   * [SecondaryElevatedButton] - The secondary visually opinionated alternative to [ElevatedButton].
 ///   * [CustomTextButton] - The visually opinionated alternative to [TextButton].
-class _CustomButton extends StatefulHookWidget {
+class _CustomButton extends StatefulWidget {
   const _CustomButton({
     required this.text,
     this.onPressed,
