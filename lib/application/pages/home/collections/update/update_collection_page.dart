@@ -8,28 +8,28 @@ import 'package:memo/application/pages/home/collections/update/update_providers.
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
-import 'package:memo/application/widgets/theme/retry_container.dart';
+import 'package:memo/application/widgets/theme/exception_retry_container.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
 import 'package:memo/application/widgets/theme/themed_tab_bar.dart';
 
-enum Segment { details, memos }
+enum _Segment { details, memos }
 
 class UpdateCollectionPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final vm = useUpdateCollectionVM(context);
 
-    final selectedSegment = useState(Segment.details);
-    final tabController = useTabController(initialLength: Segment.values.length);
+    final selectedSegment = useState(_Segment.details);
+    final tabController = useTabController(initialLength: _Segment.values.length);
 
     useEffect(() {
-      void tabListener() => selectedSegment.value = Segment.values[tabController.index];
+      void tabListener() => selectedSegment.value = _Segment.values[tabController.index];
 
       tabController.addListener(tabListener);
       return () => tabController.removeListener(tabListener);
     });
 
-    final tabs = Segment.values.map((segment) => Text(segment.title)).toList();
+    final tabs = _Segment.values.map((segment) => Text(segment.title)).toList();
     final title = vm.isEditing ? strings.editCollection : strings.newCollection;
 
     return Scaffold(
@@ -40,7 +40,7 @@ class UpdateCollectionPage extends HookWidget {
           Expanded(child: _UpdateCollectionContents(selectedSegment: selectedSegment.value)),
           const Spacer(),
           _BottomActionContainer(
-            onSegmentSwapRequested: (segment) => tabController.animateTo(Segment.values.indexOf(segment)),
+            onSegmentSwapRequested: (segment) => tabController.animateTo(_Segment.values.indexOf(segment)),
             selectedSegment: selectedSegment.value,
           ),
         ],
@@ -52,7 +52,7 @@ class UpdateCollectionPage extends HookWidget {
 class _UpdateCollectionContents extends HookWidget {
   const _UpdateCollectionContents({required this.selectedSegment});
 
-  final Segment selectedSegment;
+  final _Segment selectedSegment;
 
   @override
   Widget build(BuildContext context) {
@@ -64,20 +64,20 @@ class _UpdateCollectionContents extends HookWidget {
     }
 
     switch (selectedSegment) {
-      case Segment.details:
+      case _Segment.details:
         return UpdateCollectionDetails();
-      case Segment.memos:
+      case _Segment.memos:
         return UpdateCollectionMemos();
     }
   }
 }
 
-extension on Segment {
+extension on _Segment {
   String get title {
     switch (this) {
-      case Segment.details:
+      case _Segment.details:
         return strings.details;
-      case Segment.memos:
+      case _Segment.memos:
         return strings.memos;
     }
   }
@@ -86,8 +86,8 @@ extension on Segment {
 class _BottomActionContainer extends HookWidget {
   const _BottomActionContainer({required this.selectedSegment, required this.onSegmentSwapRequested});
 
-  final Segment selectedSegment;
-  final Function(Segment segment) onSegmentSwapRequested;
+  final _Segment selectedSegment;
+  final void Function(_Segment segment) onSegmentSwapRequested;
 
   @override
   Widget build(BuildContext context) {
@@ -96,10 +96,10 @@ class _BottomActionContainer extends HookWidget {
     late Widget button;
 
     switch (selectedSegment) {
-      case Segment.details:
+      case _Segment.details:
         button = _DetailsActionButton(onSegmentSwapRequested: onSegmentSwapRequested);
         break;
-      case Segment.memos:
+      case _Segment.memos:
         button = _MemosActionButton();
         break;
     }
@@ -118,7 +118,7 @@ class _BottomActionContainer extends HookWidget {
 class _DetailsActionButton extends HookWidget {
   const _DetailsActionButton({required this.onSegmentSwapRequested});
 
-  final Function(Segment segment) onSegmentSwapRequested;
+  final Function(_Segment segment) onSegmentSwapRequested;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +134,7 @@ class _DetailsActionButton extends HookWidget {
       if (state.hasMemos) {
         vm.saveCollection();
       } else {
-        onSegmentSwapRequested(Segment.memos);
+        onSegmentSwapRequested(_Segment.memos);
       }
     }
 
