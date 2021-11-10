@@ -196,7 +196,7 @@ class _CustomElevatedButton extends StatelessWidget {
 ///   * [PrimaryElevatedButton] - The primary visually opinionated alternative to [ElevatedButton].
 ///   * [SecondaryElevatedButton] - The secondary visually opinionated alternative to [ElevatedButton].
 ///   * [CustomTextButton] - The visually opinionated alternative to [TextButton].
-class _CustomButton extends HookWidget {
+class _CustomButton extends StatefulHookWidget {
   const _CustomButton({
     required this.text,
     this.onPressed,
@@ -230,43 +230,59 @@ class _CustomButton extends HookWidget {
   final TextStyle? Function(_ButtonState state)? textStyleBuilder;
 
   @override
+  _CustomButtonState createState() => _CustomButtonState();
+}
+
+class _CustomButtonState extends State<_CustomButton> {
+  late _ButtonState state;
+
+  @override
+  void initState() {
+    state = widget.onPressed != null ? _ButtonState.normal : _ButtonState.disabled;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant _CustomButton oldWidget) {
+    if (widget.onPressed != oldWidget.onPressed) {
+      setState(() {
+        state = widget.onPressed != null ? _ButtonState.normal : _ButtonState.disabled;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final initialState = onPressed != null ? _ButtonState.normal : _ButtonState.disabled;
-    final state = useState(initialState);
-
-    useEffect(() {
-      if (state.value != _ButtonState.pressed) {
-        state.value = onPressed != null ? _ButtonState.normal : _ButtonState.disabled;
-      }
-    });
-
     final rowWidgets = <Widget>[];
 
-    if (leadingWidgetBuilder != null) {
+    if (widget.leadingWidgetBuilder != null) {
       rowWidgets.addAll([
-        leadingWidgetBuilder!(state.value),
+        widget.leadingWidgetBuilder!(state),
         context.horizontalBox(Spacing.xSmall),
       ]);
     }
 
-    rowWidgets.add(Text(text, style: textStyleBuilder?.call(state.value)));
+    rowWidgets.add(Text(widget.text, style: widget.textStyleBuilder?.call(state)));
 
     final buttonContent = InkWell(
       // Disables default splash/highlight animation
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: onPressed,
-      onHighlightChanged: (isPressed) => state.value = isPressed ? _ButtonState.pressed : _ButtonState.normal,
+      onTap: widget.onPressed,
+      onHighlightChanged: (isPressed) => setState(() {
+        state = isPressed ? _ButtonState.pressed : _ButtonState.normal;
+      }),
       child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: rowWidgets)),
     );
 
     return Semantics(
       button: true,
-      enabled: state.value != _ButtonState.disabled,
+      enabled: state != _ButtonState.disabled,
       child: Container(
         height: dimens.minButtonHeight,
         decoration: BoxDecoration(
-          color: backgroundColorBuilder?.call(state.value),
+          color: widget.backgroundColorBuilder?.call(state),
           borderRadius: dimens.genericRoundedElementBorderRadius,
         ),
         child: buttonContent,
