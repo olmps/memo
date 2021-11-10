@@ -13,7 +13,7 @@ UpdateCollectionState useUpdateCollectionState() {
 }
 
 /// Syntax sugar for `context.read` the current [UpdateCollectionVM] provider.
-UpdateCollectionVM readUpdateCollectionVM(BuildContext context) {
-  final collectionId = context.read(updateCollectionId);
+UpdateCollectionVM useUpdateCollectionVM(BuildContext context) {
+  final collectionId = useProvider(updateCollectionId);
   return context.read(updateCollectionVM(collectionId));
 }
