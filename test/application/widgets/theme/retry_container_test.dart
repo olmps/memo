@@ -1,0 +1,34 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/application/constants/exception_strings.dart';
+import 'package:memo/application/widgets/theme/custom_button.dart';
+import 'package:memo/application/widgets/theme/exception_retry_container.dart';
+import 'package:memo/core/faults/exceptions/url_exception.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../utils/fakes.dart';
+import '../../../utils/widget_pump.dart';
+
+void main() {
+  testWidgets('should invoke callback when tapped', (tester) async {
+    final fakeException = UrlException.failedToOpen();
+    final mockCallback = MockCallbackFunction();
+    final exceptionContainer = ExceptionRetryContainer(onRetry: mockCallback, exception: fakeException);
+
+    await pumpThemedProviderScoped(tester, exceptionContainer);
+    await tester.tap(find.byType(PrimaryElevatedButton));
+
+    verify(mockCallback.call).called(1);
+  });
+
+  testWidgets('should present correct exception description', (tester) async {
+    final fakeException = UrlException.failedToOpen();
+    final mockCallback = MockCallbackFunction();
+    final exceptionContainer = ExceptionRetryContainer(onRetry: mockCallback, exception: fakeException);
+    final expectedMessage = descriptionForException(fakeException);
+
+    await pumpThemedProviderScoped(tester, exceptionContainer);
+
+    final exceptionText = find.text(expectedMessage);
+    expect(exceptionText, findsOneWidget);
+  });
+}
