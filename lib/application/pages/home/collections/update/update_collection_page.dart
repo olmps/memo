@@ -17,7 +17,7 @@ enum Segment { details, memos }
 class UpdateCollectionPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final vm = readUpdateCollectionVM(context);
+    final vm = useUpdateCollectionVM(context);
 
     final selectedSegment = useState(Segment.details);
     final tabController = useTabController(initialLength: Segment.values.length);
@@ -56,7 +56,7 @@ class _UpdateCollectionContents extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = readUpdateCollectionVM(context);
+    final vm = useUpdateCollectionVM(context);
     final state = useUpdateCollectionState();
 
     if (state is UpdateCollectionFailedLoading) {
@@ -128,7 +128,7 @@ class _DetailsActionButton extends HookWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final vm = readUpdateCollectionVM(context);
+    final vm = useUpdateCollectionVM(context);
 
     void onPressed() {
       if (state.hasMemos) {
@@ -153,7 +153,7 @@ class _MemosActionButton extends HookWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final vm = readUpdateCollectionVM(context);
+    final vm = useUpdateCollectionVM(context);
     final canSave = state.hasDetails && state.hasMemos;
 
     return PrimaryElevatedButton(
