@@ -43,7 +43,11 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
       await Future<void>.delayed(const Duration(seconds: 2));
 
       // state = UpdateCollectionLoaded(collectionMetadata: CollectionMetadata.empty());
-      state = UpdateCollectionFailedSaving(UrlException.failedToOpen(), metadata: CollectionMetadata.empty());
+      state = UpdateCollectionFailedSaving(
+        UrlException.failedToOpen(),
+        metadata: CollectionMetadata.empty(),
+        memosMetadata: const [],
+      );
     } on BaseException catch (exception) {
       state = UpdateCollectionFailedLoading(exception);
     }
@@ -56,36 +60,40 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
       // TODO: Call services to save the collection
       print('Saving collection...');
     } on BaseException catch (exception) {
-      state = UpdateCollectionFailedSaving(exception, metadata: loadedState.collectionMetadata);
+      state = UpdateCollectionFailedSaving(
+        exception,
+        metadata: loadedState.collectionMetadata,
+        memosMetadata: loadedState.memosMetadata,
+      );
     }
   }
 }
 
 @immutable
-class CollectionMetadata {
-  const CollectionMetadata({
-    required this.name,
-    required this.tags,
-    required this.description,
-    required this.memoMetadata,
-  });
+class CollectionMetadata extends Equatable {
+  const CollectionMetadata({required this.name, required this.tags, required this.description});
 
-  factory CollectionMetadata.empty() => const CollectionMetadata(name: '', description: '', tags: [], memoMetadata: []);
+  factory CollectionMetadata.empty() => const CollectionMetadata(name: '', description: '', tags: []);
 
   final String name;
   final List<String> tags;
   final String description;
-  final List<MemoMetadata> memoMetadata;
+
+  @override
+  List<Object?> get props => [name, tags, description];
 }
 
 @immutable
-class MemoMetadata {
+class MemoMetadata extends Equatable {
   const MemoMetadata({required this.question, required this.answer});
 
   factory MemoMetadata.empty() => const MemoMetadata(question: '', answer: '');
 
   final String question;
   final String answer;
+
+  @override
+  List<Object?> get props => [question, answer];
 }
 
 @immutable
@@ -99,20 +107,30 @@ abstract class UpdateCollectionState extends Equatable {
 class UpdateCollectionLoading extends UpdateCollectionState {}
 
 class UpdateCollectionLoaded extends UpdateCollectionState {
-  const UpdateCollectionLoaded({required this.collectionMetadata});
+  const UpdateCollectionLoaded({required this.collectionMetadata, required this.memosMetadata});
 
   final CollectionMetadata collectionMetadata;
+  final List<MemoMetadata> memosMetadata;
 
-  bool get hasDetails => true;
-  bool get hasMemos => false;
+  /// Returns `true` if all required information from `Details` segment has been added.
+  bool get hasDetails =>
+      collectionMetadata.name.isNotEmpty &&
+      collectionMetadata.description.isNotEmpty &&
+      collectionMetadata.tags.isNotEmpty;
+
+  /// Returns `true` if the collection has at least one memo.
+  bool get hasMemos => memosMetadata.isNotEmpty;
 
   @override
   List<Object?> get props => [...super.props, collectionMetadata];
 }
 
 class UpdateCollectionFailedSaving extends UpdateCollectionLoaded {
-  const UpdateCollectionFailedSaving(this.exception, {required CollectionMetadata metadata})
-      : super(collectionMetadata: metadata);
+  const UpdateCollectionFailedSaving(
+    this.exception, {
+    required CollectionMetadata metadata,
+    required List<MemoMetadata> memosMetadata,
+  }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata);
 
   final BaseException exception;
 
