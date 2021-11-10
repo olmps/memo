@@ -39,8 +39,16 @@ class RichTextField extends HookWidget {
 
     final quillController = _useQuillController(textController: controller);
 
+    final hasContent = useState(controller?.text.isNotEmpty ?? false);
+
     useEffect(() {
-      void editorChanged() => controller?.text = jsonEncode(quillController.document.toDelta().toJson());
+      void editorChanged() {
+        controller?.text = jsonEncode(quillController.document.toDelta().toJson());
+
+        final plainText = quillController.plainTextEditingValue.text;
+        // `quill` automatically adds `\n` when initializing the editor without content
+        hasContent.value = plainText.isNotEmpty && plainText != '\n';
+      }
 
       quillController.addListener(editorChanged);
       return () => quillController.removeListener(editorChanged);
@@ -58,10 +66,6 @@ class RichTextField extends HookWidget {
       );
     }
 
-    final content = quillController.plainTextEditingValue.text;
-    // `quill` automatically adds `\n` when initializing the editor without content
-    final hasContent = content.isNotEmpty && content != '\n';
-
     return GestureDetector(
       onTap: showRichTextFieldModal,
       child: Container(
@@ -75,7 +79,7 @@ class RichTextField extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (hasContent) ...[
+            if (hasContent.value) ...[
               Text(placeholder, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400)),
               context.verticalBox(Spacing.small),
               Flexible(
@@ -116,13 +120,21 @@ class _RichTextFieldModal extends HookWidget {
     final theme = useTheme();
 
     final focusNode = focus ?? useFocusNode();
+
     final isFocused = useState(focusNode.hasFocus);
+    final hasSelection = useState(controller.selection.start != controller.selection.end);
 
     useEffect(() {
       void focusUpdate() => isFocused.value = focusNode.hasFocus;
+      void selectionUpdate() => hasSelection.value = controller.selection.start != controller.selection.end;
 
       focusNode.addListener(focusUpdate);
-      return () => focusNode.removeListener(focusUpdate);
+      controller.addListener(selectionUpdate);
+
+      return () {
+        focusNode.removeListener(focusUpdate);
+        controller.removeListener(selectionUpdate);
+      };
     });
 
     final editor = _ThemedEditor(
@@ -153,8 +165,8 @@ class _RichTextFieldModal extends HookWidget {
             ],
           ).withSymmetricalPadding(context, horizontal: Spacing.medium),
         ),
-        // Only show toolbar action items when the keyboard is visible
-        if (isFocused.value) ...[
+        // Only show toolbar action items when the field has focus or when the user has an active selection.
+        if (isFocused.value || hasSelection.value) ...[
           _RichTextFieldToolbar(controller),
           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ]
@@ -199,10 +211,11 @@ class _ThemedEditor extends HookWidget {
       scrollController: ScrollController(),
       scrollable: true,
       focusNode: focus ?? FocusNode(),
-      autoFocus: true,
+      autoFocus: !readonly,
       readOnly: readonly,
       expands: false,
       padding: EdgeInsets.zero,
+      enableInteractiveSelection: !readonly,
       showCursor: showCursor,
       // TODO(ggirotto): Placeholder is crashing. This is a problem related to `FlutterQuill`.
       // TODO(ggirotto): https://github.com/singerdmx/flutter-quill/issues/348
