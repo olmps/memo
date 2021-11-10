@@ -5,13 +5,8 @@ import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
-import 'package:mocktail/mocktail.dart';
 
 import '../../../utils/widget_pump.dart';
-
-class MockCallbackFunction extends Mock {
-  void call();
-}
 
 void main() {
   group('Height Constraints - ', () {
