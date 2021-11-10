@@ -36,9 +36,9 @@ extension ImageKeyPath on ImageKey {
   String get path {
     switch (this) {
       case ImageKey.bold:
-        return '$_iconsRoot/bold.png';
+        return '$_editorIconsRoot/bold.png';
       case ImageKey.code:
-        return '$_iconsRoot/code.png';
+        return '$_editorIconsRoot/code.png';
       case ImageKey.chevronLeft:
         return '$_iconsRoot/chevron_left.png';
       case ImageKey.chevronRight:
@@ -50,7 +50,7 @@ extension ImageKeyPath on ImageKey {
       case ImageKey.folder:
         return '$_iconsRoot/folder.png';
       case ImageKey.italic:
-        return '$_iconsRoot/italic.png';
+        return '$_editorIconsRoot/italic.png';
       case ImageKey.link:
         return '$_iconsRoot/link.png';
       case ImageKey.settings:
@@ -58,7 +58,7 @@ extension ImageKeyPath on ImageKey {
       case ImageKey.trendingUpArrow:
         return '$_iconsRoot/trending_up_arrow.png';
       case ImageKey.underline:
-        return '$_iconsRoot/underline.png';
+        return '$_editorIconsRoot/underline.png';
       case ImageKey.easyEmoji:
         return '$_illustrationsRoot/easy_emoji.png';
       case ImageKey.folderBig:
@@ -76,18 +76,19 @@ extension ImageKeyPath on ImageKey {
 }
 
 const _iconsRoot = '$_imgsRoot/icons';
-final bold = ImageKey.bold.path;
+const _editorIconsRoot = '$_iconsRoot/editor';
+final boldAsset = ImageKey.bold.path;
 final chevronLeftAsset = ImageKey.chevronLeft.path;
 final chevronRightAsset = ImageKey.chevronRight.path;
-final code = ImageKey.code.path;
+final codeAsset = ImageKey.code.path;
 final closeAsset = ImageKey.close.path;
 final clearAsset = ImageKey.clear.path;
 final folderAsset = ImageKey.folder.path;
-final italic = ImageKey.italic.path;
+final italicAsset = ImageKey.italic.path;
 final linkAsset = ImageKey.link.path;
 final settingsAsset = ImageKey.settings.path;
 final trendingUpArrowAsset = ImageKey.trendingUpArrow.path;
-final underline = ImageKey.underline.path;
+final underlineAsset = ImageKey.underline.path;
 
 const _illustrationsRoot = '$_imgsRoot/illustrations';
 final easyEmojiAsset = ImageKey.easyEmoji.path;
