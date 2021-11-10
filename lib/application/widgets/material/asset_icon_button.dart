@@ -24,10 +24,7 @@ class AssetIconButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final EdgeInsets? padding;
 
-  /// If set to `false` disables Material's splash effect.
-  ///
-  /// The splash effect may be disabled when the parent Widget wants to provide a custom highlight behavior.
-  /// An example is `RichTextField`, which highlights the icon by updating [iconBackgroundColor] when active.
+  /// Toggles Material's splash effect.
   final bool isSplashEffectEnabled;
 
   @override

@@ -21,16 +21,18 @@ import 'package:tuple/tuple.dart';
 /// The field also supports presenting rich text content, different from [TextField] which only supports simple
 /// text content. The field content height is limited by [dimens.richTextFieldConstraints].
 class RichTextField extends HookWidget {
-  const RichTextField({required this.title, required this.placeholder, this.controller});
+  const RichTextField({required this.modalTitle, required this.placeholder, this.controller, this.focus});
 
   /// The modal title positioned in the top-left corner of the modal editor.
-  final Widget title;
+  final Widget modalTitle;
 
   /// The placeholder used in the rich text editor when it has no content.
   final String placeholder;
 
   /// Controls the text content being edited.
-  final RichTextEditingController? controller;
+  final TextEditingController? controller;
+
+  final FocusNode? focus;
 
   @override
   Widget build(BuildContext context) {
@@ -38,31 +40,28 @@ class RichTextField extends HookWidget {
     final textTheme = Theme.of(context).textTheme;
     final inputDecorationTheme = Theme.of(context).inputDecorationTheme;
 
-    final initialText = '${controller?.richTextContent ?? ''}\n';
-    final initialController = quill.QuillController(
-      document: quill.Document.fromDelta(quill.Delta()..insert(initialText)),
-      selection: const TextSelection.collapsed(offset: 0),
-    );
-    // Holds the entire field `quill` controller which is later replaced by `modalEditorController`, since it's not
-    // possible to forward the content from one controller to another.
-    final richFieldController = useState(initialController);
+    final quillController = _useQuillController(textController: controller);
+
+    useEffect(() {
+      void editorChanged() => controller?.text = jsonEncode(quillController.document.toDelta().toJson());
+
+      quillController.addListener(editorChanged);
+      return () => quillController.removeListener(editorChanged);
+    });
 
     Future<void> showRichTextFieldModal() async {
-      final modalEditorController = quill.QuillController(
-        document: richFieldController.value.document,
-        selection: richFieldController.value.selection,
-      );
-
       await showSnappableDraggableModalBottomSheet<void>(
         context,
-        child: RichTextFieldModal(title: title, controller: modalEditorController, placeholder: placeholder),
+        child: _RichTextFieldModal(
+          title: modalTitle,
+          controller: quillController,
+          placeholder: placeholder,
+          focus: focus,
+        ),
       );
-
-      controller?.update(jsonEncode(modalEditorController.document.toDelta().toJson()));
-      richFieldController.value = modalEditorController;
     }
 
-    final content = richFieldController.value.plainTextEditingValue.text;
+    final content = quillController.plainTextEditingValue.text;
     // `quill` automatically adds `\n` when initializing the editor without content
     final hasContent = content.isNotEmpty && content != '\n';
 
@@ -85,7 +84,7 @@ class RichTextField extends HookWidget {
               Flexible(
                 child: AbsorbPointer(
                   child: _ThemedEditor(
-                    controller: richFieldController.value,
+                    controller: quillController,
                     placeholder: placeholder,
                     backgroundColor: theme.neutralSwatch.shade700,
                     showCursor: false,
@@ -102,43 +101,38 @@ class RichTextField extends HookWidget {
   }
 }
 
-/// A controller for [RichTextField].
-///
-/// It works in the same way as [TextEditingController], but with support to rich text content.
-class RichTextEditingController extends ChangeNotifier {
-  RichTextEditingController({String? initialText}) : _richTextContent = initialText ?? '';
-
-  String _richTextContent;
-  String get richTextContent => _richTextContent;
-
-  void update(String content) {
-    _richTextContent = content;
-    notifyListeners();
-  }
-}
-
 /// Rich text editor modal.
 ///
-/// Holds the rich text editor using [quill] library.
+/// Holds the rich text editor using `flutter_quill` library.
 /// Places [_RichTextFieldToolbar] - a toolbar of actions to customize the text content - above the keyboard when it's
 /// visible.
-@visibleForTesting
-class RichTextFieldModal extends HookWidget {
-  const RichTextFieldModal({required this.title, required this.controller, required this.placeholder});
+class _RichTextFieldModal extends HookWidget {
+  const _RichTextFieldModal({required this.title, required this.controller, required this.placeholder, this.focus});
 
   final Widget title;
   final quill.QuillController controller;
   final String placeholder;
+  final FocusNode? focus;
 
   @override
   Widget build(BuildContext context) {
     final theme = useTheme();
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+    final focusNode = focus ?? useFocusNode();
+    final isFocused = useState(focusNode.hasFocus);
+
+    useEffect(() {
+      void focusUpdate() => isFocused.value = focusNode.hasFocus;
+
+      focusNode.addListener(focusUpdate);
+      return () => focusNode.removeListener(focusUpdate);
+    });
 
     final editor = _ThemedEditor(
       controller: controller,
       placeholder: placeholder,
       backgroundColor: theme.neutralSwatch.shade800,
+      focus: focusNode,
     );
 
     final okButton = CustomTextButton(
@@ -163,9 +157,9 @@ class RichTextFieldModal extends HookWidget {
           ).withSymmetricalPadding(context, horizontal: Spacing.medium),
         ),
         // Only show toolbar action items when the keyboard is visible
-        if (keyboardHeight > 0) ...[
+        if (isFocused.value) ...[
           _RichTextFieldToolbar(controller),
-          SizedBox(height: keyboardHeight),
+          SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ]
       ],
     );
@@ -183,6 +177,7 @@ class _ThemedEditor extends HookWidget {
     required this.controller,
     required this.backgroundColor,
     required this.placeholder,
+    this.focus,
     this.showCursor = true,
     this.readonly = false,
   });
@@ -190,6 +185,7 @@ class _ThemedEditor extends HookWidget {
   final quill.QuillController controller;
   final Color backgroundColor;
   final String placeholder;
+  final FocusNode? focus;
   final bool showCursor;
   final bool readonly;
 
@@ -197,13 +193,15 @@ class _ThemedEditor extends HookWidget {
   Widget build(BuildContext context) {
     final theme = useTheme();
     final textTheme = Theme.of(context).textTheme;
+
+    // Default [quill.DefaultTextBlockStyle] vertical and line spacings.
     const zeroTuple = Tuple2<double, double>(0, 0);
 
     return quill.QuillEditor(
       controller: controller,
       scrollController: ScrollController(),
       scrollable: true,
-      focusNode: FocusNode(),
+      focusNode: focus ?? FocusNode(),
       autoFocus: true,
       readOnly: readonly,
       expands: false,
@@ -231,51 +229,48 @@ class _ThemedEditor extends HookWidget {
   }
 }
 
-enum _ToolbarAttribute { bold, italic, underline, code }
-
 /// A toolbar of actions to customize the editor content.
 class _RichTextFieldToolbar extends HookWidget {
   _RichTextFieldToolbar(this.controller);
 
   final quill.QuillController controller;
 
-  /// Maps [_ToolbarAttribute] to `quill`s native [quill.Attribute] class.
-  final Map<_ToolbarAttribute, quill.Attribute<dynamic>> _toolBarAttributes = {
-    _ToolbarAttribute.bold: quill.Attribute.bold,
-    _ToolbarAttribute.italic: quill.Attribute.italic,
-    _ToolbarAttribute.underline: quill.Attribute.underline,
-    _ToolbarAttribute.code: quill.Attribute.codeBlock,
-  };
-
-  /// Maps [_ToolbarAttribute] to its respective asset.
-  final Map<_ToolbarAttribute, String> _toolBarAsset = {
-    _ToolbarAttribute.bold: images.bold,
-    _ToolbarAttribute.italic: images.italic,
-    _ToolbarAttribute.underline: images.underline,
-    _ToolbarAttribute.code: images.code,
+  /// Maps [quill.Attribute] to its respective asset.
+  final Map<quill.Attribute<dynamic>, String> _toolBarAsset = {
+    quill.Attribute.bold: images.boldAsset,
+    quill.Attribute.italic: images.italicAsset,
+    quill.Attribute.underline: images.underlineAsset,
+    quill.Attribute.codeBlock: images.codeAsset,
   };
 
   @override
   Widget build(BuildContext context) {
     final theme = useTheme();
 
-    final selectedAttributes = useState<List<_ToolbarAttribute>>([]);
+    final selectedAttributes = useState<Set<quill.Attribute>>(controller.getSelectionStyle().attributes.values.toSet());
 
-    void onToggle(_ToolbarAttribute attribute) {
+    useEffect(() {
+      void updateAttributes() {
+        selectedAttributes.value = Set.from(controller.getSelectionStyle().attributes.values.toSet());
+      }
+
+      controller.addListener(updateAttributes);
+      return () => controller.removeListener(updateAttributes);
+    });
+
+    void onToggle(quill.Attribute attribute) {
       final hasAttribute = selectedAttributes.value.any((currentAttribute) => currentAttribute == attribute);
 
       if (hasAttribute) {
-        selectedAttributes.value = [...selectedAttributes.value..remove(attribute)];
-        controller.formatSelection(quill.Attribute.clone(_toolBarAttributes[attribute]!, null));
+        controller.formatSelection(quill.Attribute.clone(attribute, null));
       } else {
-        selectedAttributes.value = [...selectedAttributes.value..add(attribute)];
-        controller.formatSelection(_toolBarAttributes[attribute]);
+        controller.formatSelection(attribute);
       }
     }
 
-    bool isSelected(_ToolbarAttribute attribute) => selectedAttributes.value.contains(attribute);
+    bool isSelected(quill.Attribute attribute) => selectedAttributes.value.contains(attribute);
 
-    final attributesIcons = _ToolbarAttribute.values
+    final attributesIcons = _toolBarAsset.keys
         .map((attribute) => AssetIconButton(
               _toolBarAsset[attribute]!,
               iconColor: isSelected(attribute) ? theme.neutralSwatch.shade800 : null,
@@ -294,4 +289,55 @@ class _RichTextFieldToolbar extends HookWidget {
       ),
     );
   }
+}
+
+const _useQuillController = _QuillControllerHookCreator();
+
+class _QuillControllerHookCreator {
+  const _QuillControllerHookCreator();
+
+  /// Creates a [quill.QuillController] that will be disposed automatically.
+  ///
+  /// The [textController] parameter can be used to set the initial value of the controller text ands its selection.
+  quill.QuillController call({TextEditingController? textController, List<Object?>? keys}) =>
+      use(_QuillControllerHook(textController: textController, keys: keys));
+}
+
+class _QuillControllerHook extends Hook<quill.QuillController> {
+  const _QuillControllerHook({this.textController, List<Object?>? keys = const []}) : super(keys: keys);
+
+  final TextEditingController? textController;
+
+  @override
+  _QuillControllerHookState createState() => _QuillControllerHookState();
+}
+
+class _QuillControllerHookState extends HookState<quill.QuillController, _QuillControllerHook> {
+  late final quill.QuillController _controller;
+
+  @override
+  void initHook() {
+    final text = hook.textController?.text;
+    final hasText = text != null && text.isNotEmpty;
+
+    final selection = hook.textController?.selection;
+    final hasSelection = selection != null && selection.isValid;
+
+    final document = hasText ? quill.Document.fromJson(json.decode(text!) as List<dynamic>) : quill.Document();
+    final selectionOffset = document.toPlainText().isNotEmpty ? document.toPlainText().length - 1 : 0;
+
+    _controller = quill.QuillController(
+      document: document,
+      selection: hasSelection ? selection! : TextSelection.collapsed(offset: selectionOffset),
+    );
+  }
+
+  @override
+  quill.QuillController build(BuildContext context) => _controller;
+
+  @override
+  void dispose() => _controller.dispose();
+
+  @override
+  String get debugLabel => 'useQuillController';
 }

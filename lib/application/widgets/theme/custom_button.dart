@@ -214,7 +214,9 @@ class _CustomButton extends StatefulWidget {
   /// Its style may be customized by implementing [textStyleBuilder].
   final String text;
 
-  /// Defines wether the button must stretch horizontally to fill the most of the available width.
+  /// `true` when it should shrink to its horizontal size.
+  ///
+  /// Setting `false` will make it expand to fill the parent's width.
   final bool shrink;
 
   final VoidCallback? onPressed;

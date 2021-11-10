@@ -60,4 +60,4 @@ const double minBottomSheetHeight = 300;
 //
 // Rich Text Field
 //
-const richTextFieldConstraints = BoxConstraints(maxHeight: 150, minHeight: 52);
+const richTextFieldConstraints = BoxConstraints(maxHeight: 148, minHeight: 52);
