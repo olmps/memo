@@ -11,10 +11,8 @@ import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 
 //
-// General
+// Exceptions
 //
-const memos = 'Memos';
-const next = 'Próximo';
 const oops = 'Oops';
 const tryAgain = 'Tente Novamente';
 
@@ -156,6 +154,8 @@ String settingsDescriptionForNamedCustom(NamedCustomSettings custom) {
 const yes = 'Sim';
 const no = 'Não';
 const ok = 'Ok';
+const memos = 'Memos';
+const next = 'Próximo';
 
 const recallLevel = 'Nível de Fixação';
 
