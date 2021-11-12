@@ -19,7 +19,7 @@ void main() {
     );
     const expectedPrefixSpan = TextSpan(text: 'A ', style: fakeTextStyle);
 
-    await pumpThemedProviderScoped(tester, highlightableText);
+    await pumpProviderScoped(tester, highlightableText);
 
     final richText = tester.widget(find.byType(RichText)) as RichText;
     final textSpan = richText.text as TextSpan;
@@ -36,7 +36,7 @@ void main() {
     );
     const expectedPrefixSpan = TextSpan(text: 'fake', style: fakeHighlightStyle);
 
-    await pumpThemedProviderScoped(tester, highlightableText);
+    await pumpProviderScoped(tester, highlightableText);
 
     final richText = tester.widget(find.byType(RichText)) as RichText;
     final textSpan = richText.text as TextSpan;
@@ -53,7 +53,7 @@ void main() {
     );
     const expectedPrefixSpan = TextSpan(text: ' text', style: fakeTextStyle);
 
-    await pumpThemedProviderScoped(tester, highlightableText);
+    await pumpProviderScoped(tester, highlightableText);
 
     final richText = tester.widget(find.byType(RichText)) as RichText;
     final textSpan = richText.text as TextSpan;

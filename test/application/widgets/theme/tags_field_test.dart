@@ -31,7 +31,7 @@ void main() {
       const tagsField = TagsField();
       const nonAlphanumChars = r' ~!@#$%^&*()-+={}[]|\:;<,>.?/';
 
-      await pumpThemedProviderScoped(tester, tagsField);
+      await pumpProviderScoped(tester, tagsField);
       await tester.tap(find.byType(TagsField));
       await tester.pumpAndSettle();
 
@@ -135,7 +135,7 @@ void main() {
       const fakeState = SuggestionsState(suggestions: [], isLoading: true);
       const tagsField = TagsField();
 
-      await pumpThemedProviderScoped(tester, tagsField, [
+      await pumpProviderScoped(tester, tagsField, [
         suggestionsController.state.overrideWithValue(fakeState),
       ]);
       await tester.tap(find.byType(TagsField));
@@ -153,7 +153,7 @@ void main() {
       const fakeState = SuggestionsState(suggestions: suggestions, isLoading: false);
       const tagsField = TagsField();
 
-      await pumpThemedProviderScoped(tester, tagsField, [
+      await pumpProviderScoped(tester, tagsField, [
         suggestionsController.state.overrideWithValue(fakeState),
       ]);
       await tester.tap(find.byType(TagsField));
@@ -170,7 +170,7 @@ void main() {
         ..state = const SuggestionsState(suggestions: [suggestion], isLoading: false);
       const tagsField = TagsField();
 
-      await pumpThemedProviderScoped(tester, tagsField, [
+      await pumpProviderScoped(tester, tagsField, [
         suggestionsController.overrideWithValue(fakeController),
       ]);
       await tester.tap(find.byType(TagsField));
@@ -191,7 +191,7 @@ void main() {
       final controller = StateProvider<List<String>>((_) => [firstFakeTag, secondFakeTag]);
       const tagsField = TagsField();
 
-      await pumpThemedProviderScoped(tester, tagsField, [
+      await pumpProviderScoped(tester, tagsField, [
         tagsController.overrideWithProvider(controller),
       ]);
       await tester.tap(find.byType(TagsField));
@@ -232,7 +232,7 @@ void main() {
 ///
 /// Optionally adds [tag] if not `null`.
 Future<void> _pumpWithTag({required TagsField field, required WidgetTester tester, String? tag}) async {
-  await pumpThemedProviderScoped(tester, field);
+  await pumpProviderScoped(tester, field);
   await tester.tap(find.byType(TagsField));
   await tester.pumpAndSettle();
 
