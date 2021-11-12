@@ -6,11 +6,10 @@
   "private": true,
   "scripts": {
     "postinstall": "run-p install:*",
-    "install:functions": "cd src/functions && npm i",
+    "install:core": "cd src/core && npm i",
     "watch": "tsc -w",
     "lint": "run-p --print-label lint:*",
     "lint:core": "eslint 'src/core/**/*.ts'",
-    "lint:functions": "eslint 'src/functions/**/*.ts'",
     "lint:scripts": "eslint 'src/scripts/**/*.ts'",
     "lint:test": "eslint 'test/**/*.ts'",
     "deploy": "firebase deploy",
@@ -22,9 +21,9 @@
     "build": "run-p --print-label build:*",
     "build:functions": "tsc -p tsconfig.functions.json",
     "functions:serve": "run-s --print-label build:functions functions:start-emulators watch",
-    "functions:fetch-env": "firebase functions:config:get > src/functions/.runtimeconfig.json",
+    "functions:fetch-env": "firebase functions:config:get > src/core/.runtimeconfig.json",
     "functions:start-emulators": "firebase emulators:start --only auth,functions,firestore --inspect-functions",
-    "scripts:dummy-script": "ts-node -r tsconfig-paths/register src/scripts/dummy-script.ts"
+    "scripts:sync-collections": "ts-node -r tsconfig-paths/register src/scripts/sync-collections.ts"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^2.0.x",

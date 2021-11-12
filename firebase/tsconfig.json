@@ -8,33 +8,53 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    
     "baseUrl": ".",
     "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-
     "declaration": true,
     "declarationMap": true,
     "noEmit": true,
     "sourceMap": true,
-
     "forceConsistentCasingInFileNames": true,
-
-    "lib": ["ES2020"],
+    "lib": [
+      "ES2020"
+    ],
     "target": "ES2020",
-
     "skipLibCheck": true,
-
     "paths": {
-      "@data*" : ["./src/core/data*", "./src/core/data"],
-      "@domain*" : ["./src/core/domain*", "./src/core/domain"],
-      "@faults*" : ["./src/core/faults*", "./src/core/faults"],
-      "@middlewares*" : ["./src/core/middlewares*", "./src/core/middlewares"],
-      "@utils*" : ["./src/core/utils*", "./src/core/utils"],
-      "@functions*" : ["./src/functions*", "./src/functions"],
-      "@scripts*" : ["./src/scripts*", "./src/scripts"],
-      "@test*": ["./test*", "./test"]
-    },
+      "@data*": [
+        "./src/core/data*",
+        "./src/core/data"
+      ],
+      "@domain*": [
+        "./src/core/domain*",
+        "./src/core/domain"
+      ],
+      "@faults*": [
+        "./src/core/faults*",
+        "./src/core/faults"
+      ],
+      "@middlewares*": [
+        "./src/core/middlewares*",
+        "src/core/presentation/middlewares"
+      ],
+      "@utils*": [
+        "./src/core/utils*",
+        "./src/core/utils"
+      ],
+      "@functions*": [
+        "./src/functions*",
+        "./src/functions"
+      ],
+      "@scripts*": [
+        "./src/scripts*",
+        "./src/scripts"
+      ],
+      "@test*": [
+        "./test*",
+        "./test"
+      ]
+    }
   },
 }

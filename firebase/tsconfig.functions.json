@@ -2,11 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
-    "outDir": "src/functions/dist",
+    "outDir": "src/core/dist",
   },
   "include": [
-    "src/core",
-    "src/functions"
+    "src/core"
   ],
-  "exclude": ["src/functions/dist/**/*"]
+  "exclude": [
+    "src/core/dist/**/*"
+  ]
 }
