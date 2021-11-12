@@ -217,6 +217,30 @@ export class FirestoreGateway {
   }
 
   /**
+   * Delete a document of {@link id} in {@link path}, as well as all of subcollections.
+   *
+   * The operation will succeed even if there was no document to be deleted.
+   *
+   * Recursive deletes can't be ran on transactions.
+   *
+   * @reject {FirebaseFirestoreError} Something went wrong with the request to `Firestore`.
+   */
+  async deleteDocRecursively({ id, path }: { id: string; path: FirestorePaths }): Promise<void> {
+    const documentRef = this.#collection(path).doc(id);
+
+    try {
+      await this.#firestore.recursiveDelete(documentRef);
+    } catch (error) {
+      return Promise.reject(
+        new FirebaseFirestoreError({
+          message: `Failed to recursively delete the document with id "${id}" in path "${path}"`,
+          origin: error,
+        })
+      );
+    }
+  }
+
+  /**
    * Create a transaction {@link context} where all read/write operations are executed atomically.
    *
    * All operations executed in {@link context} will run on the same transaction.
