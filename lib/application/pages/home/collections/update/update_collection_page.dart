@@ -38,7 +38,7 @@ class UpdateCollectionPage extends HookWidget {
         children: [
           ThemedTabBar(controller: tabController, tabs: tabs),
           Expanded(child: _UpdateCollectionContents(selectedSegment: selectedSegment.value)),
-          const Spacer(),
+          context.verticalBox(Spacing.large),
           _BottomActionContainer(
             onSegmentSwapRequested: (segment) => tabController.animateTo(_Segment.values.indexOf(segment)),
             selectedSegment: selectedSegment.value,

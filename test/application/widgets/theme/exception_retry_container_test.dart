@@ -14,7 +14,7 @@ void main() {
     final mockCallback = MockCallbackFunction();
     final exceptionContainer = ExceptionRetryContainer(onRetry: mockCallback, exception: fakeException);
 
-    await pumpThemedProviderScoped(tester, exceptionContainer);
+    await pumpProviderScoped(tester, exceptionContainer);
     await tester.tap(find.byType(PrimaryElevatedButton));
 
     verify(mockCallback.call).called(1);
@@ -26,7 +26,7 @@ void main() {
     final exceptionContainer = ExceptionRetryContainer(onRetry: mockCallback, exception: fakeException);
     final expectedMessage = descriptionForException(fakeException);
 
-    await pumpThemedProviderScoped(tester, exceptionContainer);
+    await pumpProviderScoped(tester, exceptionContainer);
 
     final exceptionText = find.text(expectedMessage);
     expect(exceptionText, findsOneWidget);
