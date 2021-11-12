@@ -1,4 +1,4 @@
-import { BaseError } from "../fault";
+import { BaseError } from "@faults/fault";
 
 export default class FirebaseFirestoreError extends BaseError {
   constructor(fault: { message: string; origin?: unknown }) {
