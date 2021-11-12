@@ -11,14 +11,14 @@ import FirebaseFirestoreError from "@faults/errors/firebase-firestore-error";
 // 2. Improve type-narrowing. Using "as any" as a workaround in a couple of cases.
 
 describe("FirestoreGateway", () => {
-  type FakeCollection = "collection";
+  const fakeCollection = "collections";
 
   let firestoreMock: sinon.SinonStubbedInstance<firebase.firestore.Firestore>;
-  let firestoreGateway: FirestoreGateway<FakeCollection>;
+  let firestoreGateway: FirestoreGateway;
 
   beforeEach(() => {
     firestoreMock = createSinonStub(firebase.firestore.Firestore);
-    firestoreGateway = new FirestoreGateway<FakeCollection>(firestoreMock as firebase.firestore.Firestore);
+    firestoreGateway = new FirestoreGateway(firestoreMock as firebase.firestore.Firestore);
   });
 
   afterEach(() => {
@@ -36,7 +36,7 @@ describe("FirestoreGateway", () => {
 
   function createCollectionMock(): sinon.SinonStubbedInstance<firebase.firestore.CollectionReference> {
     const collectionMock = createSinonStub(firebase.firestore.CollectionReference);
-    firestoreMock.collection.withArgs("collection").returns(collectionMock as any);
+    firestoreMock.collection.withArgs(fakeCollection).returns(collectionMock as any);
 
     return collectionMock;
   }
@@ -72,13 +72,13 @@ describe("FirestoreGateway", () => {
         querySnapshotMock = createQuerySnapshotMock();
 
         collectionGroupMock = createSinonStub(firebase.firestore.CollectionGroup);
-        firestoreMock.collectionGroup.withArgs("collection").returns(collectionGroupMock as any);
+        firestoreMock.collectionGroup.withArgs(fakeCollection).returns(collectionGroupMock as any);
 
         collectionGroupMock.get.resolves(querySnapshotMock);
       });
 
       it("should return documents with an unfiltered call", async () => {
-        const result = await firestoreGateway.getCollectionGroup("collection");
+        const result = await firestoreGateway.getCollectionGroup(fakeCollection);
 
         assert(result.length === 1);
         assert.deepStrictEqual(result[0], fakeObject);
@@ -90,7 +90,7 @@ describe("FirestoreGateway", () => {
           .withArgs(fakeFilters[0]!.field, fakeFilters[0]!.comparison, fakeFilters[0]!.value)
           .returns(collectionGroupMock as any);
 
-        const val = await firestoreGateway.getCollectionGroup("collection", fakeFilters);
+        const val = await firestoreGateway.getCollectionGroup(fakeCollection, fakeFilters);
 
         assert(val.length === 1);
         assert.deepStrictEqual(val[0], fakeObject);
@@ -100,7 +100,7 @@ describe("FirestoreGateway", () => {
       it("should reject when query get throws", async () => {
         collectionGroupMock.get.rejects();
 
-        await assert.rejects(() => firestoreGateway.getCollectionGroup("collection"), FirebaseFirestoreError);
+        await assert.rejects(() => firestoreGateway.getCollectionGroup(fakeCollection), FirebaseFirestoreError);
         assert(collectionGroupMock.get.calledOnce);
       });
 
@@ -109,7 +109,7 @@ describe("FirestoreGateway", () => {
         transactionMock.get.withArgs(collectionGroupMock as any).resolves(querySnapshotMock as any);
 
         await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.getCollectionGroup("collection");
+          await firestoreGateway.getCollectionGroup(fakeCollection);
         });
 
         assert(collectionGroupMock.get.notCalled);
@@ -128,7 +128,7 @@ describe("FirestoreGateway", () => {
 
       it("should return documents with an unfiltered call", async () => {
         collectionMock.get.resolves(querySnapshotMock);
-        const val = await firestoreGateway.getCollection("collection");
+        const val = await firestoreGateway.getCollection(fakeCollection);
 
         assert(val.length === 1);
         assert.deepStrictEqual(val[0], fakeObject);
@@ -142,7 +142,7 @@ describe("FirestoreGateway", () => {
           .withArgs(fakeFilters[0]!.field, fakeFilters[0]!.comparison, fakeFilters[0]!.value)
           .returns(collectionMock as any);
 
-        const val = await firestoreGateway.getCollection("collection", fakeFilters);
+        const val = await firestoreGateway.getCollection(fakeCollection, fakeFilters);
 
         assert(val.length === 1);
         assert.deepStrictEqual(val[0], fakeObject);
@@ -152,7 +152,7 @@ describe("FirestoreGateway", () => {
       it("should reject when query get throws", async () => {
         collectionMock.get.rejects();
 
-        await assert.rejects(() => firestoreGateway.getCollection("collection"), FirebaseFirestoreError);
+        await assert.rejects(() => firestoreGateway.getCollection(fakeCollection), FirebaseFirestoreError);
         assert(collectionMock.get.calledOnce);
       });
 
@@ -163,7 +163,7 @@ describe("FirestoreGateway", () => {
         transactionMock.get.withArgs(collectionMock as any).resolves(querySnapshotMock as any);
 
         await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.getCollection("collection");
+          await firestoreGateway.getCollection(fakeCollection);
         });
 
         assert(collectionMock.get.notCalled);
@@ -185,7 +185,7 @@ describe("FirestoreGateway", () => {
         docDataMock = createDocumentSnapshotMock(fakeObject);
         collectionDocMock.get.resolves(docDataMock);
 
-        const val = await firestoreGateway.getDoc({ id: fakeDocId, path: "collection" });
+        const val = await firestoreGateway.getDoc({ id: fakeDocId, path: fakeCollection });
 
         assert.deepStrictEqual(val, fakeObject);
         assert(collectionDocMock.get.calledOnce);
@@ -195,7 +195,7 @@ describe("FirestoreGateway", () => {
         docDataMock = createDocumentSnapshotMock(undefined);
         collectionDocMock.get.resolves(docDataMock);
 
-        const val = await firestoreGateway.getDoc({ id: fakeDocId, path: "collection" });
+        const val = await firestoreGateway.getDoc({ id: fakeDocId, path: fakeCollection });
 
         assert.deepStrictEqual(val, null);
         assert(collectionDocMock.get.calledOnce);
@@ -205,7 +205,7 @@ describe("FirestoreGateway", () => {
         collectionDocMock.get.rejects();
 
         await assert.rejects(
-          () => firestoreGateway.getDoc({ id: fakeDocId, path: "collection" }),
+          () => firestoreGateway.getDoc({ id: fakeDocId, path: fakeCollection }),
           FirebaseFirestoreError
         );
         assert(collectionDocMock.get.calledOnce);
@@ -216,7 +216,7 @@ describe("FirestoreGateway", () => {
         transactionMock.get.withArgs(collectionDocMock).resolves(docDataMock);
 
         await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.getDoc({ id: fakeDocId, path: "collection" });
+          await firestoreGateway.getDoc({ id: fakeDocId, path: fakeCollection });
         });
 
         assert(collectionDocMock.get.notCalled);
@@ -239,7 +239,7 @@ describe("FirestoreGateway", () => {
 
       it("should call update in an existing document", async () => {
         collectionDocMock.update.withArgs(fakeObject as any, undefined).resolves();
-        await firestoreGateway.updateDoc({ id: fakeDocId, path: "collection", data: fakeObject });
+        await firestoreGateway.updateDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject });
 
         assert(collectionDocMock.update.calledOnce);
       });
@@ -248,7 +248,7 @@ describe("FirestoreGateway", () => {
         collectionDocMock.update.rejects();
 
         await assert.rejects(
-          () => firestoreGateway.updateDoc({ id: fakeDocId, path: "collection", data: fakeObject }),
+          () => firestoreGateway.updateDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject }),
           FirebaseFirestoreError
         );
         assert(collectionDocMock.update.calledOnce);
@@ -262,7 +262,7 @@ describe("FirestoreGateway", () => {
         (transactionMock.update as sinon.SinonStub).withArgs(collectionDocMock, fakeObject as any).resolves();
 
         await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.updateDoc({ id: fakeDocId, path: "collection", data: fakeObject });
+          await firestoreGateway.updateDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject });
         });
 
         assert(collectionDocMock.update.notCalled);
@@ -283,7 +283,7 @@ describe("FirestoreGateway", () => {
       });
 
       it("should create a new doc", async () => {
-        await firestoreGateway.createDoc({ id: fakeDocId, path: "collection", data: fakeObject });
+        await firestoreGateway.createDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject });
 
         assert(collectionDocMock.create.calledOnce);
       });
@@ -292,7 +292,7 @@ describe("FirestoreGateway", () => {
         collectionDocMock.create.rejects();
 
         await assert.rejects(
-          () => firestoreGateway.createDoc({ id: fakeDocId, path: "collection", data: fakeObject }),
+          () => firestoreGateway.createDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject }),
           FirebaseFirestoreError
         );
         assert(collectionDocMock.create.calledOnce);
@@ -303,7 +303,7 @@ describe("FirestoreGateway", () => {
         transactionMock.create.withArgs(collectionDocMock, fakeObject as any).resolves();
 
         await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.createDoc({ id: fakeDocId, path: "collection", data: fakeObject });
+          await firestoreGateway.createDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject });
         });
 
         assert(collectionDocMock.create.notCalled);
@@ -324,7 +324,7 @@ describe("FirestoreGateway", () => {
       });
 
       it("should delete an existing doc", async () => {
-        await firestoreGateway.deleteDoc({ id: fakeDocId, path: "collection" });
+        await firestoreGateway.deleteDoc({ id: fakeDocId, path: fakeCollection });
 
         assert(collectionDocMock.delete.calledOnce);
       });
@@ -333,7 +333,7 @@ describe("FirestoreGateway", () => {
         collectionDocMock.delete.rejects();
 
         await assert.rejects(
-          () => firestoreGateway.deleteDoc({ id: fakeDocId, path: "collection" }),
+          () => firestoreGateway.deleteDoc({ id: fakeDocId, path: fakeCollection }),
           FirebaseFirestoreError
         );
         assert(collectionDocMock.delete.calledOnce);
@@ -344,7 +344,7 @@ describe("FirestoreGateway", () => {
         transactionMock.delete.resolves();
 
         await firestoreGateway.runTransaction(async () => {
-          await firestoreGateway.deleteDoc({ id: fakeDocId, path: "collection" });
+          await firestoreGateway.deleteDoc({ id: fakeDocId, path: fakeCollection });
         });
 
         assert(collectionDocMock.delete.notCalled);
