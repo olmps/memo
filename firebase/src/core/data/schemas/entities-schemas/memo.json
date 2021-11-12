@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "memo://memo.schemas/memo",
+  "title": "Memo",
+  "description": "Properties of a Memo.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "question": {
+      "type": "array",
+      "items": { "type": "object" },
+      "minItems": 1
+    },
+    "answer": {
+      "type": "array",
+      "items": { "type": "object" },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "id",
+    "question",
+    "answer"
+  ]
+}
