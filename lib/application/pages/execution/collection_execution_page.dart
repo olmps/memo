@@ -116,7 +116,7 @@ class _ExecutionAppBar extends HookWidget implements PreferredSizeWidget {
           context.verticalBox(Spacing.xxxLarge),
           DestructiveButton(
             onPressed: readCoordinator(context).pop,
-            child: Text(strings.executionDiscard.toUpperCase()),
+            text: strings.executionDiscard.toUpperCase(),
           ),
           context.verticalBox(Spacing.medium),
           SecondaryButton(onPressed: Navigator.of(context).pop, child: Text(strings.executionBackToStudy.toUpperCase()))

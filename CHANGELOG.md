@@ -10,6 +10,9 @@ a beta or production release, they must be documented here).
 
 ## [Unreleased]
 
+### Added
+- Visually Opinionated Buttons (Primary, Secondary and Text).
+
 ## [0.2.0] - 2021-08-13
 
 ### Updated
@@ -51,7 +54,6 @@ a beta or production release, they must be documented here).
 of `AlertDialog`.
 
 #### Collections
-
 - Cohesion improvements on `comecando_com_git`.
 
 ### Fixed
@@ -78,7 +80,7 @@ Thanks to all contributors!
 - `showSnappableDraggableModalBottomSheet` utility.
 - `MultiContributorsView` and `SingleContributorView` widgets.
 - `Firebase` and `FirebaseCrashlytics` to record unexpected crashes, errors and exceptions.
-  
+
 ### Updated
 - All files documentations, including standardizing communication.
 - `CollectionMemos` and `Collection` now have a `contributors` property, exposing all associated contributors with that
@@ -93,7 +95,7 @@ particular collection.
 ### Fixed
 - Missing `SafeArea` in `Scaffold.bottomNavigationBar` for devices with home indicator.
 - Missing `SettingsVM` interface.
-- Hero animations built through  `buildHeroCollectionCardFromItem` weren't using an unique `Hero.tag`.
+- Hero animations built through `buildHeroCollectionCardFromItem` weren't using an unique `Hero.tag`.
 
 ## [0.1.0-rc.2] - 2021-05-12
 

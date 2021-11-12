@@ -8,6 +8,7 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/pages/home/collections/collections_list_view.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/collections_vm.dart';
+import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/themed_tab_bar.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
@@ -138,9 +139,9 @@ class _CollectionsEmptyState extends HookWidget {
           textAlign: TextAlign.center,
         ),
         context.verticalBox(Spacing.xLarge),
-        ElevatedButton(
+        PrimaryElevatedButton(
           onPressed: onSegmentSwapRequested,
-          child: Text(strings.collectionsStartNow.toUpperCase(), style: textTheme.button),
+          text: strings.collectionsStartNow.toUpperCase(),
         )
       ],
     ).withAllPadding(context, Spacing.large);

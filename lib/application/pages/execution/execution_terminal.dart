@@ -11,6 +11,7 @@ import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
+import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
 /// Coordinates the state (and animations) of a [ExecutionTerminal] widget.
@@ -216,11 +217,7 @@ class _ExecutionTerminalState extends State<ExecutionTerminal> {
     );
 
     final actionText = controller.isDisplayingQuestion ? strings.executionCheckAnswer : strings.executionCheckQuestion;
-    final actionButton = TextButton(
-      style: TextButton.styleFrom(primary: theme.primarySwatch.shade300),
-      onPressed: controller.switchContents,
-      child: Text(actionText.toUpperCase()),
-    );
+    final actionButton = CustomTextButton(text: actionText.toUpperCase(), onPressed: controller.switchContents);
 
     // Wraps it all under the `_TerminalWindow` root widget
 
