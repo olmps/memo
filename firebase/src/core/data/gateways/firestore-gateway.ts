@@ -1,5 +1,6 @@
 import * as firebase from "firebase-admin";
 import FirebaseFirestoreError from "@faults/errors/firebase-firestore-error";
+import { FirestorePaths } from "./firestore-collection-name";
 
 type Firestore = firebase.firestore.Firestore;
 type Transaction = firebase.firestore.Transaction;
@@ -28,7 +29,7 @@ export interface QueryFilter {
 export const firestoreOperationsLimit = 499;
 
 /** Wraps {@link Firestore} operations, allowing transactions and typed collections. */
-export class FirestoreGateway<Path extends string> {
+export class FirestoreGateway {
   readonly #firestore: Firestore;
 
   constructor(firestore: Firestore) {
@@ -44,12 +45,12 @@ export class FirestoreGateway<Path extends string> {
   }
 
   /** Creates a {@link CollectionReferece} to the collection at {@link collectionPath}. */
-  #collection(collectionPath: Path): CollectionReferece {
+  #collection(collectionPath: FirestorePaths): CollectionReferece {
     return this.#firestore.collection(collectionPath);
   }
 
   /** Creates a {@link CollectionGroup} of all collections named {@link collectionName}. */
-  #collectionGroup(collectionName: Path): CollectionGroup {
+  #collectionGroup(collectionName: FirestorePaths): CollectionGroup {
     return this.#firestore.collectionGroup(collectionName);
   }
 
@@ -61,7 +62,7 @@ export class FirestoreGateway<Path extends string> {
    * The return can be empty if there were no documents found for such collection {@link name} using the passed
    * {@link filters}.
    */
-  getCollectionGroup(name: Path, filters: QueryFilter[] = []): Promise<DocumentData[]> {
+  getCollectionGroup(name: FirestorePaths, filters: QueryFilter[] = []): Promise<DocumentData[]> {
     return this.#getQuery(this.#collectionGroup(name), filters);
   }
 
@@ -71,7 +72,7 @@ export class FirestoreGateway<Path extends string> {
    * The return can be empty if there were no documents found for such collection {@link path} using the passed
    * {@link filters}.
    */
-  getCollection(path: Path, filters: QueryFilter[] = []): Promise<DocumentData[]> {
+  getCollection(path: FirestorePaths, filters: QueryFilter[] = []): Promise<DocumentData[]> {
     return this.#getQuery(this.#collection(path), filters);
   }
 
@@ -83,7 +84,7 @@ export class FirestoreGateway<Path extends string> {
    * @reject {FirebaseFirestoreError} Something went wrong with the request to `Firestore`.
    * @returns `null` if no such document was found.
    */
-  async getDoc({ id, path }: { id: string; path: Path }): Promise<DocumentData | null> {
+  async getDoc({ id, path }: { id: string; path: FirestorePaths }): Promise<DocumentData | null> {
     const documentPath = this.#collection(path).doc(id);
 
     try {
@@ -110,7 +111,15 @@ export class FirestoreGateway<Path extends string> {
    *
    * @reject {FirebaseFirestoreError} Something went wrong with the request to `Firestore`.
    */
-  async createDoc({ id, path, data }: { id?: string; path: Path; data: Record<string, unknown> }): Promise<void> {
+  async createDoc({
+    id,
+    path,
+    data,
+  }: {
+    id?: string;
+    path: FirestorePaths;
+    data: Record<string, unknown>;
+  }): Promise<void> {
     const formattedObject = JSON.parse(JSON.stringify(data));
     const documentRef = id !== undefined ? this.#collection(path).doc(id) : this.#collection(path).doc();
 
@@ -127,6 +136,31 @@ export class FirestoreGateway<Path extends string> {
   }
 
   /**
+   * Set a document in {@link path}, using a raw {@link data}.
+   *
+   * If the document doesn't yet exist, it will be created. Existing properties will be replaced.
+   *
+   * Runs the operation on the current `#transaction`, if not null.
+   *
+   * @reject {FirebaseFirestoreError} Something went wrong with the request to `Firestore`.
+   */
+  async setDoc({ id, path, data }: { id: string; path: FirestorePaths; data: Record<string, unknown> }): Promise<void> {
+    const formattedObject = JSON.parse(JSON.stringify(data));
+    const documentRef = this.#collection(path).doc(id);
+
+    try {
+      await (this.#transaction?.set(documentRef, formattedObject) ?? documentRef.set(formattedObject));
+    } catch (error) {
+      return Promise.reject(
+        new FirebaseFirestoreError({
+          message: `Failed to set document with id "${id}" in path "${path}"`,
+          origin: error,
+        })
+      );
+    }
+  }
+
+  /**
    * Update a document of {@link id} in {@link path}, using a raw {@link data}.
    *
    * The operation will fail if a document doesn't exist at the specified location.
@@ -135,7 +169,15 @@ export class FirestoreGateway<Path extends string> {
    *
    * @reject {FirebaseFirestoreError} Something went wrong with the request to `Firestore`.
    */
-  async updateDoc({ id, path, data }: { id: string; path: Path; data: Record<string, unknown> }): Promise<void> {
+  async updateDoc({
+    id,
+    path,
+    data,
+  }: {
+    id: string;
+    path: FirestorePaths;
+    data: Record<string, unknown>;
+  }): Promise<void> {
     try {
       const formattedObject = JSON.parse(JSON.stringify(data));
       const documentRef = this.#collection(path).doc(id);
@@ -159,7 +201,7 @@ export class FirestoreGateway<Path extends string> {
    *
    * @reject {FirebaseFirestoreError} Something went wrong with the request to `Firestore`.
    */
-  async deleteDoc({ id, path }: { id: string; path: Path }): Promise<void> {
+  async deleteDoc({ id, path }: { id: string; path: FirestorePaths }): Promise<void> {
     const documentRef = this.#collection(path).doc(id);
 
     try {
