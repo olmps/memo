@@ -11,6 +11,7 @@ enum ImageKey {
   chevronLeft,
   chevronRight,
   close,
+  clear,
   folder,
   link,
   settings,
@@ -32,6 +33,8 @@ extension ImageKeyPath on ImageKey {
         return '$_iconsRoot/chevron_right.png';
       case ImageKey.close:
         return '$_iconsRoot/close.png';
+      case ImageKey.clear:
+        return '$_iconsRoot/clear.png';
       case ImageKey.folder:
         return '$_iconsRoot/folder.png';
       case ImageKey.link:
@@ -54,6 +57,7 @@ const _iconsRoot = '$_imgsRoot/icons';
 final chevronLeftAsset = ImageKey.chevronLeft.path;
 final chevronRightAsset = ImageKey.chevronRight.path;
 final closeAsset = ImageKey.close.path;
+final clearAsset = ImageKey.clear.path;
 final folderAsset = ImageKey.folder.path;
 final linkAsset = ImageKey.link.path;
 final settingsAsset = ImageKey.settings.path;

@@ -45,6 +45,6 @@ class ThemedBottomContainer extends HookWidget {
 
 // Should always be called in a hook context.
 BorderSide _useThemedBorderSide() => BorderSide(
-      width: dimens.elevatedContainerBorderHeight,
+      width: dimens.genericBorderHeight,
       color: useTheme().neutralSwatch.shade700,
     );

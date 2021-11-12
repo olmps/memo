@@ -64,6 +64,7 @@ class ThemeController extends StateNotifier<MemoThemeData> {
     }
 
     final tabBarLabelPadding = context.symmetricInsets(vertical: Spacing.small);
+    final textFieldPadding = context.symmetricInsets(horizontal: Spacing.small, vertical: Spacing.xSmall);
 
     return material_theme.buildThemeData(
       // Theme material-related values
@@ -76,12 +77,14 @@ class ThemeController extends StateNotifier<MemoThemeData> {
       primarySwatch: state.primarySwatch,
       secondarySwatch: state.secondarySwatch,
       neutralSwatch: state.neutralSwatch,
+      destructiveSwatch: state.destructiveSwatch,
       // Dimensions values
       roundedRectElementsRadius: dimens.genericRoundedElementBorderRadius,
       minButtonHeight: dimens.minButtonHeight,
       iconSize: dimens.iconSize,
       // Spacings values
       tabBarLabelPadding: tabBarLabelPadding,
+      textFieldPadding: textFieldPadding,
     );
   }
 }
