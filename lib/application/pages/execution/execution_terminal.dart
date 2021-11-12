@@ -15,6 +15,7 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
+import 'package:memo/application/widgets/theme/terminal_window.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
 /// Coordinates the state (and animations) of a [ExecutionTerminal] widget.
@@ -184,22 +185,18 @@ class _ExecutionTerminalState extends ConsumerState<ExecutionTerminal> {
     final highlightColor = theme.secondarySwatch.shade400;
 
     // Build all widgets for `_TerminalContentsLayout`
-
-    final header = _TerminalHeader(fadeGradient: fadeGradient, borderColor: borderColor);
-
-    final editor = _TerminalQuillEditor(
-      document: quill_doc.Document.fromJson(controller.rawContents),
-      animationController: controller.editorAnimationController,
-      scrollController: controller.editorScrollController,
-    );
-    // Bottom fade transition that resembles the `editor` end.
     final bottomFadeTransition = IgnorePointer(
       child: Container(
-        height: dimens.executionsTerminalFadeHeight,
+        height: dimens.terminalWindowHeaderHeight,
         decoration: BoxDecoration(
           gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: fadeGradient),
         ),
       ),
+    );
+    final editor = _TerminalQuillEditor(
+      document: quill_doc.Document.fromJson(controller.rawContents),
+      animationController: controller.editorAnimationController,
+      scrollController: controller.editorScrollController,
     );
     final actions = _TerminalActions(
       markedAnswer: controller.markedDifficulty,
@@ -210,158 +207,30 @@ class _ExecutionTerminalState extends ConsumerState<ExecutionTerminal> {
     );
 
     // Build the widgets for `TerminalWindow`
-
-    final contentsLayout = _TerminalContentsLayout(
-      header: header,
-      editor: editor,
-      bottomFadeTransition: bottomFadeTransition,
-      actions: actions,
-      isDisplayingQuestion: controller.isDisplayingQuestion,
-    );
-
     final actionText = controller.isDisplayingQuestion ? strings.executionCheckAnswer : strings.executionCheckQuestion;
     final actionButton = CustomTextButton(text: actionText.toUpperCase(), onPressed: controller.switchContents);
 
-    // Wraps it all under the `_TerminalWindow` root widget
-
-    return _TerminalWindow(
-      contents: contentsLayout,
-      navigationButton: actionButton,
-      borderColor: borderColor,
-    ).withAllPadding(context, Spacing.xSmall);
-  }
-}
-
-class _TerminalWindow extends StatelessWidget {
-  const _TerminalWindow({required this.contents, required this.navigationButton, required this.borderColor});
-
-  final _TerminalContentsLayout contents;
-  final Widget navigationButton;
-  final Color borderColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final buttonDivider = Container(height: dimens.executionsTerminalBorderWidth, color: borderColor);
-
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: dimens.executionsTerminalBorderRadius,
-        border: Border.all(
-          color: borderColor,
-          width: dimens.executionsTerminalBorderWidth,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(child: ClipRect(child: contents)),
-          buttonDivider,
-          navigationButton.withSymmetricalPadding(context, vertical: Spacing.small),
-        ],
-      ),
+    final contentsLayout = _TerminalContentsLayout(
+      body: editor,
+      bottomFadeTransition: bottomFadeTransition,
+      actions: actions,
+      isActionsVisible: !controller.isDisplayingQuestion,
     );
-  }
-}
 
-enum _TerminalElements { header, editor, bottomFadeTransition, actions }
-
-class _TerminalContentsLayout extends StatelessWidget {
-  const _TerminalContentsLayout({
-    required this.header,
-    required this.editor,
-    required this.bottomFadeTransition,
-    required this.actions,
-    required this.isDisplayingQuestion,
-  });
-
-  final Widget header;
-  final Widget editor;
-  final Widget bottomFadeTransition;
-  final Widget actions;
-
-  final bool isDisplayingQuestion;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomMultiChildLayout(
-      delegate: _TerminalContentsLayoutDelegate(isActionsVisible: !isDisplayingQuestion),
-      children: <Widget>[
-        LayoutId(id: _TerminalElements.editor, child: editor),
-        LayoutId(id: _TerminalElements.header, child: header),
-        LayoutId(id: _TerminalElements.bottomFadeTransition, child: bottomFadeTransition),
-        LayoutId(id: _TerminalElements.actions, child: actions),
+    final terminalBody = Column(
+      children: [
+        Expanded(child: contentsLayout),
+        Container(height: dimens.executionsTerminalBorderWidth, color: borderColor),
+        actionButton.withSymmetricalPadding(context, vertical: Spacing.large),
       ],
     );
-  }
-}
 
-class _TerminalContentsLayoutDelegate extends MultiChildLayoutDelegate {
-  _TerminalContentsLayoutDelegate({required this.isActionsVisible});
-
-  final bool isActionsVisible;
-
-  @override
-  void performLayout(Size size) {
-    final looseConstraints = BoxConstraints.loose(size);
-
-    layoutChild(_TerminalElements.header, looseConstraints);
-
-    final bottomFadeTransition = layoutChild(_TerminalElements.bottomFadeTransition, looseConstraints);
-    final actionsSize = layoutChild(_TerminalElements.actions, looseConstraints);
-
-    // If actions are visible, we must subtract its size so contents won't overlap.
-    final editorHeight = size.height - (isActionsVisible ? actionsSize.height : 0);
-    final editor = layoutChild(
-      _TerminalElements.editor,
-      BoxConstraints.tightFor(height: editorHeight, width: size.width),
-    );
-
-    // No need to position header and editor because they are placed in `MultiChildLayoutDelegate` default offset (0,0).
-    positionChild(_TerminalElements.bottomFadeTransition, Offset(0, editor.height - bottomFadeTransition.height));
-
-    // We have also to adjust the actions y offset so it won't get clipped if any animation occurs.
-    final actionsOffset = Offset(0, editor.height - (isActionsVisible ? 0 : actionsSize.height));
-    positionChild(_TerminalElements.actions, actionsOffset);
-  }
-
-  @override
-  bool shouldRelayout(_TerminalContentsLayoutDelegate oldDelegate) => oldDelegate.isActionsVisible != isActionsVisible;
-}
-
-class _TerminalHeader extends StatelessWidget {
-  const _TerminalHeader({required this.fadeGradient, required this.borderColor});
-
-  final Color borderColor;
-  final List<Color> fadeGradient;
-  static const _actionsAmount = 3;
-
-  @override
-  Widget build(BuildContext context) {
-    final pseudoActions = List.generate(
-      _actionsAmount,
-      (index) => Container(
-        decoration: BoxDecoration(shape: BoxShape.circle, color: borderColor),
-        height: dimens.executionsTerminalActionDiameter,
-        width: dimens.executionsTerminalActionDiameter,
-      ),
-    );
-
-    return Container(
-      height: dimens.executionsTerminalFadeHeight,
-      decoration: BoxDecoration(
-          borderRadius: dimens.executionsTerminalBorderRadius,
-          gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: fadeGradient)),
-      child: Row(
-        children: [
-          for (final pseudoAction in pseudoActions) ...[
-            pseudoAction,
-            context.horizontalBox(Spacing.xxSmall),
-          ]
-        ],
-      ).withOnlyPadding(context, left: Spacing.medium),
-    );
+    // Wraps it all under the `_TerminalWindow` root widget
+    return TerminalWindow(
+      body: terminalBody,
+      borderColor: borderColor,
+      fadeGradient: fadeGradient,
+    ).withAllPadding(context, Spacing.xSmall);
   }
 }
 
@@ -392,7 +261,7 @@ class _TerminalQuillEditor extends StatelessWidget {
       scrollController: scrollController,
       scrollable: true,
       padding: EdgeInsets.symmetric(
-        vertical: dimens.executionsTerminalFadeHeight,
+        vertical: dimens.terminalWindowHeaderHeight,
         horizontal: context.rawSpacing(Spacing.medium),
       ),
       autoFocus: false,
@@ -407,6 +276,62 @@ class _TerminalQuillEditor extends StatelessWidget {
       child: quillEditor,
     );
   }
+}
+
+enum _TerminalElements { body, bottomFadeTransition, actions }
+
+class _TerminalContentsLayout extends StatelessWidget {
+  const _TerminalContentsLayout({
+    required this.body,
+    required this.bottomFadeTransition,
+    required this.actions,
+    this.isActionsVisible = false,
+  });
+
+  final Widget body;
+  final Widget bottomFadeTransition;
+  final Widget actions;
+  final bool isActionsVisible;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomMultiChildLayout(
+      delegate: _TerminalContentsLayoutDelegate(isActionsVisible: isActionsVisible),
+      children: <Widget>[
+        LayoutId(id: _TerminalElements.body, child: body),
+        LayoutId(id: _TerminalElements.bottomFadeTransition, child: bottomFadeTransition),
+        LayoutId(id: _TerminalElements.actions, child: actions),
+      ],
+    );
+  }
+}
+
+class _TerminalContentsLayoutDelegate extends MultiChildLayoutDelegate {
+  _TerminalContentsLayoutDelegate({required this.isActionsVisible});
+
+  final bool isActionsVisible;
+
+  @override
+  void performLayout(Size size) {
+    final looseConstraints = BoxConstraints.loose(size);
+
+    final bottomFadeTransition = layoutChild(_TerminalElements.bottomFadeTransition, looseConstraints);
+    final actionsSize = layoutChild(_TerminalElements.actions, looseConstraints);
+
+    // If actions are visible, we must subtract its size so contents won't overlap.
+    final bodyHeight = size.height - (isActionsVisible ? actionsSize.height : 0);
+    final body = layoutChild(_TerminalElements.body, BoxConstraints.tightFor(height: bodyHeight, width: size.width));
+
+    // No need to position header and body because they are placed in `MultiChildLayoutDelegate` default offset (0,0).
+    positionChild(_TerminalElements.bottomFadeTransition, Offset(0, body.height - bottomFadeTransition.height));
+
+    // We have also to adjust the actions y offset so it won't get clipped if any animation occurs.
+    final actionsOffset = Offset(0, body.height - (isActionsVisible ? 0 : actionsSize.height));
+    positionChild(_TerminalElements.actions, actionsOffset);
+  }
+
+  @override
+  bool shouldRelayout(_TerminalContentsLayoutDelegate oldDelegate) => oldDelegate.isActionsVisible != isActionsVisible;
 }
 
 class _TerminalActions extends HookWidget {

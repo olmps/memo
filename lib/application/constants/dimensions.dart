@@ -35,7 +35,6 @@ const double progressCircularProgressLineWidth = 8;
 const executionsTerminalBorderRadius = BorderRadius.all(Radius.circular(12));
 const double executionsTerminalBorderWidth = 2;
 const double executionsTerminalActionDiameter = 12;
-const double executionsTerminalFadeHeight = 64;
 const double executionsTerminalActionSize = 72;
 const double executionsTerminalActionEmojiSize = 40;
 const double executionsTerminalBlur = 32;
@@ -71,3 +70,8 @@ const richTextFieldConstraints = BoxConstraints(maxHeight: 148, minHeight: minTe
 // Tags Dropdown
 //
 const double tagsRemoveIconSize = 12;
+
+//
+// Terminal Window
+//
+const double terminalWindowHeaderHeight = 64;
