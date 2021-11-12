@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "memo://memo.schemas/local-public-collection",
+  "title": "Local Public Collection",
+  "description": "Properties of a Collection, parent of Memos.",
+  "allOf": [{ "$ref": "public-collection#" }],
+  "type": "object",
+  "properties": {
+    "memos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "allOf": [{ "$ref": "memo#" }],
+        "type": "object"
+      }
+    }
+  },
+  "required": [
+    "memos"
+  ]
+}
