@@ -103,27 +103,15 @@ class _ExecutionAppBar extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   /// Displays an bottom sheet alert to reinforce the discard of the current execution.
-  Future<void> _showCloseSheet(BuildContext context, WidgetRef ref) async {
-    final textTheme = Theme.of(context).textTheme;
-
-    return showSnappableDraggableModalBottomSheet(
+  Future<void> _showCloseSheet(BuildContext context) async {
+    return showDestructiveOperationModalBottomSheet(
       context,
-      isDismissible: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(strings.executionDiscardStudy, style: textTheme.subtitle1),
-          context.verticalBox(Spacing.xLarge),
-          Text(strings.executionDiscardStudyDescription, style: textTheme.bodyText1),
-          context.verticalBox(Spacing.xxxLarge),
-          DestructiveButton(
-            onPressed: readCoordinator(ref).pop,
-            text: strings.executionDiscard.toUpperCase(),
-          ),
-          context.verticalBox(Spacing.medium),
-          SecondaryButton(onPressed: Navigator.of(context).pop, child: Text(strings.executionBackToStudy.toUpperCase()))
-        ],
-      ).withAllPadding(context, Spacing.medium),
+      title: strings.executionDiscardStudy,
+      message: strings.executionDiscardStudyDescription,
+      destructiveActionTitle: strings.executionDiscard.toUpperCase(),
+      cancelActionTitle: strings.executionBackToStudy.toUpperCase(),
+      onDestructiveTapped: readCoordinator(context).pop,
+      onCancelTapped: Navigator.of(context).pop,
     );
   }
 }
