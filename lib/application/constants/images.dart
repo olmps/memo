@@ -19,6 +19,7 @@ enum ImageKey {
   italic,
   link,
   settings,
+  trash,
   trendingUpArrow,
   underline,
 
@@ -55,6 +56,8 @@ extension ImageKeyPath on ImageKey {
         return '$_iconsRoot/link.png';
       case ImageKey.settings:
         return '$_iconsRoot/settings.png';
+      case ImageKey.trash:
+        return '$_iconsRoot/trash.png';
       case ImageKey.trendingUpArrow:
         return '$_iconsRoot/trending_up_arrow.png';
       case ImageKey.underline:
@@ -87,6 +90,7 @@ final folderAsset = ImageKey.folder.path;
 final italicAsset = ImageKey.italic.path;
 final linkAsset = ImageKey.link.path;
 final settingsAsset = ImageKey.settings.path;
+final trashAsset = ImageKey.trash.path;
 final trendingUpArrowAsset = ImageKey.trendingUpArrow.path;
 final underlineAsset = ImageKey.underline.path;
 
