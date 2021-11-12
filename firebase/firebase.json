@@ -8,7 +8,7 @@
     ]
   },
   "functions": {
-    "source": "src/functions",
+    "source": "src/core",
     "predeploy": [
       "npm --prefix \"$PROJECT_DIR\" run lint",
       "npm --prefix \"$PROJECT_DIR\" run build:functions"
