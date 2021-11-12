@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "memo://memo.schemas/stored-public-collection",
+  "title": "Stored Public Collection",
+  "description": "Properties of a Collection, parent of Memos.",
+  "allOf": [{ "$ref": "public-collection#" }],
+  "type": "object",
+  "properties": {
+    "memosAmount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "memosOrder": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "memosAmount",
+    "memosOrder"
+  ]
+}
+
