@@ -4,3 +4,4 @@
 
 gem 'fastlane-plugin-versioning_android'
 gem 'fastlane-plugin-flutter_version'
+gem 'fastlane-plugin-firebase_app_distribution'

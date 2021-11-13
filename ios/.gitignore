@@ -37,6 +37,3 @@ fastlane/README.md
 
 # Google Services Info.plist
 Runner/GoogleService-Info.plist
-
-# Firebase Distribution Service Account
-firebase_distribution_service_account.json
