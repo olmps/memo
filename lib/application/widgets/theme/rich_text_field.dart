@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/images.dart' as images;
@@ -17,7 +19,7 @@ import 'package:tuple/tuple.dart';
 /// A [TextField] that follows most of WYSIWYG editors functionality.
 ///
 /// Supports presenting rich text content and opens a modal with a rich text editor when tapped.
-class RichTextField extends HookWidget {
+class RichTextField extends HookConsumerWidget {
   const RichTextField({required this.modalTitle, required this.placeholder, this.controller, this.focus});
 
   /// The modal title positioned in the top-left corner of the modal editor.
@@ -32,8 +34,8 @@ class RichTextField extends HookWidget {
   final FocusNode? focus;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
     final inputDecorationTheme = Theme.of(context).inputDecorationTheme;
 
@@ -57,6 +59,7 @@ class RichTextField extends HookWidget {
     Future<void> showRichTextFieldModal() async {
       await showSnappableDraggableModalBottomSheet<void>(
         context,
+        ref,
         child: _RichTextFieldModal(
           title: modalTitle,
           controller: quillController,
@@ -107,7 +110,7 @@ class RichTextField extends HookWidget {
 /// Holds the rich text editor using `flutter_quill` library.
 /// Places [_RichTextFieldToolbar] - a toolbar of actions to customize the text content - above the keyboard when it's
 /// visible.
-class _RichTextFieldModal extends HookWidget {
+class _RichTextFieldModal extends HookConsumerWidget {
   const _RichTextFieldModal({required this.title, required this.controller, required this.placeholder, this.focus});
 
   final Widget title;
@@ -116,8 +119,8 @@ class _RichTextFieldModal extends HookWidget {
   final FocusNode? focus;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
 
     final focusNode = focus ?? useFocusNode();
 
@@ -181,7 +184,7 @@ class _RichTextFieldModal extends HookWidget {
 /// [quill.QuillEditor] that are shared between this file editor instances.
 ///
 /// It basically reduces boilerplate.
-class _ThemedEditor extends HookWidget {
+class _ThemedEditor extends ConsumerWidget {
   const _ThemedEditor({
     required this.controller,
     required this.backgroundColor,
@@ -199,8 +202,8 @@ class _ThemedEditor extends HookWidget {
   final bool readonly;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
 
     // Default [quill.DefaultTextBlockStyle] vertical and line spacings.
@@ -240,7 +243,7 @@ class _ThemedEditor extends HookWidget {
 }
 
 /// A toolbar of actions to customize the editor content.
-class _RichTextFieldToolbar extends HookWidget {
+class _RichTextFieldToolbar extends HookConsumerWidget {
   _RichTextFieldToolbar(this.controller);
 
   final quill.QuillController controller;
@@ -254,8 +257,8 @@ class _RichTextFieldToolbar extends HookWidget {
   };
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
 
     final selectedAttributes = useState<Set<quill.Attribute>>(controller.getSelectionStyle().attributes.values.toSet());
 
