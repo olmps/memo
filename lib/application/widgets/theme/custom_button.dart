@@ -281,12 +281,10 @@ class _CustomButtonState extends State<_CustomButton> {
       onHighlightChanged: (isPressed) => setState(() {
         state = isPressed ? _ButtonState.pressed : _ButtonState.normal;
       }),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: widget.shrink ? MainAxisSize.min : MainAxisSize.max,
-          children: rowWidgets,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: widget.shrink ? MainAxisSize.min : MainAxisSize.max,
+        children: rowWidgets,
       ),
     );
 

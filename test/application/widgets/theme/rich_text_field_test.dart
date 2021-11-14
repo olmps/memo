@@ -19,7 +19,7 @@ void main() {
       const richTextField = RichTextField(modalTitle: Text('any'), placeholder: 'any');
       final expectedHeight = dimens.richTextFieldConstraints.minHeight;
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
 
       final renderedField = find.byType(RichTextField).first.evaluate().single.renderObject! as RenderBox;
       expect(renderedField.size.height, expectedHeight);
@@ -32,7 +32,7 @@ void main() {
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
       final expectedHeight = dimens.richTextFieldConstraints.maxHeight;
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
 
       final renderedField = find.byType(RichTextField).first.evaluate().single.renderObject! as RenderBox;
       expect(renderedField.size.height, expectedHeight);
@@ -44,7 +44,7 @@ void main() {
       final focusNode = FocusNode();
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', focus: focusNode);
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
       await tester.pumpAndSettle();
 
@@ -58,7 +58,7 @@ void main() {
     testWidgets('should present toolbar when the keyboard is visible', (tester) async {
       const richTextField = RichTextField(modalTitle: Text('any'), placeholder: 'any');
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
       await tester.pumpAndSettle();
 
@@ -68,12 +68,13 @@ void main() {
 
     group('Attributes Icons - ', () {
       testWidgets('should highlight bold button when text is bolded', (tester) async {
+        // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
         const boldedText = r'[{"insert":"Bold Text\n","attributes": {"bold": true}}]';
         final controller = TextEditingController(text: boldedText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
-        await pumpThemedProviderScoped(tester, richTextField);
+        await pumpProviderScoped(tester, richTextField);
         await tester.tap(find.byType(RichTextField));
         await tester.pumpAndSettle();
 
@@ -83,12 +84,13 @@ void main() {
       });
 
       testWidgets('should highlight italic button when text is italic', (tester) async {
+        // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
         const italicText = r'[{"insert":"Italic Text\n","attributes": {"italic": true}}]';
         final controller = TextEditingController(text: italicText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
-        await pumpThemedProviderScoped(tester, richTextField);
+        await pumpProviderScoped(tester, richTextField);
         await tester.tap(find.byType(RichTextField));
         await tester.pumpAndSettle();
 
@@ -98,12 +100,13 @@ void main() {
       });
 
       testWidgets('should highlight underline button when text is underline', (tester) async {
+        // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
         const underlineText = r'[{"insert":"Underline Text\n","attributes": {"underline": true}}]';
         final controller = TextEditingController(text: underlineText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
-        await pumpThemedProviderScoped(tester, richTextField);
+        await pumpProviderScoped(tester, richTextField);
         await tester.tap(find.byType(RichTextField));
         await tester.pumpAndSettle();
 
@@ -113,12 +116,13 @@ void main() {
       });
 
       testWidgets('should highlight code button when text is code', (tester) async {
+        // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
         const codeText = r'[{"insert":"Code Text"},{"insert":"\n","attributes":{"code-block":true}}]';
         final controller = TextEditingController(text: codeText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
-        await pumpThemedProviderScoped(tester, richTextField);
+        await pumpProviderScoped(tester, richTextField);
         await tester.tap(find.byType(RichTextField));
         await tester.pumpAndSettle();
 
@@ -140,7 +144,7 @@ void main() {
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
       const expectedEncodedBoldText = '[{"insert":"$codeText","attributes":{"bold":true}},{"insert":"\\n"}]';
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
       await tester.pumpAndSettle();
 
@@ -161,7 +165,7 @@ void main() {
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
       const expectedEncodedItalicText = '[{"insert":"$codeText","attributes":{"italic":true}},{"insert":"\\n"}]';
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
       await tester.pumpAndSettle();
 
@@ -182,7 +186,7 @@ void main() {
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
       const expectedEncodedUnderlineText = '[{"insert":"$codeText","attributes":{"underline":true}},{"insert":"\\n"}]';
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
       await tester.pumpAndSettle();
 
@@ -204,7 +208,7 @@ void main() {
       const expectedEncodedCodeText =
           r'[{"insert":"A Random Text to be changed"},{"insert":"\n","attributes":{"code-block":true}}]';
 
-      await pumpThemedProviderScoped(tester, richTextField);
+      await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
       await tester.pumpAndSettle();
 

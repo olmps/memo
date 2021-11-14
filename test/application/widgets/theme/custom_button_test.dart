@@ -40,7 +40,7 @@ void main() {
       const constrainedWidth = 140.0;
       const primaryButton = SizedBox(width: constrainedWidth, child: PrimaryElevatedButton(text: 'test'));
 
-      await pumpThemedProviderScoped(tester, primaryButton);
+      await pumpProviderScoped(tester, primaryButton);
 
       final buttonRenderBox = find.byType(PrimaryElevatedButton).first.evaluate().single.renderObject! as RenderBox;
       expect(buttonRenderBox.size.width, constrainedWidth);
@@ -90,7 +90,7 @@ void main() {
       const constrainedWidth = 140.0;
       const primaryButton = SizedBox(width: constrainedWidth, child: PrimaryElevatedButton(text: 'test'));
 
-      await pumpThemedProviderScoped(tester, primaryButton);
+      await pumpProviderScoped(tester, primaryButton);
 
       final buttonRenderBox = find.byType(PrimaryElevatedButton).first.evaluate().single.renderObject! as RenderBox;
       expect(buttonRenderBox.size.width, constrainedWidth);
@@ -173,10 +173,10 @@ void main() {
     });
 
     testWidgets('must shrink based on its content', (tester) async {
-      const expectedWidth = 88.0;
+      const expectedWidth = 56.0;
       const textButton = CustomTextButton(text: 'Text');
 
-      await pumpThemedProviderScoped(tester, textButton);
+      await pumpProviderScoped(tester, textButton);
 
       final buttonRenderBox = find.byType(CustomTextButton).first.evaluate().single.renderObject! as RenderBox;
       expect(buttonRenderBox.size.width, expectedWidth);
