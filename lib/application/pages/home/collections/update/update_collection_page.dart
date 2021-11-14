@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/pages/home/collections/update/update_collection_details.dart';
@@ -14,10 +16,10 @@ import 'package:memo/application/widgets/theme/themed_tab_bar.dart';
 
 enum _Segment { details, memos }
 
-class UpdateCollectionPage extends HookWidget {
+class UpdateCollectionPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final vm = useUpdateCollectionVM(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vm = useUpdateCollectionVM(ref);
 
     final selectedSegment = useState(_Segment.details);
     final tabController = useTabController(initialLength: _Segment.values.length);
@@ -49,15 +51,15 @@ class UpdateCollectionPage extends HookWidget {
   }
 }
 
-class _UpdateCollectionContents extends HookWidget {
+class _UpdateCollectionContents extends ConsumerWidget {
   const _UpdateCollectionContents({required this.selectedSegment});
 
   final _Segment selectedSegment;
 
   @override
-  Widget build(BuildContext context) {
-    final vm = useUpdateCollectionVM(context);
-    final state = useUpdateCollectionState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vm = useUpdateCollectionVM(ref);
+    final state = useUpdateCollectionState(ref);
 
     if (state is UpdateCollectionFailedLoading) {
       return Center(child: ExceptionRetryContainer(exception: state.exception, onRetry: vm.loadInitialContent));
@@ -83,15 +85,15 @@ extension on _Segment {
   }
 }
 
-class _BottomActionContainer extends HookWidget {
+class _BottomActionContainer extends ConsumerWidget {
   const _BottomActionContainer({required this.selectedSegment, required this.onSegmentSwapRequested});
 
   final _Segment selectedSegment;
   final void Function(_Segment segment) onSegmentSwapRequested;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
 
     late Widget button;
 
@@ -115,20 +117,20 @@ class _BottomActionContainer extends HookWidget {
   }
 }
 
-class _DetailsActionButton extends HookWidget {
+class _DetailsActionButton extends ConsumerWidget {
   const _DetailsActionButton({required this.onSegmentSwapRequested});
 
   final Function(_Segment segment) onSegmentSwapRequested;
 
   @override
-  Widget build(BuildContext context) {
-    final state = useUpdateCollectionState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = useUpdateCollectionState(ref);
 
     if (state is! UpdateCollectionLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final vm = useUpdateCollectionVM(context);
+    final vm = useUpdateCollectionVM(ref);
 
     void onPressed() {
       if (state.hasMemos) {
@@ -144,16 +146,16 @@ class _DetailsActionButton extends HookWidget {
   }
 }
 
-class _MemosActionButton extends HookWidget {
+class _MemosActionButton extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final state = useUpdateCollectionState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = useUpdateCollectionState(ref);
 
     if (state is! UpdateCollectionLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final vm = useUpdateCollectionVM(context);
+    final vm = useUpdateCollectionVM(ref);
     final canSave = state.hasDetails && state.hasMemos;
 
     return PrimaryElevatedButton(
