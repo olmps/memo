@@ -292,7 +292,7 @@ class _CustomButtonState extends State<_CustomButton> {
       button: true,
       enabled: state != _ButtonState.disabled,
       child: Container(
-        height: shrink ? null : dimens.minButtonHeight,
+        height: widget.shrink ? null : dimens.minButtonHeight,
         decoration: BoxDecoration(
           color: widget.backgroundColorBuilder?.call(state),
           borderRadius: dimens.genericRoundedElementBorderRadius,

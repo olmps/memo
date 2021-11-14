@@ -63,7 +63,8 @@ class SuggestionsState extends Equatable {
 final tagsController = StateProvider<List<String>>((_) => []);
 
 /// Provides internal control of tags suggestions.
-final suggestionsController = StateNotifierProvider<SuggestionsController>((_) => SuggestionsController());
+final suggestionsController =
+    StateNotifierProvider<SuggestionsController, SuggestionsState>((_) => SuggestionsController());
 
 /// A custom [TextField] that groups a collection of tags.
 ///
@@ -73,7 +74,7 @@ final suggestionsController = StateNotifierProvider<SuggestionsController>((_) =
 ///
 /// The presented modal also loads a list of suggestions while the user types, similar as how search webpages. The delay
 /// between the user typing and the suggestions requests is defined by [suggestionsThrottleInSeconds].
-class TagsField extends HookWidget {
+class TagsField extends ConsumerWidget {
   const TagsField({this.maxTags = 5, this.suggestionsThrottleInSeconds = 1});
 
   /// {@template TagsDropdownField.maxTags}
@@ -89,16 +90,16 @@ class TagsField extends HookWidget {
   final int suggestionsThrottleInSeconds;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
 
-    final _tagsController = useProvider(tagsController);
-    final _suggestionsController = useProvider(suggestionsController);
+    final _tagsController = ref.watch(tagsController);
+    final _suggestionsController = ref.watch(suggestionsController.notifier);
 
     Future<void> showTagsModal() async {
       final modal = _TagsModal(maxTags: maxTags, suggestionsThrottleInSeconds: suggestionsThrottleInSeconds);
-      await showSnappableDraggableModalBottomSheet<void>(context, child: modal);
+      await showSnappableDraggableModalBottomSheet<void>(context, ref, child: modal);
       _suggestionsController.clearSuggestions();
     }
 
@@ -115,7 +116,7 @@ class TagsField extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_tagsController.state.isNotEmpty) ...[
+            if (_tagsController.isNotEmpty) ...[
               Text(strings.addTags(maxTags), style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade300)),
               context.verticalBox(Spacing.small),
               const _TagsTextField(readonly: true),
@@ -134,7 +135,7 @@ class TagsField extends HookWidget {
 ///
 /// Loads a list of suggestions while the user types, similar as how search webpages do. The delay between the user
 /// typing and the suggestions requests is defined by [suggestionsThrottleInSeconds].
-class _TagsModal extends HookWidget {
+class _TagsModal extends HookConsumerWidget {
   const _TagsModal({required this.maxTags, required this.suggestionsThrottleInSeconds});
 
   /// {@macro TagsDropdownField.maxTags}
@@ -144,13 +145,14 @@ class _TagsModal extends HookWidget {
   final int suggestionsThrottleInSeconds;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
 
-    final _tagsController = useProvider(tagsController);
-    final _suggestionsController = useProvider(suggestionsController);
-    final suggestionsState = useProvider(suggestionsController.state);
+    final _tagsController = ref.watch(tagsController.notifier);
+    final selectedTags = ref.watch(tagsController);
+    final _suggestionsController = ref.watch(suggestionsController.notifier);
+    final suggestionsState = ref.watch(suggestionsController);
 
     final fieldFocus = useFocusNode();
     final fieldController = useTextEditingController();
@@ -160,8 +162,8 @@ class _TagsModal extends HookWidget {
       _suggestionsController.clearSuggestions();
       fieldController.clear();
       fieldFocus.requestFocus();
-      if (_tagsController.state.length < maxTags && tag.isNotEmpty && !_tagsController.state.contains(tag)) {
-        _tagsController.state = [..._tagsController.state, tag];
+      if (selectedTags.length < maxTags && tag.isNotEmpty && !selectedTags.contains(tag)) {
+        _tagsController.state = [...selectedTags, tag];
       }
     }
 
@@ -208,7 +210,7 @@ class _TagsModal extends HookWidget {
         Text(strings.tags, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade300)),
         context.horizontalBox(Spacing.medium),
         Text(
-          '${_tagsController.state.length}/$maxTags',
+          '${selectedTags.length}/$maxTags',
           style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade300),
         )
       ],
@@ -258,16 +260,16 @@ class _TagsModal extends HookWidget {
 /// A list of tags suggestions.
 ///
 /// Triggers [onTap] with the chosen suggestion when tapped.
-class _TagsSuggestions extends HookWidget {
+class _TagsSuggestions extends ConsumerWidget {
   const _TagsSuggestions({required this.onTap});
 
   final void Function(String suggestion) onTap;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
-    final suggestionsState = useProvider(suggestionsController.state);
+    final suggestionsState = ref.watch(suggestionsController);
 
     final title = Text(strings.suggestions, style: textTheme.subtitle1?.copyWith(color: theme.neutralSwatch.shade300));
 
@@ -316,7 +318,7 @@ class _TagsSuggestions extends HookWidget {
 /// The custom tagged TextField.
 ///
 /// Wraps the already chosen tags with an input [TextField] used to add new tags.
-class _TagsTextField extends HookWidget {
+class _TagsTextField extends ConsumerWidget {
   const _TagsTextField({this.fieldController, this.focus, this.onSubmitted, this.readonly = false});
 
   final TextEditingController? fieldController;
@@ -335,10 +337,10 @@ class _TagsTextField extends HookWidget {
   final bool readonly;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
-    final _tagsController = useProvider(tagsController);
+    final _tagsController = ref.watch(tagsController.notifier);
 
     void onTagTap(String tag) => _tagsController.state = _tagsController.state..remove(tag);
     final tags = _tagsController.state.map((tag) => _SelectedTag(tag: tag, readonly: readonly, onTap: onTagTap));
@@ -380,7 +382,7 @@ class _TagsTextField extends HookWidget {
   }
 }
 
-class _SelectedTag extends HookWidget {
+class _SelectedTag extends ConsumerWidget {
   const _SelectedTag({required this.tag, this.readonly = false, this.onTap});
 
   final String tag;
@@ -394,8 +396,8 @@ class _SelectedTag extends HookWidget {
   final void Function(String tag)? onTap;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
 
     return Material(
