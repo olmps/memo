@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
 
 /// A container that decorates [body] with a terminal style.
-class TerminalWindow extends HookWidget {
+class TerminalWindow extends StatelessWidget {
   const TerminalWindow({required this.body, required this.borderColor, required this.fadeGradient});
 
   final Widget body;
@@ -36,15 +36,15 @@ class TerminalWindow extends HookWidget {
   }
 }
 
-class _TerminalHeader extends HookWidget {
+class _TerminalHeader extends ConsumerWidget {
   const _TerminalHeader({required this.fadeGradient});
 
   final List<Color> fadeGradient;
   static const _actionsAmount = 3;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
 
     final pseudoActions = List.generate(
       _actionsAmount,

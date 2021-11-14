@@ -16,8 +16,6 @@ import 'package:memo/application/utils/bottom_sheet.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
-import 'package:memo/application/widgets/theme/destructive_button.dart';
-import 'package:memo/application/widgets/theme/secondary_button.dart';
 
 class CollectionExecutionPage extends ConsumerStatefulWidget {
   @override
@@ -103,14 +101,15 @@ class _ExecutionAppBar extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   /// Displays an bottom sheet alert to reinforce the discard of the current execution.
-  Future<void> _showCloseSheet(BuildContext context) async {
+  Future<void> _showCloseSheet(BuildContext context, WidgetRef ref) async {
     return showDestructiveOperationModalBottomSheet(
       context,
+      ref,
       title: strings.executionDiscardStudy,
       message: strings.executionDiscardStudyDescription,
       destructiveActionTitle: strings.executionDiscard.toUpperCase(),
       cancelActionTitle: strings.executionBackToStudy.toUpperCase(),
-      onDestructiveTapped: readCoordinator(context).pop,
+      onDestructiveTapped: readCoordinator(ref).pop,
       onCancelTapped: Navigator.of(context).pop,
     );
   }
