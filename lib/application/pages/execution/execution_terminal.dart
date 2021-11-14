@@ -5,6 +5,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/models/documents/document.dart' as quill_doc;
 import 'package:flutter_quill/widgets/controller.dart';
 import 'package:flutter_quill/widgets/editor.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
@@ -157,23 +159,23 @@ class TerminalController extends ChangeNotifier {
 /// widget.
 ///
 /// The naming comes from its layout resemblance of most terminal applications.
-class ExecutionTerminal extends StatefulHookWidget {
+class ExecutionTerminal extends StatefulHookConsumerWidget {
   const ExecutionTerminal({required this.controller, Key? key}) : super(key: key);
 
   final TerminalController controller;
 
   @override
-  State<StatefulWidget> createState() => _ExecutionTerminalState();
+  ConsumerState createState() => _ExecutionTerminalState();
 }
 
-class _ExecutionTerminalState extends State<ExecutionTerminal> {
+class _ExecutionTerminalState extends ConsumerState<ExecutionTerminal> {
   TerminalController get controller => widget.controller;
 
   @override
   Widget build(BuildContext context) {
     useListenable(controller);
 
-    final theme = useTheme();
+    final theme = useTheme(ref);
     final borderColor = theme.neutralSwatch.shade700;
     final fadeGradient = [theme.neutralSwatch.shade900, theme.neutralSwatch.shade900.withOpacity(0)];
 

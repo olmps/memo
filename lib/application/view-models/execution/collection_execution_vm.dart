@@ -9,7 +9,8 @@ import 'package:memo/domain/models/memo_execution.dart';
 import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/services/execution_services.dart';
 
-final collectionExecutionVM = StateNotifierProvider.autoDispose.family<CollectionExecutionVM, String>(
+final collectionExecutionVM =
+    StateNotifierProvider.autoDispose.family<CollectionExecutionVM, CollectionExecutionState, String>(
   (ref, collectionId) => CollectionExecutionVMImpl(
     executionServices: ref.read(executionServices),
     collectionServices: ref.read(collectionServices),

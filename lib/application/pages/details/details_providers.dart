@@ -4,11 +4,11 @@ import 'package:memo/application/view-models/details/collection_details_vm.dart'
 
 /// Overridable collection id used in the scope of a collection details
 ///
-/// Throws an `UnsupportedError` if the consuming context don't override this provider
-final detailsCollectionId = ScopedProvider<String>(null);
+/// Throws an [UnimplementedError] if the consuming context don't override this provider
+final detailsCollectionId = Provider<String>((_) => throw UnimplementedError(), name: 'detailsCollectionId');
 
-/// Syntax sugar for calling [useProvider] with both [collectionDetailsVM] and [detailsCollectionId] providers
-CollectionDetailsState useCollectionDetailsState() {
-  final collectionId = useProvider(detailsCollectionId);
-  return useProvider(collectionDetailsVM(collectionId).state);
+/// Syntax sugar for watching [CollectionDetailsState] state updates.
+CollectionDetailsState useCollectionDetailsState(WidgetRef ref) {
+  final collectionId = ref.watch(detailsCollectionId);
+  return ref.watch(collectionDetailsVM(collectionId));
 }

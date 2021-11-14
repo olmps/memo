@@ -8,7 +8,7 @@ import 'package:memo/domain/models/memo_execution.dart';
 import 'package:memo/domain/services/progress_services.dart';
 import 'package:meta/meta.dart';
 
-final progressVM = StateNotifierProvider<ProgressVM>((ref) {
+final progressVM = StateNotifierProvider<ProgressVM, ProgressState>((ref) {
   return ProgressVMImpl(ref.read(progressServices));
 });
 

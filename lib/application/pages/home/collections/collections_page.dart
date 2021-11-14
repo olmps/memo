@@ -12,10 +12,10 @@ import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/themed_tab_bar.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
-class CollectionsPage extends HookWidget {
+class CollectionsPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final initialState = context.read(collectionsVM.state);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final initialState = ref.read(collectionsVM);
     final collectionsTabController = useTabController(
       initialLength: availableSegments.length,
       initialIndex: initialState.segmentIndex,
@@ -23,14 +23,14 @@ class CollectionsPage extends HookWidget {
 
     useEffect(() {
       void tabListener() {
-        final currentState = context.read(collectionsVM.state);
+        final currentState = ref.read(collectionsVM);
 
         // Mandatory check because this listener is called multiple times by the tab controller.
         //
         // Should only call the VM when the `indexIsChanging` AND if the current segment is different.
         if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
           final newTab = availableSegments.elementAt(collectionsTabController.index);
-          context.read(collectionsVM).updateCollectionsSegment(newTab);
+          ref.read(collectionsVM.notifier).updateCollectionsSegment(newTab);
         }
       }
 
@@ -71,15 +71,15 @@ class CollectionsPage extends HookWidget {
 }
 
 /// [CollectionsPage] visible contents, given the current [collectionsVM] state.
-class _CollectionsContents extends HookWidget {
+class _CollectionsContents extends ConsumerWidget {
   const _CollectionsContents({required this.onSegmentSwapRequested});
 
   /// {@macro onSegmentSwapRequested}
   final VoidCallback onSegmentSwapRequested;
 
   @override
-  Widget build(BuildContext context) {
-    final state = useProvider(collectionsVM.state);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(collectionsVM);
 
     final Widget widget;
     if (state is LoadingCollectionsState) {
@@ -104,7 +104,7 @@ class _CollectionsContents extends HookWidget {
   }
 }
 
-class _CollectionsEmptyState extends HookWidget {
+class _CollectionsEmptyState extends ConsumerWidget {
   const _CollectionsEmptyState({required this.onSegmentSwapRequested, required this.title, required this.description});
 
   /// {@template onSegmentSwapRequested}
@@ -116,9 +116,9 @@ class _CollectionsEmptyState extends HookWidget {
   final String description;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final theme = useTheme();
+    final theme = useTheme(ref);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

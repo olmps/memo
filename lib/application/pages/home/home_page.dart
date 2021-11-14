@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
 }
 
 // Implementing a `PreferredSizeWidget` to conform to the requirements of a `Scaffold.appBar`.
-class _AppBar extends HookWidget implements PreferredSizeWidget {
+class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
   const _AppBar(this._tab);
 
   @override
@@ -44,14 +44,14 @@ class _AppBar extends HookWidget implements PreferredSizeWidget {
   final HomeBottomTab _tab;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       title: Text(_tab.title),
       actions: [
         AssetIconButton(
           images.settingsAsset,
           onPressed: () {
-            readCoordinator(context).navigateToSettings();
+            readCoordinator(ref).navigateToSettings();
           },
         ),
       ],
@@ -59,13 +59,13 @@ class _AppBar extends HookWidget implements PreferredSizeWidget {
   }
 }
 
-class _BottomAppBar extends HookWidget {
+class _BottomAppBar extends ConsumerWidget {
   const _BottomAppBar(this._tab);
 
   final HomeBottomTab _tab;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tabItems = HomeBottomTab.values
         .map(
           (tab) => BottomNavigationBarItem(icon: tab.icon, label: tab.title),
@@ -77,10 +77,10 @@ class _BottomAppBar extends HookWidget {
         onTap: (index) {
           switch (HomeBottomTab.values[index]) {
             case HomeBottomTab.collections:
-              readCoordinator(context).navigateToStudy();
+              readCoordinator(ref).navigateToStudy();
               break;
             case HomeBottomTab.progress:
-              readCoordinator(context).navigateToProgress();
+              readCoordinator(ref).navigateToProgress();
               break;
           }
         },

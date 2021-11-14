@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/layoutr.dart';
 
 import 'package:memo/application/constants/animations.dart' as anims;
@@ -18,7 +18,7 @@ import 'package:memo/application/widgets/theme/link.dart';
 ///
 /// See also:
 ///   - [SingleContributorView], which displays a single contributor.
-class MultiContributorsView extends HookWidget {
+class MultiContributorsView extends ConsumerWidget {
   const MultiContributorsView(this.contributors)
       : assert(
             contributors.length > 1, 'At least 2 contributors must be provided. Use `SingleContributorView` instead.');
@@ -28,8 +28,8 @@ class MultiContributorsView extends HookWidget {
   final List<ContributorInfo> contributors;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final contributorsAmount = contributors.length;
 
     return LinkButton(
@@ -44,6 +44,7 @@ class MultiContributorsView extends HookWidget {
 
         showSnappableDraggableModalBottomSheet<dynamic>(
           context,
+          ref,
           title: strings.detailsContributors,
           child: list.withSymmetricalPadding(context, horizontal: Spacing.medium),
         );
@@ -98,14 +99,14 @@ class MultiContributorsView extends HookWidget {
 ///
 /// See also:
 ///   - [MultiContributorsView], which displays a list of contributors.
-class SingleContributorView extends HookWidget {
+class SingleContributorView extends ConsumerWidget {
   const SingleContributorView(this.contributor);
 
   final ContributorInfo contributor;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
 
     final backgroundColor = theme.neutralSwatch.shade900;
     final textStyle = TextStyle(color: theme.neutralSwatch.shade200);
@@ -133,7 +134,7 @@ class SingleContributorView extends HookWidget {
 ///
 /// Uses the [url] to build an [FadeInImage.assetNetwork], unless [child] is not `null`. If none are present, defaults
 /// to an [Image] using a placeholder.
-class _ContributorImage extends HookWidget {
+class _ContributorImage extends ConsumerWidget {
   const _ContributorImage({required this.size, this.url, this.child, Key? key}) : super(key: key);
 
   final String? url;
@@ -141,8 +142,8 @@ class _ContributorImage extends HookWidget {
   final double size;
 
   @override
-  Widget build(BuildContext context) {
-    final neutralSwatch = useTheme().neutralSwatch;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final neutralSwatch = useTheme(ref).neutralSwatch;
 
     final Widget contents;
     if (child != null) {

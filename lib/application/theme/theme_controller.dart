@@ -7,7 +7,7 @@ import 'package:memo/application/theme/material_theme_data.dart' as material_the
 import 'package:memo/application/theme/memo_theme_colors.dart' as colors;
 import 'package:memo/application/theme/memo_theme_data.dart';
 
-final themeController = StateNotifierProvider<ThemeController>((_) => ThemeController());
+final themeController = StateNotifierProvider<ThemeController, MemoThemeData>((_) => ThemeController());
 
 /// Controls theme-related operations.
 ///
@@ -90,10 +90,10 @@ class ThemeController extends StateNotifier<MemoThemeData> {
 }
 
 /// Syntax sugar for _hooking_ the [themeController] state instance in a hook widget build.
-MemoThemeData useTheme() => useProvider(themeController.state);
+MemoThemeData useTheme(WidgetRef ref) => ref.watch(themeController);
 
 /// Syntax sugar for _hooking_ the [themeController] provider instance in a hook widget build.
-ThemeController useThemeController() => useProvider(themeController);
+ThemeController useThemeController(WidgetRef ref) => ref.watch(themeController.notifier);
 
 MaterialColor _primarySwatchFor(MemoTheme theme) {
   switch (theme) {

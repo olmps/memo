@@ -8,17 +8,16 @@ import 'package:memo/core/faults/exceptions/base_exception.dart';
 /// This key must be provided to the application's root [MaterialApp.scaffoldMessengerKey], otherwise scaffold utilities
 /// (like [showSnackBar]) won't work.
 final scaffoldMessenger = Provider((_) => GlobalKey<ScaffoldMessengerState>());
-GlobalKey<ScaffoldMessengerState> useScaffoldMessenger() => useProvider(scaffoldMessenger);
+GlobalKey<ScaffoldMessengerState> useScaffoldMessenger(WidgetRef ref) => ref.watch(scaffoldMessenger);
 
 /// Shows the [snackBar] using the current [scaffoldMessenger].
-void showSnackBar(BuildContext context, SnackBar snackBar) =>
-    context.read(scaffoldMessenger).currentState?.showSnackBar(snackBar);
+void showSnackBar(WidgetRef ref, SnackBar snackBar) => ref.read(scaffoldMessenger).currentState?.showSnackBar(snackBar);
 
 /// Shows a message for the [exception] using [showSnackBar].
-void showExceptionSnackBar(BuildContext context, BaseException exception) {
+void showExceptionSnackBar(WidgetRef ref, BaseException exception) {
   final content = Text(_descriptionForException(exception));
   final exceptionSnackBar = SnackBar(content: content);
-  showSnackBar(context, exceptionSnackBar);
+  showSnackBar(ref, exceptionSnackBar);
 }
 
 String _descriptionForException(BaseException exception) {

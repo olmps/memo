@@ -13,7 +13,7 @@ final coordinatorProvider = Provider<RoutesCoordinator>(
   (_) => RoutesCoordinator(navigatorKey: GlobalKey<NavigatorState>()),
 );
 
-RoutesCoordinator readCoordinator(BuildContext context) => context.read(coordinatorProvider);
+RoutesCoordinator readCoordinator(WidgetRef ref) => ref.read(coordinatorProvider);
 
 /// Coordinates the the visible [Page]s stack based on a list of locations (or URIs).
 ///
