@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
 import 'package:memo/core/faults/exceptions/url_exception.dart';
 
-final updateCollectionVM = StateNotifierProvider.family<UpdateCollectionVM, String?>(
+final updateCollectionVM = StateNotifierProvider.family<UpdateCollectionVM, UpdateCollectionState, String?>(
     (ref, collectionId) => UpdateCollectionVMImpl(collectionId: collectionId));
 
 abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
