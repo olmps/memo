@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/images.dart' as images;
@@ -13,7 +14,7 @@ import 'package:memo/application/widgets/theme/terminal_window.dart';
 /// A terminal-styled component that presents a `Memo` question and answer that can be updated.
 ///
 /// Use [questionController] and [answerController] to control the Memo content being edited.
-class MemoTerminal extends HookWidget {
+class MemoTerminal extends ConsumerWidget {
   const MemoTerminal({
     required this.memoIndex,
     this.questionController,
@@ -37,8 +38,8 @@ class MemoTerminal extends HookWidget {
   final ScrollController? scrollController;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme(ref);
     final textTheme = Theme.of(context).textTheme;
 
     final questionController = this.questionController ?? useTextEditingController();
@@ -79,6 +80,7 @@ class MemoTerminal extends HookWidget {
 
     Future<void> removeDialogConfirmation() => showDestructiveOperationModalBottomSheet(
           context,
+          ref,
           title: strings.removeMemoTitle,
           message: strings.removeMemoMessage,
           destructiveActionTitle: strings.remove.toUpperCase(),

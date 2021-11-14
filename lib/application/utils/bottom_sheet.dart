@@ -76,7 +76,8 @@ Future<T?> showSnappableDraggableModalBottomSheet<T>(
 
 /// Uses [showSnappableDraggableModalBottomSheet] to present a modal bottom sheet tha confirms a destructive operation.
 Future<T?> showDestructiveOperationModalBottomSheet<T>(
-  BuildContext context, {
+  BuildContext context,
+  WidgetRef ref, {
   required String title,
   required String message,
   required String destructiveActionTitle,
@@ -88,6 +89,7 @@ Future<T?> showDestructiveOperationModalBottomSheet<T>(
 
   return showSnappableDraggableModalBottomSheet(
     context,
+    ref,
     isDismissible: true,
     child: Column(
       mainAxisSize: MainAxisSize.min,
