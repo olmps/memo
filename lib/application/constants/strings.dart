@@ -83,6 +83,8 @@ const updateMemoAnswerPlaceholder = 'Escreva a resposta';
 const removeMemoTitle = 'Remover Memo';
 const removeMemoMessage = 'Você tem certeza que deseja remover este memo?';
 
+const newMemo = 'Novo Memo';
+
 //
 // Tags Component
 //
