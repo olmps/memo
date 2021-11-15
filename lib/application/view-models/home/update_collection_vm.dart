@@ -121,8 +121,28 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
   /// Returns `true` if the collection has at least one memo.
   bool get hasMemos => memosMetadata.isNotEmpty;
 
+  UpdateCollectionSaving copyForSaving() =>
+      UpdateCollectionSaving(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
+
+  UpdateCollectionSaved copyForSaved() =>
+      UpdateCollectionSaved(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
+
   @override
   List<Object?> get props => [...super.props, collectionMetadata];
+}
+
+class UpdateCollectionSaving extends UpdateCollectionLoaded {
+  const UpdateCollectionSaving({
+    required CollectionMetadata collectionMetadata,
+    required List<MemoMetadata> memosMetadata,
+  }) : super(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
+}
+
+class UpdateCollectionSaved extends UpdateCollectionLoaded {
+  const UpdateCollectionSaved({
+    required CollectionMetadata collectionMetadata,
+    required List<MemoMetadata> memosMetadata,
+  }) : super(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
 }
 
 class UpdateCollectionFailedSaving extends UpdateCollectionLoaded {
