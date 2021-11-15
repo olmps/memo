@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Highlights the [highlighted] contents, case-insensitive matched against [text].
 ///
-/// If [highlighted] is `null`, returns [text].
+/// If [highlighted] is `null`, fallback to simply use [text] using [textStyle].
 class HighlightableText extends StatelessWidget {
   const HighlightableText({required this.text, this.textStyle, this.highlighted, this.highlightedStyle});
 

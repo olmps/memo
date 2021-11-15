@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memo/application/widgets/theme/custom_button.dart';
+import 'package:memo/application/constants/strings.dart' as string;
+import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/theme/tags_field.dart';
 
 import '../../../utils/widget_pump.dart';
@@ -24,7 +24,7 @@ void main() {
 
       await _pumpWithTag(field: tagsField, tester: tester, tag: lowerCaseText);
 
-      expect(find.text(expectedTag), findsNWidgets(2));
+      expect(find.text(expectedTag), findsOneWidget);
     });
 
     testWidgets('should not accept non-alphanum characters', (tester) async {
@@ -36,7 +36,7 @@ void main() {
       await tester.pumpAndSettle();
 
       for (final character in nonAlphanumChars.characters) {
-        await _addTag(field: tagsField, tester: tester, tag: character);
+        await _addTag(tester: tester, tag: character);
         expect(find.text(character), findsNothing);
       }
     });
@@ -49,7 +49,7 @@ void main() {
 
       await _pumpWithTag(field: tagsField, tester: tester, tag: '$fakeTag ');
 
-      expect(find.text(fakeTag.toUpperCase()), findsNWidgets(2));
+      expect(find.text(fakeTag.toUpperCase()), findsOneWidget);
     });
 
     testWidgets('should submit when input comma character', (tester) async {
@@ -58,7 +58,7 @@ void main() {
 
       await _pumpWithTag(field: tagsField, tester: tester, tag: '$fakeTag,');
 
-      expect(find.text(fakeTag.toUpperCase()), findsNWidgets(2));
+      expect(find.text(fakeTag.toUpperCase()), findsOneWidget);
     });
 
     testWidgets('should respect maxTags limit', (tester) async {
@@ -67,9 +67,9 @@ void main() {
       const invalidTag = 'Invalid';
 
       await _pumpWithTag(field: tagsField, tester: tester, tag: firstTag);
-      await _addTag(field: tagsField, tester: tester, tag: invalidTag);
+      await _addTag(tester: tester, tag: invalidTag);
 
-      expect(find.text(firstTag.toUpperCase()), findsNWidgets(2));
+      expect(find.text(firstTag.toUpperCase()), findsOneWidget);
       expect(find.text(invalidTag.toUpperCase()), findsNothing);
     });
   });
@@ -85,102 +85,62 @@ void main() {
 
       expect(find.text(fakeTag), findsNothing);
     });
-
-    testWidgets('should not remove tag when tapping on it in the collapsed field', (tester) async {
-      const tagsField = TagsField();
-      const fakeTag = 'TAG';
-
-      await _pumpWithTag(field: tagsField, tester: tester, tag: fakeTag);
-
-      await tester.tap(find.byType(CustomTextButton));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text(fakeTag).first);
-      await tester.pumpAndSettle();
-
-      expect(find.text(fakeTag), findsNWidgets(2));
-    });
   });
 
-  group('Tags Counter - ', () {
-    testWidgets('should increment tag counter when adding a tag', (tester) async {
+  group('Helper Text - ', () {
+    testWidgets('should update helper text when adding a tag', (tester) async {
       const maxTagsAmount = 3;
       const tagsField = TagsField(maxTags: maxTagsAmount);
       const fakeTag = 'TAG';
-      const expectedCounter = '1/$maxTagsAmount';
+      final expectedHelperText = string.tagsAmount(1, maxTagsAmount);
 
       await _pumpWithTag(field: tagsField, tester: tester, tag: fakeTag);
 
-      expect(find.text(expectedCounter), findsOneWidget);
+      expect(find.text(expectedHelperText), findsOneWidget);
     });
 
-    testWidgets('should decrease tag counter when adding a tag', (tester) async {
+    testWidgets('should update helper text when removing an existing tag', (tester) async {
       const maxTagsAmount = 3;
       const tagsField = TagsField(maxTags: maxTagsAmount);
       const fakeTag = 'TAG';
-      const firstExpectedCounter = '1/$maxTagsAmount';
-      const secondExpectedCounter = '0/$maxTagsAmount';
+      final firstExpectedHelperText = string.tagsAmount(1, maxTagsAmount);
+      final secondExpectedHelperText = string.tagsAmount(0, maxTagsAmount);
 
       await _pumpWithTag(field: tagsField, tester: tester, tag: fakeTag);
-      expect(find.text(firstExpectedCounter), findsOneWidget);
+      expect(find.text(firstExpectedHelperText), findsOneWidget);
 
       await tester.tap(find.text(fakeTag).last);
       await tester.pumpAndSettle();
-      expect(find.text(secondExpectedCounter), findsOneWidget);
+      expect(find.text(secondExpectedHelperText), findsOneWidget);
     });
   });
 
-  group('Suggestions List - ', () {
-    testWidgets('should present loading while fetching suggestions', (tester) async {
-      const fakeState = SuggestionsState(suggestions: [], isLoading: true);
-      const tagsField = TagsField();
+  group('Error State - ', () {
+    testWidgets('error text should precede helper text', (tester) async {
+      const fakeErrorText = 'Error Text';
+      const tagsField = TagsField(errorText: fakeErrorText);
 
-      await pumpProviderScoped(tester, tagsField, [
-        suggestionsController.state.overrideWithValue(fakeState),
-      ]);
-      await tester.tap(find.byType(TagsField));
+      await pumpProviderScoped(tester, tagsField);
 
-      // TODO(Ggirotto)
-      try {
-        await tester.pumpAndSettle();
-      } catch (_) {}
-
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.text(fakeErrorText), findsOneWidget);
     });
 
-    testWidgets('should present list of suggestions when available', (tester) async {
-      const suggestions = ['A', 'B', 'C'];
-      const fakeState = SuggestionsState(suggestions: suggestions, isLoading: false);
-      const tagsField = TagsField();
+    testWidgets('should add error border when error text is not null', (tester) async {
+      const fakeErrorText = 'Error Text';
+      const tagsField = TagsField(errorText: fakeErrorText);
+      // ignore: invalid_use_of_protected_member
+      final expectedColor = ThemeController().state.destructiveSwatch;
 
-      await pumpProviderScoped(tester, tagsField, [
-        suggestionsController.state.overrideWithValue(fakeState),
-      ]);
-      await tester.tap(find.byType(TagsField));
-      await tester.pumpAndSettle();
+      await pumpProviderScoped(tester, tagsField);
 
-      for (final suggestion in suggestions) {
-        expect(find.text(suggestion), findsOneWidget);
-      }
-    });
+      final wrapperContainer = find.byType(Container).first.evaluate().single.widget as Container;
+      final containerDecoration = wrapperContainer.decoration! as BoxDecoration;
+      final containerBorder = containerDecoration.border! as Border;
 
-    testWidgets('should add suggestion to tags list when tapped', (tester) async {
-      const suggestion = 'A';
-      final fakeController = SuggestionsController()
-        ..state = const SuggestionsState(suggestions: [suggestion], isLoading: false);
-      const tagsField = TagsField();
-
-      await pumpProviderScoped(tester, tagsField, [
-        suggestionsController.overrideWithValue(fakeController),
-      ]);
-      await tester.tap(find.byType(TagsField));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text(suggestion));
-      await tester.pumpAndSettle();
-
-      // Expect two occurrences, the on in the modal list and the on in the tags field behind the modal
-      expect(find.text(suggestion), findsNWidgets(2));
+      expect(containerBorder.top.color, expectedColor);
+      expect(containerBorder.right.color, expectedColor);
+      expect(containerBorder.bottom.color, expectedColor);
+      expect(containerBorder.left.color, expectedColor);
     });
   });
 
@@ -188,61 +148,33 @@ void main() {
     testWidgets('should add tag to the UI when updating the controller', (tester) async {
       const firstFakeTag = 'FIRST_TAG';
       const secondFakeTag = 'SECOND_TAG';
-      final controller = StateProvider<List<String>>((_) => [firstFakeTag, secondFakeTag]);
-      const tagsField = TagsField();
+      final controller = TagsController(tags: [firstFakeTag]);
+      final tagsField = TagsField(controller: controller);
 
-      await pumpProviderScoped(tester, tagsField, [
-        tagsController.overrideWithProvider(controller),
-      ]);
-      await tester.tap(find.byType(TagsField));
+      await pumpProviderScoped(tester, tagsField);
+      expect(find.text(firstFakeTag), findsOneWidget);
+      expect(find.text(secondFakeTag), findsNothing);
+
+      controller.tags = [firstFakeTag, secondFakeTag];
       await tester.pumpAndSettle();
 
-      expect(find.text(firstFakeTag), findsNWidgets(2));
-      expect(find.text(secondFakeTag), findsNWidgets(2));
-    });
-  });
-
-  group('SuggestionsController - ', () {
-    test('should emit loading state when calling loadSuggestions', () async {
-      final controller = SuggestionsController();
-      const searchTerm = 'search';
-
-      expect(
-        controller.stream,
-        emits(const SuggestionsState(suggestions: [], isLoading: true, searchTerm: searchTerm)),
-      );
-
-      await controller.loadSuggestions(searchTerm);
-    });
-
-    test('should clear suggestions when calling clearSuggestions', () {
-      const initialSuggestions = ['A', 'B', 'C'];
-      const initialState = SuggestionsState(suggestions: initialSuggestions, isLoading: false);
-      final controller = SuggestionsController()..state = initialState;
-
-      expect(controller.state, initialState);
-      expect(controller.stream, emits(const SuggestionsState(suggestions: [], isLoading: false)));
-
-      controller.clearSuggestions();
+      expect(find.text(firstFakeTag), findsOneWidget);
+      expect(find.text(secondFakeTag), findsOneWidget);
     });
   });
 }
 
-/// Pumps [field] performing a tap on it to open the tags modal.
-///
-/// Optionally adds [tag] if not `null`.
-Future<void> _pumpWithTag({required TagsField field, required WidgetTester tester, String? tag}) async {
+/// Pumps [field] optionally adding [tag].
+Future<void> _pumpWithTag({required TagsField field, required WidgetTester tester, required String tag}) async {
   await pumpProviderScoped(tester, field);
   await tester.tap(find.byType(TagsField));
   await tester.pumpAndSettle();
 
-  if (tag != null) {
-    await _addTag(field: field, tester: tester, tag: tag);
-  }
+  await _addTag(tester: tester, tag: tag);
 }
 
-/// Adds [tag] to already pumped [field] widget.
-Future<void> _addTag({required TagsField field, required WidgetTester tester, required String tag}) async {
+/// Adds [tag] to an already pumped [TagsField].
+Future<void> _addTag({required WidgetTester tester, required String tag}) async {
   await tester.enterText(find.byType(TextField).last, tag);
   await tester.testTextInput.receiveAction(TextInputAction.done);
   await tester.pumpAndSettle();
