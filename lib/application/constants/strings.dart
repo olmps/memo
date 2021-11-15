@@ -75,9 +75,10 @@ const saveCollection = 'Salvar Coleção';
 // Tags Component
 //
 const tags = 'Tags';
-const tagsHint = 'Digite tags...';
+const tagsHint = 'Adicione as tags...';
 const suggestions = 'Sugestões';
-String addTags(int maxTags) => 'Adicionar Tags (máximo $maxTags)';
+const addTags = 'Adicionar Tags';
+String tagsAmount(int tagsAmount, int maxTags) => '$tagsAmount/$maxTags tags';
 
 //
 // Contributors

@@ -70,6 +70,4 @@ const richTextFieldConstraints = BoxConstraints(maxHeight: 148, minHeight: minTe
 //
 // Tags Dropdown
 //
-const double tagsCloseButtonSize = 12;
-const double tagsSuggestionLoadingSize = 12;
-const double tagsSuggestionLoadingStrokeWidth = 2;
+const double tagsRemoveIconSize = 12;
