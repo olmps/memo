@@ -23,7 +23,7 @@ class PrimaryElevatedButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final color = backgroundColor ?? theme.primarySwatch;
 
     Color backgroundColorBuilder(_ButtonState state) {
@@ -64,7 +64,7 @@ class SecondaryElevatedButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final color = backgroundColor ?? theme.neutralSwatch;
 
     Color backgroundColorBuilder(_ButtonState state) {
@@ -110,7 +110,7 @@ class CustomTextButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final buttonColorSwatch = color ?? theme.primarySwatch;
     final textTheme = Theme.of(context).textTheme.button!;
 

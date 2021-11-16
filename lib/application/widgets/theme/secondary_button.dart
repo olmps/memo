@@ -14,7 +14,7 @@ class SecondaryButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: useTheme(ref).neutralSwatch.shade800),
+      style: ElevatedButton.styleFrom(primary: ref.watch(themeController).neutralSwatch.shade800),
       onPressed: onPressed,
       child: child,
     );

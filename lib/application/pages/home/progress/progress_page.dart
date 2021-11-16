@@ -12,7 +12,7 @@ import 'package:memo/domain/enums/memo_difficulty.dart';
 class ProgressPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final state = ref.watch(progressVM);
     if (state is LoadingProgressState) {
       return const Center(child: CircularProgressIndicator());
@@ -160,7 +160,7 @@ class _ProgressContainer extends ConsumerWidget {
       ],
     );
 
-    final memoTheme = useTheme(ref);
+    final memoTheme = ref.watch(themeController);
     final borderColor = memoTheme.neutralSwatch.shade800;
     final decoration = BoxDecoration(
       borderRadius: dimens.genericRoundedElementBorderRadius,

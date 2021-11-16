@@ -12,7 +12,7 @@ class ThemedTabBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final memoTheme = useTheme(ref);
+    final memoTheme = ref.watch(themeController);
     final selectedColor = memoTheme.secondarySwatch.shade400;
     final unselectedColor = memoTheme.neutralSwatch.shade700;
     const borderHeight = dimens.genericBorderHeight;

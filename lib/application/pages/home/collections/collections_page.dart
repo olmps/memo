@@ -118,7 +118,7 @@ class _CollectionsEmptyState extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

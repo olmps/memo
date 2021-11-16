@@ -89,12 +89,6 @@ class ThemeController extends StateNotifier<MemoThemeData> {
   }
 }
 
-/// Syntax sugar for _hooking_ the [themeController] state instance in a hook widget build.
-MemoThemeData useTheme(WidgetRef ref) => ref.watch(themeController);
-
-/// Syntax sugar for _hooking_ the [themeController] provider instance in a hook widget build.
-ThemeController useThemeController(WidgetRef ref) => ref.watch(themeController.notifier);
-
 MaterialColor _primarySwatchFor(MemoTheme theme) {
   switch (theme) {
     case MemoTheme.classic:

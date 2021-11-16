@@ -68,7 +68,7 @@ class _ExecutionAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     Widget? titleWidget;
     if (completionValue != null) {

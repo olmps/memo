@@ -14,7 +14,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ref.watch(settingsVM).items;
-    final licenseBg = useTheme(ref).neutralSwatch.shade900;
+    final licenseBg = ref.watch(themeController).neutralSwatch.shade900;
 
     return Scaffold(
       appBar: AppBar(title: const Text(strings.settings)),

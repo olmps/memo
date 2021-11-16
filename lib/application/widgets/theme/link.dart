@@ -59,7 +59,7 @@ class LinkButton extends ConsumerWidget {
       ],
     );
 
-    final themeColor = useTheme(ref).neutralSwatch.shade800;
+    final themeColor = ref.watch(themeController).neutralSwatch.shade800;
 
     return Semantics(
       button: true,
@@ -178,10 +178,8 @@ class UnderlinedUrlLink extends ConsumerWidget {
         onTap: isEnabled ? () => _handleUrlLaunch(url, onFailLaunchingUrl) : null,
         child: Text(
           text ?? url,
-          style: Theme.of(context)
-              .textTheme
-              .caption
-              ?.copyWith(color: useTheme(ref).neutralSwatch.shade300, decoration: TextDecoration.underline),
+          style: Theme.of(context).textTheme.caption?.copyWith(
+              color: ref.watch(themeController).neutralSwatch.shade300, decoration: TextDecoration.underline),
         ),
       ),
     );

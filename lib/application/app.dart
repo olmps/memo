@@ -76,7 +76,7 @@ class _LoadedAppRootState extends ConsumerState<_LoadedAppRoot> {
       scaffoldMessengerKey: useScaffoldMessenger(ref),
       title: 'Memo',
       debugShowCheckedModeBanner: false,
-      theme: useThemeController(ref).currentThemeData(context),
+      theme: ref.watch(themeController.notifier).currentThemeData(context),
       routerDelegate: CoordinatorRouterDelegate(coordinator),
       routeInformationParser: CoordinatorInformationParser(),
       routeInformationProvider: _routeInformationParser,

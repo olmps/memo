@@ -175,7 +175,7 @@ class _ExecutionTerminalState extends ConsumerState<ExecutionTerminal> {
   Widget build(BuildContext context) {
     useListenable(controller);
 
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final borderColor = theme.neutralSwatch.shade700;
     final fadeGradient = [theme.neutralSwatch.shade900, theme.neutralSwatch.shade900.withOpacity(0)];
 

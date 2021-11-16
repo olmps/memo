@@ -31,7 +31,7 @@ class CompletedExecutionContents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     final performanceSection = _buildPerformanceSection(context, theme);
     final completionSection = _buildCompletionSection(context, ref, theme);
@@ -138,7 +138,7 @@ class _Header extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final memoTheme = useTheme(ref);
+    final memoTheme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
@@ -187,7 +187,7 @@ class _PerformanceIndicators extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final memoTheme = useTheme(ref);
+    final memoTheme = ref.watch(themeController);
 
     final performanceIndicators = difficultiesIndicators.map((difficulty) {
       return Column(

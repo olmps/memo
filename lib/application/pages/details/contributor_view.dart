@@ -29,7 +29,7 @@ class MultiContributorsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final contributorsAmount = contributors.length;
 
     return LinkButton(
@@ -106,7 +106,7 @@ class SingleContributorView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     final backgroundColor = theme.neutralSwatch.shade900;
     final textStyle = TextStyle(color: theme.neutralSwatch.shade200);
@@ -143,7 +143,7 @@ class _ContributorImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final neutralSwatch = useTheme(ref).neutralSwatch;
+    final neutralSwatch = ref.watch(themeController).neutralSwatch;
 
     final Widget contents;
     if (child != null) {

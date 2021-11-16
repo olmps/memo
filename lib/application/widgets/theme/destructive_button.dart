@@ -15,7 +15,7 @@ class DestructiveButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PrimaryElevatedButton(
-      backgroundColor: useTheme(ref).destructiveSwatch,
+      backgroundColor: ref.watch(themeController).destructiveSwatch,
       onPressed: onPressed,
       text: text,
     );

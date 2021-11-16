@@ -20,7 +20,7 @@ class CircularLabeledProgress extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final memoTheme = useTheme(ref);
+    final memoTheme = ref.watch(themeController);
     final centerLabelTheme = Theme.of(context).textTheme.headline4;
 
     return SizedBox(

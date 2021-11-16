@@ -84,7 +84,7 @@ class CustomTextField extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final neutralSwatch = theme.neutralSwatch;
     final textTheme = Theme.of(context).textTheme;
 

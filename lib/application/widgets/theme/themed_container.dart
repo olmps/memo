@@ -15,7 +15,7 @@ class ThemedTopContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     return Container(
       decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class ThemedBottomContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     return Container(
       decoration: BoxDecoration(
