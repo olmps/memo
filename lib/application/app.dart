@@ -73,7 +73,7 @@ class _LoadedAppRootState extends ConsumerState<_LoadedAppRoot> {
     );
 
     return MaterialApp.router(
-      scaffoldMessengerKey: useScaffoldMessenger(ref),
+      scaffoldMessengerKey: ref.watch(scaffoldMessenger),
       title: 'Memo',
       debugShowCheckedModeBanner: false,
       theme: ref.watch(themeController.notifier).currentThemeData(context),
