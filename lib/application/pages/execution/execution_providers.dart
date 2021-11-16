@@ -9,12 +9,12 @@ final executionCollectionId = Provider<String>((_) => throw UnimplementedError()
 
 /// Syntax sugar for `ref.watch` the current [CollectionExecutionVM] provider.
 CollectionExecutionVM readExecutionVM(WidgetRef ref) {
-  final collectionId = ref.watch(executionCollectionId);
-  return ref.watch(collectionExecutionVM(collectionId).notifier);
+  final collectionId = ref.read(executionCollectionId);
+  return ref.read(collectionExecutionVM(collectionId).notifier);
 }
 
 /// Syntax sugar for watching for [CollectionExecutionState] state updates.
-CollectionExecutionState useCollectionExecutionState(WidgetRef ref) {
+CollectionExecutionState watchCollectionExecutionState(WidgetRef ref) {
   final collectionId = ref.watch(executionCollectionId);
   return ref.watch(collectionExecutionVM(collectionId));
 }

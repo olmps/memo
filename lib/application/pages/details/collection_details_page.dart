@@ -17,7 +17,7 @@ class CollectionDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final memoTheme = ref.watch(themeController);
-    final state = useCollectionDetailsState(ref);
+    final state = watchCollectionDetailsState(ref);
 
     if (state is LoadedCollectionDetailsState) {
       final sections = <Widget>[];

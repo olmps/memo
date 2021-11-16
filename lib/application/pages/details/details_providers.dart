@@ -8,7 +8,7 @@ import 'package:memo/application/view-models/details/collection_details_vm.dart'
 final detailsCollectionId = Provider<String>((_) => throw UnimplementedError(), name: 'detailsCollectionId');
 
 /// Syntax sugar for watching [CollectionDetailsState] state updates.
-CollectionDetailsState useCollectionDetailsState(WidgetRef ref) {
+CollectionDetailsState watchCollectionDetailsState(WidgetRef ref) {
   final collectionId = ref.watch(detailsCollectionId);
   return ref.watch(collectionDetailsVM(collectionId));
 }

@@ -29,7 +29,7 @@ class _CollectionExecutionPageState extends ConsumerState<CollectionExecutionPag
 
   @override
   Widget build(BuildContext context) {
-    final state = useCollectionExecutionState(ref);
+    final state = watchCollectionExecutionState(ref);
 
     if (state is LoadedCollectionExecutionState) {
       _terminalController ??= TerminalController(
