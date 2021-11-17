@@ -28,7 +28,7 @@ void main() {
     testWidgets('should respect the maximum constrained height', (tester) async {
       const hugeFakeText = r'A\nHuge\nFake\nText\nThat\nWill\nExpand\nThe\nRich\nText\nEditor';
       const encodedText = '[{"insert":"$hugeFakeText\\n"}]';
-      final controller = TextEditingController(text: encodedText);
+      final controller = RichTextFieldController(plainText: hugeFakeText, richText: encodedText);
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
       final expectedHeight = dimens.richTextFieldConstraints.maxHeight;
 
@@ -70,8 +70,9 @@ void main() {
       testWidgets('should highlight bold button when text is bolded', (tester) async {
         // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
-        const boldedText = r'[{"insert":"Bold Text\n","attributes": {"bold": true}}]';
-        final controller = TextEditingController(text: boldedText);
+        const plainText = 'Bold Text';
+        const encodedText = '[{"insert":"$plainText\\n","attributes": {"bold": true}}]';
+        final controller = RichTextFieldController(plainText: plainText, richText: encodedText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
         await pumpProviderScoped(tester, richTextField);
@@ -86,8 +87,9 @@ void main() {
       testWidgets('should highlight italic button when text is italic', (tester) async {
         // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
-        const italicText = r'[{"insert":"Italic Text\n","attributes": {"italic": true}}]';
-        final controller = TextEditingController(text: italicText);
+        const plainText = 'Italic Text';
+        const encodedText = '[{"insert":"$plainText\\n","attributes": {"italic": true}}]';
+        final controller = RichTextFieldController(plainText: plainText, richText: encodedText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
         await pumpProviderScoped(tester, richTextField);
@@ -102,8 +104,9 @@ void main() {
       testWidgets('should highlight underline button when text is underline', (tester) async {
         // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
-        const underlineText = r'[{"insert":"Underline Text\n","attributes": {"underline": true}}]';
-        final controller = TextEditingController(text: underlineText);
+        const plainText = 'Underline Text';
+        const encodedText = '[{"insert":"$plainText\\n","attributes": {"underline": true}}]';
+        final controller = RichTextFieldController(plainText: plainText, richText: encodedText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
         await pumpProviderScoped(tester, richTextField);
@@ -118,8 +121,9 @@ void main() {
       testWidgets('should highlight code button when text is code', (tester) async {
         // ignore: invalid_use_of_protected_member
         final highlightedColor = ThemeController().state.neutralSwatch.shade800;
-        const codeText = r'[{"insert":"Code Text"},{"insert":"\n","attributes":{"code-block":true}}]';
-        final controller = TextEditingController(text: codeText);
+        const plainText = 'Code Text';
+        const encodedText = '[{"insert":"$plainText"},{"insert":"\\n","attributes":{"code-block":true}}]';
+        final controller = RichTextFieldController(plainText: plainText, richText: encodedText);
         final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
 
         await pumpProviderScoped(tester, richTextField);
@@ -135,14 +139,12 @@ void main() {
 
   group('Editor Text Attributes', () {
     testWidgets('should bold selected text when bold button is tapped', (tester) async {
-      const codeText = 'A Random Text to be changed';
-      const encodedText = '[{"insert":"$codeText\\n"}]';
-      const textSelection = TextSelection(baseOffset: 0, extentOffset: codeText.length);
-      final controller = TextEditingController.fromValue(
-        const TextEditingValue(text: encodedText, selection: textSelection),
-      );
+      const plainText = 'A Random Text to be changed';
+      const encodedText = '[{"insert":"$plainText\\n"}]';
+      const textSelection = TextSelection(baseOffset: 0, extentOffset: plainText.length);
+      final controller = RichTextFieldController(plainText: plainText, richText: encodedText, selection: textSelection);
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
-      const expectedEncodedBoldText = '[{"insert":"$codeText","attributes":{"bold":true}},{"insert":"\\n"}]';
+      const expectedEncodedBoldText = '[{"insert":"$plainText","attributes":{"bold":true}},{"insert":"\\n"}]';
 
       await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
@@ -152,18 +154,16 @@ void main() {
       await tester.tap(boldButton);
       await tester.pumpAndSettle();
 
-      expect(controller.text, expectedEncodedBoldText);
+      expect(controller.richText, expectedEncodedBoldText);
     });
 
     testWidgets('should italic selected text when italic button is tapped', (tester) async {
-      const codeText = 'A Random Text to be changed';
-      const encodedText = '[{"insert":"$codeText\\n"}]';
-      const textSelection = TextSelection(baseOffset: 0, extentOffset: codeText.length);
-      final controller = TextEditingController.fromValue(
-        const TextEditingValue(text: encodedText, selection: textSelection),
-      );
+      const plainText = 'A Random Text to be changed';
+      const encodedText = '[{"insert":"$plainText\\n"}]';
+      const textSelection = TextSelection(baseOffset: 0, extentOffset: plainText.length);
+      final controller = RichTextFieldController(plainText: plainText, richText: encodedText, selection: textSelection);
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
-      const expectedEncodedItalicText = '[{"insert":"$codeText","attributes":{"italic":true}},{"insert":"\\n"}]';
+      const expectedEncodedItalicText = '[{"insert":"$plainText","attributes":{"italic":true}},{"insert":"\\n"}]';
 
       await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
@@ -173,18 +173,16 @@ void main() {
       await tester.tap(italicButton);
       await tester.pumpAndSettle();
 
-      expect(controller.text, expectedEncodedItalicText);
+      expect(controller.richText, expectedEncodedItalicText);
     });
 
     testWidgets('should underline selected text when underline button is tapped', (tester) async {
-      const codeText = 'A Random Text to be changed';
-      const encodedText = '[{"insert":"$codeText\\n"}]';
-      const textSelection = TextSelection(baseOffset: 0, extentOffset: codeText.length);
-      final controller = TextEditingController.fromValue(
-        const TextEditingValue(text: encodedText, selection: textSelection),
-      );
+      const plainText = 'A Random Text to be changed';
+      const encodedText = '[{"insert":"$plainText\\n"}]';
+      const textSelection = TextSelection(baseOffset: 0, extentOffset: plainText.length);
+      final controller = RichTextFieldController(plainText: plainText, richText: encodedText, selection: textSelection);
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
-      const expectedEncodedUnderlineText = '[{"insert":"$codeText","attributes":{"underline":true}},{"insert":"\\n"}]';
+      const expectedEncodedUnderlineText = '[{"insert":"$plainText","attributes":{"underline":true}},{"insert":"\\n"}]';
 
       await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
@@ -194,19 +192,16 @@ void main() {
       await tester.tap(underlineButton);
       await tester.pumpAndSettle();
 
-      expect(controller.text, expectedEncodedUnderlineText);
+      expect(controller.richText, expectedEncodedUnderlineText);
     });
 
     testWidgets('should code selected text when code button is tapped', (tester) async {
-      const codeText = 'A Random Text to be changed';
-      const encodedText = '[{"insert":"$codeText\\n"}]';
-      const textSelection = TextSelection.collapsed(offset: codeText.length);
-      final controller = TextEditingController.fromValue(
-        const TextEditingValue(text: encodedText, selection: textSelection),
-      );
+      const plainText = 'A Random Text to be changed';
+      const encodedText = '[{"insert":"$plainText\\n"}]';
+      const textSelection = TextSelection.collapsed(offset: plainText.length);
+      final controller = RichTextFieldController(plainText: plainText, richText: encodedText, selection: textSelection);
       final richTextField = RichTextField(modalTitle: const Text('any'), placeholder: 'any', controller: controller);
-      const expectedEncodedCodeText =
-          r'[{"insert":"A Random Text to be changed"},{"insert":"\n","attributes":{"code-block":true}}]';
+      const expectedEncodedCodeText = '[{"insert":"$plainText"},{"insert":"\\n","attributes":{"code-block":true}}]';
 
       await pumpProviderScoped(tester, richTextField);
       await tester.tap(find.byType(RichTextField));
@@ -216,7 +211,58 @@ void main() {
       await tester.tap(codeButton);
       await tester.pumpAndSettle();
 
-      expect(controller.text, expectedEncodedCodeText);
+      expect(controller.richText, expectedEncodedCodeText);
+    });
+  });
+
+  group('Helper & Error Texts - ', () {
+    testWidgets('should present helper text when provided', (tester) async {
+      const fakeHelperText = 'Helper Text';
+      const richTextField = RichTextField(modalTitle: Text('any'), placeholder: 'any', helperText: fakeHelperText);
+
+      await pumpProviderScoped(tester, richTextField);
+      await tester.tap(find.byType(RichTextField));
+      await tester.pumpAndSettle();
+
+      expect(find.text(fakeHelperText), findsOneWidget);
+    });
+
+    testWidgets('error text should precede helper text', (tester) async {
+      const fakeHelperText = 'Helper Text';
+      const fakeErrorText = 'Error Text';
+      const richTextField = RichTextField(
+        modalTitle: Text('any'),
+        placeholder: 'any',
+        helperText: fakeHelperText,
+        errorText: fakeErrorText,
+      );
+
+      await pumpProviderScoped(tester, richTextField);
+      await tester.tap(find.byType(RichTextField));
+      await tester.pumpAndSettle();
+
+      expect(find.text(fakeHelperText), findsNothing);
+      expect(find.text(fakeErrorText), findsOneWidget);
+    });
+
+    testWidgets('should add error border when error text is not null', (tester) async {
+      // ignore: invalid_use_of_protected_member
+      final expectedColor = ThemeController().state.destructiveSwatch;
+      const fakeErrorText = 'Error Text';
+      const richTextField = RichTextField(modalTitle: Text('any'), placeholder: 'any', errorText: fakeErrorText);
+
+      await pumpProviderScoped(tester, richTextField);
+      await tester.tap(find.byType(RichTextField));
+      await tester.pumpAndSettle();
+
+      final wrapperContainer = find.byType(Container).first.evaluate().single.widget as Container;
+      final containerDecoration = wrapperContainer.decoration! as BoxDecoration;
+      final containerBorder = containerDecoration.border! as Border;
+
+      expect(containerBorder.top.color, expectedColor);
+      expect(containerBorder.right.color, expectedColor);
+      expect(containerBorder.bottom.color, expectedColor);
+      expect(containerBorder.left.color, expectedColor);
     });
   });
 }

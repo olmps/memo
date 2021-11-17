@@ -16,11 +16,60 @@ import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
 import 'package:tuple/tuple.dart';
 
+@immutable
+class RichTextEditingValue {
+  const RichTextEditingValue({
+    this.richText = '',
+    this.plainText = '',
+    this.selection = const TextSelection.collapsed(offset: -1),
+  });
+
+  final String richText;
+  final String plainText;
+  final TextSelection selection;
+
+  RichTextEditingValue copyWith({String? richText, String? plainText, TextSelection? selection}) =>
+      RichTextEditingValue(
+        richText: richText ?? this.richText,
+        plainText: plainText ?? this.plainText,
+        selection: selection ?? this.selection,
+      );
+}
+
+class RichTextFieldController extends ValueNotifier<RichTextEditingValue> {
+  RichTextFieldController({
+    String? richText,
+    String? plainText,
+    TextSelection? selection,
+  }) : super(
+          RichTextEditingValue(
+            richText: richText ?? '',
+            plainText: plainText ?? '',
+            selection: selection ?? const TextSelection.collapsed(offset: -1),
+          ),
+        );
+
+  String get richText => value.richText;
+  String get plainText => value.plainText;
+  TextSelection get selection => value.selection;
+
+  set richText(String newValue) => value = value.copyWith(richText: newValue);
+  set plainText(String newValue) => value = value.copyWith(plainText: newValue);
+  set selection(TextSelection newValue) => value = value.copyWith(selection: newValue);
+}
+
 /// A [TextField] that follows most of WYSIWYG editors functionality.
 ///
 /// Supports presenting rich text content and opens a modal with a rich text editor when tapped.
 class RichTextField extends HookConsumerWidget {
-  const RichTextField({required this.modalTitle, required this.placeholder, this.controller, this.focus});
+  const RichTextField({
+    required this.modalTitle,
+    required this.placeholder,
+    this.controller,
+    this.focus,
+    this.errorText,
+    this.helperText,
+  });
 
   /// The modal title positioned in the top-left corner of the modal editor.
   final Widget modalTitle;
@@ -29,9 +78,16 @@ class RichTextField extends HookConsumerWidget {
   final String placeholder;
 
   /// Controls the text content being edited.
-  final TextEditingController? controller;
+  final RichTextFieldController? controller;
 
+  /// Controls the focus from the content being edited.
   final FocusNode? focus;
+
+  /// {@macro CustomTextField.errorText}
+  final String? errorText;
+
+  /// {@macro CustomTextField.helperText}
+  final String? helperText;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,15 +97,17 @@ class RichTextField extends HookConsumerWidget {
 
     final quillController = _useQuillController(textController: controller);
 
-    final hasContent = useState(controller?.text.isNotEmpty ?? false);
+    final hasContent = useState(controller?.richText.isNotEmpty ?? false);
 
     useEffect(() {
       void editorChanged() {
-        controller?.text = jsonEncode(quillController.document.toDelta().toJson());
+        final plainText = quillController.plainTextEditingValue.text.trim();
 
-        final plainText = quillController.plainTextEditingValue.text;
-        // `quill` automatically adds `\n` when initializing the editor without content
-        hasContent.value = plainText.isNotEmpty && plainText != '\n';
+        controller?.richText = jsonEncode(quillController.document.toDelta().toJson());
+        controller?.plainText = plainText;
+        controller?.selection = quillController.selection;
+
+        hasContent.value = plainText.isNotEmpty;
       }
 
       quillController.addListener(editorChanged);
@@ -69,37 +127,59 @@ class RichTextField extends HookConsumerWidget {
       );
     }
 
-    return GestureDetector(
-      onTap: showRichTextFieldModal,
-      child: Container(
-        constraints: dimens.richTextFieldConstraints,
-        decoration: BoxDecoration(
-          borderRadius: dimens.genericRoundedElementBorderRadius,
-          color: inputDecorationTheme.fillColor,
+    final collapsedEditor = Container(
+      constraints: dimens.richTextFieldConstraints,
+      decoration: BoxDecoration(
+        borderRadius: dimens.genericRoundedElementBorderRadius,
+        color: inputDecorationTheme.fillColor,
+        border: Border.all(
+          color: errorText != null ? theme.destructiveSwatch : inputDecorationTheme.fillColor!,
+          width: dimens.genericBorderHeight,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (hasContent.value) ...[
-              Text(placeholder, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400)),
-              context.verticalBox(Spacing.small),
-              Flexible(
-                child: AbsorbPointer(
-                  child: _ThemedEditor(
-                    controller: quillController,
-                    placeholder: placeholder,
-                    backgroundColor: theme.neutralSwatch.shade700,
-                    showCursor: false,
-                    readonly: true,
-                  ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (hasContent.value) ...[
+            Text(placeholder, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400)),
+            context.verticalBox(Spacing.small),
+            Flexible(
+              child: AbsorbPointer(
+                child: _ThemedEditor(
+                  controller: quillController,
+                  placeholder: placeholder,
+                  backgroundColor: theme.neutralSwatch.shade700,
+                  showCursor: false,
+                  readonly: true,
                 ),
               ),
-            ] else
-              Text(placeholder, style: textTheme.subtitle1)
-          ],
-        ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+            ),
+          ] else
+            Text(placeholder, style: textTheme.subtitle1)
+        ],
+      ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+    );
+
+    return GestureDetector(
+      onTap: showRichTextFieldModal,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          collapsedEditor,
+          if (errorText != null) ...[
+            context.verticalBox(Spacing.xxxSmall),
+            Text(errorText!, style: textTheme.caption?.copyWith(color: theme.destructiveSwatch))
+                .withOnlyPadding(context, left: Spacing.small)
+          ] else if (helperText != null) ...[
+            context.verticalBox(Spacing.xxxSmall),
+            Text(helperText!, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400))
+                .withOnlyPadding(context, left: Spacing.small)
+          ]
+        ],
       ),
     );
   }
@@ -312,14 +392,14 @@ class _QuillControllerHookCreator {
   /// Creates a [quill.QuillController] that will be disposed automatically.
   ///
   /// The [textController] parameter can be used to set the initial value of the controller text ands its selection.
-  quill.QuillController call({TextEditingController? textController, List<Object?>? keys}) =>
+  quill.QuillController call({RichTextFieldController? textController, List<Object?>? keys}) =>
       use(_QuillControllerHook(textController: textController, keys: keys));
 }
 
 class _QuillControllerHook extends Hook<quill.QuillController> {
   const _QuillControllerHook({this.textController, List<Object?>? keys = const []}) : super(keys: keys);
 
-  final TextEditingController? textController;
+  final RichTextFieldController? textController;
 
   @override
   _QuillControllerHookState createState() => _QuillControllerHookState();
@@ -330,7 +410,7 @@ class _QuillControllerHookState extends HookState<quill.QuillController, _QuillC
 
   @override
   void initHook() {
-    final text = hook.textController?.text;
+    final text = hook.textController?.richText;
     final hasText = text != null && text.isNotEmpty;
 
     final selection = hook.textController?.selection;
