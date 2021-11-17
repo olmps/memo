@@ -42,7 +42,7 @@ class TagsField extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
     final textInputDecoration = Theme.of(context).inputDecorationTheme;
 
@@ -168,7 +168,7 @@ class _TagsTextField extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
     final tags = useState(controller.tags);
@@ -225,7 +225,7 @@ class _SelectedTag extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
     return Material(
