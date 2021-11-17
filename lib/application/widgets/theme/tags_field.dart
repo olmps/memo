@@ -38,6 +38,7 @@ class TagsField extends HookConsumerWidget {
   /// {@endtemplate}
   final int maxTags;
 
+  /// {@macro CustomTextField.errorText}
   final String? errorText;
 
   @override
