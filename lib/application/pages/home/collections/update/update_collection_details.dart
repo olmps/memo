@@ -87,7 +87,7 @@ class _TagsField extends HookConsumerWidget {
 class _DescriptionField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
     final vm = ref.read(updateCollectionDetailsVM.notifier);
     final state = ref.watch(updateCollectionDetailsVM);
