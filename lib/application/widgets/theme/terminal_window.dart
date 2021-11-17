@@ -44,7 +44,7 @@ class _TerminalHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     final pseudoActions = List.generate(
       _actionsAmount,
