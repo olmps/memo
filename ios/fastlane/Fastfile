@@ -115,4 +115,37 @@ platform :ios do
       ipa: '../build/ios/ipa/Memo.ipa'
     )
   end
+
+  # Release a new version to Firebase Distribution
+  #
+  # It assumes that the app version is correctly set.
+  desc "Release app to Firebase Distribution"
+  lane :firebase do
+    # Clean
+    sh("flutter", "clean")
+
+    # Pub get
+    sh("flutter", "pub", "get")
+
+    # Run flutter build with release mode
+    sh("flutter", "build", "ipa", "--dart-define=ENV=DEV", "--export-options-plist=ios/exportOptions-dev.plist")
+
+    sh("zip", "../../build/ios/archive/Runner.xcarchive/dSYMs.zip", "../../build/ios/archive/Runner.xcarchive/dSYMs")
+
+    # Upload dSYM files to Firebae Crashlytics
+    upload_symbols_to_crashlytics(
+      app_id: ENV["MEMO_IOS_FIREBASE_APP_ID"],
+      dsym_path: "../build/ios/archive/Runner.xcarchive/dSYMs.zip",
+      gsp_path: "./Runner/GoogleService-Info.plist",
+      binary_path: "Pods/FirebaseCrashlytics/upload-symbols",
+    )
+
+    firebase_app_distribution(
+      ipa_path: '../build/ios/ipa/Memo.ipa',
+      app: ENV["MEMO_IOS_FIREBASE_APP_ID"],
+      googleservice_info_plist_path: "./Runner/GoogleService-Info.plist",
+      groups: "internal-testers",
+      service_credentials_file: "../firebase_distribution_service_account.json"
+    )
+  end
 end

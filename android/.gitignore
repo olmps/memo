@@ -15,8 +15,9 @@ gcp_service_account.json
 app/keystore.jks
 key.properties
 
-# Fastlane Reports
+# Fastlane auto-generated files
 fastlane/*.xml
+fastlane/README.md
 
 # Firebase Google Services
 app/google-services.json

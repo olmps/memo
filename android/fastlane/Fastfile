@@ -33,4 +33,28 @@ platform :android do
       aab: "../build/app/outputs/bundle/release/app-release.aab",
     )
   end
+
+  # Release a new version to Firebase Distribution
+  #
+  # It assumes that the app version is correctly set.
+  desc "Release app to Firebase Distribution"
+  lane :firebase do
+    # # Clean
+    # sh("flutter", "clean")
+
+    # # Pub get
+    # sh("flutter", "pub", "get")
+
+    # # Build the app
+    # sh("flutter", "build", "appbundle", "--dart-define=ENV=PROD")
+
+    firebase_app_distribution(
+      android_artifact_path: '../build/app/outputs/bundle/release/app-release.aab',
+      android_artifact_type: 'AAB',
+      app: ENV["MEMO_ANDROID_FIREBASE_APP_ID"],
+      service_credentials_file: "./app/google-services.json",
+      groups: "internal-testers",
+      service_credentials_file: "../firebase_distribution_service_account.json"
+    )
+  end
 end
