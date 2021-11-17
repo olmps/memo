@@ -25,7 +25,7 @@ class _CreateMemoEmptyState extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
     return Material(
