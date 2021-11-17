@@ -6,20 +6,22 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/pages/home/collections/update/update_collection_details.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_memos.dart';
-import 'package:memo/application/pages/home/collections/update/update_providers.dart';
+import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/view-models/home/update_collection_details_vm.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/exception_retry_container.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
 import 'package:memo/application/widgets/theme/themed_tab_bar.dart';
+import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
 enum _Segment { details, memos }
 
 class UpdateCollectionPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = useUpdateCollectionVM(ref);
+    final vm = ref.read(updateCollectionVM.notifier);
 
     final selectedSegment = useState(_Segment.details);
     final tabController = useTabController(initialLength: _Segment.values.length);
@@ -58,19 +60,46 @@ class _UpdateCollectionContents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = useUpdateCollectionVM(ref);
-    final state = useUpdateCollectionState(ref);
+    final vm = ref.read(updateCollectionVM.notifier);
+    final state = ref.watch(updateCollectionVM);
 
     if (state is UpdateCollectionFailedLoading) {
-      return Center(child: ExceptionRetryContainer(exception: state.exception, onRetry: vm.loadInitialContent));
+      return Center(child: ExceptionRetryContainer(exception: state.exception, onRetry: vm.loadContent));
     }
 
-    switch (selectedSegment) {
-      case _Segment.details:
-        return UpdateCollectionDetails();
-      case _Segment.memos:
-        return UpdateCollectionMemos();
+    if (state is UpdateCollectionLoading) {
+      return const Center(child: CircularProgressIndicator());
     }
+
+    if (state is UpdateCollectionLoaded) {
+      switch (selectedSegment) {
+        case _Segment.details:
+          return ProviderScope(
+            overrides: [
+              updateDetailsMetadata.overrideWithValue(state.collectionMetadata),
+            ],
+            child: _UpdateCollectionDetails(),
+          );
+        case _Segment.memos:
+          return UpdateCollectionMemos();
+      }
+    }
+
+    throw InconsistentStateError.layout('Unsupported subtype (${state.runtimeType}) of `UpdateCollectionState`');
+  }
+}
+
+class _UpdateCollectionDetails extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vm = ref.read(updateCollectionVM.notifier);
+
+    ref.listen<UpdatedDetailsState>(
+      updateCollectionDetailsVM,
+      (_, state) => vm.updateMetadata(metadata: state.metadata),
+    );
+
+    return UpdateCollectionDetails();
   }
 }
 
@@ -124,24 +153,15 @@ class _DetailsActionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = useUpdateCollectionState(ref);
+    final vm = ref.read(updateCollectionVM.notifier);
+    final state = ref.watch(updateCollectionVM);
 
     if (state is! UpdateCollectionLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final vm = useUpdateCollectionVM(ref);
-
-    void onPressed() {
-      if (state.hasMemos) {
-        vm.saveCollection();
-      } else {
-        onSegmentSwapRequested(_Segment.memos);
-      }
-    }
-
+    void onPressed() => state.hasMemos ? vm.saveCollection : onSegmentSwapRequested(_Segment.memos);
     final buttonTitle = state.hasMemos ? strings.saveCollection : strings.next;
-
     return PrimaryElevatedButton(onPressed: state.hasDetails ? onPressed : null, text: buttonTitle.toUpperCase());
   }
 }
@@ -149,13 +169,12 @@ class _DetailsActionButton extends ConsumerWidget {
 class _MemosActionButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = useUpdateCollectionState(ref);
+    final vm = ref.read(updateCollectionVM.notifier);
+    final state = ref.watch(updateCollectionVM);
 
     if (state is! UpdateCollectionLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
-
-    final vm = useUpdateCollectionVM(ref);
 
     return PrimaryElevatedButton(
       onPressed: state.canSaveCollection ? vm.saveCollection : null,
