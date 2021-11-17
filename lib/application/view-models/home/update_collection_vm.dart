@@ -1,11 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
+import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
-import 'package:memo/core/faults/exceptions/url_exception.dart';
 
-final updateCollectionVM = StateNotifierProvider.family<UpdateCollectionVM, UpdateCollectionState, String?>(
-    (ref, collectionId) => UpdateCollectionVMImpl(collectionId: collectionId));
+final updateCollectionVM = StateNotifierProvider.autoDispose<UpdateCollectionVM, UpdateCollectionState>(
+  (ref) => UpdateCollectionVMImpl(collectionId: ref.read(updateCollectionId)),
+  dependencies: [updateCollectionId],
+  name: 'updateCollectionVM',
+);
 
 abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
   UpdateCollectionVM({required this.collectionId, required UpdateCollectionState state}) : super(state);
@@ -18,7 +23,12 @@ abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
   /// Loads [collectionId] metadata if not `null` or create an empty metadata if creating a new collection.
   ///
   /// Emits [UpdateCollectionFailedLoading] if it fails to load [collectionId].
-  Future<void> loadInitialContent();
+  Future<void> loadContent();
+
+  /// Updates collection details metadata.
+  ///
+  /// To persist the collection updates, use [saveCollection].
+  void updateMetadata({CollectionMetadata? metadata});
 
   /// Save the created/edited collection.
   ///
@@ -27,31 +37,39 @@ abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
 }
 
 class UpdateCollectionVMImpl extends UpdateCollectionVM {
-  UpdateCollectionVMImpl({String? collectionId}) : super(collectionId: collectionId, state: UpdateCollectionLoading()) {
-    loadInitialContent();
+  UpdateCollectionVMImpl({
+    String? collectionId,
+  }) : super(collectionId: collectionId, state: UpdateCollectionLoading()) {
+    loadContent();
   }
 
   @override
   bool get isEditing => collectionId != null;
 
+  UpdateCollectionLoaded get loadedState => state as UpdateCollectionLoaded;
+
   @override
-  Future<void> loadInitialContent() async {
+  Future<void> loadContent() async {
     state = UpdateCollectionLoading();
 
     try {
       // TODO(ggirotto): Call services to load [collectionId] if necessary or create an empty collection metadata
       await Future<void>.delayed(const Duration(seconds: 2));
 
-      // state = UpdateCollectionLoaded(collectionMetadata: CollectionMetadata.empty());
-      state = UpdateCollectionFailedSaving(
-        UrlException.failedToOpen(),
-        metadata: CollectionMetadata.empty(),
-        memosMetadata: const [],
-      );
+      state = UpdateCollectionLoaded(collectionMetadata: CollectionMetadata.empty(), memosMetadata: const []);
+
+      // state = UpdateCollectionFailedSaving(
+      //   UrlException.failedToOpen(),
+      //   metadata: CollectionMetadata.empty(),
+      //   memosMetadata: const [],
+      // );
     } on BaseException catch (exception) {
       state = UpdateCollectionFailedLoading(exception);
     }
   }
+
+  @override
+  void updateMetadata({CollectionMetadata? metadata}) => state = loadedState.copyWith(metadata: metadata);
 
   @override
   Future<void> saveCollection() async {
@@ -71,13 +89,24 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
 
 @immutable
 class CollectionMetadata extends Equatable {
-  const CollectionMetadata({required this.name, required this.tags, required this.description});
+  const CollectionMetadata({required this.name, required this.description, required this.tags});
 
-  factory CollectionMetadata.empty() => const CollectionMetadata(name: '', description: '', tags: []);
+  factory CollectionMetadata.empty() => const CollectionMetadata(
+        name: '',
+        description: RichTextEditingValue(),
+        tags: [],
+      );
 
   final String name;
+  final RichTextEditingValue description;
   final List<String> tags;
-  final String description;
+
+  CollectionMetadata copyWith({String? name, RichTextEditingValue? description, List<String>? tags}) =>
+      CollectionMetadata(
+        name: name ?? this.name,
+        description: description ?? this.description,
+        tags: tags ?? this.tags,
+      );
 
   @override
   List<Object?> get props => [name, tags, description];
@@ -113,16 +142,16 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
   final List<MemoMetadata> memosMetadata;
 
   /// Returns `true` if all required information from `Details` segment has been added.
-  bool get hasDetails =>
-      collectionMetadata.name.isNotEmpty &&
-      collectionMetadata.description.isNotEmpty &&
-      collectionMetadata.tags.isNotEmpty;
+  bool get hasDetails => collectionMetadata.name.isNotEmpty && collectionMetadata.description.plainText.isNotEmpty;
 
   /// Returns `true` if the collection has at least one memo.
   bool get hasMemos => memosMetadata.isNotEmpty;
 
   /// Returns `true` if the collection is ready to be saved.
   bool get canSaveCollection => hasDetails && hasMemos;
+
+  UpdateCollectionLoaded copyWith({CollectionMetadata? metadata, List<MemoMetadata>? memos}) =>
+      UpdateCollectionLoaded(collectionMetadata: metadata ?? collectionMetadata, memosMetadata: memos ?? memosMetadata);
 
   UpdateCollectionSaving copyForSaving() =>
       UpdateCollectionSaving(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
@@ -131,7 +160,7 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
       UpdateCollectionSaved(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
 
   @override
-  List<Object?> get props => [...super.props, collectionMetadata];
+  List<Object?> get props => [...super.props, collectionMetadata, memosMetadata];
 }
 
 class UpdateCollectionSaving extends UpdateCollectionLoaded {
