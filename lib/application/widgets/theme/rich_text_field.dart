@@ -91,7 +91,7 @@ class RichTextField extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
     final inputDecorationTheme = Theme.of(context).inputDecorationTheme;
 
@@ -200,7 +200,7 @@ class _RichTextFieldModal extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     final focusNode = focus ?? useFocusNode();
 
@@ -283,7 +283,7 @@ class _ThemedEditor extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
     // Default [quill.DefaultTextBlockStyle] vertical and line spacings.
@@ -338,7 +338,7 @@ class _RichTextFieldToolbar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
 
     final selectedAttributes = useState<Set<quill.Attribute>>(controller.getSelectionStyle().attributes.values.toSet());
 
