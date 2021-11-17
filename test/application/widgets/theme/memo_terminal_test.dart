@@ -4,6 +4,7 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/destructive_button.dart';
 import 'package:memo/application/widgets/theme/memo_terminal.dart';
+import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../utils/fakes.dart';
@@ -14,8 +15,9 @@ void main() {
     const hugeFakeText = r'A\nHuge\nFake\nText\nThat\nWill\nExpand\nThe\nRich\nText\nEditor';
     const encodedText = '[{"insert":"$hugeFakeText\\n"}]';
     final scrollController = ScrollController();
-    final questionController = TextEditingController(text: encodedText);
-    final answerController = TextEditingController(text: encodedText);
+    final questionController = RichTextFieldController(richText: encodedText, plainText: hugeFakeText);
+    final answerController = RichTextFieldController(richText: encodedText, plainText: hugeFakeText);
+
     // Wraps `MemoTerminal` in a tiny SizedBox to force its content to be scrollable
     final memoTerminal = SizedBox.square(
       dimension: 320,

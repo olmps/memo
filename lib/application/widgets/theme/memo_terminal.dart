@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
+import 'package:memo/application/hooks/rich_text_field_controller_hook.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/utils/bottom_sheet.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
@@ -14,7 +15,7 @@ import 'package:memo/application/widgets/theme/terminal_window.dart';
 /// A terminal-styled component that presents a `Memo` question and answer that can be updated.
 ///
 /// Use [questionController] and [answerController] to control the Memo content being edited.
-class MemoTerminal extends ConsumerWidget {
+class MemoTerminal extends HookConsumerWidget {
   const MemoTerminal({
     required this.memoIndex,
     this.questionController,
@@ -27,10 +28,10 @@ class MemoTerminal extends ConsumerWidget {
   final int memoIndex;
 
   /// Controls the `Memo` question content.
-  final TextEditingController? questionController;
+  final RichTextFieldController? questionController;
 
   /// Controls the `Memo` answer content.
-  final TextEditingController? answerController;
+  final RichTextFieldController? answerController;
 
   /// Triggers when the current memo should be removed from the Collection Memos.
   final VoidCallback? onRemove;
@@ -39,10 +40,10 @@ class MemoTerminal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = useTheme(ref);
+    final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
-    final questionController = this.questionController ?? useTextEditingController();
+    final questionController = this.questionController ?? useRichTextEditingController();
     final questionTitle = Text(
       strings.updateMemoQuestionTitle(memoIndex),
       style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
@@ -60,7 +61,7 @@ class MemoTerminal extends ConsumerWidget {
       ],
     );
 
-    final answerController = this.answerController ?? useTextEditingController();
+    final answerController = this.answerController ?? useRichTextEditingController();
     final answerTitle = Text(
       strings.updateMemoAnswer,
       style: textTheme.bodyText1?.copyWith(color: theme.primarySwatch),
