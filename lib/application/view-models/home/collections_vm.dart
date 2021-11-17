@@ -8,7 +8,7 @@ import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/transients/collection_status.dart';
 import 'package:meta/meta.dart';
 
-final collectionsVM = StateNotifierProvider<CollectionsVM>((ref) {
+final collectionsVM = StateNotifierProvider<CollectionsVM, CollectionsState>((ref) {
   return CollectionsVMImpl(ref.read(collectionServices));
 });
 

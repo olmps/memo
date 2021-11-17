@@ -1,11 +1,12 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/colors.dart' as colors;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/theme/memo_theme_data.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 import 'package:memo/application/widgets/theme/themed_text_tag.dart';
@@ -14,7 +15,7 @@ import 'package:memo/application/widgets/theme/themed_text_tag.dart';
 ///
 /// See also:
 ///   - `buildHeroCollectionCardFromItem`, which creates this exact same card but for [Hero] transitions.
-class CollectionCard extends HookWidget {
+class CollectionCard extends ConsumerWidget {
   CollectionCard({
     required this.name,
     required this.tags,
@@ -52,7 +53,8 @@ class CollectionCard extends HookWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
     final firstRowElements = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,9 +69,9 @@ class CollectionCard extends HookWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        decoration: _buildCardDecoration(),
+        decoration: _buildCardDecoration(theme),
         child: CustomPaint(
-          painter: _buildBackgroundPainter(),
+          painter: _buildBackgroundPainter(theme),
           child: Padding(
             padding: padding,
             child: Column(
@@ -79,9 +81,9 @@ class CollectionCard extends HookWidget {
                 Flexible(child: firstRowElements),
                 if (progressDescription != null && progressValue != null) ...[
                   context.verticalBox(Spacing.large),
-                  _buildMemoryRecallTitle(context),
+                  _buildMemoryRecallTitle(context, theme),
                   context.verticalBox(Spacing.xSmall),
-                  _buildMemoryRecallProgress(),
+                  _buildMemoryRecallProgress(theme),
                 ]
               ],
             ),
@@ -91,12 +93,10 @@ class CollectionCard extends HookWidget {
     );
   }
 
-  Decoration _buildCardDecoration() {
-    final memoTheme = useTheme();
-
+  Decoration _buildCardDecoration(MemoThemeData theme) {
     final border = hasBorder
         ? Border.all(
-            color: memoTheme.neutralSwatch.shade300,
+            color: theme.neutralSwatch.shade300,
             width: dimens.cardBorderWidth,
           )
         : null;
@@ -113,11 +113,9 @@ class CollectionCard extends HookWidget {
     );
   }
 
-  CustomPainter _buildBackgroundPainter() {
-    final memoTheme = useTheme();
-
+  CustomPainter _buildBackgroundPainter(MemoThemeData theme) {
     return _CollectionCardBackgroundPainter(
-      horizontalLineColor: memoTheme.neutralSwatch.shade100,
+      horizontalLineColor: theme.neutralSwatch.shade100,
       ovalGradientColors: colors.collectionCardGradient,
     );
   }
@@ -132,17 +130,14 @@ class CollectionCard extends HookWidget {
     );
   }
 
-  Text _buildMemoryRecallTitle(BuildContext context) {
-    final memoTheme = useTheme();
-
-    final captionColor = memoTheme.neutralSwatch.shade200;
+  Text _buildMemoryRecallTitle(BuildContext context, MemoThemeData theme) {
+    final captionColor = theme.neutralSwatch.shade200;
     final captionStyle = Theme.of(context).textTheme.caption;
     return Text(progressDescription!, style: captionStyle?.copyWith(color: captionColor));
   }
 
-  Widget _buildMemoryRecallProgress() {
-    final memoTheme = useTheme();
-    final lineColor = memoTheme.secondarySwatch.shade400;
+  Widget _buildMemoryRecallProgress(MemoThemeData theme) {
+    final lineColor = theme.secondarySwatch.shade400;
 
     return AnimatableLinearProgress(
       value: progressValue!,
@@ -150,7 +145,7 @@ class CollectionCard extends HookWidget {
       animationDuration: anims.defaultAnimatableProgressDuration,
       lineSize: dimens.collectionsLinearProgressLineWidth,
       lineColor: lineColor,
-      lineBackgroundColor: memoTheme.neutralSwatch.shade900.withOpacity(0.4),
+      lineBackgroundColor: theme.neutralSwatch.shade900.withOpacity(0.4),
       semanticLabel: progressSemanticLabel,
     );
   }

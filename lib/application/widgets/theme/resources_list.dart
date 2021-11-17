@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
@@ -11,7 +12,7 @@ import 'package:memo/domain/enums/resource_type.dart';
 ///
 /// See also:
 ///   - [UrlLinkButton], which represents each resource item in this list, tappable to their respective URLs.
-class ResourcesList extends StatelessWidget {
+class ResourcesList extends ConsumerWidget {
   const ResourcesList({
     required this.itemCount,
     required this.resourceDescriptionBuilder,
@@ -30,7 +31,7 @@ class ResourcesList extends StatelessWidget {
   final bool shrinkWrap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
       padding: EdgeInsets.zero,
       physics: physics,
@@ -50,7 +51,7 @@ class ResourcesList extends StatelessWidget {
           url,
           text: description,
           leading: leadingEmoji,
-          onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
+          onFailLaunchingUrl: (exception) => showExceptionSnackBar(ref, exception),
         ).withOnlyPadding(context, top: index != 0 ? Spacing.xSmall : null);
       },
     );

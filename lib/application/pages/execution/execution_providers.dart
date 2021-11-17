@@ -1,21 +1,18 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 
-/// Overridable collection id used in the scope of a collection execution
-///
-/// Throws an `UnsupportedError` if the consuming context don't override this provider
-final executionCollectionId = ScopedProvider<String>(null);
+/// Throws an [UnimplementedError] if the consuming [ProviderScope] doesn't override this provider.
+final executionCollectionId = Provider<String>((_) => throw UnimplementedError(), name: 'executionCollectionId');
 
-/// Syntax sugar for `context.read` the current [CollectionExecutionVM] provider.
-CollectionExecutionVM readExecutionVM(BuildContext context) {
-  final collectionId = context.read(executionCollectionId);
-  return context.read(collectionExecutionVM(collectionId));
+/// Syntax sugar for reading [collectionExecutionVM], using currently-scoped [executionCollectionId].
+CollectionExecutionVM readExecutionVM(WidgetRef ref) {
+  final collectionId = ref.read(executionCollectionId);
+  return ref.read(collectionExecutionVM(collectionId).notifier);
 }
 
-/// Syntax sugar for calling [useProvider] with both [collectionExecutionVM] and [executionCollectionId] providers.
-CollectionExecutionState useCollectionExecutionState() {
-  final collectionId = useProvider(executionCollectionId);
-  return useProvider(collectionExecutionVM(collectionId).state);
+/// Syntax sugar for watching [collectionExecutionVM] state, using the scoped [executionCollectionId].
+CollectionExecutionState watchCollectionExecutionState(WidgetRef ref) {
+  final collectionId = ref.watch(executionCollectionId);
+  return ref.watch(collectionExecutionVM(collectionId));
 }

@@ -1,13 +1,14 @@
 import 'package:collection/collection.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:layoutr/common_layout.dart';
 
 import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/strings.dart' as strings;
+import 'package:memo/application/theme/memo_theme_data.dart';
 
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/utils/scaffold_messenger.dart';
@@ -20,7 +21,7 @@ import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
 /// Contents (non-Scaffold) of a execution that has been completed.
-class CompletedExecutionContents extends HookWidget {
+class CompletedExecutionContents extends ConsumerWidget {
   const CompletedExecutionContents(this.state, {required this.onBackTap});
 
   final FinishedCollectionExecutionState state;
@@ -29,9 +30,11 @@ class CompletedExecutionContents extends HookWidget {
   final VoidCallback onBackTap;
 
   @override
-  Widget build(BuildContext context) {
-    final performanceSection = _buildPerformanceSection(context);
-    final completionSection = _buildCompletionSection(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
+
+    final performanceSection = _buildPerformanceSection(context, theme);
+    final completionSection = _buildCompletionSection(context, ref, theme);
     final backButton = PrimaryElevatedButton(
       onPressed: onBackTap,
       text: strings.executionBackToCollections.toUpperCase(),
@@ -41,30 +44,30 @@ class CompletedExecutionContents extends HookWidget {
       child: Column(
         children: [
           _Header(collectionName: state.collectionName).withOnlyPadding(context, bottom: Spacing.xLarge),
-          _wrapInVerticalSection(performanceSection.withSymmetricalPadding(context, vertical: Spacing.xLarge)),
-          _wrapInVerticalSection(completionSection.withSymmetricalPadding(context, vertical: Spacing.xLarge)),
-          _wrapInVerticalSection(backButton.withSymmetricalPadding(context, vertical: Spacing.xLarge)),
+          _wrapInVerticalSection(performanceSection.withSymmetricalPadding(context, vertical: Spacing.xLarge), theme),
+          _wrapInVerticalSection(completionSection.withSymmetricalPadding(context, vertical: Spacing.xLarge), theme),
+          _wrapInVerticalSection(backButton.withSymmetricalPadding(context, vertical: Spacing.xLarge), theme),
         ],
       ).withAllPadding(context, Spacing.medium),
     );
   }
 
-  Widget _buildSectionTitle(BuildContext context, String text) => Text(
+  Widget _buildSectionTitle(BuildContext context, MemoThemeData theme, String text) => Text(
         text,
-        style: Theme.of(context).textTheme.subtitle1?.copyWith(color: useTheme().neutralSwatch.shade300),
+        style: Theme.of(context).textTheme.subtitle1?.copyWith(color: theme.neutralSwatch.shade300),
       );
 
-  Widget _wrapInVerticalSection(Widget child) {
-    final divider = Container(height: dimens.executionsCompletionDividerHeight, color: useTheme().neutralSwatch);
+  Widget _wrapInVerticalSection(Widget child, MemoThemeData theme) {
+    final divider = Container(height: dimens.executionsCompletionDividerHeight, color: theme.neutralSwatch);
     return Column(children: [divider, child]);
   }
 
-  Widget _buildPerformanceSection(BuildContext context) {
+  Widget _buildPerformanceSection(BuildContext context, MemoThemeData theme) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildSectionTitle(context, strings.executionYourPerformance),
+        _buildSectionTitle(context, theme, strings.executionYourPerformance),
         context.verticalBox(Spacing.medium),
         // Wrapping in an `IntrinsicHeight`, otherwise the child will vertically expand to infinity.
         IntrinsicHeight(
@@ -78,9 +81,7 @@ class CompletedExecutionContents extends HookWidget {
     );
   }
 
-  Widget _buildCompletionSection(BuildContext context) {
-    final memoTheme = useTheme();
-
+  Widget _buildCompletionSection(BuildContext context, WidgetRef ref, MemoThemeData theme) {
     final String sectionTitle;
     final double linearProgressValue;
     final String progressSemanticValue;
@@ -107,15 +108,15 @@ class CompletedExecutionContents extends HookWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildSectionTitle(context, sectionTitle),
+        _buildSectionTitle(context, theme, sectionTitle),
         context.verticalBox(Spacing.medium),
         AnimatableLinearProgress(
           value: linearProgressValue,
           animationCurve: anims.defaultAnimationCurve,
           animationDuration: anims.defaultAnimatableProgressDuration,
           lineSize: dimens.progressCircularProgressLineWidth,
-          lineColor: memoTheme.secondarySwatch.shade400,
-          lineBackgroundColor: memoTheme.neutralSwatch.shade800,
+          lineColor: theme.secondarySwatch.shade400,
+          lineBackgroundColor: theme.neutralSwatch.shade800,
           semanticLabel: progressSemanticValue,
         ),
         context.verticalBox(Spacing.medium),
@@ -123,21 +124,21 @@ class CompletedExecutionContents extends HookWidget {
           UrlLinkButton(
             strings.faqUrl,
             text: strings.executionWhatIsRecallLevel,
-            onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
+            onFailLaunchingUrl: (exception) => showExceptionSnackBar(ref, exception),
           ),
       ],
     );
   }
 }
 
-class _Header extends HookWidget {
+class _Header extends ConsumerWidget {
   const _Header({required this.collectionName});
 
   final String collectionName;
 
   @override
-  Widget build(BuildContext context) {
-    final memoTheme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final memoTheme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
@@ -168,7 +169,7 @@ class _Header extends HookWidget {
 }
 
 /// Displays a list of horizontal progress indicators, given the answers in this execution session.
-class _PerformanceIndicators extends HookWidget {
+class _PerformanceIndicators extends ConsumerWidget {
   const _PerformanceIndicators({
     required this.difficultiesIndicators,
     required this.answerValueForDifficulty,
@@ -184,9 +185,9 @@ class _PerformanceIndicators extends HookWidget {
   final String Function(MemoDifficulty) readableAnswersForDifficulty;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final memoTheme = useTheme();
+    final memoTheme = ref.watch(themeController);
 
     final performanceIndicators = difficultiesIndicators.map((difficulty) {
       return Column(

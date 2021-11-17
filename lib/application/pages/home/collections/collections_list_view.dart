@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/theme/theme_controller.dart';
@@ -7,13 +7,13 @@ import 'package:memo/application/view-models/item_metadata.dart';
 import 'package:memo/application/widgets/theme/item_collection_card.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
-class CollectionsListView extends StatelessWidget {
+class CollectionsListView extends ConsumerWidget {
   const CollectionsListView(this.items);
 
   final List<ItemMetadata> items;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
@@ -27,7 +27,7 @@ class CollectionsListView extends StatelessWidget {
           return buildCollectionCardFromItem(
             item,
             padding: context.symmetricInsets(vertical: Spacing.large, horizontal: Spacing.small),
-            onTap: () => readCoordinator(context).navigateToCollectionDetails(item.id),
+            onTap: () => readCoordinator(ref).navigateToCollectionDetails(item.id),
           ).withOnlyPadding(context, bottom: Spacing.medium);
         }
 
@@ -38,14 +38,14 @@ class CollectionsListView extends StatelessWidget {
 }
 
 /// Header representing a category of multiple `Collection`s.
-class _CollectionsSectionHeader extends HookWidget {
+class _CollectionsSectionHeader extends ConsumerWidget {
   const _CollectionsSectionHeader({required this.title, Key? key}) : super(key: key);
 
   final String title;
 
   @override
-  Widget build(BuildContext context) {
-    final titleColor = useTheme().neutralSwatch.shade300;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final titleColor = ref.watch(themeController).neutralSwatch.shade300;
     final sectionTitleStyle = Theme.of(context).textTheme.headline6?.copyWith(color: titleColor);
     return Text(title, style: sectionTitleStyle);
   }

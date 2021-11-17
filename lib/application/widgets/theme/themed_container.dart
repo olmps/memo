@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/theme/memo_theme_data.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 
 /// Decorates a [Container] with custom layout specs.
 ///
 /// This themes a container that usually is placed in the top section of any layout, as it themes its contents with a
 /// border below its [child].
-class ThemedTopContainer extends HookWidget {
+class ThemedTopContainer extends ConsumerWidget {
   const ThemedTopContainer({required this.child}) : super();
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
+
     return Container(
       decoration: BoxDecoration(
-        border: Border(bottom: _useThemedBorderSide()),
+        border: Border(bottom: _useThemedBorderSide(theme)),
       ),
       child: child,
     );
@@ -27,16 +30,18 @@ class ThemedTopContainer extends HookWidget {
 ///
 /// This container should be placed in the bottom "section" of any layout, as it themes its contents with a border above
 /// its [child].
-class ThemedBottomContainer extends HookWidget {
+class ThemedBottomContainer extends ConsumerWidget {
   const ThemedBottomContainer({required this.child}) : super();
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
+
     return Container(
       decoration: BoxDecoration(
-        border: Border(top: _useThemedBorderSide()),
+        border: Border(top: _useThemedBorderSide(theme)),
       ),
       child: child,
     );
@@ -44,7 +49,7 @@ class ThemedBottomContainer extends HookWidget {
 }
 
 // Should always be called in a hook context.
-BorderSide _useThemedBorderSide() => BorderSide(
+BorderSide _useThemedBorderSide(MemoThemeData theme) => BorderSide(
       width: dimens.genericBorderHeight,
-      color: useTheme().neutralSwatch.shade700,
+      color: theme.neutralSwatch.shade700,
     );

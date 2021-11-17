@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
@@ -11,11 +10,11 @@ import 'package:memo/application/view-models/settings/settings_vm.dart';
 import 'package:memo/application/widgets/theme/link.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
 
-class SettingsPage extends HookWidget {
+class SettingsPage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final items = useProvider(settingsVM).items;
-    final licenseBg = useTheme().neutralSwatch.shade900;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final items = ref.watch(settingsVM).items;
+    final licenseBg = ref.watch(themeController).neutralSwatch.shade900;
 
     return Scaffold(
       appBar: AppBar(title: const Text(strings.settings)),
@@ -34,13 +33,13 @@ class SettingsPage extends HookWidget {
             return UrlLinkButton(
               item.url,
               text: item.description,
-              onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
+              onFailLaunchingUrl: (exception) => showExceptionSnackBar(ref, exception),
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedLinkSettingsItem) {
             return UrlLinkButton(
               strings.settingsUrlForNamedLink(item.linkSettings),
               text: strings.settingsDescriptionForNamedLink(item.linkSettings),
-              onFailLaunchingUrl: (exception) => showExceptionSnackBar(context, exception),
+              onFailLaunchingUrl: (exception) => showExceptionSnackBar(ref, exception),
             ).withOnlyPadding(context, top: Spacing.xSmall);
           } else if (item is NamedCustomSettingsItem) {
             final navigationImage = AssetImage(images.chevronRightAsset);

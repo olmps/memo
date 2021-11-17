@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/spacings.dart';
@@ -55,17 +54,17 @@ class AppRoot extends StatelessWidget {
 ///
 /// After [AppRoot] is done loading, [_LoadedAppRoot] takes place (of the [SplashPage]) as the root of our application,
 /// with all injected dependencies.
-class _LoadedAppRoot extends StatefulHookWidget {
+class _LoadedAppRoot extends ConsumerStatefulWidget {
   @override
-  _LoadedAppRootState createState() => _LoadedAppRootState();
+  ConsumerState createState() => _LoadedAppRootState();
 }
 
-class _LoadedAppRootState extends State<_LoadedAppRoot> {
+class _LoadedAppRootState extends ConsumerState<_LoadedAppRoot> {
   PlatformRouteInformationProvider? _routeInformationParser;
 
   @override
   Widget build(BuildContext context) {
-    final coordinator = readCoordinator(context);
+    final coordinator = readCoordinator(ref);
 
     // Store `PlatformRouteInformationProvider`, otherwise when this widget rebuilds (for any reason), the current route
     // will be reset to "root". Not sure if this is the best approach.
@@ -74,10 +73,10 @@ class _LoadedAppRootState extends State<_LoadedAppRoot> {
     );
 
     return MaterialApp.router(
-      scaffoldMessengerKey: useScaffoldMessenger(),
+      scaffoldMessengerKey: ref.watch(scaffoldMessenger),
       title: 'Memo',
       debugShowCheckedModeBanner: false,
-      theme: useThemeController().currentThemeData(context),
+      theme: ref.watch(themeController.notifier).currentThemeData(context),
       routerDelegate: CoordinatorRouterDelegate(coordinator),
       routeInformationParser: CoordinatorInformationParser(),
       routeInformationProvider: _routeInformationParser,

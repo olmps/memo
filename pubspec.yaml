@@ -37,15 +37,13 @@ dependencies:
   ###
   # State Management
   ###
-  flutter_riverpod: ^0.13.0
+  flutter_riverpod: ^1.0.0
+  hooks_riverpod: ^1.0.0
 
   ###
   # UI
   ###
   layoutr: ^1.0.0
-
-  flutter_hooks: ^0.16.0
-  hooks_riverpod: ^0.13.0
 
   # Keep dependency locked, as we need it to be the exact same in `memo-editor`
   flutter_quill: 2.0.14

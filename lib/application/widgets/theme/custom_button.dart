@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
@@ -9,7 +9,7 @@ enum _ButtonState { normal, pressed, disabled }
 /// A visually opinionated [ElevatedButton].
 ///
 /// Visually similar to Material's [ElevatedButton] but with custom disable/pressing behaviors and text style.
-class PrimaryElevatedButton extends HookWidget {
+class PrimaryElevatedButton extends ConsumerWidget {
   const PrimaryElevatedButton({required this.text, this.backgroundColor, this.onPressed, this.leadingAsset});
 
   final String text;
@@ -22,8 +22,8 @@ class PrimaryElevatedButton extends HookWidget {
   final String? leadingAsset;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
     final color = backgroundColor ?? theme.primarySwatch;
 
     Color backgroundColorBuilder(_ButtonState state) {
@@ -50,7 +50,7 @@ class PrimaryElevatedButton extends HookWidget {
 /// A visually alternative to [PrimaryElevatedButton].
 ///
 /// It shares the same pressing/disabled behaviors from [PrimaryElevatedButton] but with a different color scheme.
-class SecondaryElevatedButton extends HookWidget {
+class SecondaryElevatedButton extends ConsumerWidget {
   const SecondaryElevatedButton({required this.text, this.backgroundColor, this.onPressed, this.leadingAsset});
 
   final String text;
@@ -63,8 +63,8 @@ class SecondaryElevatedButton extends HookWidget {
   final String? leadingAsset;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
     final color = backgroundColor ?? theme.neutralSwatch;
 
     Color backgroundColorBuilder(_ButtonState state) {
@@ -92,7 +92,7 @@ class SecondaryElevatedButton extends HookWidget {
 ///
 /// Visually similar to Material's [TextButton] but with custom disable/pressing behaviors and an optional
 /// [leadingAsset].
-class CustomTextButton extends HookWidget {
+class CustomTextButton extends ConsumerWidget {
   const CustomTextButton({required this.text, this.color, this.leadingAsset, this.onPressed});
 
   final String text;
@@ -109,8 +109,8 @@ class CustomTextButton extends HookWidget {
   final MaterialColor? color;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
     final buttonColorSwatch = color ?? theme.primarySwatch;
     final textTheme = Theme.of(context).textTheme.button!;
 

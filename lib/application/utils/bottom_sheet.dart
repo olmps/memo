@@ -9,7 +9,8 @@ import 'package:memo/application/theme/theme_controller.dart';
 /// If [isDismissible] is `false`, all drag interactions are disabled and the caller must handle its dismissal directly.
 /// Also, no dragIndicator is drawn.
 Future<T?> showSnappableDraggableModalBottomSheet<T>(
-  BuildContext context, {
+  BuildContext context,
+  WidgetRef ref, {
   required Widget child,
   bool isDismissible = true,
   Color? backgroundColor,
@@ -19,7 +20,7 @@ Future<T?> showSnappableDraggableModalBottomSheet<T>(
     width: dimens.dragIndicatorWidth,
     height: dimens.dragIndicatorHeight,
     decoration: BoxDecoration(
-      color: context.read(themeController.state).neutralSwatch.shade700,
+      color: ref.read(themeController).neutralSwatch.shade700,
       borderRadius: dimens.genericRoundedElementBorderRadius,
     ),
   ).withSymmetricalPadding(context, vertical: Spacing.small);

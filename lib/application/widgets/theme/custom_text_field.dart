@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/layoutr.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/images.dart' as images;
@@ -11,7 +12,7 @@ import 'package:memo/application/theme/theme_controller.dart';
 /// The visual structure of this application text fields doesn't follow the material's guidelines. Although creating
 /// a custom [TextField] widget is not the ideal solution - since all [TextField] properties must be proxied through
 /// this component -, it's the only solution that enables the UI customization level that this widget requires.
-class CustomTextField extends HookWidget {
+class CustomTextField extends HookConsumerWidget {
   const CustomTextField({
     this.enabled = true,
     this.helperText,
@@ -82,8 +83,8 @@ class CustomTextField extends HookWidget {
   bool get _hasHelperText => helperText != null;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
     final neutralSwatch = theme.neutralSwatch;
     final textTheme = Theme.of(context).textTheme;
 
