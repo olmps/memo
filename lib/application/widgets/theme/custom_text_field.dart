@@ -31,16 +31,20 @@ class CustomTextField extends HookConsumerWidget {
   /// Ignores interactions if set to `false`.
   final bool enabled;
 
+  /// {@template CustomTextField.helperText}
   /// Text that provides context about the [TextField] value, such as how the value must be formatted.
   ///
   /// If non-null, the text is displayed below the [TextField], in the same location as [errorText].
   /// If any [errorText] is present, [helperText] will be ignored.
+  /// {@endtemplate}
   final String? helperText;
 
   /// Text that describes the input field.
   final String? labelText;
 
+  /// {@template CustomTextField.errorText}
   /// Text that appears below the [TextField] indicating an error.
+  /// {@endtemplate}
   final String? errorText;
 
   /// Controls the text being edited.
@@ -114,7 +118,7 @@ class CustomTextField extends HookConsumerWidget {
 
     final textField = Container(
       decoration: BoxDecoration(
-        border: _hasErrorText ? Border.all(color: theme.destructiveSwatch, width: dimens.genericBorderHeight) : null,
+        color: _hasErrorText ? theme.destructiveSwatch : null,
         borderRadius: dimens.genericRoundedElementBorderRadius,
       ),
       child: TextField(
@@ -137,7 +141,7 @@ class CustomTextField extends HookConsumerWidget {
             onTap: controller.clear,
           ),
         ),
-      ),
+      ).withAllPadding(context, Spacing.xxxSmall),
     );
 
     return Column(
