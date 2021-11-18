@@ -31,6 +31,11 @@ abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
   /// To persist the collection updates, use [saveCollection].
   void updateMetadata({required CollectionMetadata metadata});
 
+  /// Updates collection memos metadata.
+  ///
+  /// To persist the collection use [saveCollection].
+  void updateMemos({required List<MemoMetadata> memos});
+
   /// Save the created/edited collection.
   ///
   /// Emits [UpdateCollectionFailedSaving] if it fails to save the collection.
@@ -70,6 +75,9 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
   @override
   void updateMetadata({required CollectionMetadata metadata}) =>
       state = loadedState.copyWith(metadata: metadata, hasValidDetails: _validateDetails(metadata: metadata));
+
+  @override
+  void updateMemos({List<MemoMetadata>? memos}) => state = loadedState.copyWith(memos: memos);
 
   @override
   Future<void> saveCollection() async {
@@ -129,10 +137,13 @@ class CollectionMetadata extends Equatable {
 class MemoMetadata extends Equatable {
   const MemoMetadata({required this.question, required this.answer});
 
-  factory MemoMetadata.empty() => const MemoMetadata(question: '', answer: '');
+  factory MemoMetadata.empty() => const MemoMetadata(question: RichTextEditingValue(), answer: RichTextEditingValue());
 
-  final String question;
-  final String answer;
+  MemoMetadata copyWith({RichTextEditingValue? question, RichTextEditingValue? answer}) =>
+      MemoMetadata(question: question ?? this.question, answer: answer ?? this.answer);
+
+  final RichTextEditingValue question;
+  final RichTextEditingValue answer;
 
   @override
   List<Object?> get props => [question, answer];

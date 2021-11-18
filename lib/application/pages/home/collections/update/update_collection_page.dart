@@ -41,7 +41,6 @@ class UpdateCollectionPage extends HookConsumerWidget {
         children: [
           ThemedTabBar(controller: tabController, tabs: tabs),
           Expanded(child: _UpdateCollectionContents(selectedSegment: selectedSegment.value)),
-          context.verticalBox(Spacing.large),
           _BottomActionContainer(
             onSegmentSwapRequested: (segment) => tabController.animateTo(_Segment.values.indexOf(segment)),
             selectedSegment: selectedSegment.value,
@@ -71,17 +70,24 @@ class _UpdateCollectionContents extends ConsumerWidget {
     }
 
     if (state is UpdateCollectionLoaded) {
+      late Widget body;
+
       switch (selectedSegment) {
         case _Segment.details:
-          return ProviderScope(
-            overrides: [
-              updateDetailsMetadata.overrideWithValue(state.collectionMetadata),
-            ],
-            child: UpdateCollectionDetails(),
-          );
+          body = UpdateCollectionDetails();
+          break;
         case _Segment.memos:
-          return UpdateCollectionMemos();
+          body = UpdateCollectionMemos();
+          break;
       }
+
+      return ProviderScope(
+        overrides: [
+          updateDetailsMetadata.overrideWithValue(state.collectionMetadata),
+          updateMemosMetadata.overrideWithValue(state.memosMetadata),
+        ],
+        child: body,
+      );
     }
 
     throw InconsistentStateError.layout('Unsupported subtype (${state.runtimeType}) of `UpdateCollectionState`');
