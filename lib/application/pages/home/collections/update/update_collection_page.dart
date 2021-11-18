@@ -1,14 +1,20 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
+import 'package:memo/application/constants/animations.dart' as anims;
+import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/pages/home/collections/update/update_collection_details.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_memos.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
+import 'package:memo/application/widgets/material/asset_icon_button.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/exception_retry_container.dart';
 import 'package:memo/application/widgets/theme/themed_container.dart';
@@ -24,6 +30,7 @@ class UpdateCollectionPage extends HookConsumerWidget {
 
     final selectedSegment = useState(_Segment.details);
     final tabController = useTabController(initialLength: _Segment.values.length);
+    final memosPageController = usePageController(viewportFraction: dimens.memosPageControllerViewportFraction);
 
     useEffect(() {
       void tabListener() => selectedSegment.value = _Segment.values[tabController.index];
@@ -33,14 +40,18 @@ class UpdateCollectionPage extends HookConsumerWidget {
     }, []);
 
     final tabs = _Segment.values.map((segment) => Text(segment.title)).toList();
-    final title = vm.isEditing ? strings.editCollection : strings.newCollection;
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: _AppBar(memosPageController: memosPageController),
       body: Column(
         children: [
           ThemedTabBar(controller: tabController, tabs: tabs),
-          Expanded(child: _UpdateCollectionContents(selectedSegment: selectedSegment.value)),
+          Expanded(
+            child: _UpdateCollectionContents(
+              selectedSegment: selectedSegment.value,
+              memosPageController: memosPageController,
+            ),
+          ),
           _BottomActionContainer(
             onSegmentSwapRequested: (segment) => tabController.animateTo(_Segment.values.indexOf(segment)),
             selectedSegment: selectedSegment.value,
@@ -51,10 +62,59 @@ class UpdateCollectionPage extends HookConsumerWidget {
   }
 }
 
+class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
+  const _AppBar({required this.memosPageController});
+
+  final PageController memosPageController;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vm = ref.read(updateCollectionVM.notifier);
+    final state = ref.watch(updateCollectionVM);
+    final title = vm.isEditing ? strings.editCollection : strings.newCollection;
+
+    void onTap(int questionIndex) {
+      // Dismiss the navigation bottom sheet
+      Navigator.of(context).pop();
+
+      // Navigates to chosen question index
+      memosPageController.animateToPage(
+        questionIndex,
+        duration: anims.pageControllerAnimationDuration,
+        curve: anims.defaultAnimationCurve,
+      );
+    }
+
+    return AppBar(
+      title: Text(title),
+      actions: [
+        if (state is UpdateCollectionLoaded)
+          AssetIconButton(
+            images.organizeAsset,
+            onPressed: () => showSnappableDraggableModalBottomSheet<void>(
+              context,
+              ref,
+              child: _MemosReorderableList(
+                memos: state.memosMetadata,
+                currentMemoIndex: memosPageController.hasClients ? memosPageController.page!.toInt() : 0,
+                onReorder: vm.swapMemoIndex,
+                onTap: onTap,
+              ),
+            ),
+          )
+      ],
+    );
+  }
+}
+
 class _UpdateCollectionContents extends ConsumerWidget {
-  const _UpdateCollectionContents({required this.selectedSegment});
+  const _UpdateCollectionContents({required this.selectedSegment, required this.memosPageController});
 
   final _Segment selectedSegment;
+  final PageController memosPageController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,7 +146,7 @@ class _UpdateCollectionContents extends ConsumerWidget {
             overrides: [
               updateMemosMetadata.overrideWithValue(state.memosMetadata),
             ],
-            child: UpdateCollectionMemos(),
+            child: UpdateCollectionMemos(controller: memosPageController),
           );
       }
     }
@@ -171,6 +231,120 @@ class _MemosActionButton extends ConsumerWidget {
     return PrimaryElevatedButton(
       onPressed: state.canSaveCollection ? vm.saveCollection : null,
       text: strings.saveCollection.toUpperCase(),
+    );
+  }
+}
+
+class _MemosReorderableList extends ConsumerWidget {
+  const _MemosReorderableList({
+    required this.memos,
+    required this.currentMemoIndex,
+    required this.onReorder,
+    this.onTap,
+  });
+
+  final List<MemoMetadata> memos;
+
+  /// Currently Memo being visualized when the list is opened.
+  ///
+  /// This will be highlighted in the list to indicate which Memo the user is seeing.
+  final int currentMemoIndex;
+
+  /// Triggers when a Memo is moved from `oldIndex` to `newIndex`.
+  final void Function(int oldIndex, int newIndex) onReorder;
+
+  /// Triggers when Memo at `index` is tapped.
+  final void Function(int index)? onTap;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final textTheme = Theme.of(context).textTheme;
+
+    final listHeader = Text('${strings.jumpTo}...', style: textTheme.subtitle1, textAlign: TextAlign.center);
+
+    return Theme(
+      // Overrides theme to remove canvasColor and shadowColor when dragging a Memo card
+      data: Theme.of(context).copyWith(canvasColor: Colors.transparent, shadowColor: Colors.transparent),
+      child: ReorderableListView.builder(
+        header: listHeader.withSymmetricalPadding(context, vertical: Spacing.medium),
+        itemCount: memos.length,
+        onReorder: (oldIndex, newIndex) {
+          // `ReorderableListView` bug. Waiting for a fix in https://github.com/flutter/flutter/issues/24786.
+          if (newIndex > oldIndex) {
+            newIndex -= 1;
+          }
+          onReorder(oldIndex, newIndex);
+        },
+        physics: const ClampingScrollPhysics(),
+        itemBuilder: (context, index) {
+          final memoMetadata = memos[index];
+
+          return _MemoRow(
+            // Child from `ReorderableListView` must have associated keys in the root Widget
+            key: ValueKey(index),
+            index: index,
+            metadata: memoMetadata,
+            onTap: () => onTap?.call(index),
+            isHighlighted: index == currentMemoIndex,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _MemoRow extends ConsumerWidget {
+  const _MemoRow({
+    required this.index,
+    required this.metadata,
+    this.onTap,
+    this.isHighlighted = false,
+    Key? key,
+  }) : super(key: key);
+
+  final int index;
+  final MemoMetadata metadata;
+
+  /// Triggers when the row is tapped.
+  final VoidCallback? onTap;
+
+  /// If `true` style the current row to differentiate from the others.
+  final bool isHighlighted;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
+    final textTheme = Theme.of(context).textTheme;
+
+    final memoContent = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          strings.memoQuestionTitle(index + 1),
+          style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
+        ),
+        context.verticalBox(Spacing.xSmall),
+        Text(metadata.question.plainText, maxLines: 2),
+      ],
+    );
+
+    return Material(
+      child: InkWell(
+        borderRadius: dimens.genericRoundedElementBorderRadius,
+        onTap: () => onTap,
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: dimens.genericRoundedElementBorderRadius,
+            color: isHighlighted ? theme.neutralSwatch.shade700 : theme.neutralSwatch.shade800,
+          ),
+          child: Row(
+            children: [
+              Expanded(child: memoContent),
+              Image.asset(images.boldAsset),
+            ],
+          ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+        ),
+      ).withSymmetricalPadding(context, vertical: Spacing.xSmall, horizontal: Spacing.medium),
     );
   }
 }
