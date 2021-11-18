@@ -40,7 +40,7 @@ class UpdateMemoTerminal extends HookConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     final questionTitle = Text(
-      strings.updateMemoQuestionTitle(memoIndex),
+      strings.memoQuestionTitle(memoIndex),
       style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
     );
     final questionField = Column(
@@ -57,7 +57,7 @@ class UpdateMemoTerminal extends HookConsumerWidget {
     );
 
     final answerTitle = Text(
-      strings.updateMemoAnswer,
+      strings.memoAnswerTitle,
       style: textTheme.bodyText1?.copyWith(color: theme.primarySwatch),
     );
     final answerField = Column(
