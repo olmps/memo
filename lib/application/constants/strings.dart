@@ -88,6 +88,8 @@ const newMemo = 'Novo Memo';
 
 String fieldCharactersAmount(int amount, int max) => '$amount/$max caracteres';
 
+const jumpTo = 'Pular para';
+
 //
 // Tags Component
 //
