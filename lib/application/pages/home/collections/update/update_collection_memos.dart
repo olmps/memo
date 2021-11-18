@@ -16,13 +16,16 @@ import 'package:memo/application/widgets/material/asset_icon_button.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 
 class UpdateCollectionMemos extends HookConsumerWidget {
+  const UpdateCollectionMemos({required this.controller});
+
+  final PageController controller;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.read(updateCollectionMemosVM.notifier);
     final state = ref.watch(updateCollectionMemosVM);
     final currentPageIndex = useState(0);
 
-    final controller = usePageController(viewportFraction: dimens.memosPageControllerViewportFraction);
     final parentVM = ref.watch(updateCollectionVM.notifier);
     ref.listen<UpdateMemosState>(updateCollectionMemosVM, (_, state) => parentVM.updateMemos(memos: state.memos));
 

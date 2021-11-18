@@ -36,6 +36,9 @@ abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
   /// To persist the collection use [saveCollection].
   void updateMemos({required List<MemoUpdateMetadata> memos});
 
+  /// Reorders memos list moving memo from [oldIndex] to [newIndex].
+  void swapMemoIndex(int oldIndex, int newIndex);
+
   /// Save the created/edited collection.
   ///
   /// Emits [UpdateCollectionFailedSaving] if it fails to save the collection.
@@ -78,6 +81,13 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
 
   @override
   void updateMemos({List<MemoUpdateMetadata>? memos}) => state = loadedState.copyWith(memos: memos);
+
+  @override
+  void swapMemoIndex(int oldIndex, int newIndex) {
+    final removedMetadata = loadedState.memosMetadata.removeAt(oldIndex);
+    final updatedMemos = loadedState.memosMetadata..insert(newIndex, removedMetadata);
+    state = loadedState.copyWith(memos: updatedMemos);
+  }
 
   @override
   Future<void> saveCollection() async {
