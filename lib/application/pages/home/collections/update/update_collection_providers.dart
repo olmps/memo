@@ -8,3 +8,7 @@ final updateCollectionId = Provider<String?>((_) => throw UnimplementedError(), 
 /// Overridable collection metadata used in the scope of a collection update.
 final updateDetailsMetadata =
     Provider<CollectionMetadata>((_) => throw UnimplementedError(), name: 'updateDetailsMetadata');
+
+/// Overridable memos metadata used in the scope of a collection update.
+final updateMemosMetadata =
+    Provider<List<MemoMetadata>>((_) => throw UnimplementedError(), name: 'updateMemosMetadata');
