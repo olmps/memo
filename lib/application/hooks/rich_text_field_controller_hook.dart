@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 
+/// Creates a [RichTextFieldController] by sending initial selection, rich and plain text values.
+///
+/// It shares the same behavior as [useTextEditingController], i.e, changing the properties after the widget has been
+/// built has no effect whatsoever.
+///
+/// See also:
+/// - [useTextEditingController], which shares the same hook characteristics as this one, but creates a
+/// [TextEditingController] instead.
+/// - [RichTextFieldController], which this hook creates.
 const useRichTextEditingController = _RichTextEditingControllerHookCreator();
 
 class _RichTextEditingControllerHookCreator {
