@@ -37,7 +37,7 @@ const double executionsTerminalBorderWidth = 2;
 const double executionsTerminalActionDiameter = 12;
 const double executionsTerminalFadeHeight = 64;
 const double executionsTerminalActionSize = 72;
-const double executionsTerminalActionEmojiTextSize = 40;
+const double executionsTerminalActionEmojiSize = 40;
 const double executionsTerminalBlur = 32;
 
 const double executionsCompletionDividerHeight = 1;

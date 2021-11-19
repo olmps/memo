@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/memo_theme_data.dart';
 import 'package:memo/application/theme/theme_controller.dart';
@@ -70,8 +71,8 @@ class ProgressPage extends ConsumerWidget {
     return _ProgressContainer(
       leading: CircularLabeledProgress(
         progressValue: amountPercentage,
-        centerLabel: strings.memoDifficultyEmoji(difficulty),
         semanticLabel: strings.circularIndicatorMemoAnswersLabel(difficulty),
+        child: Image.asset(images.memoDifficultyEmoji(difficulty)),
       ),
       title: _buildAlternateStyleTextBox(
         context,
