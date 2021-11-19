@@ -156,10 +156,9 @@ class _MemosActionButton extends ConsumerWidget {
     }
 
     final vm = useUpdateCollectionVM(ref);
-    final canSave = state.hasDetails && state.hasMemos;
 
     return PrimaryElevatedButton(
-      onPressed: canSave ? vm.saveCollection : null,
+      onPressed: state.canSaveCollection ? vm.saveCollection : null,
       text: strings.saveCollection.toUpperCase(),
     );
   }
