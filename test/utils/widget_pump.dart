@@ -17,9 +17,9 @@ Future<void> pumpProviderScoped(WidgetTester tester, Widget widget, [List<Overri
     tester.pumpWidget(
       ProviderScope(
         overrides: overrides,
-        child: Builder(builder: (context) {
+        child: Consumer(builder: (context, ref, child) {
           return MaterialApp(
-            theme: ThemeController().currentThemeData(context),
+            theme: ref.read(themeController.notifier).currentThemeData(context),
             home: Scaffold(body: widget),
           );
         }),
