@@ -9,26 +9,22 @@ import '../../../utils/mocks.dart';
 import '../../../utils/widget_pump.dart';
 
 void main() {
-  testWidgets('should invoke callback when tapped', (tester) async {
-    final fakeException = UrlException.failedToOpen();
-    final mockCallback = MockCallbackFunction();
-    final exceptionContainer = ExceptionRetryContainer(onRetry: mockCallback, exception: fakeException);
+  final fakeException = UrlException.failedToOpen();
+  final mockCallback = MockCallbackFunction();
+  final exceptionContainer = ExceptionRetryContainer(onRetry: mockCallback, exception: fakeException);
 
+  testWidgets('should invoke callback when tapped', (tester) async {
     await pumpProviderScoped(tester, exceptionContainer);
     await tester.tap(find.byType(PrimaryElevatedButton));
 
     verify(mockCallback.call).called(1);
   });
-
   testWidgets('should present correct exception description', (tester) async {
-    final fakeException = UrlException.failedToOpen();
-    final mockCallback = MockCallbackFunction();
-    final exceptionContainer = ExceptionRetryContainer(onRetry: mockCallback, exception: fakeException);
     final expectedMessage = descriptionForException(fakeException);
 
     await pumpProviderScoped(tester, exceptionContainer);
-
     final exceptionText = find.text(expectedMessage);
+
     expect(exceptionText, findsOneWidget);
   });
 }
