@@ -4,31 +4,37 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
 
+class _DragIndicator extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
+
+    return Container(
+      width: dimens.dragIndicatorWidth,
+      height: dimens.dragIndicatorHeight,
+      decoration: BoxDecoration(
+        color: theme.neutralSwatch.shade700,
+        borderRadius: dimens.genericRoundedElementBorderRadius,
+      ),
+    );
+  }
+}
+
 /// Wraps a [showModalBottomSheet] behavior that snaps its content based on [child] size
 ///
 /// If [isDismissible] is `false`, all drag interactions are disabled and the caller must handle its dismissal directly.
 /// Also, no dragIndicator is drawn.
 Future<T?> showSnappableDraggableModalBottomSheet<T>(
-  BuildContext context,
-  WidgetRef ref, {
+  BuildContext context, {
   required Widget child,
   bool isDismissible = true,
   Color? backgroundColor,
   String? title,
 }) {
-  final dragIndicator = Container(
-    width: dimens.dragIndicatorWidth,
-    height: dimens.dragIndicatorHeight,
-    decoration: BoxDecoration(
-      color: ref.read(themeController).neutralSwatch.shade700,
-      borderRadius: dimens.genericRoundedElementBorderRadius,
-    ),
-  ).withSymmetricalPadding(context, vertical: Spacing.small);
-
   final header = Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      if (isDismissible) Center(child: dragIndicator),
+      if (isDismissible) Center(child: _DragIndicator().withSymmetricalPadding(context, vertical: Spacing.small)),
       if (title != null)
         Text(
           title,

@@ -44,7 +44,6 @@ class MultiContributorsView extends ConsumerWidget {
 
         showSnappableDraggableModalBottomSheet<dynamic>(
           context,
-          ref,
           title: strings.detailsContributors,
           child: list.withSymmetricalPadding(context, horizontal: Spacing.medium),
         );
