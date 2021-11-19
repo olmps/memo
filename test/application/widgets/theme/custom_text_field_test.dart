@@ -118,9 +118,6 @@ void main() {
         final containerDecoration = wrapperContainer.decoration! as BoxDecoration;
 
         expect(containerDecoration.color, expectedColor);
-        expect(containerDecoration.color, expectedColor);
-        expect(containerDecoration.color, expectedColor);
-        expect(containerDecoration.color, expectedColor);
       });
 
       testWidgets('should precede helperText when both are present', (tester) async {
