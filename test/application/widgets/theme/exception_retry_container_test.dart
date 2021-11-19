@@ -5,7 +5,7 @@ import 'package:memo/application/widgets/theme/exception_retry_container.dart';
 import 'package:memo/core/faults/exceptions/url_exception.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../utils/fakes.dart';
+import '../../../utils/mocks.dart';
 import '../../../utils/widget_pump.dart';
 
 void main() {
