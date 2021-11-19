@@ -5,9 +5,9 @@ import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 
-/// Centers a child [Widget] element above a [AnimatableCircularProgress] with [progressValue].
-class CircularLabeledProgress extends ConsumerWidget {
-  const CircularLabeledProgress({
+/// Stacks a centered [child] on top of a [AnimatableCircularProgress] with [progressValue].
+class StackedCircularProgress extends ConsumerWidget {
+  const StackedCircularProgress({
     required this.progressValue,
     required this.semanticLabel,
     required this.child,

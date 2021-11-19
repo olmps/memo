@@ -11,7 +11,7 @@ import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
-import 'package:memo/application/widgets/theme/circular_labeled_progress.dart';
+import 'package:memo/application/widgets/theme/stacked_circular_progress.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/link.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
@@ -190,7 +190,7 @@ class _PerformanceIndicators extends ConsumerWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircularLabeledProgress(
+          StackedCircularProgress(
             progressValue: answerValueForDifficulty(difficulty),
             semanticLabel: strings.circularIndicatorMemoAnswersLabel(difficulty),
             child: Image.asset(images.memoDifficultyEmoji(difficulty)),
