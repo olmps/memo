@@ -121,6 +121,9 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
   /// Returns `true` if the collection has at least one memo.
   bool get hasMemos => memosMetadata.isNotEmpty;
 
+  /// Returns `true` if the collection is ready to be saved.
+  bool get canSaveCollection => hasDetails && hasMemos;
+
   UpdateCollectionSaving copyForSaving() =>
       UpdateCollectionSaving(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
 
