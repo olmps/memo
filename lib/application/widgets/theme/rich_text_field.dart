@@ -24,8 +24,22 @@ class RichTextEditingValue {
     this.selection = const TextSelection.collapsed(offset: -1),
   });
 
+  /// {@template RichTextEditingValue.richText}
+  /// A string representation from the editor rich text content.
+  /// {@endtemplate}
   final String richText;
+
+  /// {@template RichTextEditingValue.plainText}
+  /// [richText] plain content.
+  ///
+  /// Note that updating this property will not affect the editor content. To update the editor content it's necessary
+  /// to update [richText] instead. This is used as a readonly variable.
+  /// {@endtemplate}
   final String plainText;
+
+  /// {@template RichTextEditingValue.selection}
+  /// The current text selection.
+  /// {@endtemplate}
   final TextSelection selection;
 
   RichTextEditingValue copyWith({String? richText, String? plainText, TextSelection? selection}) =>
@@ -36,21 +50,29 @@ class RichTextEditingValue {
       );
 }
 
+/// A controller for [RichTextField] content.
+///
+/// It works in a similar way as [TextEditingController] but supporting both rich and plain text control.
 class RichTextFieldController extends ValueNotifier<RichTextEditingValue> {
   RichTextFieldController({
     String? richText,
     String? plainText,
     TextSelection? selection,
-  }) : super(
-          RichTextEditingValue(
-            richText: richText ?? '',
-            plainText: plainText ?? '',
-            selection: selection ?? const TextSelection.collapsed(offset: -1),
-          ),
-        );
+  }) : super(RichTextEditingValue(
+          richText: richText ?? '',
+          plainText: plainText ?? '',
+          selection: selection ?? const TextSelection.collapsed(offset: -1),
+        ));
 
+  RichTextFieldController.fromValue(RichTextEditingValue value) : super(value);
+
+  /// {@macro RichTextEditingValue.richText}
   String get richText => value.richText;
+
+  /// {@macro RichTextEditingValue.plainText}
   String get plainText => value.plainText;
+
+  /// {@macro RichTextEditingValue.selection}
   TextSelection get selection => value.selection;
 
   set richText(String newValue) => value = value.copyWith(richText: newValue);
@@ -71,16 +93,30 @@ class RichTextField extends HookConsumerWidget {
     this.helperText,
   });
 
-  /// The modal title positioned in the top-left corner of the modal editor.
+  /// {@template RichTextField.modalTitle}
+  /// A helper title positioned in the top-left corner of the modal editor.
+  ///
+  /// Usually used to describe the editing context.
+  /// {@endtemplate}
   final Widget modalTitle;
 
-  /// The placeholder used in the rich text editor when it has no content.
+  /// {@template RichTextField.placeholder}
+  /// A helper text that is placed in the editor when it doesn't have content.
+  /// {@endtemplate}
   final String placeholder;
 
+  /// {@template RichTextField.controller}
   /// Controls the text content being edited.
+  /// {@endtemplate}
+  ///
+  /// It `null` the field creates its own controller.
   final RichTextFieldController? controller;
 
-  /// Controls the focus from the content being edited.
+  /// {@template RichTextField.focus}
+  /// Controls the editor focus.
+  ///
+  /// If `null`, the editor will create it own focus.
+  /// {@endtemplate}
   final FocusNode? focus;
 
   /// {@macro CustomTextField.errorText}
@@ -93,7 +129,6 @@ class RichTextField extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
-    final inputDecorationTheme = Theme.of(context).inputDecorationTheme;
 
     final quillController = _useQuillController(textController: controller);
 
@@ -103,9 +138,11 @@ class RichTextField extends HookConsumerWidget {
       void editorChanged() {
         final plainText = quillController.plainTextEditingValue.text.trim();
 
-        controller?.richText = jsonEncode(quillController.document.toDelta().toJson());
-        controller?.plainText = plainText;
-        controller?.selection = quillController.selection;
+        controller?.value = RichTextEditingValue(
+          richText: jsonEncode(quillController.document.toDelta().toJson()),
+          plainText: plainText,
+          selection: quillController.selection,
+        );
 
         hasContent.value = plainText.isNotEmpty;
       }
@@ -114,56 +151,15 @@ class RichTextField extends HookConsumerWidget {
       return () => quillController.removeListener(editorChanged);
     });
 
-    Future<void> showRichTextFieldModal() async {
-      await showSnappableDraggableModalBottomSheet<void>(
-        context,
-        ref,
-        child: _RichTextFieldModal(
-          title: modalTitle,
-          controller: quillController,
-          placeholder: placeholder,
-          focus: focus,
-        ),
-      );
-    }
-
-    final collapsedEditor = Container(
-      constraints: dimens.richTextFieldConstraints,
-      decoration: BoxDecoration(
-        borderRadius: dimens.genericRoundedElementBorderRadius,
-        color: inputDecorationTheme.fillColor,
-        border: Border.all(
-          color: errorText != null ? theme.destructiveSwatch : inputDecorationTheme.fillColor!,
-          width: dimens.genericBorderHeight,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (hasContent.value) ...[
-            Text(placeholder, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400)),
-            context.verticalBox(Spacing.small),
-            Flexible(
-              child: AbsorbPointer(
-                child: _ThemedEditor(
-                  controller: quillController,
-                  placeholder: placeholder,
-                  backgroundColor: theme.neutralSwatch.shade700,
-                  showCursor: false,
-                  readonly: true,
-                ),
-              ),
-            ),
-          ] else
-            Text(placeholder, style: textTheme.subtitle1)
-        ],
-      ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+    final collapsedEditor = _CollapsedEditor(
+      controller: quillController,
+      hasContent: hasContent.value,
+      placeholder: placeholder,
+      hasError: errorText != null,
     );
 
     return GestureDetector(
-      onTap: showRichTextFieldModal,
+      onTap: () => _showRichTextFieldModal(context, quillController),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -183,6 +179,83 @@ class RichTextField extends HookConsumerWidget {
       ),
     );
   }
+
+  Future<void> _showRichTextFieldModal(BuildContext context, quill.QuillController controller) async {
+    await showSnappableDraggableModalBottomSheet<void>(
+      context,
+      child: _RichTextFieldModal(
+        title: modalTitle,
+        controller: controller,
+        placeholder: placeholder,
+        focus: focus,
+      ),
+    );
+  }
+}
+
+/// A collapsed rich text field.
+///
+/// If [hasContent] is `true`, it shows a readOnly portion of the rich text content stored in [controller].
+/// If `false`, it presents [placeholder] content.
+class _CollapsedEditor extends ConsumerWidget {
+  const _CollapsedEditor({
+    required this.controller,
+    required this.hasContent,
+    required this.placeholder,
+    this.hasError = false,
+  });
+
+  final quill.QuillController controller;
+
+  /// If `true`, shows a portion of the editor content while collapsed.
+  final bool hasContent;
+
+  /// {@macro RichTextField.placeholder}
+  final String placeholder;
+
+  /// If `true` decorates the editor with a destructive color border.
+  final bool hasError;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
+    final textTheme = Theme.of(context).textTheme;
+    final inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+
+    return Container(
+      constraints: dimens.richTextFieldConstraints,
+      decoration: BoxDecoration(
+        borderRadius: dimens.genericRoundedElementBorderRadius,
+        color: inputDecorationTheme.fillColor,
+        border: Border.all(
+          color: hasError ? theme.destructiveSwatch : inputDecorationTheme.fillColor!,
+          width: dimens.genericBorderHeight,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (hasContent) ...[
+            Text(placeholder, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400)),
+            context.verticalBox(Spacing.small),
+            Flexible(
+              child: AbsorbPointer(
+                child: _ThemedEditor(
+                  controller: controller,
+                  placeholder: placeholder,
+                  codeBackgroundColor: theme.neutralSwatch.shade700,
+                  readOnly: true,
+                ),
+              ),
+            ),
+          ] else
+            Text(placeholder, style: textTheme.subtitle1)
+        ],
+      ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+    );
+  }
 }
 
 /// Rich text editor modal.
@@ -193,9 +266,16 @@ class RichTextField extends HookConsumerWidget {
 class _RichTextFieldModal extends HookConsumerWidget {
   const _RichTextFieldModal({required this.title, required this.controller, required this.placeholder, this.focus});
 
+  /// {@macro RichTextField.modalTitle}
   final Widget title;
+
+  /// {@macro RichTextField.controller}
   final quill.QuillController controller;
+
+  /// {@macro RichTextField.placeholder}
   final String placeholder;
+
+  /// {@macro RichTextField.focus}
   final FocusNode? focus;
 
   @override
@@ -223,7 +303,7 @@ class _RichTextFieldModal extends HookConsumerWidget {
     final editor = _ThemedEditor(
       controller: controller,
       placeholder: placeholder,
-      backgroundColor: theme.neutralSwatch.shade800,
+      codeBackgroundColor: theme.neutralSwatch.shade800,
       focus: focusNode,
     );
 
@@ -251,6 +331,8 @@ class _RichTextFieldModal extends HookConsumerWidget {
         // Only show toolbar action items when the field has focus or when the user has an active selection.
         if (isFocused.value || hasSelection.value) ...[
           _RichTextFieldToolbar(controller),
+          // Adds a bottom space that takes the same height as the keyboard to ensure that _RichTextFieldToolbar is
+          // visible when the keyboard is open.
           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ]
       ],
@@ -267,19 +349,28 @@ class _RichTextFieldModal extends HookConsumerWidget {
 class _ThemedEditor extends ConsumerWidget {
   const _ThemedEditor({
     required this.controller,
-    required this.backgroundColor,
+    required this.codeBackgroundColor,
     required this.placeholder,
+    this.readOnly = false,
     this.focus,
-    this.showCursor = true,
-    this.readonly = false,
   });
 
+  /// {@macro RichTextField.controller}
   final quill.QuillController controller;
-  final Color backgroundColor;
+
+  /// The background color used in code blocks.
+  final Color codeBackgroundColor;
+
+  /// {@macro RichTextField.placeholder}
   final String placeholder;
+
+  /// Whether the editor accepts text editing interactions.
+  ///
+  /// If set to `false` the editor is not editable amd doesn't allow interaction actions, such as text selection.
+  final bool readOnly;
+
+  /// {@macro RichTextField.focus}
   final FocusNode? focus;
-  final bool showCursor;
-  final bool readonly;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -294,12 +385,12 @@ class _ThemedEditor extends ConsumerWidget {
       scrollController: ScrollController(),
       scrollable: true,
       focusNode: focus ?? FocusNode(),
-      autoFocus: !readonly,
-      readOnly: readonly,
+      autoFocus: !readOnly,
+      readOnly: readOnly,
       expands: false,
       padding: EdgeInsets.zero,
-      enableInteractiveSelection: !readonly,
-      showCursor: showCursor,
+      enableInteractiveSelection: !readOnly,
+      showCursor: !readOnly,
       // TODO(ggirotto): Placeholder is crashing. This is a problem related to `FlutterQuill`.
       // TODO(ggirotto): https://github.com/singerdmx/flutter-quill/issues/348
       // placeholder: placeholder,
@@ -315,7 +406,7 @@ class _ThemedEditor extends ConsumerWidget {
           textTheme.bodyText1!,
           zeroTuple,
           zeroTuple,
-          BoxDecoration(color: backgroundColor),
+          BoxDecoration(color: codeBackgroundColor),
         ),
       ),
     );
@@ -329,12 +420,12 @@ class _RichTextFieldToolbar extends HookConsumerWidget {
   final quill.QuillController controller;
 
   /// Maps [quill.Attribute] to its respective asset.
-  final Map<quill.Attribute<dynamic>, String> _toolBarAsset = {
+  final Map<quill.Attribute<dynamic>, String> _toolBarAsset = Map.unmodifiable(<quill.Attribute<dynamic>, String>{
     quill.Attribute.bold: images.boldAsset,
     quill.Attribute.italic: images.italicAsset,
     quill.Attribute.underline: images.underlineAsset,
     quill.Attribute.codeBlock: images.codeAsset,
-  };
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -384,6 +475,9 @@ class _RichTextFieldToolbar extends HookConsumerWidget {
   }
 }
 
+/// Creates a hook instance of [quill.QuillController] from [RichTextFieldController] controller.
+///
+/// This is a syntax-sugar hook to forward content from a [RichTextFieldController] to [quill.QuillController].
 const _useQuillController = _QuillControllerHookCreator();
 
 class _QuillControllerHookCreator {
@@ -432,5 +526,5 @@ class _QuillControllerHookState extends HookState<quill.QuillController, _QuillC
   void dispose() => _controller.dispose();
 
   @override
-  String get debugLabel => 'useQuillController';
+  String get debugLabel => '_useQuillController';
 }
