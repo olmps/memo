@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
@@ -430,9 +431,10 @@ class _TerminalActions extends HookWidget {
     final difficultyActions = MemoDifficulty.values.map((difficulty) {
       final isMarkedAnswer = difficulty == markedAnswer;
 
-      final difficultyEmoji = Text(
-        strings.memoDifficultyEmoji(difficulty),
-        style: const TextStyle(fontSize: dimens.executionsTerminalActionEmojiTextSize),
+      final difficultyEmoji = Image.asset(
+        images.memoDifficultyEmoji(difficulty),
+        height: dimens.executionsTerminalActionEmojiSize,
+        width: dimens.executionsTerminalActionEmojiSize,
       );
 
       return GestureDetector(
@@ -476,7 +478,7 @@ class _TerminalActions extends HookWidget {
   }
 
   Widget _buildDifficultyAction(
-      bool isMarkedAnswer, Text difficultyEmoji, Color highlightColor, Color actionBackgroundColor) {
+      bool isMarkedAnswer, Image difficultyEmoji, Color highlightColor, Color actionBackgroundColor) {
     final hasMarkedAnswer = markedAnswer != null;
 
     final blurFilter = BackdropFilter(

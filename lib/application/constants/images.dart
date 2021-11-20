@@ -1,6 +1,7 @@
 // Type-safe usage of images assets.
 //
 // All raw images paths belong here and must be only accessed through this file.
+import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:meta/meta.dart';
 
 const _imgsRoot = 'assets/images';
@@ -18,8 +19,11 @@ enum ImageKey {
   trendingUpArrow,
 
   // illustrations
+  easyEmoji,
   folderBig,
+  hardEmoji,
   logo,
+  mediumEmoji,
   userAvatar,
 }
 
@@ -43,10 +47,16 @@ extension ImageKeyPath on ImageKey {
         return '$_iconsRoot/settings.png';
       case ImageKey.trendingUpArrow:
         return '$_iconsRoot/trending_up_arrow.png';
+      case ImageKey.easyEmoji:
+        return '$_illustrationsRoot/easy_emoji.png';
       case ImageKey.folderBig:
         return '$_illustrationsRoot/folder_big.png';
+      case ImageKey.hardEmoji:
+        return '$_illustrationsRoot/hard_emoji.png';
       case ImageKey.logo:
         return '$_illustrationsRoot/logo.png';
+      case ImageKey.mediumEmoji:
+        return '$_illustrationsRoot/medium_emoji.png';
       case ImageKey.userAvatar:
         return '$_illustrationsRoot/user_avatar.png';
     }
@@ -64,6 +74,20 @@ final settingsAsset = ImageKey.settings.path;
 final trendingUpArrowAsset = ImageKey.trendingUpArrow.path;
 
 const _illustrationsRoot = '$_imgsRoot/illustrations';
+final easyEmojiAsset = ImageKey.easyEmoji.path;
 final folderBigAsset = ImageKey.folderBig.path;
+final hardEmojiAsset = ImageKey.hardEmoji.path;
 final logoAsset = ImageKey.logo.path;
+final mediumEmojiAsset = ImageKey.mediumEmoji.path;
 final userAvatarAsset = ImageKey.userAvatar.path;
+
+String memoDifficultyEmoji(MemoDifficulty difficulty) {
+  switch (difficulty) {
+    case MemoDifficulty.easy:
+      return easyEmojiAsset;
+    case MemoDifficulty.medium:
+      return mediumEmojiAsset;
+    case MemoDifficulty.hard:
+      return hardEmojiAsset;
+  }
+}

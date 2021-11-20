@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/memo_theme_data.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/progress_vm.dart';
-import 'package:memo/application/widgets/theme/circular_labeled_progress.dart';
+import 'package:memo/application/widgets/theme/stacked_circular_progress.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 
 class ProgressPage extends ConsumerWidget {
@@ -68,10 +69,10 @@ class ProgressPage extends ConsumerWidget {
     final readablePercentage = (amountPercentage * 100).round().toString();
 
     return _ProgressContainer(
-      leading: CircularLabeledProgress(
+      leading: StackedCircularProgress(
         progressValue: amountPercentage,
-        centerLabel: strings.memoDifficultyEmoji(difficulty),
         semanticLabel: strings.circularIndicatorMemoAnswersLabel(difficulty),
+        child: Image.asset(images.memoDifficultyEmoji(difficulty)),
       ),
       title: _buildAlternateStyleTextBox(
         context,

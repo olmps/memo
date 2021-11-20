@@ -157,17 +157,6 @@ String linearIndicatorCollectionRecallLabel(String recallDescription) =>
 String linearIndicatorCollectionCompletionLabel(String completionDescription) =>
     'Indicador linear demonstrando que o nível de conclusão da coleção está em $completionDescription';
 
-String memoDifficultyEmoji(MemoDifficulty difficulty) {
-  switch (difficulty) {
-    case MemoDifficulty.easy:
-      return squintingFaceWithTongue;
-    case MemoDifficulty.medium:
-      return expressionlessFace;
-    case MemoDifficulty.hard:
-      return faceScreamingInFear;
-  }
-}
-
 String resourceEmoji(ResourceType resource) {
   switch (resource) {
     case ResourceType.article:
@@ -208,10 +197,6 @@ const memo = '\u{1F4DD}';
 const books = '\u{1F4DA}';
 const television = '\u{1F4FA}';
 const link = '\u{1F517}';
-
-const squintingFaceWithTongue = '\u{1F61D}';
-const expressionlessFace = '\u{1F611}';
-const faceScreamingInFear = '\u{1F631}';
 
 const partyPopper = '\u{1F389}';
 

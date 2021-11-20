@@ -5,23 +5,22 @@ import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 
-/// Centers a styled [Text] element above a [AnimatableCircularProgress] with [progressValue].
-class CircularLabeledProgress extends ConsumerWidget {
-  const CircularLabeledProgress({
+/// Stacks a centered [child] on top of a [AnimatableCircularProgress] with [progressValue].
+class StackedCircularProgress extends ConsumerWidget {
+  const StackedCircularProgress({
     required this.progressValue,
-    required this.centerLabel,
     required this.semanticLabel,
+    required this.child,
     Key? key,
   }) : super(key: key);
 
   final double progressValue;
-  final String centerLabel;
   final String semanticLabel;
+  final Widget child;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final memoTheme = ref.watch(themeController);
-    final centerLabelTheme = Theme.of(context).textTheme.headline4;
 
     return SizedBox(
       width: dimens.progressCircularProgressSize,
@@ -39,7 +38,7 @@ class CircularLabeledProgress extends ConsumerWidget {
             semanticLabel: semanticLabel,
           ),
           Positioned.fill(
-            child: Align(child: Text(centerLabel, style: centerLabelTheme)),
+            child: Align(child: child),
           ),
         ],
       ),
