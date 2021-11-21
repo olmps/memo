@@ -31,7 +31,7 @@ class UpdateCollectionPage extends HookConsumerWidget {
 
       tabController.addListener(tabListener);
       return () => tabController.removeListener(tabListener);
-    });
+    }, []);
 
     final tabs = _Segment.values.map((segment) => Text(segment.title)).toList();
     final title = vm.isEditing ? strings.editCollection : strings.newCollection;
