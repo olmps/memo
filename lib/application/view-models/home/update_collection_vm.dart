@@ -7,7 +7,7 @@ import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
 
 final updateCollectionVM = StateNotifierProvider.autoDispose<UpdateCollectionVM, UpdateCollectionState>(
-  (ref) => UpdateCollectionVMImpl(collectionId: ref.read(updateCollectionId)),
+  (ref) => UpdateCollectionVMImpl(collectionId: ref.watch(updateCollectionId)),
   dependencies: [updateCollectionId],
   name: 'updateCollectionVM',
 );
