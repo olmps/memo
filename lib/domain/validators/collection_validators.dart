@@ -19,3 +19,6 @@ void validateCollectionDescription(String description) {
     throw ValidationException.fieldLengthExceeded(collectionDescriptionMaxLength);
   }
 }
+
+const collectionTagMaxLength = 15;
+final collectionTagRegex = RegExp(r'^[a-zA-Z0-9_ ,]*$');
