@@ -21,7 +21,7 @@ enum _Segment { details, memos }
 class UpdateCollectionPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionVM.notifier);
+    final vm = ref.watch(updateCollectionVM.notifier);
 
     final selectedSegment = useState(_Segment.details);
     final tabController = useTabController(initialLength: _Segment.values.length);
@@ -60,7 +60,7 @@ class _UpdateCollectionContents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionVM.notifier);
+    final vm = ref.watch(updateCollectionVM.notifier);
     final state = ref.watch(updateCollectionVM);
 
     if (state is UpdateCollectionFailedLoading) {
@@ -92,7 +92,7 @@ class _UpdateCollectionContents extends ConsumerWidget {
 class _UpdateCollectionDetails extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionVM.notifier);
+    final vm = ref.watch(updateCollectionVM.notifier);
 
     ref.listen<UpdatedDetailsState>(
       updateCollectionDetailsVM,
@@ -153,7 +153,7 @@ class _DetailsActionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionVM.notifier);
+    final vm = ref.watch(updateCollectionVM.notifier);
     final state = ref.watch(updateCollectionVM);
 
     if (state is! UpdateCollectionLoaded) {
@@ -169,7 +169,7 @@ class _DetailsActionButton extends ConsumerWidget {
 class _MemosActionButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionVM.notifier);
+    final vm = ref.watch(updateCollectionVM.notifier);
     final state = ref.watch(updateCollectionVM);
 
     if (state is! UpdateCollectionLoaded) {
