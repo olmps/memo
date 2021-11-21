@@ -1,14 +1,16 @@
 import 'package:memo/core/faults/exceptions/base_exception.dart';
-import 'package:memo/core/faults/exceptions/validation_exception.dart';
 
 /// Returns a locale-suitable description for the following [exception].
 String descriptionForException(BaseException exception) {
+  if (exception.message != null) {
+    return exception.message!;
+  }
+
   switch (exception.type) {
     case ExceptionType.emptyField:
       return 'Este campo é obrigatório';
     case ExceptionType.fieldLengthExceeded:
-      final validationException = exception as ValidationException;
-      return 'Este campo tem limite máximo de ${validationException.amount!} caracteres';
+      return 'Limite máximo de caracteres ultrapassado';
 
     case ExceptionType.failedToOpenUrl:
       return 'Algo deu errado ao tentar abrir o link!';
