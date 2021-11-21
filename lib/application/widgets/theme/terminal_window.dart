@@ -11,7 +11,7 @@ class TerminalWindow extends StatelessWidget {
   final Widget body;
   final Color borderColor;
 
-  /// Fade gradient used to dim [body] content in vertical axis when it's scrollable.
+  /// Dim content in vertical axis when [body] is scrollable.
   final List<Color> fadeGradient;
 
   @override
