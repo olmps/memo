@@ -58,7 +58,7 @@ class _NameField extends HookConsumerWidget {
       inputFormatters: [
         LengthLimitingTextInputFormatter(validators.collectionNameMaxLength),
       ],
-      helperText: '$nameLength/${validators.collectionNameMaxLength} caracteres',
+      helperText: strings.fieldCharactersAmount(nameLength, validators.collectionNameMaxLength),
       errorText: state is UpdateDetailsInvalid && state.nameException != null && !focus.hasFocus
           ? descriptionForException(state.nameException!)
           : null,
@@ -118,7 +118,7 @@ class _DescriptionField extends HookConsumerWidget {
         style: textTheme.bodyText1?.copyWith(color: theme.primarySwatch.shade400),
       ),
       placeholder: strings.collectionDescription,
-      helperText: '$descriptionLength/${validators.collectionDescriptionMaxLength} caracteres',
+      helperText: strings.fieldCharactersAmount(descriptionLength, validators.collectionDescriptionMaxLength),
       errorText: state is UpdateDetailsInvalid && state.descriptionException != null && !focus.hasFocus
           ? descriptionForException(state.descriptionException!)
           : null,
