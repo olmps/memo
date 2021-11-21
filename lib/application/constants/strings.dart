@@ -15,7 +15,6 @@ import 'package:memo/domain/enums/resource_type.dart';
 //
 const oops = 'Oops';
 const tryAgain = 'Tente Novamente';
-const cancel = 'Cancelar';
 
 //
 // Collections
@@ -76,12 +75,11 @@ const collectionName = 'Nome da Coleção';
 const collectionDescription = 'Descrição da Coleção';
 
 String updateMemoQuestionTitle(int memoIndex) => '### Pergunta $memoIndex';
-const updateMemoQuestionPlaceholder = 'Digite a questão';
+const updateMemoQuestionPlaceholder = 'Escreva a questão';
 
 const updateMemoAnswer = '### Resposta';
-const updateMemoAnswerPlaceholder = 'Digite a resposta';
+const updateMemoAnswerPlaceholder = 'Escreva a resposta';
 
-const remove = 'Remover';
 const removeMemoTitle = 'Remover Memo';
 const removeMemoMessage = 'Você tem certeza que deseja remover este memo?';
 
@@ -179,6 +177,8 @@ const no = 'Não';
 const ok = 'Ok';
 const memos = 'Memos';
 const next = 'Próximo';
+const cancel = 'Cancelar';
+const remove = 'Remover';
 
 const recallLevel = 'Nível de Fixação';
 
