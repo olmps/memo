@@ -14,8 +14,8 @@ import 'package:memo/application/widgets/theme/terminal_window.dart';
 /// A terminal-styled component that presents a `Memo` question and answer that can be updated.
 ///
 /// Use [questionController] and [answerController] to control the Memo content being edited.
-class MemoTerminal extends HookConsumerWidget {
-  const MemoTerminal({
+class UpdateMemoTerminal extends HookConsumerWidget {
+  const UpdateMemoTerminal({
     required this.memoIndex,
     this.questionController,
     this.answerController,
