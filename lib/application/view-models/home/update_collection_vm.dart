@@ -57,12 +57,6 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
       await Future<void>.delayed(const Duration(seconds: 2));
 
       state = UpdateCollectionLoaded(collectionMetadata: CollectionMetadata.empty(), memosMetadata: const []);
-
-      // state = UpdateCollectionFailedSaving(
-      //   UrlException.failedToOpen(),
-      //   metadata: CollectionMetadata.empty(),
-      //   memosMetadata: const [],
-      // );
     } on BaseException catch (exception) {
       state = UpdateCollectionFailedLoading(exception);
     }
