@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/destructive_button.dart';
-import 'package:memo/application/widgets/theme/memo_terminal.dart';
+import 'package:memo/application/widgets/theme/update_memo_terminal.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -21,7 +21,7 @@ void main() {
     // Wraps `MemoTerminal` in a tiny SizedBox to force its content to be scrollable
     final memoTerminal = SizedBox.square(
       dimension: 320,
-      child: MemoTerminal(
+      child: UpdateMemoTerminal(
         memoIndex: 0,
         questionController: questionController,
         answerController: answerController,
@@ -31,7 +31,7 @@ void main() {
     const dragOffset = 500.0;
 
     await pumpProviderScoped(tester, memoTerminal);
-    await tester.drag(find.byType(MemoTerminal), const Offset(0, -dragOffset));
+    await tester.drag(find.byType(UpdateMemoTerminal), const Offset(0, -dragOffset));
     await tester.pump();
 
     expect(scrollController.offset, greaterThan(0));
@@ -39,7 +39,7 @@ void main() {
 
   testWidgets('should present confirmation modal when the remove button is tapped', (tester) async {
     final onRemoveCallback = MockCallbackFunction();
-    final memoTerminal = MemoTerminal(memoIndex: 0, onRemove: onRemoveCallback);
+    final memoTerminal = UpdateMemoTerminal(memoIndex: 0, onRemove: onRemoveCallback);
 
     await pumpProviderScoped(tester, memoTerminal);
 
@@ -52,7 +52,7 @@ void main() {
 
   testWidgets('should trigger onRemove when confirming memo removal', (tester) async {
     final onRemoveCallback = MockCallbackFunction();
-    final memoTerminal = MemoTerminal(memoIndex: 0, onRemove: onRemoveCallback);
+    final memoTerminal = UpdateMemoTerminal(memoIndex: 0, onRemove: onRemoveCallback);
 
     await pumpProviderScoped(tester, memoTerminal);
 
