@@ -11,11 +11,18 @@ import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/hooks/tags_controller_hook.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 
-/// Provides the list of tags of the collection being updated.
+/// A controller for [TagsField].
 ///
-/// These tags may be mutated by [TagsField], which the user may use to update the tags list.
-class TagsController extends ValueNotifier<List<String>> {
-  TagsController({List<String>? tags}) : super(tags ?? []);
+/// It shares the same behavior and characteristics as [TextEditingController] but in the context of [TagsField] instead
+/// [TextField]. It means that this controller may be initialized with an initial list of [tags] and that it notify its
+/// listeners once these tags are updated. To listen to such updates, attach a listener to the current controller by
+/// using [addListener] function.
+///
+/// See also:
+/// * [TextEditingController], which shares the same behavior as this controller.
+/// * [TagsField], the Widget controlled by this controller.
+class TagsEditingController extends ValueNotifier<List<String>> {
+  TagsEditingController({List<String>? tags}) : super(tags ?? []);
 
   List<String> get tags => value;
 
@@ -28,8 +35,8 @@ class TagsField extends HookConsumerWidget {
 
   /// Controls the tags being edited.
   ///
-  /// If null, this widget will create its own [TagsController].
-  final TagsController? controller;
+  /// If null, this widget will create its own [TagsEditingController].
+  final TagsEditingController? controller;
 
   /// {@template TagsDropdownField.maxTags}
   /// Maximum number of tags allowed to be chosen.
@@ -38,7 +45,6 @@ class TagsField extends HookConsumerWidget {
   /// {@endtemplate}
   final int maxTags;
 
-  /// {@macro CustomTextField.errorText}
   final String? errorText;
 
   @override
