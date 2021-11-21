@@ -38,21 +38,16 @@ class TagsField extends HookConsumerWidget {
   /// If null, this widget will create its own [TagsEditingController].
   final TagsEditingController? controller;
 
-  /// {@template TagsDropdownField.maxTags}
-  /// Maximum number of tags allowed to be chosen.
-  ///
-  /// Inputs that would increase this amount will be ignored, i.e, not transformed in tags.
+  /// {@template TagsField.maxTags}
+  /// Maximum allowed tags to be selected simultaneously.
   /// {@endtemplate}
   final int maxTags;
 
+  /// {@macro CustomTextField.errorText}
   final String? errorText;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeController);
-    final textTheme = Theme.of(context).textTheme;
-    final textInputDecoration = Theme.of(context).inputDecorationTheme;
-
     final controller = this.controller ?? useTagsController();
     final tags = useState(controller.tags);
 
@@ -69,7 +64,7 @@ class TagsField extends HookConsumerWidget {
     }
 
     useEffect(() {
-      void onSearchUpdated() {
+      void onFieldChanged() {
         final characters = fieldController.text.characters;
         final lastChar = characters.isNotEmpty ? characters.last : null;
         if (lastChar == ' ' || lastChar == ',') {
@@ -84,74 +79,115 @@ class TagsField extends HookConsumerWidget {
 
       void onFocusUpdate() => isFocused.value = fieldFocus.hasFocus || tags.value.isNotEmpty;
 
-      fieldController.addListener(onSearchUpdated);
+      fieldController.addListener(onFieldChanged);
       fieldFocus.addListener(onFocusUpdate);
       controller.addListener(onTagsUpdate);
 
       return () {
-        fieldController.removeListener(onSearchUpdated);
+        fieldController.removeListener(onFieldChanged);
         fieldFocus.removeListener(onFocusUpdate);
         controller.removeListener(onTagsUpdate);
       };
     });
-
-    // Simulates `TextField.helperText` animating the label when the field is focused or not.
-    final helperTitle = AnimatedDefaultTextStyle(
-      style: isFocused.value ? textTheme.caption!.copyWith(color: theme.neutralSwatch.shade300) : textTheme.subtitle1!,
-      duration: anims.textFieldHelperTextDuration,
-      child: const Text(strings.addTags),
-    );
-
-    final tagsFieldContainer = Container(
-      constraints: dimens.richTextFieldConstraints,
-      decoration: BoxDecoration(
-        borderRadius: dimens.genericRoundedElementBorderRadius,
-        color: textInputDecoration.fillColor,
-        border: Border.all(
-          color: errorText != null ? theme.destructiveSwatch : textInputDecoration.fillColor!,
-          width: dimens.genericBorderHeight,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          helperTitle,
-          if (isFocused.value) ...[
-            context.verticalBox(Spacing.small),
-            _TagsTextField(
-              controller: controller,
-              fieldController: fieldController,
-              focus: fieldFocus,
-              onSubmitted: onTagSelected,
-            ),
-          ]
-        ],
-      ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
-    );
-
-    final helperText = Text(
-      errorText != null ? errorText! : strings.tagsAmount(tags.value.length, maxTags),
-      style: textTheme.caption?.copyWith(
-        color: errorText != null ? theme.destructiveSwatch : theme.neutralSwatch.shade400,
-      ),
-    );
 
     return GestureDetector(
       onTap: () {
         fieldFocus.requestFocus();
         isFocused.value = true;
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          tagsFieldContainer,
-          context.verticalBox(Spacing.xxxSmall),
-          helperText.withOnlyPadding(context, left: Spacing.small)
-        ],
+      child: _TagsFieldContainer(
+        tagsField: _TagsTextField(
+          controller: controller,
+          fieldController: fieldController,
+          focus: fieldFocus,
+          onSubmitted: onTagSelected,
+        ),
+        tagsAmount: tags.value.length,
+        maxTags: maxTags,
+        hasFocus: isFocused.value,
+        errorText: errorText,
       ),
+    );
+  }
+}
+
+/// Wraps [tagsField] in a container that provides the same visual layout as the application [TextField]s.
+class _TagsFieldContainer extends ConsumerWidget {
+  const _TagsFieldContainer({
+    required this.tagsField,
+    required this.tagsAmount,
+    required this.maxTags,
+    required this.hasFocus,
+    required this.errorText,
+  });
+
+  /// The tags [TextField] that has the selected tags as a prefix of the input field.
+  final Widget tagsField;
+
+  /// The amount of tags that the user already selected.
+  final int tagsAmount;
+
+  /// {@macro TagsField.maxTags}
+  final int maxTags;
+
+  /// `true` if the tags field has focus.
+  final bool hasFocus;
+
+  /// {@macro CustomTextField.errorText}
+  final String? errorText;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeController);
+    final textTheme = Theme.of(context).textTheme;
+    final textInputDecoration = Theme.of(context).inputDecorationTheme;
+
+    // Simulates `TextField.helperText` animating the label when the field is focused or not.
+    final helperTitle = AnimatedDefaultTextStyle(
+      style: hasFocus ? textTheme.caption!.copyWith(color: theme.neutralSwatch.shade300) : textTheme.subtitle1!,
+      duration: anims.textFieldHelperTextDuration,
+      child: const Text(strings.addTags),
+    );
+
+    final helperText = Text(
+      errorText != null ? errorText! : strings.tagsAmount(tagsAmount, maxTags),
+      style: textTheme.caption?.copyWith(
+        color: errorText != null ? theme.destructiveSwatch : theme.neutralSwatch.shade400,
+      ),
+    );
+
+    final tagsFieldContent = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        helperTitle,
+        if (hasFocus) ...[
+          context.verticalBox(Spacing.small),
+          tagsField,
+        ]
+      ],
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          constraints: dimens.richTextFieldConstraints,
+          decoration: BoxDecoration(
+            borderRadius: dimens.genericRoundedElementBorderRadius,
+            color: textInputDecoration.fillColor,
+            border: Border.all(
+              color: errorText != null ? theme.destructiveSwatch : textInputDecoration.fillColor!,
+              width: dimens.genericBorderHeight,
+            ),
+          ),
+          child: tagsFieldContent.withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+        ),
+        context.verticalBox(Spacing.xxxSmall),
+        helperText.withOnlyPadding(context, left: Spacing.small)
+      ],
     );
   }
 }
@@ -162,16 +198,14 @@ class TagsField extends HookConsumerWidget {
 class _TagsTextField extends HookConsumerWidget {
   const _TagsTextField({required this.controller, this.fieldController, this.focus, this.onSubmitted});
 
-  final TagsController controller;
+  final TagsEditingController controller;
   final TextEditingController? fieldController;
 
   /// Controls the current field focus.
   final FocusNode? focus;
 
-  /// Called when the user indicates they are done inputting `tag`.
-  ///
-  /// Usually fired when the user press the "done" keyboard button.
-  final Function(String tag)? onSubmitted;
+  /// Called when the user submits a `tag` input by pressing "done" in the keyboard.
+  final void Function(String tag)? onSubmitted;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -237,7 +271,7 @@ class _SelectedTag extends ConsumerWidget {
 
     return Material(
       child: InkWell(
-        onTap: () => onTap?.call(tag),
+        onTap: onTap != null ? () => onTap!(tag) : null,
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: dimens.textTagBorderRadius,
