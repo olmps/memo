@@ -85,6 +85,8 @@ const removeMemoMessage = 'Você tem certeza que deseja remover este memo?';
 
 const newMemo = 'Novo Memo';
 
+String fieldCharactersAmount(int amount, int max) => '$amount/$max caracteres';
+
 //
 // Tags Component
 //
