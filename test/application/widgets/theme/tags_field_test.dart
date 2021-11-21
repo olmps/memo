@@ -43,6 +43,16 @@ void main() {
   });
 
   group('TextField Submit - ', () {
+    testWidgets('should not accept empty string input', (tester) async {
+      final controller = TagsEditingController();
+      final tagsField = TagsField(controller: controller, maxTags: 1);
+      const fakeEmptyTag = '';
+
+      await _pumpWithTag(field: tagsField, tester: tester, tag: fakeEmptyTag);
+
+      expect(controller.tags, isEmpty);
+    });
+
     testWidgets('should submit when input space character', (tester) async {
       const tagsField = TagsField(maxTags: 1);
       const fakeTag = 'Tag';
@@ -148,7 +158,7 @@ void main() {
     testWidgets('should add tag to the UI when updating the controller', (tester) async {
       const firstFakeTag = 'FIRST_TAG';
       const secondFakeTag = 'SECOND_TAG';
-      final controller = TagsController(tags: [firstFakeTag]);
+      final controller = TagsEditingController(tags: [firstFakeTag]);
       final tagsField = TagsField(controller: controller);
 
       await pumpProviderScoped(tester, tagsField);
@@ -164,7 +174,7 @@ void main() {
   });
 }
 
-/// Pumps [field] optionally adding [tag].
+/// Pumps [field] and calls [_addTag] using [tag].
 Future<void> _pumpWithTag({required TagsField field, required WidgetTester tester, required String tag}) async {
   await pumpProviderScoped(tester, field);
   await tester.tap(find.byType(TagsField));
