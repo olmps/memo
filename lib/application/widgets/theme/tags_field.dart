@@ -10,6 +10,7 @@ import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/hooks/tags_controller_hook.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/domain/validators/collection_validators.dart';
 
 /// A controller for [TagsField].
 ///
@@ -293,17 +294,14 @@ class _SelectedTag extends ConsumerWidget {
 
 /// Formats the text from [_TagsTextField] `TextField`.
 class _TagFieldFormatter extends TextInputFormatter {
-  static const _maxTagLength = 15;
-
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.text.length > _maxTagLength) {
+    if (newValue.text.length > collectionTagMaxLength) {
       return TextEditingValue(text: oldValue.text, selection: oldValue.selection);
     }
 
     // Restrict the content to only accept alphanumeric space, underscore and comma characters.
-    final alphanumRegex = RegExp(r'^[a-zA-Z0-9_ ,]*$');
-    if (!alphanumRegex.hasMatch(newValue.text)) {
+    if (!collectionTagRegex.hasMatch(newValue.text)) {
       return TextEditingValue(text: oldValue.text, selection: oldValue.selection);
     }
 
