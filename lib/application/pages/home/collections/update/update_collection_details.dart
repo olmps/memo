@@ -37,7 +37,7 @@ class UpdateCollectionDetails extends HookWidget {
 class _NameField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionDetailsVM.notifier);
+    final vm = ref.watch(updateCollectionDetailsVM.notifier);
     final state = ref.watch(updateCollectionDetailsVM);
 
     final controller = useTextEditingController(text: state.metadata.name);
@@ -69,7 +69,7 @@ class _NameField extends HookConsumerWidget {
 class _TagsField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionDetailsVM.notifier);
+    final vm = ref.watch(updateCollectionDetailsVM.notifier);
 
     final controller = useTagsController();
 
@@ -89,7 +89,7 @@ class _DescriptionField extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
-    final vm = ref.read(updateCollectionDetailsVM.notifier);
+    final vm = ref.watch(updateCollectionDetailsVM.notifier);
     final state = ref.watch(updateCollectionDetailsVM);
 
     final controller = useRichTextEditingController(richText: state.metadata.description.richText);
