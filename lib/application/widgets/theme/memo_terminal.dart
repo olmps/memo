@@ -5,7 +5,6 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
-import 'package:memo/application/hooks/rich_text_field_controller_hook.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/utils/bottom_sheet.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
@@ -27,10 +26,7 @@ class MemoTerminal extends HookConsumerWidget {
   /// The index of the current memo in the `Collection` `Memo`'s list.
   final int memoIndex;
 
-  /// Controls the `Memo` question content.
   final RichTextFieldController? questionController;
-
-  /// Controls the `Memo` answer content.
   final RichTextFieldController? answerController;
 
   /// Triggers when the current memo should be removed from the Collection Memos.
@@ -43,7 +39,6 @@ class MemoTerminal extends HookConsumerWidget {
     final theme = ref.watch(themeController);
     final textTheme = Theme.of(context).textTheme;
 
-    final questionController = this.questionController ?? useRichTextEditingController();
     final questionTitle = Text(
       strings.updateMemoQuestionTitle(memoIndex),
       style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
@@ -61,7 +56,6 @@ class MemoTerminal extends HookConsumerWidget {
       ],
     );
 
-    final answerController = this.answerController ?? useRichTextEditingController();
     final answerTitle = Text(
       strings.updateMemoAnswer,
       style: textTheme.bodyText1?.copyWith(color: theme.primarySwatch),
@@ -79,25 +73,11 @@ class MemoTerminal extends HookConsumerWidget {
       ],
     );
 
-    Future<void> removeDialogConfirmation() => showDestructiveOperationModalBottomSheet(
-          context,
-          ref,
-          title: strings.removeMemoTitle,
-          message: strings.removeMemoMessage,
-          destructiveActionTitle: strings.remove.toUpperCase(),
-          cancelActionTitle: strings.cancel.toUpperCase(),
-          onDestructiveTapped: () {
-            onRemove!();
-            Navigator.of(context).pop();
-          },
-          onCancelTapped: Navigator.of(context).pop,
-        );
-
     final trashButton = CustomTextButton(
       color: theme.destructiveSwatch,
       text: strings.remove.toUpperCase(),
       leadingAsset: images.trashAsset,
-      onPressed: onRemove != null ? removeDialogConfirmation : null,
+      onPressed: onRemove != null ? () => _removeDialogConfirmation(context, ref) : null,
     );
 
     final borderColor = theme.neutralSwatch.shade700;
@@ -121,4 +101,21 @@ class MemoTerminal extends HookConsumerWidget {
       ),
     );
   }
+
+  Future<void> _removeDialogConfirmation(BuildContext context, WidgetRef ref) =>
+      showDestructiveOperationModalBottomSheet(
+        context,
+        ref,
+        title: strings.removeMemoTitle,
+        message: strings.removeMemoMessage,
+        destructiveActionTitle: strings.remove.toUpperCase(),
+        cancelActionTitle: strings.cancel.toUpperCase(),
+        onDestructiveTapped: () {
+          // We can bang-operator the `onRemove` cause it's only called when the button is available, which is also
+          // determined by this same property.
+          onRemove!();
+          Navigator.of(context).pop();
+        },
+        onCancelTapped: Navigator.of(context).pop,
+      );
 }
