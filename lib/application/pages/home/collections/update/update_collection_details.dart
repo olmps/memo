@@ -48,7 +48,7 @@ class _NameField extends HookConsumerWidget {
 
       controller.addListener(onNameUpdate);
       return () => controller.removeListener(onNameUpdate);
-    });
+    }, []);
 
     final nameLength = state.metadata.name.length;
     return CustomTextField(
@@ -78,7 +78,7 @@ class _TagsField extends HookConsumerWidget {
 
       controller.addListener(onTagsUpdate);
       return () => controller.removeListener(onTagsUpdate);
-    });
+    }, []);
 
     return const TagsField();
   }
@@ -107,7 +107,7 @@ class _DescriptionField extends HookConsumerWidget {
         controller.removeListener(onDescriptionUpdate);
         focus.removeListener(onFocusUpdate);
       };
-    });
+    }, []);
 
     final descriptionLength = state.metadata.description.plainText.length;
     return RichTextField(
