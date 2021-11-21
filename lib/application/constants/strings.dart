@@ -15,6 +15,7 @@ import 'package:memo/domain/enums/resource_type.dart';
 //
 const oops = 'Oops';
 const tryAgain = 'Tente Novamente';
+String fieldMaxCharsMessage(int maxChars) => 'Este campo tem limite máximo de $maxChars caracteres';
 
 //
 // Collections
