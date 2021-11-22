@@ -7,7 +7,7 @@ import 'package:memo/application/widgets/theme/destructive_button.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../utils/fakes.dart';
+import '../../../utils/mocks.dart';
 import '../../../utils/widget_pump.dart';
 
 void main() {
