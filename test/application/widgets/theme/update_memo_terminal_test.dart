@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
+import 'package:memo/application/pages/home/collections/update/update_memo_terminal.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/destructive_button.dart';
-import 'package:memo/application/widgets/theme/update_memo_terminal.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:mocktail/mocktail.dart';
 
