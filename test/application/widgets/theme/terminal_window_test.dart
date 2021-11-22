@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/application/widgets/theme/terminal_window.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../utils/fakes.dart';
+import '../../../utils/mocks.dart';
 import '../../../utils/widget_pump.dart';
 
 void main() {
