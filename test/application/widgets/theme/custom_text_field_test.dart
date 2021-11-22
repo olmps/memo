@@ -25,7 +25,7 @@ void main() {
       await pumpProviderScoped(tester, textField);
       expect(focusNode.hasFocus, false);
 
-      await tester.tapAt(Offset.zero);
+      await tester.tap(find.byType(TextField));
       expect(focusNode.hasFocus, true);
     });
 
@@ -116,12 +116,8 @@ void main() {
 
         final wrapperContainer = find.byType(Container).first.evaluate().single.widget as Container;
         final containerDecoration = wrapperContainer.decoration! as BoxDecoration;
-        final containerBorder = containerDecoration.border! as Border;
 
-        expect(containerBorder.top.color, expectedColor);
-        expect(containerBorder.right.color, expectedColor);
-        expect(containerBorder.bottom.color, expectedColor);
-        expect(containerBorder.left.color, expectedColor);
+        expect(containerDecoration.color, expectedColor);
       });
 
       testWidgets('should precede helperText when both are present', (tester) async {

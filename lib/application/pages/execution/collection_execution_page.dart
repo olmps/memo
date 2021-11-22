@@ -108,7 +108,6 @@ class _ExecutionAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
     return showSnappableDraggableModalBottomSheet(
       context,
-      ref,
       isDismissible: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -36,6 +36,16 @@ void main() {
       await _pumpAndPressWithBackgroundColor(tester, primaryButton, disabledColor);
     });
 
+    testWidgets('must fill available width', (tester) async {
+      const constrainedWidth = 140.0;
+      const primaryButton = SizedBox(width: constrainedWidth, child: PrimaryElevatedButton(text: 'test'));
+
+      await pumpProviderScoped(tester, primaryButton);
+
+      final buttonRenderBox = find.byType(PrimaryElevatedButton).first.evaluate().single.renderObject! as RenderBox;
+      expect(buttonRenderBox.size.width, constrainedWidth);
+    });
+
     testWidgets('should trigger onPressed when tapped', (tester) async {
       var hasPressed = false;
       final primaryButton = PrimaryElevatedButton(text: 'test', onPressed: () => hasPressed = true);
@@ -74,6 +84,16 @@ void main() {
       const secondaryButton = SecondaryElevatedButton(text: 'test', backgroundColor: buttonColor);
 
       await _pumpAndPressWithBackgroundColor(tester, secondaryButton, disabledColor);
+    });
+
+    testWidgets('must fill available width', (tester) async {
+      const constrainedWidth = 140.0;
+      const primaryButton = SizedBox(width: constrainedWidth, child: PrimaryElevatedButton(text: 'test'));
+
+      await pumpProviderScoped(tester, primaryButton);
+
+      final buttonRenderBox = find.byType(PrimaryElevatedButton).first.evaluate().single.renderObject! as RenderBox;
+      expect(buttonRenderBox.size.width, constrainedWidth);
     });
 
     testWidgets('should trigger onPressed when tapped', (tester) async {
@@ -150,6 +170,16 @@ void main() {
       await _pumpAndTap(tester, textButton);
 
       expect(hasPressed, true);
+    });
+
+    testWidgets('must shrink based on its content', (tester) async {
+      const expectedWidth = 64.0;
+      const textButton = CustomTextButton(text: 'Text');
+
+      await pumpProviderScoped(tester, textButton);
+
+      final buttonRenderBox = find.byType(CustomTextButton).first.evaluate().single.renderObject! as RenderBox;
+      expect(buttonRenderBox.size.width, expectedWidth);
     });
   });
 }

@@ -82,6 +82,7 @@ flutter:
     - assets/
     - assets/collections/
     - assets/images/icons/
+    - assets/images/icons/editor/
     - assets/images/illustrations/
     - assets/licenses/
 

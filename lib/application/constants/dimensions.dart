@@ -56,3 +56,8 @@ const double contributorImageBorderWidth = 4;
 const double dragIndicatorWidth = 40;
 const double dragIndicatorHeight = 4;
 const double minBottomSheetHeight = 300;
+
+//
+// Rich Text Field
+//
+const richTextFieldConstraints = BoxConstraints(maxHeight: 148, minHeight: 56);
