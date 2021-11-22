@@ -39,7 +39,7 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
     state = UpdateCollectionLoading();
 
     try {
-      // TODO: Call services to load [collectionId] if necessary or create an empty collection metadata
+      // TODO(ggirotto): Call services to load [collectionId] if necessary or create an empty collection metadata
       await Future<void>.delayed(const Duration(seconds: 2));
 
       // state = UpdateCollectionLoaded(collectionMetadata: CollectionMetadata.empty());
@@ -57,8 +57,8 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
   Future<void> saveCollection() async {
     final loadedState = state as UpdateCollectionLoaded;
     try {
-      // TODO: Call services to save the collection
-      print('Saving collection...');
+      // TODO(ggirotto): Call services to save the collection
+
     } on BaseException catch (exception) {
       state = UpdateCollectionFailedSaving(
         exception,
