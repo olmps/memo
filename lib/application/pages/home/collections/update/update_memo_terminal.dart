@@ -77,7 +77,7 @@ class UpdateMemoTerminal extends HookConsumerWidget {
       color: theme.destructiveSwatch,
       text: strings.remove.toUpperCase(),
       leadingAsset: images.trashAsset,
-      onPressed: onRemove != null ? () => _removeDialogConfirmation(context, ref) : null,
+      onPressed: onRemove != null ? () => _removeDialogConfirmation(context) : null,
     );
 
     final borderColor = theme.neutralSwatch.shade700;
@@ -102,10 +102,8 @@ class UpdateMemoTerminal extends HookConsumerWidget {
     );
   }
 
-  Future<void> _removeDialogConfirmation(BuildContext context, WidgetRef ref) =>
-      showDestructiveOperationModalBottomSheet(
+  Future<void> _removeDialogConfirmation(BuildContext context) => showDestructiveOperationModalBottomSheet(
         context,
-        ref,
         title: strings.removeMemoTitle,
         message: strings.removeMemoMessage,
         destructiveActionTitle: strings.remove.toUpperCase(),
