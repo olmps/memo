@@ -9,6 +9,7 @@ const _imgsRoot = 'assets/images';
 @visibleForTesting
 enum ImageKey {
   // icons
+  addCircle,
   bold,
   chevronLeft,
   chevronRight,
@@ -36,6 +37,8 @@ extension ImageKeyPath on ImageKey {
   @visibleForTesting
   String get path {
     switch (this) {
+      case ImageKey.addCircle:
+        return '$_illustrationsRoot/add_circle.png';
       case ImageKey.bold:
         return '$_editorIconsRoot/bold.png';
       case ImageKey.code:
@@ -80,6 +83,7 @@ extension ImageKeyPath on ImageKey {
 
 const _iconsRoot = '$_imgsRoot/icons';
 const _editorIconsRoot = '$_iconsRoot/editor';
+final addCircleAsset = ImageKey.addCircle.path;
 final boldAsset = ImageKey.bold.path;
 final chevronLeftAsset = ImageKey.chevronLeft.path;
 final chevronRightAsset = ImageKey.chevronRight.path;
