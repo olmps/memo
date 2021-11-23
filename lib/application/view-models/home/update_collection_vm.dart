@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
+import 'package:memo/domain/validators/collection_validators.dart';
 
 final updateCollectionVM = StateNotifierProvider.autoDispose<UpdateCollectionVM, UpdateCollectionState>(
   (ref) => UpdateCollectionVMImpl(collectionId: ref.watch(updateCollectionId)),
@@ -28,7 +29,7 @@ abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
   /// Updates collection details metadata.
   ///
   /// To persist the collection updates, use [saveCollection].
-  void updateMetadata({CollectionMetadata? metadata});
+  void updateMetadata({required CollectionMetadata metadata});
 
   /// Save the created/edited collection.
   ///
@@ -56,14 +57,19 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
       // TODO(ggirotto): Call services to load [collectionId] if necessary or create an empty collection metadata
       await Future<void>.delayed(const Duration(seconds: 2));
 
-      state = UpdateCollectionLoaded(collectionMetadata: CollectionMetadata.empty(), memosMetadata: const []);
+      state = UpdateCollectionLoaded(
+        collectionMetadata: CollectionMetadata.empty(),
+        memosMetadata: const [],
+        hasValidDetails: false,
+      );
     } on BaseException catch (exception) {
       state = UpdateCollectionFailedLoading(exception);
     }
   }
 
   @override
-  void updateMetadata({CollectionMetadata? metadata}) => state = loadedState.copyWith(metadata: metadata);
+  void updateMetadata({required CollectionMetadata metadata}) =>
+      state = loadedState.copyWith(metadata: metadata, hasValidDetails: _validateDetails(metadata: metadata));
 
   @override
   Future<void> saveCollection() async {
@@ -76,7 +82,20 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
         exception,
         metadata: loadedState.collectionMetadata,
         memosMetadata: loadedState.memosMetadata,
+        hasValidDetails: _validateDetails(metadata: loadedState.collectionMetadata),
       );
+    }
+  }
+
+  /// Returns `true` if [metadata] fields are valid.
+  bool _validateDetails({required CollectionMetadata metadata}) {
+    try {
+      validateCollectionName(metadata.name);
+      validateCollectionDescription(metadata.description.plainText);
+
+      return true;
+    } on BaseException catch (_) {
+      return false;
     }
   }
 }
@@ -130,45 +149,55 @@ abstract class UpdateCollectionState extends Equatable {
 class UpdateCollectionLoading extends UpdateCollectionState {}
 
 class UpdateCollectionLoaded extends UpdateCollectionState {
-  const UpdateCollectionLoaded({required this.collectionMetadata, required this.memosMetadata});
+  const UpdateCollectionLoaded({
+    required this.collectionMetadata,
+    required this.memosMetadata,
+    required this.hasValidDetails,
+  });
 
   final CollectionMetadata collectionMetadata;
   final List<MemoMetadata> memosMetadata;
 
-  /// Returns `true` if all required information from `Details` segment has been added.
-  bool get hasDetails => collectionMetadata.name.isNotEmpty && collectionMetadata.description.plainText.isNotEmpty;
+  /// `true` if [collectionMetadata] has valid inputs.
+  final bool hasValidDetails;
 
   /// Returns `true` if the collection has at least one memo.
   bool get hasMemos => memosMetadata.isNotEmpty;
 
   /// Returns `true` if the collection is ready to be saved.
-  bool get canSaveCollection => hasDetails && hasMemos;
+  bool get canSaveCollection => hasValidDetails && hasMemos;
 
-  UpdateCollectionLoaded copyWith({CollectionMetadata? metadata, List<MemoMetadata>? memos}) =>
-      UpdateCollectionLoaded(collectionMetadata: metadata ?? collectionMetadata, memosMetadata: memos ?? memosMetadata);
+  UpdateCollectionLoaded copyWith({CollectionMetadata? metadata, List<MemoMetadata>? memos, bool? hasValidDetails}) =>
+      UpdateCollectionLoaded(
+        collectionMetadata: metadata ?? collectionMetadata,
+        memosMetadata: memos ?? memosMetadata,
+        hasValidDetails: hasValidDetails ?? this.hasValidDetails,
+      );
 
-  UpdateCollectionSaving copyForSaving() =>
-      UpdateCollectionSaving(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
+  UpdateCollectionSaving copyForSaving() => UpdateCollectionSaving(
+      metadata: collectionMetadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 
-  UpdateCollectionSaved copyForSaved() =>
-      UpdateCollectionSaved(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
+  UpdateCollectionSaved copyForSaved() => UpdateCollectionSaved(
+      metadata: collectionMetadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 
   @override
-  List<Object?> get props => [...super.props, collectionMetadata, memosMetadata];
+  List<Object?> get props => [...super.props, collectionMetadata, memosMetadata, hasValidDetails];
 }
 
 class UpdateCollectionSaving extends UpdateCollectionLoaded {
   const UpdateCollectionSaving({
-    required CollectionMetadata collectionMetadata,
+    required CollectionMetadata metadata,
     required List<MemoMetadata> memosMetadata,
-  }) : super(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
+    required bool hasValidDetails,
+  }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 }
 
 class UpdateCollectionSaved extends UpdateCollectionLoaded {
   const UpdateCollectionSaved({
-    required CollectionMetadata collectionMetadata,
+    required CollectionMetadata metadata,
     required List<MemoMetadata> memosMetadata,
-  }) : super(collectionMetadata: collectionMetadata, memosMetadata: memosMetadata);
+    required bool hasValidDetails,
+  }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 }
 
 class UpdateCollectionFailedSaving extends UpdateCollectionLoaded {
@@ -176,7 +205,8 @@ class UpdateCollectionFailedSaving extends UpdateCollectionLoaded {
     this.exception, {
     required CollectionMetadata metadata,
     required List<MemoMetadata> memosMetadata,
-  }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata);
+    required bool hasValidDetails,
+  }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 
   final BaseException exception;
 

@@ -39,6 +39,7 @@ dependencies:
   ###
   flutter_riverpod: ^1.0.0
   hooks_riverpod: ^1.0.0
+  rxdart: ^0.27.3
 
   ###
   # UI

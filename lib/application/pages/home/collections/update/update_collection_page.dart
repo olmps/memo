@@ -148,7 +148,7 @@ class _DetailsActionButton extends ConsumerWidget {
 
     void onPressed() => state.hasMemos ? vm.saveCollection : onSegmentSwapRequested(_Segment.memos);
     final buttonTitle = state.hasMemos ? strings.saveCollection : strings.next;
-    return PrimaryElevatedButton(onPressed: state.hasDetails ? onPressed : null, text: buttonTitle.toUpperCase());
+    return PrimaryElevatedButton(onPressed: state.hasValidDetails ? onPressed : null, text: buttonTitle.toUpperCase());
   }
 }
 
