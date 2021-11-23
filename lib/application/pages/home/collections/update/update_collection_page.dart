@@ -78,7 +78,7 @@ class _UpdateCollectionContents extends ConsumerWidget {
             overrides: [
               updateDetailsMetadata.overrideWithValue(state.collectionMetadata),
             ],
-            child: _UpdateCollectionDetails(),
+            child: UpdateCollectionDetails(),
           );
         case _Segment.memos:
           return UpdateCollectionMemos();
@@ -86,20 +86,6 @@ class _UpdateCollectionContents extends ConsumerWidget {
     }
 
     throw InconsistentStateError.layout('Unsupported subtype (${state.runtimeType}) of `UpdateCollectionState`');
-  }
-}
-
-class _UpdateCollectionDetails extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.watch(updateCollectionVM.notifier);
-
-    ref.listen<UpdatedDetailsState>(
-      updateCollectionDetailsVM,
-      (_, state) => vm.updateMetadata(metadata: state.metadata),
-    );
-
-    return UpdateCollectionDetails();
   }
 }
 

@@ -9,15 +9,21 @@ import 'package:memo/application/hooks/rich_text_field_controller_hook.dart';
 import 'package:memo/application/hooks/tags_controller_hook.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/update_collection_details_vm.dart';
+import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/theme/custom_text_field.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/application/widgets/theme/tags_field.dart';
 import 'package:memo/application/widgets/unfocus_detector.dart';
 import 'package:memo/domain/validators/collection_validators.dart' as validators;
 
-class UpdateCollectionDetails extends HookWidget {
+class UpdateCollectionDetails extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final parentVM = ref.watch(updateCollectionVM.notifier);
+
+    ref.listen<UpdatedDetailsState>(
+        updateCollectionDetailsVM, (_, state) => parentVM.updateMetadata(metadata: state.metadata));
+
     return UnfocusDetector(
       child: SingleChildScrollView(
         child: Column(
