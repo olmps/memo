@@ -5,17 +5,15 @@ import 'package:memo/application/widgets/unfocus_detector.dart';
 import '../../utils/widget_pump.dart';
 
 void main() {
-  testWidgets('should request unfocus when tapping outside', (tester) async {
+  testWidgets('should request unfocus when tapping non-interactable child elements', (tester) async {
     final textFieldFocus = FocusNode();
-    final unfocusDetector = SizedBox.square(
-      dimension: 300,
-      child: UnfocusDetector(
-        child: Center(
-          child: SizedBox.square(
-            dimension: 100,
-            child: TextField(focusNode: textFieldFocus),
-          ),
-        ),
+    final containerKey = UniqueKey();
+    final unfocusDetector = UnfocusDetector(
+      child: Column(
+        children: [
+          TextField(focusNode: textFieldFocus),
+          Container(key: containerKey, height: 10, width: 10, color: Colors.red),
+        ],
       ),
     );
 
@@ -26,7 +24,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(textFieldFocus.hasFocus, true);
 
-    await tester.tapAt(const Offset(10, 10));
+    await tester.tap(find.byKey(containerKey));
     await tester.pumpAndSettle();
     expect(textFieldFocus.hasFocus, false);
   });
