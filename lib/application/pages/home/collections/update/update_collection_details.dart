@@ -14,6 +14,7 @@ import 'package:memo/application/widgets/theme/custom_text_field.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/application/widgets/theme/tags_field.dart';
 import 'package:memo/application/widgets/unfocus_detector.dart';
+import 'package:memo/core/faults/exceptions/base_exception.dart';
 import 'package:memo/domain/validators/collection_validators.dart' as validators;
 
 class UpdateCollectionDetails extends ConsumerWidget {
@@ -45,29 +46,28 @@ class _NameField extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(updateCollectionDetailsVM.notifier);
     final state = ref.watch(updateCollectionDetailsVM);
-
-    final controller = useTextEditingController(text: state.metadata.name);
-    final focus = useFocusNode();
-
-    useEffect(() {
-      void onNameUpdate() => vm.updateName(controller.text);
-
-      controller.addListener(onNameUpdate);
-      return () => controller.removeListener(onNameUpdate);
-    }, []);
+    final hasInitialData = useState(false);
 
     final nameLength = state.metadata.name.length;
-    return CustomTextField(
-      controller: controller,
-      focusNode: focus,
-      labelText: strings.collectionName,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(validators.collectionNameMaxLength),
-      ],
-      helperText: strings.fieldCharactersAmount(nameLength, validators.collectionNameMaxLength),
-      errorText: state is UpdateDetailsInvalid && state.nameException != null && !focus.hasFocus
-          ? descriptionForException(state.nameException!)
-          : null,
+
+    return StreamBuilder(
+      stream: vm.name,
+      builder: (context, snapshot) {
+        return CustomTextField(
+          onChanged: (updatedName) {
+            vm.updateName(updatedName ?? '');
+            hasInitialData.value = true;
+          },
+          labelText: strings.collectionName,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(validators.collectionNameMaxLength),
+          ],
+          helperText: strings.fieldCharactersAmount(nameLength, validators.collectionNameMaxLength),
+          errorText: snapshot.hasError && hasInitialData.value
+              ? descriptionForException(snapshot.error! as BaseException)
+              : null,
+        );
+      },
     );
   }
 }
@@ -77,16 +77,30 @@ class _TagsField extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(updateCollectionDetailsVM.notifier);
 
+    final hasInitialData = useState(false);
     final controller = useTagsController();
 
     useEffect(() {
-      void onTagsUpdate() => vm.updateTags(controller.tags);
+      void onTagsUpdate() {
+        vm.updateTags(controller.tags);
+        hasInitialData.value = true;
+      }
 
       controller.addListener(onTagsUpdate);
       return () => controller.removeListener(onTagsUpdate);
     }, []);
 
-    return const TagsField();
+    return StreamBuilder(
+      stream: vm.tags,
+      builder: (context, snapshot) {
+        return TagsField(
+          controller: controller,
+          errorText: snapshot.hasError && hasInitialData.value
+              ? descriptionForException(snapshot.error! as BaseException)
+              : null,
+        );
+      },
+    );
   }
 }
 
@@ -98,36 +112,38 @@ class _DescriptionField extends HookConsumerWidget {
     final vm = ref.watch(updateCollectionDetailsVM.notifier);
     final state = ref.watch(updateCollectionDetailsVM);
 
+    final hasInitialData = useState(false);
     final controller = useRichTextEditingController(richText: state.metadata.description.richText);
-    final focus = useFocusNode();
-    final hasFocus = useState(focus.hasFocus);
 
     useEffect(() {
-      void onDescriptionUpdate() => vm.updateDescription(controller.value);
-      void onFocusUpdate() => hasFocus.value = focus.hasFocus;
+      void onDescriptionUpdate() {
+        vm.updateDescription(controller.value);
+        hasInitialData.value = true;
+      }
 
       controller.addListener(onDescriptionUpdate);
-      focus.addListener(onFocusUpdate);
 
-      return () {
-        controller.removeListener(onDescriptionUpdate);
-        focus.removeListener(onFocusUpdate);
-      };
+      return () => controller.removeListener(onDescriptionUpdate);
     }, []);
 
     final descriptionLength = state.metadata.description.plainText.length;
-    return RichTextField(
-      controller: controller,
-      focus: focus,
-      modalTitle: Text(
-        strings.detailsDescription,
-        style: textTheme.bodyText1?.copyWith(color: theme.primarySwatch.shade400),
-      ),
-      placeholder: strings.collectionDescription,
-      helperText: strings.fieldCharactersAmount(descriptionLength, validators.collectionDescriptionMaxLength),
-      errorText: state is UpdateDetailsInvalid && state.descriptionException != null && !focus.hasFocus
-          ? descriptionForException(state.descriptionException!)
-          : null,
+
+    return StreamBuilder(
+      stream: vm.description,
+      builder: (context, snapshot) {
+        return RichTextField(
+          controller: controller,
+          modalTitle: Text(
+            strings.detailsDescription,
+            style: textTheme.bodyText1?.copyWith(color: theme.primarySwatch.shade400),
+          ),
+          placeholder: strings.collectionDescription,
+          helperText: strings.fieldCharactersAmount(descriptionLength, validators.collectionDescriptionMaxLength),
+          errorText: snapshot.hasError && hasInitialData.value
+              ? descriptionForException(snapshot.error! as BaseException)
+              : null,
+        );
+      },
     );
   }
 }

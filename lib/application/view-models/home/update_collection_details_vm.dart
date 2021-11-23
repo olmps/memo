@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,7 +7,8 @@ import 'package:memo/application/pages/home/collections/update/update_collection
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
-import 'package:memo/domain/validators/collection_validators.dart';
+import 'package:memo/domain/validators/collection_validators.dart' as validators;
+import 'package:rxdart/rxdart.dart';
 
 final updateCollectionDetailsVM = StateNotifierProvider.autoDispose<UpdateCollectionDetailsVM, UpdatedDetailsState>(
   (ref) => UpdateCollectionDetailsVMImpl(metadata: ref.read(updateDetailsMetadata)),
@@ -16,45 +19,105 @@ final updateCollectionDetailsVM = StateNotifierProvider.autoDispose<UpdateCollec
 abstract class UpdateCollectionDetailsVM extends StateNotifier<UpdatedDetailsState> {
   UpdateCollectionDetailsVM({required UpdatedDetailsState state}) : super(state);
 
-  /// Updates the collection name.
+  /// Streams the field state on each update.
   ///
-  /// Emits [UpdateDetailsInvalid] if [name] isn't a valid name.
-  void updateName(String name);
+  /// If a validation exception happens when validating the [name] input field, the stream emits a
+  /// `ValidationException`.
+  Stream<String> get name;
 
+  /// Receives a update event on the collection name field.
+  ///
+  /// Every update event will trigger a update on [name] stream which may emit a validation exception.
+  void updateName(String updatedName);
+
+  /// Streams the field state on each update.
+  ///
+  /// If a validation exception happens when validating the [tags] input field, the stream emits a
+  /// `ValidationException`.
+  Stream<List<String>> get tags;
+
+  /// Receives a update event on the collection tags field.
+  ///
+  /// Every update event will trigger a update on [tags] stream which may emit a validation exception.
   void updateTags(List<String> tags);
 
-  /// Updates the collection description.
+  /// Streams the field state on each update.
   ///
-  /// Emits [UpdateDetailsInvalid] if [description] isn't a valid description.
-  void updateDescription(RichTextEditingValue description);
+  /// If a validation exception happens when validating the [description] input field, the stream emits a
+  /// `ValidationException`.
+  Stream<RichTextEditingValue> get description;
+
+  /// Receives a update event on the collection description field.
+  ///
+  /// Every update event will trigger a update on [description] stream which may emit a validation exception.
+  void updateDescription(RichTextEditingValue updatedDescription);
 }
 
 class UpdateCollectionDetailsVMImpl extends UpdateCollectionDetailsVM {
-  UpdateCollectionDetailsVMImpl({
-    required CollectionMetadata metadata,
-  }) : super(state: UpdatedDetailsState(metadata: metadata));
+  UpdateCollectionDetailsVMImpl({required CollectionMetadata metadata})
+      : _collectionNameController = BehaviorSubject.seeded(metadata.name),
+        _collectionTagsController = BehaviorSubject.seeded(metadata.tags),
+        _collectionDescriptionController = BehaviorSubject.seeded(metadata.description),
+        super(state: UpdatedDetailsState(metadata: metadata));
+
+  final BehaviorSubject<String> _collectionNameController;
+  final BehaviorSubject<List<String>> _collectionTagsController;
+  final BehaviorSubject<RichTextEditingValue> _collectionDescriptionController;
 
   @override
-  void updateName(String name) {
+  Stream<String> get name =>
+      _collectionNameController.stream.transform(StreamTransformer.fromHandlers(handleData: _nameValidator));
+
+  @override
+  void updateName(String updatedName) {
+    _collectionNameController.sink.add(updatedName);
+    state = state.copyWith(name: updatedName);
+  }
+
+  @override
+  Stream<List<String>> get tags => _collectionTagsController.stream;
+
+  @override
+  void updateTags(List<String> tags) {
+    _collectionTagsController.sink.add(tags);
+    state = state.copyWith(tags: tags);
+  }
+
+  @override
+  Stream<RichTextEditingValue> get description => _collectionDescriptionController.stream
+      .transform(StreamTransformer.fromHandlers(handleData: _descriptionValidator));
+
+  @override
+  void updateDescription(RichTextEditingValue updatedDescription) {
+    _collectionDescriptionController.sink.add(updatedDescription);
+    state = state.copyWith(description: updatedDescription);
+  }
+
+  void _nameValidator(String name, EventSink<String> sink) {
     try {
-      validateCollectionName(name);
-      state = state.copyWith(name: name);
+      validators.validateCollectionName(name);
+      sink.add(name);
     } on BaseException catch (exception) {
-      state = state.copyForInvalidName(exception);
+      sink.addError(exception);
+    }
+  }
+
+  void _descriptionValidator(RichTextEditingValue description, EventSink<RichTextEditingValue> sink) {
+    try {
+      validators.validateCollectionDescription(description.plainText);
+      sink.add(description);
+    } on BaseException catch (exception) {
+      sink.addError(exception);
     }
   }
 
   @override
-  void updateTags(List<String> tags) => state = state.copyWith(tags: tags);
+  void dispose() {
+    super.dispose();
 
-  @override
-  void updateDescription(RichTextEditingValue description) {
-    try {
-      validateCollectionDescription(description.plainText);
-      state = state.copyWith(description: description);
-    } on BaseException catch (exception) {
-      state = state.copyForInvalidDescription(exception);
-    }
+    _collectionNameController.close();
+    _collectionTagsController.close();
+    _collectionDescriptionController.close();
   }
 }
 
@@ -66,23 +129,6 @@ class UpdatedDetailsState extends Equatable {
   UpdatedDetailsState copyWith({String? name, List<String>? tags, RichTextEditingValue? description}) =>
       UpdatedDetailsState(metadata: metadata.copyWith(name: name, tags: tags, description: description));
 
-  UpdateDetailsInvalid copyForInvalidName(BaseException exception) =>
-      UpdateDetailsInvalid(nameException: exception, metadata: metadata);
-
-  UpdateDetailsInvalid copyForInvalidDescription(BaseException exception) =>
-      UpdateDetailsInvalid(descriptionException: exception, metadata: metadata);
-
   @override
   List<Object?> get props => [metadata];
-}
-
-class UpdateDetailsInvalid extends UpdatedDetailsState {
-  const UpdateDetailsInvalid({required CollectionMetadata metadata, this.nameException, this.descriptionException})
-      : super(metadata: metadata);
-
-  final BaseException? nameException;
-  final BaseException? descriptionException;
-
-  @override
-  List<Object?> get props => super.props..addAll([nameException, descriptionException]);
 }
