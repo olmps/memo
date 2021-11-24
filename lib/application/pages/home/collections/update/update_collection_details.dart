@@ -13,7 +13,7 @@ import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/theme/custom_text_field.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/application/widgets/theme/tags_field.dart';
-import 'package:memo/application/widgets/unfocus_detector.dart';
+import 'package:memo/application/widgets/unfocus_pointer.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
 import 'package:memo/domain/validators/collection_validators.dart' as validators;
 
@@ -25,7 +25,7 @@ class UpdateCollectionDetails extends ConsumerWidget {
     ref.listen<UpdatedDetailsState>(
         updateCollectionDetailsVM, (_, state) => parentVM.updateMetadata(metadata: state.metadata));
 
-    return UnfocusDetector(
+    return UnfocusPointer(
       child: SingleChildScrollView(
         child: Column(
           children: [
