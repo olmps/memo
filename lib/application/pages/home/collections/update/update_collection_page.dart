@@ -303,8 +303,6 @@ class _MemoRow extends ConsumerWidget {
 
   final int index;
   final MemoMetadata metadata;
-
-  /// Triggers when the row is tapped.
   final VoidCallback? onTap;
 
   /// If `true` style the current row to differentiate from the others.
@@ -323,7 +321,7 @@ class _MemoRow extends ConsumerWidget {
           style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
         ),
         context.verticalBox(Spacing.xSmall),
-        Text(metadata.question.plainText, maxLines: 2),
+        Text(metadata.question.plainText, maxLines: 3),
       ],
     );
 
