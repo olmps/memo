@@ -339,7 +339,7 @@ class _MemoRow extends ConsumerWidget {
           child: Row(
             children: [
               Expanded(child: memoContent),
-              Image.asset(images.boldAsset),
+              Image.asset(images.dragAsset),
             ],
           ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
         ),
