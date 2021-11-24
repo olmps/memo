@@ -49,12 +49,14 @@ class _NameField extends HookConsumerWidget {
     final state = ref.watch(updateCollectionDetailsVM);
     final hasInitialData = useState(false);
 
+    final controller = useTextEditingController(text: state.metadata.name);
     final nameLength = state.metadata.name.length;
 
     return StreamBuilder(
       stream: vm.name,
       builder: (context, snapshot) {
         return CustomTextField(
+          controller: controller,
           onChanged: (updatedName) {
             vm.updateName(updatedName ?? '');
             hasInitialData.value = true;
@@ -77,9 +79,10 @@ class _TagsField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(updateCollectionDetailsVM.notifier);
+    final state = ref.watch(updateCollectionDetailsVM);
 
     final hasInitialData = useState(false);
-    final controller = useTagsController();
+    final controller = useTagsController(tags: state.metadata.tags);
 
     useEffect(() {
       void onTagsUpdate() {
