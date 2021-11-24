@@ -19,12 +19,14 @@ class UpdateCollectionMemos extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.read(updateCollectionMemosVM.notifier);
     final state = ref.watch(updateCollectionMemosVM);
+    final currentPageIndex = useState(0);
 
     final controller = usePageController(viewportFraction: 0.95);
-    final page = useState(0);
+    final parentVM = ref.watch(updateCollectionVM.notifier);
+    ref.listen<UpdateMemosState>(updateCollectionMemosVM, (_, state) => parentVM.updateMemos(memos: state.memos));
 
     useEffect(() {
-      void onPageUpdate() => page.value = controller.page!.toInt();
+      void onPageUpdate() => currentPageIndex.value = controller.page!.toInt();
 
       controller.addListener(onPageUpdate);
       return () => controller.removeListener(onPageUpdate);
@@ -68,10 +70,12 @@ class UpdateCollectionMemos extends HookConsumerWidget {
         Expanded(child: pagesView),
         context.verticalBox(Spacing.large),
         _NavigationIndicator(
-          currentMemoIndex: page.value,
-          memosAmount: state.memos.length,
-          onLeftTapped: page.value > 0 ? onPreviousTapped : null,
-          onRightTapped: page.value < state.memos.length ? onNextTapped : null,
+          // Adds +1 to transform index into page
+          currentPage: currentPageIndex.value + 1,
+          // Adds +1 to include the creation CTA
+          pagesAmount: state.memos.length + 1,
+          onLeftTapped: currentPageIndex.value > 0 ? onPreviousTapped : null,
+          onRightTapped: currentPageIndex.value < state.memos.length ? onNextTapped : null,
         ),
       ],
     ).withSymmetricalPadding(context, vertical: Spacing.medium);
@@ -117,14 +121,14 @@ class _MemoPage extends HookConsumerWidget {
 
 class _NavigationIndicator extends StatelessWidget {
   const _NavigationIndicator({
-    required this.currentMemoIndex,
-    required this.memosAmount,
+    required this.currentPage,
+    required this.pagesAmount,
     this.onLeftTapped,
     this.onRightTapped,
   });
 
-  final int currentMemoIndex;
-  final int memosAmount;
+  final int currentPage;
+  final int pagesAmount;
 
   final VoidCallback? onLeftTapped;
   final VoidCallback? onRightTapped;
@@ -137,7 +141,7 @@ class _NavigationIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AssetIconButton(images.chevronLeftAsset, onPressed: onLeftTapped),
-        Text('$currentMemoIndex/$memosAmount', style: textTheme.subtitle2),
+        Text('$currentPage/$pagesAmount', style: textTheme.subtitle2),
         AssetIconButton(images.chevronRightAsset, onPressed: onRightTapped),
       ],
     );
