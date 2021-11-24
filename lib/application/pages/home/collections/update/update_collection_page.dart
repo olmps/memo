@@ -13,6 +13,7 @@ import 'package:memo/application/pages/home/collections/update/update_collection
 import 'package:memo/application/pages/home/collections/update/update_collection_memos.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/utils/bottom_sheet.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
@@ -26,8 +27,6 @@ enum _Segment { details, memos }
 class UpdateCollectionPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.watch(updateCollectionVM.notifier);
-
     final selectedSegment = useState(_Segment.details);
     final tabController = useTabController(initialLength: _Segment.values.length);
     final memosPageController = usePageController(viewportFraction: dimens.memosPageControllerViewportFraction);
@@ -42,7 +41,7 @@ class UpdateCollectionPage extends HookConsumerWidget {
     final tabs = _Segment.values.map((segment) => Text(segment.title)).toList();
 
     return Scaffold(
-      appBar: _AppBar(memosPageController: memosPageController),
+      appBar: _AppBar(selectedSegment: selectedSegment.value, memosPageController: memosPageController),
       body: Column(
         children: [
           ThemedTabBar(controller: tabController, tabs: tabs),
@@ -63,8 +62,9 @@ class UpdateCollectionPage extends HookConsumerWidget {
 }
 
 class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
-  const _AppBar({required this.memosPageController});
+  const _AppBar({required this.selectedSegment, required this.memosPageController});
 
+  final _Segment selectedSegment;
   final PageController memosPageController;
 
   @override
@@ -91,12 +91,11 @@ class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(title),
       actions: [
-        if (state is UpdateCollectionLoaded)
+        if (state is UpdateCollectionLoaded && selectedSegment == _Segment.memos)
           AssetIconButton(
             images.organizeAsset,
             onPressed: () => showSnappableDraggableModalBottomSheet<void>(
               context,
-              ref,
               child: _MemosReorderableList(
                 memos: state.memosMetadata,
                 currentMemoIndex: memosPageController.hasClients ? memosPageController.page!.toInt() : 0,
@@ -320,7 +319,7 @@ class _MemoRow extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          strings.memoQuestionTitle(index + 1),
+          strings.updateMemoQuestionTitle(index + 1),
           style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
         ),
         context.verticalBox(Spacing.xSmall),

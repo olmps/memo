@@ -80,7 +80,7 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
       state = loadedState.copyWith(metadata: metadata, hasValidDetails: _validateDetails(metadata: metadata));
 
   @override
-  void updateMemos({List<MemoUpdateMetadata>? memos}) => state = loadedState.copyWith(memos: memos);
+  void updateMemos({required List<MemoUpdateMetadata> memos}) => state = loadedState.copyWith(memos: memos);
 
   @override
   void swapMemoIndex(int oldIndex, int newIndex) {
