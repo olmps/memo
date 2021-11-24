@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 ///
 /// The interaction with focusable Widgets from [child] will not be affected. The unfocus is only request when
 /// interacting with non-focusable Widgets, such as [Container]s, [Column]s, etc.
-class UnfocusDetector extends StatelessWidget {
-  const UnfocusDetector({required this.child});
+class UnfocusPointer extends StatelessWidget {
+  const UnfocusPointer({required this.child});
 
   final Widget child;
 
