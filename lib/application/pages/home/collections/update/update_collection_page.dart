@@ -8,7 +8,6 @@ import 'package:memo/application/pages/home/collections/update/update_collection
 import 'package:memo/application/pages/home/collections/update/update_collection_memos.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
-import 'package:memo/application/view-models/home/update_collection_details_vm.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/exception_retry_container.dart';
