@@ -7,11 +7,11 @@ import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
+import 'package:memo/application/pages/home/collections/update/update_memo_terminal.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/update_collection_memos_vm.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
-import 'package:memo/application/widgets/theme/memo_terminal.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
 
 class UpdateCollectionMemos extends HookConsumerWidget {
@@ -106,7 +106,7 @@ class _MemoPage extends HookConsumerWidget {
       };
     });
 
-    return MemoTerminal(
+    return UpdateMemoTerminal(
       memoIndex: pageIndex + 1,
       questionController: questionController,
       answerController: answerController,
