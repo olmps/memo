@@ -16,6 +16,7 @@ enum ImageKey {
   code,
   close,
   clear,
+  drag,
   folder,
   italic,
   link,
@@ -52,6 +53,8 @@ extension ImageKeyPath on ImageKey {
         return '$_iconsRoot/close.png';
       case ImageKey.clear:
         return '$_iconsRoot/clear.png';
+      case ImageKey.drag:
+        return '$_iconsRoot/drag.png';
       case ImageKey.folder:
         return '$_iconsRoot/folder.png';
       case ImageKey.italic:
@@ -93,6 +96,7 @@ final chevronRightAsset = ImageKey.chevronRight.path;
 final codeAsset = ImageKey.code.path;
 final closeAsset = ImageKey.close.path;
 final clearAsset = ImageKey.clear.path;
+final dragAsset = ImageKey.drag.path;
 final folderAsset = ImageKey.folder.path;
 final italicAsset = ImageKey.italic.path;
 final linkAsset = ImageKey.link.path;
