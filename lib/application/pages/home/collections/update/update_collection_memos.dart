@@ -13,6 +13,7 @@ import 'package:memo/application/view-models/home/update_collection_memos_vm.dar
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
 import 'package:memo/application/widgets/theme/rich_text_field.dart';
+import 'package:memo/domain/transients/update_collection_metadata.dart';
 
 class UpdateCollectionMemos extends HookConsumerWidget {
   @override
@@ -53,7 +54,7 @@ class UpdateCollectionMemos extends HookConsumerWidget {
         // Adds +1 to include creation empty state.
         childCount: state.memos.length + 1,
         findChildIndexCallback: (key) {
-          final valueKey = key as ValueKey<MemoMetadata>;
+          final valueKey = key as ValueKey<MemoUpdateMetadata>;
           return state.memos.indexOf(valueKey.value);
         },
       ),
@@ -86,20 +87,35 @@ class _MemoPage extends HookConsumerWidget {
   const _MemoPage({required this.pageIndex, required this.metadata, this.onRemove, Key? key}) : super(key: key);
 
   final int pageIndex;
-  final MemoMetadata metadata;
+  final MemoUpdateMetadata metadata;
   final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.read(updateCollectionMemosVM.notifier);
-    final questionController = RichTextFieldController.fromValue(metadata.question);
-    final answerController = RichTextFieldController.fromValue(metadata.answer);
+
+    final questionValue = mapMemoUpdateContentToRichTextValue(metadata.question);
+    final questionController = RichTextFieldController.fromValue(questionValue);
+
+    final answerValue = mapMemoUpdateContentToRichTextValue(metadata.answer);
+    final answerController = RichTextFieldController.fromValue(answerValue);
 
     useEffect(() {
-      void onQuestionUpdate() =>
-          vm.updateMemoAtIndex(pageIndex, metadata: metadata.copyWith(question: questionController.value));
-      void onAnswerUpdate() =>
-          vm.updateMemoAtIndex(pageIndex, metadata: metadata.copyWith(answer: answerController.value));
+      void onQuestionUpdate() {
+        final updatedContent = MemoUpdateContent(
+          richContent: questionController.value.richText,
+          plainContent: questionController.value.plainText,
+        );
+        vm.updateMemoAtIndex(pageIndex, metadata: metadata.copyWith(question: updatedContent));
+      }
+
+      void onAnswerUpdate() {
+        final updatedContent = MemoUpdateContent(
+          richContent: answerController.value.richText,
+          plainContent: answerController.value.plainText,
+        );
+        vm.updateMemoAtIndex(pageIndex, metadata: metadata.copyWith(answer: updatedContent));
+      }
 
       questionController.addListener(onQuestionUpdate);
       answerController.addListener(onAnswerUpdate);
