@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
-import 'package:memo/application/view-models/home/update_collection_vm.dart';
+import 'package:memo/domain/transients/update_collection_metadata.dart';
 
 final updateCollectionMemosVM = StateNotifierProvider.autoDispose<UpdateCollectionMemosVM, UpdateMemosState>(
   (ref) => UpdateCollectionMemosVMImpl(memos: ref.read(updateMemosMetadata)),
@@ -14,13 +14,13 @@ abstract class UpdateCollectionMemosVM extends StateNotifier<UpdateMemosState> {
   UpdateCollectionMemosVM(UpdateMemosState state) : super(state);
 
   /// Replaces the current saved memos with [memos].
-  void updateMemos(List<MemoMetadata> memos);
+  void updateMemos(List<MemoUpdateMetadata> memos);
 
   /// Creates a new empty Memo in the collection.
   void createEmptyMemo();
 
   /// Updates memo at [index] metadata with [metadata].
-  void updateMemoAtIndex(int index, {required MemoMetadata metadata});
+  void updateMemoAtIndex(int index, {required MemoUpdateMetadata metadata});
 
   /// Removes the memo at given [index].
   ///
@@ -29,19 +29,19 @@ abstract class UpdateCollectionMemosVM extends StateNotifier<UpdateMemosState> {
 }
 
 class UpdateCollectionMemosVMImpl extends UpdateCollectionMemosVM {
-  UpdateCollectionMemosVMImpl({required List<MemoMetadata> memos}) : super(UpdateMemosState(memos: memos));
+  UpdateCollectionMemosVMImpl({required List<MemoUpdateMetadata> memos}) : super(UpdateMemosState(memos: memos));
 
   @override
-  void updateMemos(List<MemoMetadata> memos) => state = state.copyWith(memos: memos);
+  void updateMemos(List<MemoUpdateMetadata> memos) => state = state.copyWith(memos: memos);
 
   @override
   void createEmptyMemo() {
-    final updatedMemos = List<MemoMetadata>.from(state.memos)..add(MemoMetadata.empty());
+    final updatedMemos = List<MemoUpdateMetadata>.from(state.memos)..add(MemoUpdateMetadata.empty());
     state = state.copyWith(memos: updatedMemos);
   }
 
   @override
-  void updateMemoAtIndex(int index, {required MemoMetadata metadata}) {
+  void updateMemoAtIndex(int index, {required MemoUpdateMetadata metadata}) {
     final updatedMemos = state.memos
       ..removeAt(index)
       ..insert(index, metadata);
@@ -55,7 +55,7 @@ class UpdateCollectionMemosVMImpl extends UpdateCollectionMemosVM {
       return;
     }
 
-    final updatedMemos = List<MemoMetadata>.from(state.memos)..removeAt(index);
+    final updatedMemos = List<MemoUpdateMetadata>.from(state.memos)..removeAt(index);
     state = state.copyWith(memos: updatedMemos);
   }
 }
@@ -63,9 +63,9 @@ class UpdateCollectionMemosVMImpl extends UpdateCollectionMemosVM {
 class UpdateMemosState extends Equatable {
   const UpdateMemosState({required this.memos});
 
-  final List<MemoMetadata> memos;
+  final List<MemoUpdateMetadata> memos;
 
-  UpdateMemosState copyWith({required List<MemoMetadata> memos}) => UpdateMemosState(memos: memos);
+  UpdateMemosState copyWith({required List<MemoUpdateMetadata> memos}) => UpdateMemosState(memos: memos);
 
   @override
   List<Object?> get props => [memos];

@@ -4,9 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
-import 'package:memo/application/view-models/home/update_collection_vm.dart';
-import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
+import 'package:memo/domain/transients/update_collection_metadata.dart';
 import 'package:memo/domain/validators/collection_validators.dart' as validators;
 import 'package:rxdart/rxdart.dart';
 
@@ -45,16 +44,16 @@ abstract class UpdateCollectionDetailsVM extends StateNotifier<UpdatedDetailsSta
   ///
   /// If a validation exception happens when validating the [description] input field, the stream emits a
   /// `ValidationException`.
-  Stream<RichTextEditingValue> get description;
+  Stream<MemoUpdateContent> get description;
 
   /// Receives a update event on the collection description field.
   ///
   /// Every update event will trigger a update on [description] stream which may emit a validation exception.
-  void updateDescription(RichTextEditingValue updatedDescription);
+  void updateDescription(MemoUpdateContent updatedDescription);
 }
 
 class UpdateCollectionDetailsVMImpl extends UpdateCollectionDetailsVM {
-  UpdateCollectionDetailsVMImpl({required CollectionMetadata metadata})
+  UpdateCollectionDetailsVMImpl({required CollectionUpdateMetadata metadata})
       : _collectionNameController = BehaviorSubject.seeded(metadata.name),
         _collectionTagsController = BehaviorSubject.seeded(metadata.tags),
         _collectionDescriptionController = BehaviorSubject.seeded(metadata.description),
@@ -62,7 +61,7 @@ class UpdateCollectionDetailsVMImpl extends UpdateCollectionDetailsVM {
 
   final BehaviorSubject<String> _collectionNameController;
   final BehaviorSubject<List<String>> _collectionTagsController;
-  final BehaviorSubject<RichTextEditingValue> _collectionDescriptionController;
+  final BehaviorSubject<MemoUpdateContent> _collectionDescriptionController;
 
   @override
   Stream<String> get name =>
@@ -84,11 +83,11 @@ class UpdateCollectionDetailsVMImpl extends UpdateCollectionDetailsVM {
   }
 
   @override
-  Stream<RichTextEditingValue> get description => _collectionDescriptionController.stream
+  Stream<MemoUpdateContent> get description => _collectionDescriptionController.stream
       .transform(StreamTransformer.fromHandlers(handleData: _descriptionValidator));
 
   @override
-  void updateDescription(RichTextEditingValue updatedDescription) {
+  void updateDescription(MemoUpdateContent updatedDescription) {
     _collectionDescriptionController.sink.add(updatedDescription);
     state = state.copyWith(description: updatedDescription);
   }
@@ -102,9 +101,9 @@ class UpdateCollectionDetailsVMImpl extends UpdateCollectionDetailsVM {
     }
   }
 
-  void _descriptionValidator(RichTextEditingValue description, EventSink<RichTextEditingValue> sink) {
+  void _descriptionValidator(MemoUpdateContent description, EventSink<MemoUpdateContent> sink) {
     try {
-      validators.validateCollectionDescription(description.plainText);
+      validators.validateCollectionDescription(description.plainContent);
       sink.add(description);
     } on BaseException catch (exception) {
       sink.addError(exception);
@@ -124,9 +123,9 @@ class UpdateCollectionDetailsVMImpl extends UpdateCollectionDetailsVM {
 class UpdatedDetailsState extends Equatable {
   const UpdatedDetailsState({required this.metadata});
 
-  final CollectionMetadata metadata;
+  final CollectionUpdateMetadata metadata;
 
-  UpdatedDetailsState copyWith({String? name, List<String>? tags, RichTextEditingValue? description}) =>
+  UpdatedDetailsState copyWith({String? name, List<String>? tags, MemoUpdateContent? description}) =>
       UpdatedDetailsState(metadata: metadata.copyWith(name: name, tags: tags, description: description));
 
   @override

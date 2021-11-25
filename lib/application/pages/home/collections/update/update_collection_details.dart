@@ -7,6 +7,7 @@ import 'package:memo/application/constants/exception_strings.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/hooks/rich_text_field_controller_hook.dart';
 import 'package:memo/application/hooks/tags_controller_hook.dart';
+import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/update_collection_details_vm.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
@@ -15,6 +16,7 @@ import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/application/widgets/theme/tags_field.dart';
 import 'package:memo/application/widgets/unfocus_pointer.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
+import 'package:memo/domain/transients/update_collection_metadata.dart';
 import 'package:memo/domain/validators/collection_validators.dart' as validators;
 
 class UpdateCollectionDetails extends ConsumerWidget {
@@ -113,11 +115,12 @@ class _DescriptionField extends HookConsumerWidget {
     final state = ref.watch(updateCollectionDetailsVM);
 
     final hasInitialData = useState(false);
-    final controller = useRichTextEditingController(richText: state.metadata.description.richText);
+    final controller = useRichTextEditingController(richText: state.metadata.description.richContent);
 
     useEffect(() {
       void onDescriptionUpdate() {
-        vm.updateDescription(controller.value);
+        final content = mapRichTextValueToMemoUpdateContent(controller.value);
+        vm.updateDescription(content);
         hasInitialData.value = true;
       }
 
@@ -126,7 +129,7 @@ class _DescriptionField extends HookConsumerWidget {
       return () => controller.removeListener(onDescriptionUpdate);
     }, []);
 
-    final descriptionLength = state.metadata.description.plainText.length;
+    final descriptionLength = state.metadata.description.plainContent.length;
 
     return StreamBuilder(
       stream: vm.description,

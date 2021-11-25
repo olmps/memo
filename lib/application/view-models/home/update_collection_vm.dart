@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
-import 'package:memo/application/widgets/theme/rich_text_field.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
+import 'package:memo/domain/transients/update_collection_metadata.dart';
 import 'package:memo/domain/validators/collection_validators.dart';
 
 final updateCollectionVM = StateNotifierProvider.autoDispose<UpdateCollectionVM, UpdateCollectionState>(
@@ -29,12 +29,12 @@ abstract class UpdateCollectionVM extends StateNotifier<UpdateCollectionState> {
   /// Updates collection details metadata.
   ///
   /// To persist the collection updates, use [saveCollection].
-  void updateMetadata({required CollectionMetadata metadata});
+  void updateMetadata({required CollectionUpdateMetadata metadata});
 
   /// Updates collection memos metadata.
   ///
   /// To persist the collection use [saveCollection].
-  void updateMemos({required List<MemoMetadata> memos});
+  void updateMemos({required List<MemoUpdateMetadata> memos});
 
   /// Save the created/edited collection.
   ///
@@ -63,7 +63,7 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
       await Future<void>.delayed(const Duration(seconds: 2));
 
       state = UpdateCollectionLoaded(
-        collectionMetadata: CollectionMetadata.empty(),
+        collectionMetadata: CollectionUpdateMetadata.empty(),
         memosMetadata: const [],
         hasValidDetails: false,
       );
@@ -73,11 +73,11 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
   }
 
   @override
-  void updateMetadata({required CollectionMetadata metadata}) =>
+  void updateMetadata({required CollectionUpdateMetadata metadata}) =>
       state = loadedState.copyWith(metadata: metadata, hasValidDetails: _validateDetails(metadata: metadata));
 
   @override
-  void updateMemos({List<MemoMetadata>? memos}) => state = loadedState.copyWith(memos: memos);
+  void updateMemos({List<MemoUpdateMetadata>? memos}) => state = loadedState.copyWith(memos: memos);
 
   @override
   Future<void> saveCollection() async {
@@ -96,57 +96,16 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
   }
 
   /// Returns `true` if [metadata] fields are valid.
-  bool _validateDetails({required CollectionMetadata metadata}) {
+  bool _validateDetails({required CollectionUpdateMetadata metadata}) {
     try {
       validateCollectionName(metadata.name);
-      validateCollectionDescription(metadata.description.plainText);
+      validateCollectionDescription(metadata.description.plainContent);
 
       return true;
     } on BaseException catch (_) {
       return false;
     }
   }
-}
-
-@immutable
-class CollectionMetadata extends Equatable {
-  const CollectionMetadata({required this.name, required this.description, required this.tags});
-
-  factory CollectionMetadata.empty() => const CollectionMetadata(
-        name: '',
-        description: RichTextEditingValue(),
-        tags: [],
-      );
-
-  final String name;
-  final RichTextEditingValue description;
-  final List<String> tags;
-
-  CollectionMetadata copyWith({String? name, RichTextEditingValue? description, List<String>? tags}) =>
-      CollectionMetadata(
-        name: name ?? this.name,
-        description: description ?? this.description,
-        tags: tags ?? this.tags,
-      );
-
-  @override
-  List<Object?> get props => [name, tags, description];
-}
-
-@immutable
-class MemoMetadata extends Equatable {
-  const MemoMetadata({required this.question, required this.answer});
-
-  factory MemoMetadata.empty() => const MemoMetadata(question: RichTextEditingValue(), answer: RichTextEditingValue());
-
-  MemoMetadata copyWith({RichTextEditingValue? question, RichTextEditingValue? answer}) =>
-      MemoMetadata(question: question ?? this.question, answer: answer ?? this.answer);
-
-  final RichTextEditingValue question;
-  final RichTextEditingValue answer;
-
-  @override
-  List<Object?> get props => [question, answer];
 }
 
 @immutable
@@ -166,8 +125,8 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
     required this.hasValidDetails,
   });
 
-  final CollectionMetadata collectionMetadata;
-  final List<MemoMetadata> memosMetadata;
+  final CollectionUpdateMetadata collectionMetadata;
+  final List<MemoUpdateMetadata> memosMetadata;
 
   /// `true` if [collectionMetadata] has valid inputs.
   final bool hasValidDetails;
@@ -178,7 +137,11 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
   /// Returns `true` if the collection is ready to be saved.
   bool get canSaveCollection => hasValidDetails && hasMemos;
 
-  UpdateCollectionLoaded copyWith({CollectionMetadata? metadata, List<MemoMetadata>? memos, bool? hasValidDetails}) =>
+  UpdateCollectionLoaded copyWith({
+    CollectionUpdateMetadata? metadata,
+    List<MemoUpdateMetadata>? memos,
+    bool? hasValidDetails,
+  }) =>
       UpdateCollectionLoaded(
         collectionMetadata: metadata ?? collectionMetadata,
         memosMetadata: memos ?? memosMetadata,
@@ -197,16 +160,16 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
 
 class UpdateCollectionSaving extends UpdateCollectionLoaded {
   const UpdateCollectionSaving({
-    required CollectionMetadata metadata,
-    required List<MemoMetadata> memosMetadata,
+    required CollectionUpdateMetadata metadata,
+    required List<MemoUpdateMetadata> memosMetadata,
     required bool hasValidDetails,
   }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 }
 
 class UpdateCollectionSaved extends UpdateCollectionLoaded {
   const UpdateCollectionSaved({
-    required CollectionMetadata metadata,
-    required List<MemoMetadata> memosMetadata,
+    required CollectionUpdateMetadata metadata,
+    required List<MemoUpdateMetadata> memosMetadata,
     required bool hasValidDetails,
   }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 }
@@ -214,8 +177,8 @@ class UpdateCollectionSaved extends UpdateCollectionLoaded {
 class UpdateCollectionFailedSaving extends UpdateCollectionLoaded {
   const UpdateCollectionFailedSaving(
     this.exception, {
-    required CollectionMetadata metadata,
-    required List<MemoMetadata> memosMetadata,
+    required CollectionUpdateMetadata metadata,
+    required List<MemoUpdateMetadata> memosMetadata,
     required bool hasValidDetails,
   }) : super(collectionMetadata: metadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
 
