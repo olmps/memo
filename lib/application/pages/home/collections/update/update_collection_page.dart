@@ -115,7 +115,7 @@ class _BottomActionContainer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeController);
 
-    late Widget button;
+    final Widget button;
 
     switch (selectedSegment) {
       case _Segment.details:
