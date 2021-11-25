@@ -30,7 +30,7 @@ class UpdateCollectionMemos extends HookConsumerWidget {
 
       controller.addListener(onPageUpdate);
       return () => controller.removeListener(onPageUpdate);
-    });
+    }, []);
 
     // Uses `PageView.custom` to support pages reordering.
     final pagesView = PageView.custom(
@@ -108,7 +108,7 @@ class _MemoPage extends HookConsumerWidget {
         questionController.removeListener(onQuestionUpdate);
         answerController.removeListener(onAnswerUpdate);
       };
-    });
+    }, []);
 
     return UpdateMemoTerminal(
       memoIndex: pageIndex + 1,
@@ -148,7 +148,7 @@ class _NavigationIndicator extends StatelessWidget {
   }
 }
 
-/// An empty state CTA to add a new `Memo` to a `Collection`.
+/// An empty state call-to-action to add a new `Memo` to its `Collection`.
 class _CreateMemoEmptyState extends ConsumerWidget {
   const _CreateMemoEmptyState({this.onTap});
 
