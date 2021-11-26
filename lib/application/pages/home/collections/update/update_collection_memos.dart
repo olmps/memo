@@ -53,6 +53,7 @@ class UpdateCollectionMemos extends HookConsumerWidget {
         },
         // Adds +1 to include creation empty state.
         childCount: state.memos.length + 1,
+        // Returns the memo index in case of reordering.
         findChildIndexCallback: (key) {
           final valueKey = key as ValueKey<MemoUpdateMetadata>;
           return state.memos.indexOf(valueKey.value);
@@ -83,6 +84,7 @@ class UpdateCollectionMemos extends HookConsumerWidget {
   }
 }
 
+/// Presents editable `Memo` [metadata] wrapped around [UpdateMemoTerminal].
 class _MemoPage extends HookConsumerWidget {
   const _MemoPage({required this.pageIndex, required this.metadata, this.onRemove, Key? key}) : super(key: key);
 
@@ -135,6 +137,7 @@ class _MemoPage extends HookConsumerWidget {
   }
 }
 
+/// Provides left-right navigation between `Memo`s from a `Collection`.
 class _NavigationIndicator extends StatelessWidget {
   const _NavigationIndicator({
     required this.currentPage,
