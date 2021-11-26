@@ -21,6 +21,9 @@ service cloud.firestore {
         match /memos/{doc} {
           allow read, write: if isOwner();
         }
+        match /tags/{doc} {
+          allow read, write: if isOwner();
+        }
       }
 
       match /collections_categories/{doc} {
@@ -40,6 +43,9 @@ service cloud.firestore {
       allow read: if isAuthenticated();
 
       match /memos/{doc} {
+        allow read: if isAuthenticated();
+      }
+      match /tags/{doc} {
         allow read: if isAuthenticated();
       }
     }
