@@ -1,0 +1,45 @@
+# Triggers on every release and triggers `sync-collections` scripts by sending the added, updated and removed
+# collections ids
+name: Update Collections
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  node_version: "16.x"
+
+jobs:
+  update-collections:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./firebase
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Setup Node.js with version `env.node_version`.
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node_version }}
+          # cache: "npm"
+          # cache-dependency-path: "**/package-lock.json"
+
+      # Install project dependencies.
+      - name: Install Firebase Dependencies
+        run: npm i
+
+      # Retrieve the collections that were added, updated and removed.
+      #
+      # `sed -e '1,4d'` shell command removes the first 4 executions lines that output when running `npm run ...`.
+      - name: Get Collections Diff
+        run: |
+          collections_diff=$(npm run tools:collections-diff | sed -e '1,4d')
+          echo "COLLECTIONS_DIFF=$(echo $collections_diff)" >> $GITHUB_ENV
+
+      # Run script that sync the collections.
+      - name: Run sync-collections
+        run: npm run scripts:sync-collections
