@@ -1,7 +1,7 @@
 {
   "name": "memo-core",
   "engines": {
-    "node": "14"
+    "node": "16"
   },
   "main": "dist/src/core/index.js",
   "private": true,
