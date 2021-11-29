@@ -1,0 +1,47 @@
+# Run Android AppBundle build when there are changes in `android/` folder in a PR pointing to `main`.
+name: Android Build
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "android/**"
+
+env:
+  flutter_version: "2.5.3"
+  java_version: "12.x"
+  flutter_channel: "stable"
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.java_version }}
+
+      # Caches Flutter repository so it can be reused by future workflows run
+      - name: Cache Flutter
+        uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+
+      # Setup Flutter SDK with version `env.flutter_version`
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: ${{ env.flutter_channel }}
+
+      # Build Android app in production environment without signing the appbundle
+      - name: Build Android App
+        run: flutter build appbundle --release --dart-define=ENV=PROD
+        env:
+          IS_SIGNING_ENABLED: false

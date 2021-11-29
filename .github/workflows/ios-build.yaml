@@ -1,0 +1,51 @@
+# Run iOS build when there are changes in `ios/` folder in a PR pointing to `main`.
+name: iOS Build
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "ios/**"
+
+env:
+  flutter_version: "2.5.3"
+  java_version: "12.x"
+  flutter_channel: "stable"
+
+jobs:
+  ios-build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.java_version }}
+
+      # Caches Flutter repository so it can be reused by future workflows run
+      - name: Cache Flutter
+        uses: actions/cache@v2
+        with:
+          path: /Users/runner/hostedtoolcache/flutter
+          key: macos-flutter
+
+      # Setup Flutter SDK with version `env.flutter_version`
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: ${{ env.flutter_channel }}
+
+      # Renames GoogleService-Info template file to the default file name. This template will provide mocked data to
+      # Firebase to allow the application build process finish successfully
+      - name: Setup GoogleService-Info plist
+        run: |
+          mv ios/Runner/GoogleService-Info-Template.plist ios/Runner/GoogleService-Info.plist
+
+      # Build iOS app in production environment without code sign
+      - name: Build iOS App
+        run: flutter build ios --release --dart-define=ENV=PROD --no-codesign
