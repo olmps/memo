@@ -36,7 +36,9 @@ class UpdateCollectionMemosVMImpl extends UpdateCollectionMemosVM {
 
   @override
   void createEmptyMemo() {
-    final updatedMemos = List<MemoUpdateMetadata>.from(state.memos)..add(MemoUpdateMetadata.empty());
+    // Creates an empty memo metadata using an incremental identifier.
+    final emptyMemo = MemoUpdateMetadata.empty(id: state.memos.length + 1);
+    final updatedMemos = List<MemoUpdateMetadata>.from(state.memos)..add(emptyMemo);
     state = state.copyWith(memos: updatedMemos);
   }
 

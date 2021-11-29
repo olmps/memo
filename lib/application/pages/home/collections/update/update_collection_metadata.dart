@@ -28,19 +28,20 @@ class CollectionUpdateMetadata extends Equatable {
 /// Holds `Memo` properties when updating a `Collection`.
 @immutable
 class MemoUpdateMetadata extends Equatable {
-  const MemoUpdateMetadata({required this.question, required this.answer});
+  const MemoUpdateMetadata({required this.id, required this.question, required this.answer});
 
-  factory MemoUpdateMetadata.empty() =>
-      const MemoUpdateMetadata(question: MemoUpdateContent(), answer: MemoUpdateContent());
+  factory MemoUpdateMetadata.empty({required int id}) =>
+      MemoUpdateMetadata(id: id, question: const MemoUpdateContent(), answer: const MemoUpdateContent());
 
-  MemoUpdateMetadata copyWith({MemoUpdateContent? question, MemoUpdateContent? answer}) =>
-      MemoUpdateMetadata(question: question ?? this.question, answer: answer ?? this.answer);
+  MemoUpdateMetadata copyWith({int? id, MemoUpdateContent? question, MemoUpdateContent? answer}) =>
+      MemoUpdateMetadata(id: id ?? this.id, question: question ?? this.question, answer: answer ?? this.answer);
 
+  final int id;
   final MemoUpdateContent question;
   final MemoUpdateContent answer;
 
   @override
-  List<Object?> get props => [question, answer];
+  List<Object?> get props => [id, question, answer];
 }
 
 /// Holds `Memo` question/answer properties when updating a `Collection`.

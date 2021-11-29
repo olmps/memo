@@ -280,8 +280,8 @@ class _MemosReorderableList extends ConsumerWidget {
           final memoMetadata = memos[index];
 
           return _MemosReorderableListRow(
-            // Child from `ReorderableListView` must have associated keys in the root Widget
-            key: ValueKey(index),
+            // Child from `ReorderableListView` must have associated keys in the root Widget.
+            key: ValueKey(memoMetadata.id),
             index: index,
             metadata: memoMetadata,
             onTap: () => onPressed.call(index),
