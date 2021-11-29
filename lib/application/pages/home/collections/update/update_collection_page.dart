@@ -266,6 +266,7 @@ class _MemosReorderableList extends ConsumerWidget {
       // Overrides theme to remove canvasColor and shadowColor when dragging a Memo card
       data: Theme.of(context).copyWith(canvasColor: Colors.transparent, shadowColor: Colors.transparent),
       child: ReorderableListView.builder(
+        buildDefaultDragHandles: false,
         header: listHeader.withSymmetricalPadding(context, vertical: Spacing.medium),
         itemCount: memos.length,
         onReorder: (oldIndex, newIndex) {
@@ -275,7 +276,6 @@ class _MemosReorderableList extends ConsumerWidget {
           }
           onReorder(oldIndex, newIndex);
         },
-        physics: const ClampingScrollPhysics(),
         itemBuilder: (context, index) {
           final memoMetadata = memos[index];
 
@@ -340,7 +340,7 @@ class _MemosReorderableListRow extends ConsumerWidget {
           child: Row(
             children: [
               Expanded(child: memoContent),
-              Image.asset(images.dragAsset),
+              ReorderableDragStartListener(index: index, child: Image.asset(images.dragAsset)),
             ],
           ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
         ),
