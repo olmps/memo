@@ -73,11 +73,11 @@ class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionVM.notifier);
+    final vm = ref.watch(updateCollectionVM.notifier);
     final state = ref.watch(updateCollectionVM);
     final title = vm.isEditing ? strings.editCollection : strings.newCollection;
 
-    void onTap(int questionIndex) {
+    void onPressed(int questionIndex) {
       // Dismiss the navigation bottom sheet
       Navigator.of(context).pop();
 
@@ -101,7 +101,7 @@ class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
                 memos: state.memosMetadata,
                 currentMemoIndex: memosPageController.hasClients ? memosPageController.page!.toInt() : 0,
                 onReorder: vm.swapMemoIndex,
-                onTap: onTap,
+                onPressed: onPressed,
               ),
             ),
           )
@@ -240,21 +240,21 @@ class _MemosReorderableList extends ConsumerWidget {
     required this.memos,
     required this.currentMemoIndex,
     required this.onReorder,
-    this.onTap,
+    required this.onPressed,
   });
 
   final List<MemoUpdateMetadata> memos;
 
-  /// Currently Memo being visualized when the list is opened.
+  /// Selected index of [memos].
   ///
-  /// This will be highlighted in the list to indicate which Memo the user is seeing.
+  /// Indicates which memo is currently highlighted.
   final int currentMemoIndex;
 
-  /// Triggers when a Memo is moved from `oldIndex` to `newIndex`.
+  /// Called when a memo is moved from `oldIndex` to `newIndex`.
   final void Function(int oldIndex, int newIndex) onReorder;
 
-  /// Triggers when Memo at `index` is tapped.
-  final void Function(int index)? onTap;
+  /// Called when a memo at `index` is pressed.
+  final void Function(int index) onPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -279,12 +279,12 @@ class _MemosReorderableList extends ConsumerWidget {
         itemBuilder: (context, index) {
           final memoMetadata = memos[index];
 
-          return _MemoRow(
+          return _MemosReorderableListRow(
             // Child from `ReorderableListView` must have associated keys in the root Widget
             key: ValueKey(index),
             index: index,
             metadata: memoMetadata,
-            onTap: () => onTap?.call(index),
+            onTap: () => onPressed.call(index),
             isHighlighted: index == currentMemoIndex,
           );
         },
@@ -293,18 +293,20 @@ class _MemosReorderableList extends ConsumerWidget {
   }
 }
 
-class _MemoRow extends ConsumerWidget {
-  const _MemoRow({
+class _MemosReorderableListRow extends ConsumerWidget {
+  const _MemosReorderableListRow({
     required this.index,
     required this.metadata,
-    this.onTap,
+    required this.onTap,
     this.isHighlighted = false,
     Key? key,
   }) : super(key: key);
 
+  /// Index from current `Memo` in the memos list of a collection.
   final int index;
+
   final MemoUpdateMetadata metadata;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   /// If `true` style the current row to differentiate from the others.
   final bool isHighlighted;
@@ -329,7 +331,7 @@ class _MemoRow extends ConsumerWidget {
     return Material(
       child: InkWell(
         borderRadius: dimens.genericRoundedElementBorderRadius,
-        onTap: () => onTap,
+        onTap: onTap,
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: dimens.genericRoundedElementBorderRadius,
