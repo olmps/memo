@@ -70,24 +70,23 @@ class _UpdateCollectionContents extends ConsumerWidget {
     }
 
     if (state is UpdateCollectionLoaded) {
-      late Widget body;
-
       switch (selectedSegment) {
         case _Segment.details:
-          body = UpdateCollectionDetails();
-          break;
-        case _Segment.memos:
-          body = UpdateCollectionMemos();
-          break;
-      }
+          return ProviderScope(
+            overrides: [
+              updateDetailsMetadata.overrideWithValue(state.collectionMetadata),
+            ],
+            child: UpdateCollectionDetails(),
+          );
 
-      return ProviderScope(
-        overrides: [
-          updateDetailsMetadata.overrideWithValue(state.collectionMetadata),
-          updateMemosMetadata.overrideWithValue(state.memosMetadata),
-        ],
-        child: body,
-      );
+        case _Segment.memos:
+          return ProviderScope(
+            overrides: [
+              updateMemosMetadata.overrideWithValue(state.memosMetadata),
+            ],
+            child: UpdateCollectionMemos(),
+          );
+      }
     }
 
     throw InconsistentStateError.layout('Unsupported subtype (${state.runtimeType}) of `UpdateCollectionState`');
