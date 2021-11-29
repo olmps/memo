@@ -84,11 +84,13 @@ class UpdateCollectionMemos extends HookConsumerWidget {
   }
 }
 
-/// Presents editable `Memo` [metadata] wrapped around [UpdateMemoTerminal].
+/// Editable `Memo` [metadata] wrapped around an [UpdateMemoTerminal].
 class _MemoPage extends HookConsumerWidget {
   const _MemoPage({required this.pageIndex, required this.metadata, this.onRemove, Key? key}) : super(key: key);
 
+  /// The index from current [_MemoPage] in the parent [PageView].
   final int pageIndex;
+
   final MemoUpdateMetadata metadata;
   final VoidCallback? onRemove;
 
@@ -137,7 +139,7 @@ class _MemoPage extends HookConsumerWidget {
   }
 }
 
-/// Provides left-right navigation between `Memo`s from a `Collection`.
+/// Directional actions between all [_MemoPage] belonging to a horizontal [PageView].
 class _NavigationIndicator extends StatelessWidget {
   const _NavigationIndicator({
     required this.currentPage,
@@ -146,7 +148,10 @@ class _NavigationIndicator extends StatelessWidget {
     this.onRightTapped,
   });
 
+  /// Displays the current [_MemoPage] index, in the parent [PageView].
   final int currentPage;
+
+  /// Displays the total available [_MemoPage].
   final int pagesAmount;
 
   final VoidCallback? onLeftTapped;
