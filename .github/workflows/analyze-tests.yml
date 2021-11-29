@@ -1,5 +1,5 @@
-# Triggers on all changes committed to Pull Requests pointing to `main` branch
-name: Pull Request
+# Run Flutter analyzer and all tests when a PR points to `main`.
+name: Analyze & Tests
 
 on:
   pull_request:
@@ -12,8 +12,8 @@ env:
   flutter_channel: "stable"
 
 jobs:
-  build:
-    runs-on: macos-latest
+  analyze-tests:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -28,8 +28,8 @@ jobs:
       - name: Cache Flutter
         uses: actions/cache@v2
         with:
-          path: /Users/runner/hostedtoolcache/flutter
-          key: macos-flutter
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
 
       # Setup Flutter SDK with version `env.flutter_version`
       - name: Setup Flutter
@@ -43,19 +43,3 @@ jobs:
         run: |
           flutter analyze .
           flutter test test
-
-      # Renames GoogleService-Info template file to the default file name. This template will provide mocked data to
-      # Firebase to allow the application build process finish successfully
-      - name: Setup GoogleService-Info plist
-        run: |
-          mv ios/Runner/GoogleService-Info-Template.plist ios/Runner/GoogleService-Info.plist
-
-      # Build iOS app in production environment without code sign
-      - name: Build iOS App
-        run: flutter build ios --release --dart-define=ENV=PROD --no-codesign
-
-      # Build Android app in production environment without signing the appbundle
-      - name: Build Android App
-        run: flutter build appbundle --release --dart-define=ENV=PROD
-        env:
-          IS_SIGNING_ENABLED: false
