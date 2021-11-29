@@ -22,7 +22,7 @@ class UpdateCollectionMemos extends HookConsumerWidget {
     final state = ref.watch(updateCollectionMemosVM);
     final currentPageIndex = useState(0);
 
-    final controller = usePageController(viewportFraction: 0.95);
+    final controller = usePageController(viewportFraction: dimens.memosPageControllerViewportFraction);
     final parentVM = ref.watch(updateCollectionVM.notifier);
     ref.listen<UpdateMemosState>(updateCollectionMemosVM, (_, state) => parentVM.updateMemos(memos: state.memos));
 

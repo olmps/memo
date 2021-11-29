@@ -77,7 +77,8 @@ const double tagsRemoveIconSize = 12;
 const double terminalWindowHeaderHeight = 64;
 
 //
-// Create Memo CTA
+// Update Collection Memos
 //
 const double createMemoCtaSide = 64;
 const double createMemoCtaButtonStrokeWidth = 3;
+const double memosPageControllerViewportFraction = 0.95;

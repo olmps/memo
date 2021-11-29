@@ -7,7 +7,6 @@ import 'package:memo/application/constants/exception_strings.dart';
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/hooks/rich_text_field_controller_hook.dart';
 import 'package:memo/application/hooks/tags_controller_hook.dart';
-import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/view-models/home/update_collection_details_vm.dart';
 import 'package:memo/application/view-models/home/update_collection_vm.dart';
