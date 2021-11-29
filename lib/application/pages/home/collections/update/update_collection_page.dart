@@ -11,6 +11,7 @@ import 'package:memo/application/constants/images.dart' as images;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/pages/home/collections/update/update_collection_details.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_memos.dart';
+import 'package:memo/application/pages/home/collections/update/update_collection_metadata.dart';
 import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/utils/bottom_sheet.dart';
@@ -242,7 +243,7 @@ class _MemosReorderableList extends ConsumerWidget {
     this.onTap,
   });
 
-  final List<MemoMetadata> memos;
+  final List<MemoUpdateMetadata> memos;
 
   /// Currently Memo being visualized when the list is opened.
   ///
@@ -302,7 +303,7 @@ class _MemoRow extends ConsumerWidget {
   }) : super(key: key);
 
   final int index;
-  final MemoMetadata metadata;
+  final MemoUpdateMetadata metadata;
   final VoidCallback? onTap;
 
   /// If `true` style the current row to differentiate from the others.
@@ -321,7 +322,7 @@ class _MemoRow extends ConsumerWidget {
           style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
         ),
         context.verticalBox(Spacing.xSmall),
-        Text(metadata.question.plainText, maxLines: 3),
+        Text(metadata.question.plainContent, maxLines: 3),
       ],
     );
 
