@@ -51,7 +51,7 @@ class UpdateCollectionMemos extends HookConsumerWidget {
             key: ValueKey(metadata),
             pageIndex: index,
             metadata: metadata,
-            onUpdate: (memoMetadata) => vm.updateMemoAtIndex(index, metadata: metadata),
+            onUpdate: (memoMetadata) => vm.updateMemoAtIndex(index, metadata: memoMetadata),
             onRemove: state.memos.length > 1 ? () => vm.removeMemoAtIndex(index) : null,
           ).withOnlyPadding(context, right: Spacing.xSmall);
         },
