@@ -73,6 +73,7 @@ class _UpdateCollectionContents extends ConsumerWidget {
       switch (selectedSegment) {
         case _Segment.details:
           return ProviderScope(
+            key: Key(_Segment.details.title),
             overrides: [
               updateDetailsMetadata.overrideWithValue(state.collectionMetadata),
             ],
@@ -81,6 +82,7 @@ class _UpdateCollectionContents extends ConsumerWidget {
 
         case _Segment.memos:
           return ProviderScope(
+            key: Key(_Segment.memos.title),
             overrides: [
               updateMemosMetadata.overrideWithValue(state.memosMetadata),
             ],
