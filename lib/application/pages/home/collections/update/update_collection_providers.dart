@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:memo/domain/transients/update_collection_metadata.dart';
+import 'package:memo/application/pages/home/collections/update/update_collection_metadata.dart';
 
 /// Overridable collection id used in the scope of a collection update.
 final updateCollectionId = Provider<String?>((_) => throw UnimplementedError(), name: 'updateCollectionId');
