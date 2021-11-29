@@ -48,6 +48,7 @@ class UpdateCollectionMemos extends HookConsumerWidget {
             key: ValueKey(metadata),
             pageIndex: index,
             metadata: metadata,
+            onUpdate: (memoMetadata) => vm.updateMemoAtIndex(index, metadata: metadata),
             onRemove: state.memos.length > 1 ? () => vm.removeMemoAtIndex(index) : null,
           ).withOnlyPadding(context, right: Spacing.xSmall);
         },
@@ -86,18 +87,26 @@ class UpdateCollectionMemos extends HookConsumerWidget {
 
 /// Editable `Memo` [metadata] wrapped around an [UpdateMemoTerminal].
 class _MemoPage extends HookConsumerWidget {
-  const _MemoPage({required this.pageIndex, required this.metadata, this.onRemove, Key? key}) : super(key: key);
+  const _MemoPage({
+    required this.pageIndex,
+    required this.metadata,
+    required this.onUpdate,
+    required this.onRemove,
+    Key? key,
+  }) : super(key: key);
 
   /// The index from current [_MemoPage] in the parent [PageView].
   final int pageIndex;
 
   final MemoUpdateMetadata metadata;
+
+  /// Triggers when updating the `Memo` question or answer content.
+  final void Function(MemoUpdateMetadata metadata) onUpdate;
+
   final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.read(updateCollectionMemosVM.notifier);
-
     final questionValue = mapMemoUpdateContentToRichTextValue(metadata.question);
     final questionController = RichTextFieldController.fromValue(questionValue);
 
@@ -110,7 +119,8 @@ class _MemoPage extends HookConsumerWidget {
           richContent: questionController.value.richText,
           plainContent: questionController.value.plainText,
         );
-        vm.updateMemoAtIndex(pageIndex, metadata: metadata.copyWith(question: updatedContent));
+
+        onUpdate(metadata.copyWith(question: updatedContent));
       }
 
       void onAnswerUpdate() {
@@ -118,7 +128,8 @@ class _MemoPage extends HookConsumerWidget {
           richContent: answerController.value.richText,
           plainContent: answerController.value.plainText,
         );
-        vm.updateMemoAtIndex(pageIndex, metadata: metadata.copyWith(answer: updatedContent));
+
+        onUpdate(metadata.copyWith(answer: updatedContent));
       }
 
       questionController.addListener(onQuestionUpdate);
