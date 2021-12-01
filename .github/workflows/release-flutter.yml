@@ -12,7 +12,7 @@ env:
   flutter_channel: "stable"
 
 jobs:
-  build:
+  flutter-release:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
