@@ -20,8 +20,8 @@ enum HttpMethod {
 export interface RequestParams {
   baseUrl: string;
   path: string;
-  parameters?: { [key: string]: string };
-  headers?: { [key: string]: string };
+  parameters?: Record<string, string>;
+  headers?: Record<string, string>;
   data?: unknown;
 }
 
