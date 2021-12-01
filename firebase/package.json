@@ -5,7 +5,7 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "run-p install:*",
+    "setup": "npm i && run-p install:*",
     "install:core": "cd src/core && npm i",
     "watch": "tsc -w",
     "lint": "run-p --print-label lint:*",
@@ -21,9 +21,10 @@
     "build": "run-p --print-label build:*",
     "build:functions": "tsc -p tsconfig.functions.json",
     "functions:serve": "run-s --print-label build:functions functions:start-emulators watch",
-    "functions:fetch-env": "firebase functions:config:get > src/core/.runtimeconfig.json",
+    "functions:fetch-env": "firebase functions:config:get > .runtimeconfig.json",
     "functions:start-emulators": "firebase emulators:start --only auth,functions,firestore --inspect-functions",
-    "scripts:sync-collections": "ts-node -r tsconfig-paths/register src/scripts/sync-collections.ts"
+    "scripts:sync-collections": "ENVIRONMENT=DEV ts-node -r tsconfig-paths/register src/scripts/sync-collections.ts",
+    "scripts:diff-collections": "ENVIRONMENT=DEV ts-node -r tsconfig-paths/register src/scripts/diff-collections.ts"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^2.0.x",
@@ -42,6 +43,7 @@
     "prettier": "^2.4.x",
     "sinon": "^10.0.x",
     "ts-node": "^10.2.x",
-    "tsconfig-paths": "^3.11.x"
+    "tsconfig-paths": "^3.11.x",
+    "typescript": "^4.5.x"
   }
 }
