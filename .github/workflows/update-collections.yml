@@ -1,5 +1,5 @@
-# Triggers on every release and triggers `sync-collections` scripts by sending the added, updated and removed
-# collections ids
+# Triggers on every push commits in `main` branch and triggers `sync-collections` scripts by sending the added, updated
+# and removed collections ids
 name: Update Collections
 
 on:
