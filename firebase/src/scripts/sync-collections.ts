@@ -2,8 +2,6 @@ import { SyncCollectionsUseCase } from "@domain/use-cases/collections/sync-colle
 import Provider from "src/core/presentation/provider";
 
 // 1. Verificar se vale a pena fazer os "// TODO" pendentes.
-// 2. Verificar se as rules estão ainda funcionando, o que mudou da modelagem de hoje.
-// 3. Finalizar o script (conectar com o "env"+actions, passar args).
 // 4. Testes:
 //  - Provider.
 //  - schemas (/schemas/*).
@@ -16,11 +14,12 @@ import Provider from "src/core/presentation/provider";
 //  - scripts/sync-collections.
 
 async function runScript(): Promise<void> {
-  // TODO: Get these as parameters from the running script (env?)
-  const addedOrUpdated = ["test"];
-  const removed = undefined;
-
   try {
+    const collectionsDiff = process.env["COLLECTIONS_DIFF"]!;
+    const parsedCollectionIds = JSON.parse(collectionsDiff);
+    const addedOrUpdated = parsedCollectionIds.added.concat(parsedCollectionIds.updated);
+    const removed = parsedCollectionIds.removed;
+
     await new SyncCollectionsUseCase(
       Provider.instance.localCollectionsRepository("./collections"),
       Provider.instance.storedCollectionsRepository,
