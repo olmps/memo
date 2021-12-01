@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as assert from "assert";
 import * as sinon from "sinon";
-import { FirestoreGateway, QueryFilter } from "@data/gateways/firestore-gateway";
+import { FirestoreGateway, QueryFilter } from "#data/gateways/firestore-gateway";
 import * as firebase from "firebase-admin";
-import createSinonStub from "@test/sinon-stub";
-import FirebaseFirestoreError from "@faults/errors/firebase-firestore-error";
+import createSinonStub from "#test/sinon-stub";
+import FirebaseFirestoreError from "#faults/errors/firebase-firestore-error";
 
 // TODO(matuella): Improve readability:
 // 1. Can't export type alias, meaning that it's really verbose to write related types.

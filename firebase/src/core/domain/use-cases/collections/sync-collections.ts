@@ -1,16 +1,16 @@
-import { LocalCollectionsRepository } from "@data/repositories/local-collections-repository";
-import { MemosRepository } from "@data/repositories/memos-repository";
-import { StoredCollectionsRepository } from "@data/repositories/stored-collections-repository";
-import { addToMap } from "@utils/add-to-map";
-import { objectsEqual } from "@utils/deep-equals";
+import { LocalCollectionsRepository } from "#data/repositories/local-collections-repository";
+import { MemosRepository } from "#data/repositories/memos-repository";
+import { StoredCollectionsRepository } from "#data/repositories/stored-collections-repository";
+import { addToMap } from "#utils/add-to-map";
+import { objectsEqual } from "#utils/deep-equals";
 import {
   LocalPublicCollection,
   StoredPublicCollection,
   validateLocalCollection,
   validateStoredCollection,
-} from "@domain/models/collection";
-import { Memo, validateMemo } from "@domain/models/memo";
-import { GitRepository } from "@data/repositories/git-repository";
+} from "#domain/models/collection";
+import { Memo, validateMemo } from "#domain/models/memo";
+import { GitRepository } from "#data/repositories/git-repository";
 
 type CollectionMemosDiff = [Memo[], string[]];
 

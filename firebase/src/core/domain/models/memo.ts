@@ -1,4 +1,4 @@
-import { defaultMaxStringLength, validate } from "@utils/validate";
+import { defaultMaxStringLength, validate } from "#utils/validate";
 import * as Joi from "joi";
 
 export interface Memo {

@@ -1,5 +1,5 @@
-import { Memo, memoValidationSchema } from "@domain/models/memo";
-import { defaultMaxStringLength, validate } from "@utils/validate";
+import { Memo, memoValidationSchema } from "#domain/models/memo";
+import { defaultMaxStringLength, validate } from "#utils/validate";
 import * as Joi from "joi";
 
 interface Collection {

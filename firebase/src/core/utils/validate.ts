@@ -1,4 +1,4 @@
-import ValidationError from "@faults/errors/validation-error";
+import ValidationError from "#faults/errors/validation-error";
 import * as Joi from "joi";
 
 export const defaultMaxStringLength = 255;

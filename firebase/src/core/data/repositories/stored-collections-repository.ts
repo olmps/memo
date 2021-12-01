@@ -1,6 +1,6 @@
-import { StoredPublicCollection } from "@domain/models/collection";
-import { FirestoreGateway } from "@data/gateways/firestore-gateway";
-import { SchemaValidator } from "@data/schemas/schema-validator";
+import { StoredPublicCollection } from "#domain/models/collection";
+import { FirestoreGateway } from "#data/gateways/firestore-gateway";
+import { SchemaValidator } from "#data/schemas/schema-validator";
 
 export class StoredCollectionsRepository {
   readonly #firestore: FirestoreGateway;

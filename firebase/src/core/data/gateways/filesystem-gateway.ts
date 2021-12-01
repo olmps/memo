@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import FilesystemError from "@faults/errors/filesystem-error";
+import FilesystemError from "#faults/errors/filesystem-error";
 
 /** Exposes common filesystem operations. */
 export class FileSystemGateway {
