@@ -3,7 +3,7 @@ import Ajv2020 from "ajv/dist/2020";
 import { JSONSchemaType } from "ajv";
 import { AnyValidateFunction } from "ajv/dist/types";
 import { EntitiesSchema } from "./entities-schemas/entities-schema";
-import SerializationError from "@faults/errors/serialization-error";
+import SerializationError from "#faults/errors/serialization-error";
 
 /** Available schemas types to be matched in {@link SchemaValidator.validateObject} */
 export type SchemaType = EntitiesSchema;

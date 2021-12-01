@@ -1,8 +1,8 @@
 import * as assert from "assert";
 import * as fs from "fs";
 import * as sinon from "sinon";
-import { FileSystemGateway } from "@data/gateways/filesystem-gateway";
-import FilesystemError from "@faults/errors/filesystem-error";
+import { FileSystemGateway } from "#data/gateways/filesystem-gateway";
+import FilesystemError from "#faults/errors/filesystem-error";
 
 describe("FileSystemGateway", () => {
   const defaultEncoding = { encoding: "utf-8" };

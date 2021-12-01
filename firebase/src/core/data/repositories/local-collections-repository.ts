@@ -1,6 +1,6 @@
-import { LocalPublicCollection } from "@domain/models/collection";
-import { FileSystemGateway } from "@data/gateways/filesystem-gateway";
-import { SchemaValidator } from "@data/schemas/schema-validator";
+import { LocalPublicCollection } from "#domain/models/collection";
+import { FileSystemGateway } from "#data/gateways/filesystem-gateway";
+import { SchemaValidator } from "#data/schemas/schema-validator";
 
 export class LocalCollectionsRepository {
   readonly #fs: FileSystemGateway;
