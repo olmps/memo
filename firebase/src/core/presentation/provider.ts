@@ -1,3 +1,4 @@
+import Ajv2020 from "ajv/dist/2020";
 import { FirestoreGateway } from "@data/gateways/firestore-gateway";
 import { FileSystemGateway } from "@data/gateways/filesystem-gateway";
 import { StoredCollectionsRepository } from "@data/repositories/stored-collections-repository";
@@ -5,12 +6,13 @@ import { SchemaValidator } from "@data/schemas/schema-validator";
 import { LocalCollectionsRepository } from "@data/repositories/local-collections-repository";
 import { MemosRepository } from "@data/repositories/memos-repository";
 import { app } from "@data/gateways/firebase-app";
-import Ajv2020 from "ajv/dist/2020";
+import { ShellGateway } from "@data/gateways/shell-gateway";
+import { GitRepository } from "@data/repositories/git-repository";
 
 /**
  * Singleton that provides all injectable dependencies, which should be used as a pseudo-DI container.
  *
- * All dependencies are lazily initialized - subsequent calls to the same dependancy will return a cached instance.
+ * All dependencies are lazily initialized - subsequent calls to the same dependency will return a cached instance.
  */
 export default class Provider {
   static #instance?: Provider;
@@ -22,7 +24,7 @@ export default class Provider {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() { }
+  private constructor() {}
 
   //
   // Third Parties
@@ -40,6 +42,7 @@ export default class Provider {
   #firestoreGateway?: FirestoreGateway;
   #fileSystemGateway?: FileSystemGateway;
   #schemaValidator?: SchemaValidator;
+  #shellGateway?: ShellGateway;
 
   get firestoreGateway(): FirestoreGateway {
     this.#firestoreGateway ??= new FirestoreGateway(this.firestore);
@@ -56,12 +59,18 @@ export default class Provider {
     return this.#schemaValidator;
   }
 
+  get shellGateway(): ShellGateway {
+    this.#shellGateway ??= new ShellGateway();
+    return this.#shellGateway;
+  }
+
   //
   // Repositories
   //
   #localCollectionsRepository?: LocalCollectionsRepository;
   #storedCollectionsRepository?: StoredCollectionsRepository;
   #memosRepository?: MemosRepository;
+  #gitRepository?: GitRepository;
 
   localCollectionsRepository(collectionsDir: string): LocalCollectionsRepository {
     this.#localCollectionsRepository ??= new LocalCollectionsRepository(
@@ -80,5 +89,10 @@ export default class Provider {
   get memosRepository(): MemosRepository {
     this.#memosRepository ??= new MemosRepository(this.firestoreGateway, this.schemaValidator);
     return this.#memosRepository;
+  }
+
+  get gitRepository(): GitRepository {
+    this.#gitRepository ??= new GitRepository(this.shellGateway);
+    return this.#gitRepository;
   }
 }
