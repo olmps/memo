@@ -1,5 +1,5 @@
 import * as firebase from "firebase-admin";
-import FirebaseFirestoreError from "@faults/errors/firebase-firestore-error";
+import FirebaseFirestoreError from "#faults/errors/firebase-firestore-error";
 import { FirestorePaths } from "./firestore-collection-name";
 
 type Firestore = firebase.firestore.Firestore;

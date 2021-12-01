@@ -1,6 +1,6 @@
-import { Memo } from "@domain/models/memo";
-import { FirestoreGateway } from "@data/gateways/firestore-gateway";
-import { SchemaValidator } from "@data/schemas/schema-validator";
+import { Memo } from "#domain/models/memo";
+import { FirestoreGateway } from "#data/gateways/firestore-gateway";
+import { SchemaValidator } from "#data/schemas/schema-validator";
 
 export class MemosRepository {
   readonly #firestore: FirestoreGateway;

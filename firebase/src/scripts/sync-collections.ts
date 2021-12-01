@@ -1,5 +1,5 @@
-import { SyncCollectionsUseCase } from "@domain/use-cases/collections/sync-collections";
-import Provider from "src/core/presentation/provider";
+import { SyncCollectionsUseCase } from "#domain/use-cases/collections/sync-collections";
+import Provider from "#presentation/provider";
 
 // 1. Verificar se vale a pena fazer os "// TODO" pendentes.
 // 4. Testes:

@@ -1,5 +1,5 @@
 import * as rulesTesting from "@firebase/rules-unit-testing";
-import * as utils from "@test/firebase-rules/utils";
+import * as utils from "#test/firebase-rules/utils";
 
 describe("users/{userId}/collections_executions", () => {
   const collectionId = (userId: string) => `users/${userId}/collections_executions`;

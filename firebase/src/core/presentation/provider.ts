@@ -1,13 +1,13 @@
 import Ajv2020 from "ajv/dist/2020";
-import { FirestoreGateway } from "@data/gateways/firestore-gateway";
-import { FileSystemGateway } from "@data/gateways/filesystem-gateway";
-import { StoredCollectionsRepository } from "@data/repositories/stored-collections-repository";
-import { SchemaValidator } from "@data/schemas/schema-validator";
-import { LocalCollectionsRepository } from "@data/repositories/local-collections-repository";
-import { MemosRepository } from "@data/repositories/memos-repository";
-import { app } from "@data/gateways/firebase-app";
-import { ShellGateway } from "@data/gateways/shell-gateway";
-import { GitRepository } from "@data/repositories/git-repository";
+import { FirestoreGateway } from "#data/gateways/firestore-gateway";
+import { FileSystemGateway } from "#data/gateways/filesystem-gateway";
+import { StoredCollectionsRepository } from "#data/repositories/stored-collections-repository";
+import { SchemaValidator } from "#data/schemas/schema-validator";
+import { LocalCollectionsRepository } from "#data/repositories/local-collections-repository";
+import { MemosRepository } from "#data/repositories/memos-repository";
+import { app } from "#data/gateways/firebase-app";
+import { ShellGateway } from "#data/gateways/shell-gateway";
+import { GitRepository } from "#data/repositories/git-repository";
 
 /**
  * Singleton that provides all injectable dependencies, which should be used as a pseudo-DI container.

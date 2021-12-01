@@ -1,4 +1,4 @@
-import * as utils from "@test/firebase-rules/utils";
+import * as utils from "#test/firebase-rules/utils";
 
 // Load the required test environment dependencies before anything else.
 before(async () => {
