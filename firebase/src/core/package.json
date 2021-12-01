@@ -6,10 +6,12 @@
   "main": "dist/src/core/index.js",
   "private": true,
   "dependencies": {
-    "ajv": "^8.6.x",
+    "@google-cloud/logging": "^9.6.x",
+    "ajv": "^8.8.x",
+    "axios": "^0.24.x",
     "firebase-admin": "^9.11.x",
-    "firebase-functions": "^3.15.x",
-    "joi": "^17.4.2"
+    "firebase-functions": "^3.16.x",
+    "joi": "^17.4.x"
   },
   "devDependencies": {
     "@types/hapi__joi": "^17.1.7"
