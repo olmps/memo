@@ -40,7 +40,7 @@ export class BaseException implements Fault {
 export type FaultType = ErrorType | ExceptionType;
 
 /** Codes for custom errors. */
-type ErrorType = "file-system" | `firebase/${FirebaseService}` | "serialization" | "validation";
+type ErrorType = "file-system" | `firebase/${FirebaseService}` | "serialization" | "validation" | "shell";
 type FirebaseService = "firestore";
 
 /** Codes for custom exceptions. */
