@@ -1,4 +1,4 @@
-import { ShellGateway } from "@data/gateways/shell-gateway";
+import { ShellGateway } from "#data/gateways/shell-gateway";
 
 /** Git utilities applied to the current node process root folder. */
 export class GitRepository {
