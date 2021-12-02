@@ -1,4 +1,4 @@
-import ShellError from "@faults/errors/shell-error";
+import ShellError from "#faults/errors/shell-error";
 import { exec } from "child_process";
 
 /**
