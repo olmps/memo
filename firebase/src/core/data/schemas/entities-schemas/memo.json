@@ -5,20 +5,54 @@
   "description": "Properties of a Memo.",
   "type": "object",
   "properties": {
-    "id": { "type": "string" },
+    "uniqueId": { "type": "string" },
     "question": {
       "type": "array",
-      "items": { "type": "object" },
+      "items": {
+        "type": "object",
+        "properties": {
+          "insert": { "type": "string" },
+          "attributes": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "bold": { "type": "boolean" },
+              "underline": { "type": "boolean" },
+              "italic": { "type": "boolean" },
+              "code-block": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [ "insert" ]
+      },
       "minItems": 1
     },
     "answer": {
       "type": "array",
-      "items": { "type": "object" },
+      "items": {
+        "type": "object",
+        "properties": {
+          "insert": { "type": "string" },
+          "attributes": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "bold": { "type": "boolean" },
+              "underline": { "type": "boolean" },
+              "italic": { "type": "boolean" },
+              "code-block": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [ "insert" ]
+      },
       "minItems": 1
     }
   },
   "required": [
-    "id",
+    "uniqueId",
     "question",
     "answer"
   ]
