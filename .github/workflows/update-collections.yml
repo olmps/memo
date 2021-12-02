@@ -34,7 +34,7 @@ jobs:
 
       # Install project dependencies.
       - name: Install Dependencies
-        run: npm run setup-ci
+        run: npm i
 
       # Verify collections integrity
       - name: Verify Collections Integrity
