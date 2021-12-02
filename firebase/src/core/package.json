@@ -6,7 +6,6 @@
   "main": "dist/src/core/index.js",
   "private": true,
   "dependencies": {
-    "ajv": "^8.6.x",
     "firebase-admin": "^9.11.x",
     "firebase-functions": "^3.16.x",
     "joi": "^17.4.x"
