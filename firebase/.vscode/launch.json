@@ -29,5 +29,14 @@
     //     "'${workspaceRoot}/node_modules/mocha/bin/_mocha -r ts-node/register -r tsconfig-paths/register --file \"${workspaceRoot}/test/firebase-rules/setup.ts\" --recursive \"${workspaceRoot}/test/firebase-rules/**/*.spec.ts\" --no-timeouts --exit'"
     //   ]
     // },
+    {
+      "name": "Debug current test file",
+      "type": "node",
+      "protocol": "inspector",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "stopOnEntry": false,
+      "args": ["-r", "ts-node/register", "-r", "tsconfig-paths/register", "${workspaceRoot}/${relativeFile}"]
+    }
   ]
 }
