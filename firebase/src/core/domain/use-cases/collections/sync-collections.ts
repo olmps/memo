@@ -47,13 +47,13 @@ export class SyncCollectionsUseCase {
    * Local collections are considered our source of truth (what we expect), meaning that any difference between what's
    * stored (what we have), should be respectively added, updated or removed.
    *
-   * Communicates with Github to fetch a list of ids that were {@link addedOrUpdated} (no matter which operation, a set
-   * will be performed) and those that were {@link removed}.
+   * Communicates with Github to fetch a list of ids that were added/updated (no matter which operation, a set
+   * will be performed) and those that were removed.
    *
    * While it may not be the best performant strategy, this execution should be idempotent.
    */
   async run(): Promise<void> {
-    const collectionsDiff = await this.#collectionsDiff();
+    const collectionsDiff = await this.#diffCollections();
     const operations: Promise<void>[] = [];
 
     const addedOrUpdated = collectionsDiff.added.concat(collectionsDiff.updated);
@@ -150,7 +150,7 @@ export class SyncCollectionsUseCase {
    * The collections diff is made by using `git ...` shell commands, so make sure to run the current use-case in the
    * expected git HEAD.
    */
-  async #collectionsDiff(): Promise<UpdatedCollections> {
+  async #diffCollections(): Promise<UpdatedCollections> {
     const currentCommitHash = await this.#gitRepo.lastCommitHash();
     const lastMergeCommitHash = await this.#gitRepo.lastMergeCommitHash();
 
