@@ -137,7 +137,6 @@ describe("Memo Schema Validation", () => {
   });
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function _newRawMemo(): any {
   return {
     id: "any",
