@@ -16,12 +16,13 @@ export class MemosRepository {
       const sets: Promise<void>[] = [];
       for (const [collectionId, memos] of memosPerCollection.entries()) {
         const memosSets = memos.map((memo) => {
-          const serializedMemo = this.#deserializeMemo((<unknown>memo) as Record<string, unknown>);
+          const rawMemo = (<unknown>memo) as Record<string, unknown>;
+          this.#schemaValidator.validateObject("memo", rawMemo);
 
           return this.#firestore.setDoc({
             id: memo.id,
             path: `collections/${collectionId}/memos`,
-            data: (<unknown>serializedMemo) as Record<string, unknown>,
+            data: rawMemo,
           });
         });
 
