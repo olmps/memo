@@ -4,7 +4,7 @@ import { exec } from "child_process";
 /**
  * Exposes access to perform shell operations.
  *
- * Uses `Node` to invoke shell processes.
+ * Uses node's {@link exec} to invoke shell processes.
  */
 export class ShellGateway {
   /** Runs {@link command} in shell and returns an UTF-8 decoded string with the command output. */
