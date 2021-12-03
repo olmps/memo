@@ -1,0 +1,38 @@
+# Run Flutter analyzer and all tests when a PR points to `main`.
+name: Analyze & Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  flutter_version: "2.5.3"
+  flutter_channel: "stable"
+
+jobs:
+  analyze-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Caches Flutter repository so it can be reused by future workflows run
+      - name: Cache Flutter
+        uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+
+      # Setup Flutter SDK with version `env.flutter_version`
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: ${{ env.flutter_channel }}
+
+      # Run pre-requisites to build both applications (iOS and Android)
+      - name: Analyze and run tests
+        run: |
+          flutter analyze .
+          flutter test test

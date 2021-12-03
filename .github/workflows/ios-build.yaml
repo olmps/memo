@@ -1,28 +1,23 @@
-# Triggers on all changes committed to Pull Requests pointing to `main` branch
-name: Pull Request
+# Run iOS build when there are changes in `ios/` folder in a PR pointing to `main`.
+name: iOS Build
 
 on:
   pull_request:
     branches:
       - main
+    paths:
+      - "ios/**"
 
 env:
   flutter_version: "2.5.3"
-  java_version: "12.x"
   flutter_channel: "stable"
 
 jobs:
-  build:
+  ios-build:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      # Setup Java SDK with version `env.java_version`, required by Flutter to build the Android app
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ env.java_version }}
 
       # Caches Flutter repository so it can be reused by future workflows run
       - name: Cache Flutter
@@ -38,12 +33,6 @@ jobs:
           flutter-version: ${{ env.flutter_version }}
           channel: ${{ env.flutter_channel }}
 
-      # Run pre-requisites to build both applications (iOS and Android)
-      - name: Analyze and run tests
-        run: |
-          flutter analyze .
-          flutter test test
-
       # Renames GoogleService-Info template file to the default file name. This template will provide mocked data to
       # Firebase to allow the application build process finish successfully
       - name: Setup GoogleService-Info plist
@@ -53,9 +42,3 @@ jobs:
       # Build iOS app in production environment without code sign
       - name: Build iOS App
         run: flutter build ios --release --dart-define=ENV=PROD --no-codesign
-
-      # Build Android app in production environment without signing the appbundle
-      - name: Build Android App
-        run: flutter build appbundle --release --dart-define=ENV=PROD
-        env:
-          IS_SIGNING_ENABLED: false
