@@ -17,7 +17,7 @@ export interface Memo {
   readonly answer: MemoContent[];
 }
 
-const memoContentValidationSchema = Joi.object({
+const memoQuillValidationSchema = Joi.object({
   insert: Joi.string().max(defaultMaxStringLength).required(),
   attributes: Joi.object({
     bold: Joi.boolean(),
@@ -29,8 +29,8 @@ const memoContentValidationSchema = Joi.object({
 
 export const memoValidationSchema = Joi.object({
   id: Joi.string().max(defaultMaxStringLength).required(),
-  question: Joi.array().items(memoContentValidationSchema).min(1).required(),
-  answer: Joi.array().items(memoContentValidationSchema).min(1).required(),
+  question: Joi.array().items(memoQuillValidationSchema).min(1).required(),
+  answer: Joi.array().items(memoQuillValidationSchema).min(1).required(),
 });
 
 export function validateMemo(memo: Memo): void {
