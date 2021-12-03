@@ -1,6 +1,6 @@
 import { ShellGateway } from "@data/gateways/shell-gateway";
 
-/** Interfaces access to the project git repository information. */
+/** Git utilities applied to the current node process root folder. */
 export class GitRepository {
   readonly #shellGateway: ShellGateway;
 
