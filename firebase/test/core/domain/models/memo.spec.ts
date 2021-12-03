@@ -1,5 +1,5 @@
 import ValidationError from "#faults/errors/validation-error";
-import { Memo, memoContentValidationSchema, memoValidationSchema } from "#domain/models/memo";
+import { Memo, memoQuillValidationSchema, memoValidationSchema } from "#domain/models/memo";
 import { throws } from "assert";
 import { defaultMaxStringLength, validate } from "#utils/validate";
 
@@ -17,7 +17,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when id is empty", () => {
         const fakeMemo: Memo = {
-          uniqueId: "",
+          id: "",
           question: [{ insert: "any" }],
           answer: [{ insert: "any" }],
         };
@@ -28,7 +28,7 @@ describe("Memo Content Validation", () => {
       it("should throw when id is greater than max allowed string length", () => {
         const fakeId = "a".repeat(defaultMaxStringLength + 1);
         const fakeMemo: Memo = {
-          uniqueId: fakeId,
+          id: fakeId,
           question: [{ insert: "any" }],
           answer: [{ insert: "any" }],
         };
@@ -38,7 +38,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when id is not a string", () => {
         const fakeMemo = {
-          uniqueId: true,
+          id: true,
           question: [{ insert: "any" }],
           answer: [{ insert: "any" }],
         };
@@ -50,7 +50,7 @@ describe("Memo Content Validation", () => {
     describe("Question - ", () => {
       it("should throw when question is not set", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           answer: [{ insert: "any" }],
         };
 
@@ -59,7 +59,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when question is empty", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [],
           answer: [{ insert: "any" }],
         };
@@ -69,7 +69,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when question is not an array", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: true,
           answer: [{ insert: "any" }],
         };
@@ -81,7 +81,7 @@ describe("Memo Content Validation", () => {
     describe("Answer - ", () => {
       it("should throw when answer is not set", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any" }],
         };
 
@@ -90,7 +90,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when answer is empty", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any" }],
           answer: [],
         };
@@ -100,7 +100,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when answer is not an array", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any" }],
           answer: true,
         };
@@ -114,7 +114,7 @@ describe("Memo Content Validation", () => {
     describe("Question - ", () => {
       it("should throw when insert is not set", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{}],
           answer: [{ insert: "any" }],
         };
@@ -124,7 +124,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when insert is empty", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "" }],
           answer: [{ insert: "any" }],
         };
@@ -136,7 +136,7 @@ describe("Memo Content Validation", () => {
     describe("Answer - ", () => {
       it("should throw when insert is not set", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any" }],
           answer: [{}],
         };
@@ -146,7 +146,7 @@ describe("Memo Content Validation", () => {
 
       it("should throw when insert is empty", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any" }],
           answer: [{ insert: "" }],
         };
@@ -158,12 +158,12 @@ describe("Memo Content Validation", () => {
     describe("Attributes - ", () => {
       it("should throw when attributes is empty", () => {
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any", attributes: {} }],
           answer: [{ insert: "any", attributes: {} }],
         };
 
-        throws(() => validate(memoContentValidationSchema, fakeMemo), ValidationError);
+        throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
       });
 
       it("should throw when attributes has invalid property", () => {
@@ -171,12 +171,12 @@ describe("Memo Content Validation", () => {
           foo: "bar",
         };
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any", attributes: fakeAttributes }],
           answer: [{ insert: "any", attributes: fakeAttributes }],
         };
 
-        throws(() => validate(memoContentValidationSchema, fakeMemo), ValidationError);
+        throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
       });
 
       it("should throw when attributes has invalid type", () => {
@@ -187,12 +187,12 @@ describe("Memo Content Validation", () => {
           codeBlock: "bar",
         };
         const fakeMemo = {
-          uniqueId: "any",
+          id: "any",
           question: [{ insert: "any", attributes: fakeAttributes }],
           answer: [{ insert: "any", attributes: fakeAttributes }],
         };
 
-        throws(() => validate(memoContentValidationSchema, fakeMemo), ValidationError);
+        throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
       });
     });
   });
