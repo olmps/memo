@@ -10,22 +10,35 @@ import {
   validateStoredCollection,
 } from "@domain/models/collection";
 import { Memo, validateMemo } from "@domain/models/memo";
+import { GitRepository } from "@data/repositories/git-repository";
 
 type CollectionMemosDiff = [Memo[], string[]];
+
+interface UpdatedCollections {
+  /** Identifiers from all collections that were added since last update. */
+  added: string[];
+  /** Identifiers from all collections that were updated since last update. */
+  updated: string[];
+  /** Identifiers from all collections that were removed since last update. */
+  removed: string[];
+}
 
 export class SyncCollectionsUseCase {
   readonly #localCollectionsRepo: LocalCollectionsRepository;
   readonly #storedCollectionsRepo: StoredCollectionsRepository;
   readonly #memosRepo: MemosRepository;
+  readonly #gitRepo: GitRepository;
 
   constructor(
     localCollectionsRepo: LocalCollectionsRepository,
     storedCollectionsRepo: StoredCollectionsRepository,
-    memosRepo: MemosRepository
+    memosRepo: MemosRepository,
+    gitRepo: GitRepository
   ) {
     this.#localCollectionsRepo = localCollectionsRepo;
     this.#storedCollectionsRepo = storedCollectionsRepo;
     this.#memosRepo = memosRepo;
+    this.#gitRepo = gitRepo;
   }
 
   /**
@@ -34,20 +47,23 @@ export class SyncCollectionsUseCase {
    * Local collections are considered our source of truth (what we expect), meaning that any difference between what's
    * stored (what we have), should be respectively added, updated or removed.
    *
-   * The argument must specify a list of ids that were {@link addedOrUpdated} (no matter which operation, a set will be
-   * performed) and those that were {@link removed}.
+   * Communicates with Github to fetch a list of ids that were {@link addedOrUpdated} (no matter which operation, a set
+   * will be performed) and those that were {@link removed}.
    *
    * While it may not be the best performant strategy, this execution should be idempotent.
    */
-  async run({ addedOrUpdated, removed }: { addedOrUpdated?: string[]; removed?: string[] }): Promise<void> {
+  async run(): Promise<void> {
+    const collectionsDiff = await this.#collectionsDiff();
     const operations: Promise<void>[] = [];
-    if (addedOrUpdated) {
+
+    const addedOrUpdated = collectionsDiff.added.concat(collectionsDiff.updated);
+    if (addedOrUpdated.length > 0) {
       const localCollections = await this.#localCollectionsRepo.getAllCollectionsByIds(addedOrUpdated);
       operations.push(this.#syncCollections(localCollections));
     }
 
-    if (removed) {
-      operations.push(this.#storedCollectionsRepo.deleteCollectionsByIds(removed));
+    if (collectionsDiff.removed.length > 0) {
+      operations.push(this.#storedCollectionsRepo.deleteCollectionsByIds(collectionsDiff.removed));
     }
 
     await Promise.all(operations);
@@ -126,5 +142,60 @@ export class SyncCollectionsUseCase {
     }
 
     return [updateableMemos, deletableMemosIds];
+  }
+
+  /**
+   * Returns the changed (added, updated and removed) collections ids.
+   *
+   * The collections diff is made by using `git ...` shell commands, so make sure to run the current use-case in the
+   * expected git HEAD.
+   */
+  async #collectionsDiff(): Promise<UpdatedCollections> {
+    const currentCommitHash = await this.#gitRepo.lastCommitHash();
+    const lastMergeCommitHash = await this.#gitRepo.lastMergeCommitHash();
+
+    // Uses `git diff` to get all updated files between both hashes and their status (added, modified, deleted or
+    // renamed).
+    const gitDiff = await this.#gitRepo.gitDiff(lastMergeCommitHash.trim(), currentCommitHash.trim(), {
+      nameStatus: true,
+    });
+    const changedFiles: string[] = gitDiff.split("\n");
+
+    // Filter by the files under `firebase/collections` directory.
+    const changedCollections = changedFiles.filter((changedFile) => changedFile.includes("firebase/collections"));
+
+    const addedCollections = changedCollections.filter((collectionFile) => collectionFile.startsWith("A"));
+    const updatedCollections = changedCollections.filter((collectionFile) => collectionFile.startsWith("M"));
+    const removedCollections = changedCollections.filter((collectionFile) => collectionFile.startsWith("D"));
+    const renamedFiles = changedCollections.filter((collectionFile) => collectionFile.startsWith("R"));
+
+    const addedCollectionsIds = addedCollections.map((collectionPath) =>
+      collectionPath.substring(collectionPath.lastIndexOf("/") + 1, collectionPath.lastIndexOf(".json"))
+    );
+    const updatedCollectionsIds = updatedCollections.map((collectionPath) =>
+      collectionPath.substring(collectionPath.lastIndexOf("/") + 1, collectionPath.lastIndexOf(".json"))
+    );
+    const removedCollectionsIds = removedCollections.map((collectionPath) =>
+      collectionPath.substring(collectionPath.lastIndexOf("/") + 1, collectionPath.lastIndexOf(".json"))
+    );
+
+    // Regex that matches a name between `/` and `.json` bounds. Uses `g` global flag to match all occurrences instead
+    // just the first one.
+    const fileNameRegex = new RegExp(/[a-zA-Z0-9-+]+?(?=.json)/, "g");
+
+    // Iterates through the renamed files adding the old collection file name to `removedCollectionsIds` and the new
+    // name to `addedCollectionsIds`.
+    for (const renamed of renamedFiles) {
+      const removedFile = fileNameRegex.exec(renamed)![0]!;
+      const addedFile = fileNameRegex.exec(renamed)![0]!;
+      addedCollectionsIds.push(addedFile);
+      removedCollectionsIds.push(removedFile);
+    }
+
+    return {
+      added: addedCollectionsIds,
+      updated: updatedCollectionsIds,
+      removed: removedCollectionsIds,
+    };
   }
 }

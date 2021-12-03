@@ -15,16 +15,12 @@ import Provider from "src/core/presentation/provider";
 
 async function runScript(): Promise<void> {
   try {
-    const collectionsDiff = process.env["COLLECTIONS_DIFF"]!;
-    const parsedCollectionIds = JSON.parse(collectionsDiff);
-    const addedOrUpdated = parsedCollectionIds.added.concat(parsedCollectionIds.updated);
-    const removed = parsedCollectionIds.removed;
-
     await new SyncCollectionsUseCase(
       Provider.instance.localCollectionsRepository("./collections"),
       Provider.instance.storedCollectionsRepository,
-      Provider.instance.memosRepository
-    ).run({ addedOrUpdated, removed });
+      Provider.instance.memosRepository,
+      Provider.instance.gitRepository
+    ).run();
   } catch (error) {
     console.dir(error, { depth: null, colors: true });
   }
