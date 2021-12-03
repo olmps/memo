@@ -4,7 +4,7 @@ import { FirestorePaths } from "./firestore-collection-name";
 
 type Firestore = firebase.firestore.Firestore;
 type Transaction = firebase.firestore.Transaction;
-type CollectionReferece = firebase.firestore.CollectionReference;
+type CollectionReference = firebase.firestore.CollectionReference;
 type CollectionGroup = firebase.firestore.CollectionGroup;
 type Query = firebase.firestore.Query;
 type DocumentSnapshot = firebase.firestore.DocumentSnapshot;
@@ -44,8 +44,8 @@ export class FirestoreGateway {
     return this.#transaction != null;
   }
 
-  /** Creates a {@link CollectionReferece} to the collection at {@link collectionPath}. */
-  #collection(collectionPath: FirestorePaths): CollectionReferece {
+  /** Creates a {@link CollectionReference} to the collection at {@link collectionPath}. */
+  #collection(collectionPath: FirestorePaths): CollectionReference {
     return this.#firestore.collection(collectionPath);
   }
 
