@@ -5,7 +5,7 @@
   "description": "Properties of a Memo.",
   "type": "object",
   "properties": {
-    "uniqueId": { "type": "string" },
+    "id": { "type": "string" },
     "question": {
       "type": "array",
       "items": {
@@ -52,7 +52,7 @@
     }
   },
   "required": [
-    "uniqueId",
+    "id",
     "question",
     "answer"
   ]
