@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as sinon from "sinon";
-import { ShellGateway } from "@data/gateways/shell-gateway";
-import { GitRepository } from "@data/repositories/git-repository";
+import { ShellGateway } from "#data/gateways/shell-gateway";
+import { GitRepository } from "#data/repositories/git-repository";
 
 describe("GitRepository", () => {
   const shellMock = sinon.createStubInstance(ShellGateway);

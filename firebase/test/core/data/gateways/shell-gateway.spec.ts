@@ -1,8 +1,8 @@
 import * as assert from "assert";
 import * as sinon from "sinon";
 import * as child_process from "child_process";
-import { ShellGateway } from "@data/gateways/shell-gateway";
-import ShellError from "@faults/errors/shell-error";
+import { ShellGateway } from "#data/gateways/shell-gateway";
+import ShellError from "#faults/errors/shell-error";
 
 describe("ShellGateway", () => {
   // TODO(matuella): How to mock while maintaining types?
