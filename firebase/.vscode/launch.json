@@ -30,7 +30,7 @@
     //   ]
     // },
     {
-      "name": "Debug current test file",
+      "name": "Debug test in window",
       "type": "node",
       "protocol": "inspector",
       "request": "launch",
