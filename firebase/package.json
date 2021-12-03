@@ -33,20 +33,6 @@
     "#faults/*": "./src/core/dist/faults/*.js",
     "#utils/*": "./src/core/dist/utils/*.js"
   },
-  "imports": {
-    "#presentation/*": "./src/core/dist/presentation/*.js",
-    "#data/*": "./src/core/dist/data/*.js",
-    "#domain/*": "./src/core/dist/domain/*.js",
-    "#faults/*": "./src/core/dist/faults/*.js",
-    "#utils/*": "./src/core/dist/utils/*.js"
-  },
-  "imports": {
-    "#presentation/*": "./src/core/dist/presentation/*.js",
-    "#data/*": "./src/core/dist/data/*.js",
-    "#domain/*": "./src/core/dist/domain/*.js",
-    "#faults/*": "./src/core/dist/faults/*.js",
-    "#utils/*": "./src/core/dist/utils/*.js"
-  },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^2.0.x",
     "@types/mocha": "^9.0.x",
