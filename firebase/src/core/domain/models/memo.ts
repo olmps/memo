@@ -12,7 +12,7 @@ interface MemoContent {
 }
 
 export interface Memo {
-  readonly uniqueId: string;
+  readonly id: string;
   readonly question: MemoContent[];
   readonly answer: MemoContent[];
 }
@@ -28,7 +28,7 @@ const memoContentValidationSchema = Joi.object({
 });
 
 export const memoValidationSchema = Joi.object({
-  uniqueId: Joi.string().max(defaultMaxStringLength).required(),
+  id: Joi.string().max(defaultMaxStringLength).required(),
   question: Joi.array().items(memoContentValidationSchema).min(1).required(),
   answer: Joi.array().items(memoContentValidationSchema).min(1).required(),
 });
