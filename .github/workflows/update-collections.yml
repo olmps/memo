@@ -36,12 +36,6 @@ jobs:
       - name: Install Dependencies
         run: npm run setup-ci
 
-      # Retrieve the collections that were added, updated and removed.
-      - name: Get Collections Diff
-        run: |
-          collections_diff=$(npm run scripts:diff-collections --silent)
-          echo "COLLECTIONS_DIFF=$(echo $collections_diff)" >> $GITHUB_ENV
-
       # Run script that sync the collections.
       - name: Run sync-collections
         run: npm run scripts:sync-collections
