@@ -1,4 +1,5 @@
 import * as assert from "assert";
+import * as sinon from "sinon";
 import { FileSystemGateway } from "#data/gateways/filesystem-gateway";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { LocalCollectionsRepository } from "#data/repositories/local-collections-repository";
@@ -8,9 +9,26 @@ import { LocalPublicCollection } from "#domain/models/collection";
 import createSinonStub from "#test/sinon-stub";
 
 describe("LocalCollectionsRepository", () => {
-  const fsGatewayStub = createSinonStub(FileSystemGateway);
-  const schemaValidatorStub = createSinonStub(SchemaValidator);
-  const localCollectionsRepo = new LocalCollectionsRepository(fsGatewayStub, schemaValidatorStub, "any");
+  let sandbox: sinon.SinonSandbox;
+  let fsGatewayStub: sinon.SinonStubbedInstance<FileSystemGateway>;
+  let schemaValidatorStub: sinon.SinonStubbedInstance<SchemaValidator>;
+  let localCollectionsRepo: LocalCollectionsRepository;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+
+    const fsStub = createSinonStub(FileSystemGateway);
+    fsGatewayStub = fsStub;
+
+    const schemaStub = createSinonStub(SchemaValidator);
+    schemaValidatorStub = schemaStub;
+
+    localCollectionsRepo = new LocalCollectionsRepository(fsStub, schemaStub, "any");
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("getAllCollectionsByIds", () => {
     it("should return local stored collections", async () => {
