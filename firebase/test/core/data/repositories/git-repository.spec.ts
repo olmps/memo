@@ -4,11 +4,18 @@ import { ShellGateway } from "#data/gateways/shell-gateway";
 import { GitRepository } from "#data/repositories/git-repository";
 
 describe("GitRepository", () => {
-  const shellMock = sinon.createStubInstance(ShellGateway);
-  const gitRepo = new GitRepository(shellMock);
+  let sandbox: sinon.SinonSandbox;
+  let shellMock: sinon.SinonStubbedInstance<ShellGateway>;
+  let gitRepo: GitRepository;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+    shellMock = sandbox.createStubInstance(ShellGateway);
+    gitRepo = new GitRepository(shellMock);
+  });
 
   afterEach(() => {
-    shellMock.run.reset();
+    sandbox.reset();
   });
 
   it("should use rev-list to fetch the last merge commit hash", async () => {

@@ -16,7 +16,7 @@ describe("Memo Schema Validation", () => {
   it("should throw when question id is not present", () => {
     const rawMemo = _newRawMemo();
 
-    delete rawMemo.uniqueId;
+    delete rawMemo.id;
 
     throws(() => validator.validateObject("memo", rawMemo), SerializationError);
   });

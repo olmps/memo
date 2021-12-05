@@ -13,16 +13,18 @@ import FirebaseFirestoreError from "#faults/errors/firebase-firestore-error";
 describe("FirestoreGateway", () => {
   const fakeCollection = "collections";
 
+  let sandbox: sinon.SinonSandbox;
   let firestoreMock: sinon.SinonStubbedInstance<firebase.firestore.Firestore>;
   let firestoreGateway: FirestoreGateway;
 
   beforeEach(() => {
-    firestoreMock = createSinonStub(firebase.firestore.Firestore);
+    sandbox = sinon.createSandbox();
+    firestoreMock = sandbox.createStubInstance(firebase.firestore.Firestore);
     firestoreGateway = new FirestoreGateway(firestoreMock as firebase.firestore.Firestore);
   });
 
   afterEach(() => {
-    sinon.restore();
+    sandbox.restore();
   });
 
   function createTransactionMock(): sinon.SinonStubbedInstance<firebase.firestore.Transaction> {
