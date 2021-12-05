@@ -8,14 +8,16 @@ describe("ShellGateway", () => {
   // TODO(matuella): How to mock while maintaining types?
   // This way, we won't have to call `fsMock.expect("unsafeMethodCall")` and could
   // possibly use `createSinonStub`
+  let sandbox: sinon.SinonSandbox;
   let childProcessMock: sinon.SinonMock;
 
   beforeEach(() => {
-    childProcessMock = sinon.mock(child_process);
+    sandbox = sinon.createSandbox();
+    childProcessMock = sandbox.mock(child_process);
   });
 
   afterEach(() => {
-    sinon.restore();
+    sandbox.restore();
   });
 
   it("should reject when exec returns an error", async () => {

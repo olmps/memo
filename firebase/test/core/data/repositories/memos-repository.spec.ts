@@ -8,25 +8,36 @@ import SerializationError from "#faults/errors/serialization-error";
 import createSinonStub from "#test/sinon-stub";
 
 describe("MemosRepository", () => {
-  const firestoreStub = createSinonStub(FirestoreGateway);
-  const schemaValidator = createSinonStub(SchemaValidator);
-  const memosRepo = new MemosRepository(firestoreStub, schemaValidator);
+  let sandbox: sinon.SinonSandbox;
+  let firestoreStub: sinon.SinonStubbedInstance<FirestoreGateway>;
+  let schemaStub: sinon.SinonStubbedInstance<SchemaValidator>;
+  let memosRepo: MemosRepository;
   let transactionSpy: sinon.SinonSpy;
 
-  before(() => {
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+
+    const firestoreStubInstance = createSinonStub(FirestoreGateway, sandbox);
+    firestoreStub = firestoreStubInstance;
+
+    const schemaValidatorStub = createSinonStub(SchemaValidator, sandbox);
+    schemaStub = schemaValidatorStub;
+
+    memosRepo = new MemosRepository(firestoreStubInstance, schemaValidatorStub);
+
     // Mocks the transaction function to always run what's is inside the context
     const transactionContext = async (context: any) => {
       await context();
     };
 
-    transactionSpy = sinon.spy(transactionContext);
+    transactionSpy = sandbox.spy(transactionContext);
     firestoreStub.runTransaction.callsFake(transactionSpy);
   });
 
   afterEach(() => {
     transactionSpy.resetHistory();
     firestoreStub.runTransaction.resetHistory();
-    schemaValidator.validateObject.resetHistory();
+    schemaStub.validateObject.resetHistory();
   });
 
   describe("setMemos", async () => {
@@ -39,7 +50,7 @@ describe("MemosRepository", () => {
 
       assert.ok(firestoreStub.runTransaction.calledOnce);
       assert.ok(transactionSpy.calledOnce);
-      assert.ok(schemaValidator.validateObject.calledOnce);
+      assert.ok(schemaStub.validateObject.calledOnce);
     });
 
     it("should throw when raw memos have an invalid format", () => {
@@ -61,7 +72,7 @@ describe("MemosRepository", () => {
       assert.strictEqual(id, expectedId);
       assert.strictEqual(path, expectedPath);
       assert.strictEqual(data, expectedData);
-      assert.ok(schemaValidator.validateObject.calledOnce);
+      assert.ok(schemaStub.validateObject.calledOnce);
     });
   });
 
@@ -82,7 +93,7 @@ describe("MemosRepository", () => {
       const expectedPath = `collections/${mockCollectionId}/memos`;
 
       await memosRepo.removeMemosByIds(memosIdsPerCollection);
-      const { id, path } = firestoreStub.setDoc.lastCall.firstArg;
+      const { id, path } = firestoreStub.deleteDoc.lastCall.firstArg;
 
       assert.strictEqual(id, expectedId);
       assert.strictEqual(path, expectedPath);
@@ -100,7 +111,7 @@ describe("MemosRepository", () => {
       assert.strictEqual(memos.length, 2);
       assert.strictEqual(memos[0]!.id, firstRawMemo.id);
       assert.strictEqual(memos[1]!.id, secondRawMemo.id);
-      assert.ok(schemaValidator.validateObject.calledTwice);
+      assert.ok(schemaStub.validateObject.calledTwice);
     });
 
     it("should throw when a memo is not in the expected schema format", () => {

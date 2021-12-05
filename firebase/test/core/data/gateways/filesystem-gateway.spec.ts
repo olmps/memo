@@ -18,15 +18,17 @@ describe("FileSystemGateway", () => {
   // TODO(matuella): How to mock while maintaining types?
   // This way, we won't have to call `fsMock.expect("unsafeMethodCall")` and could
   // possibly use `createSinonStub`
+  let sandbox: sinon.SinonSandbox;
   let fsMock: sinon.SinonMock;
 
   beforeEach(() => {
-    fsMock = sinon.mock(fs.promises);
-    sinon.stub(process, "cwd").returns(fakeCwd);
+    sandbox = sinon.createSandbox();
+    fsMock = sandbox.mock(fs.promises);
+    sandbox.stub(process, "cwd").returns(fakeCwd);
   });
 
   afterEach(() => {
-    sinon.restore();
+    sandbox.restore();
   });
 
   it("should reject when readdir throws", async () => {
