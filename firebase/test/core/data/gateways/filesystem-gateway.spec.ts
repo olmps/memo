@@ -26,7 +26,6 @@ describe("FileSystemGateway", () => {
 
   afterEach(() => {
     sandbox.restore();
-    sandbox.resetHistory();
   });
 
   it("should reject when readdir throws", async () => {
