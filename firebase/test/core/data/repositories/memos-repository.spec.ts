@@ -1,6 +1,5 @@
 import * as assert from "assert";
 import * as sinon from "sinon";
-import Ajv2020 from "ajv/dist/2020";
 import { FirestoreGateway } from "#data/gateways/firestore-gateway";
 import { MemosRepository } from "#data/repositories/memos-repository";
 import { SchemaValidator } from "#data/schemas/schema-validator";
@@ -36,9 +35,7 @@ describe("MemosRepository", () => {
   });
 
   afterEach(() => {
-    transactionSpy.resetHistory();
-    firestoreStub.runTransaction.resetHistory();
-    schemaStub.validateObject.resetHistory();
+    sandbox.resetHistory();
   });
 
   describe("setMemos", async () => {
