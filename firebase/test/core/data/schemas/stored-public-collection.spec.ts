@@ -2,6 +2,7 @@ import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
+import { newRawContributor, newRawResource, newRawStoredCollection } from "./collections-fakes";
 
 describe("Stored Public Collection Schema Validation", () => {
   const validator = new SchemaValidator(new Ajv2020());
@@ -20,7 +21,7 @@ describe("Stored Public Collection Schema Validation", () => {
   const arrayProperties = ["tags", "contributors", "resources", "memosOrder"];
   // Maps an array property to a list of repeated items.
   const nonRepeatableArrayProperties = new Map<string, any[]>([
-    ["tags", [newRawTag(), newRawTag()]],
+    ["tags", ["Tag", "Tag"]],
     ["contributors", [newRawContributor(), newRawContributor()]],
     ["resources", [newRawResource(), newRawResource()]],
     ["memosOrder", ["id1", "id1", "id1"]],
