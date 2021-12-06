@@ -18,6 +18,14 @@ describe("Stored Public Collection Schema Validation", () => {
   ];
   const optionalProperties = ["locale"];
   const arrayProperties = ["tags", "contributors", "resources", "memosOrder"];
+  // Maps an array property to a list of repeated items.
+  const nonRepeatableArrayProperties = new Map<string, any[]>([
+    ["tags", [newRawTag(), newRawTag()]],
+    ["contributors", [newRawContributor(), newRawContributor()]],
+    ["resources", [newRawResource(), newRawResource()]],
+    ["memosOrder", ["id1", "id1", "id1"]],
+  ]);
+
   // Maps a property to a type that couldn't be associated to it.
   const incorrectPropertiesTypes = new Map<string, any>([
     ["id", true],
@@ -33,14 +41,14 @@ describe("Stored Public Collection Schema Validation", () => {
   ]);
 
   it("should validate raw collection structure", () => {
-    const rawCollection = _newRawStoredCollection();
+    const rawCollection = newRawStoredCollection();
 
     doesNotThrow(() => validator.validateObject("stored-public-collection", rawCollection));
   });
 
   it("should throw when a required property is not set", () => {
     for (const requiredProperty of requiredProperties) {
-      const rawCollection = _newRawStoredCollection();
+      const rawCollection = newRawStoredCollection();
 
       delete rawCollection[requiredProperty];
 
@@ -50,7 +58,7 @@ describe("Stored Public Collection Schema Validation", () => {
 
   it("should not throw when a optional property is not set", () => {
     for (const optionalProperty of optionalProperties) {
-      const rawCollection = _newRawStoredCollection();
+      const rawCollection = newRawStoredCollection();
 
       delete rawCollection[optionalProperty];
 
@@ -58,9 +66,9 @@ describe("Stored Public Collection Schema Validation", () => {
     }
   });
 
-  it("should thrown when a required array is empty", () => {
+  it("should throw when a required array is empty", () => {
     for (const arrayProperty of arrayProperties) {
-      const rawCollection = _newRawStoredCollection();
+      const rawCollection = newRawStoredCollection();
 
       rawCollection[arrayProperty] = [];
 
@@ -68,44 +76,27 @@ describe("Stored Public Collection Schema Validation", () => {
     }
   });
 
-  it("should thrown when assigning incorrect type to a property", () => {
+  it("should throw when assigning incorrect type to a property", () => {
     for (const incorrectPropertyEntry of incorrectPropertiesTypes) {
       const property = incorrectPropertyEntry[0];
       const incorrectType = incorrectPropertyEntry[1];
-      const rawCollection = _newRawStoredCollection();
+      const rawCollection = newRawStoredCollection();
 
       rawCollection[property] = incorrectType;
 
       throws(() => validator.validateObject("stored-public-collection", rawCollection), SerializationError);
     }
   });
+
+  it("should throw when array has repeated items", () => {
+    for (const repeatedProperty of nonRepeatableArrayProperties) {
+      const property = repeatedProperty[0];
+      const repeatedItems = repeatedProperty[1];
+      const rawCollection = newRawStoredCollection();
+
+      rawCollection[property] = repeatedItems;
+
+      throws(() => validator.validateObject("stored-public-collection", rawCollection), SerializationError);
+    }
+  });
 });
-
-function _newRawStoredCollection(): any {
-  const rawContributor = {
-    name: "name",
-    url: "url",
-    avatar: "avatarUrl",
-  };
-  const rawResource = {
-    type: "article",
-    url: "url",
-    description: "description",
-  };
-
-  return {
-    id: "any",
-    name: "name",
-    tags: [
-      { id: "id1", name: "Tag 1" },
-      { id: "id2", name: "Tag 2" },
-    ],
-    category: "Collection Category",
-    description: "Collection Description",
-    locale: "ptBR",
-    contributors: [rawContributor],
-    resources: [rawResource],
-    memosAmount: 3,
-    memosOrder: ["id1", "id2", "id3"],
-  };
-}
