@@ -42,16 +42,17 @@ describe("StoredCollectionsRepository", () => {
       await storedCollectionsRepo.setCollections([mockCollection]);
 
       assert.ok(firestoreStub.runTransaction.calledOnce);
+      assert.ok(transactionSpy.calledOnce);
     });
 
-    it("should throw when one of the Collections has invalid format", () => {
+    it("should throw when raw collections have an invalid format", () => {
       const malformedCollection: StoredPublicCollection = <any>{ id: "id2", foo: "bar" };
       const mockCollections = [_newCollection(), malformedCollection];
 
       assert.rejects(() => storedCollectionsRepo.setCollections(mockCollections), SerializationError);
     });
 
-    it("should update Collections using their raw representation", async () => {
+    it("should set collections using their raw representation", async () => {
       const mockCollection = _newCollection();
       const expectedId = mockCollection.id;
       const expectedPath = "collections";
@@ -67,13 +68,14 @@ describe("StoredCollectionsRepository", () => {
   });
 
   describe("deleteCollectionsByIds", () => {
-    it("should remove Collections set from a collection inside a single transaction", async () => {
+    it("should remove collections inside a single transaction", async () => {
       await storedCollectionsRepo.deleteCollectionsByIds(["any"]);
 
       assert.ok(firestoreStub.runTransaction.calledOnce);
+      assert.ok(transactionSpy.calledOnce);
     });
 
-    it("should remove a Collection by its id", async () => {
+    it("should remove a collection by its id", async () => {
       const expectedId = "anyId";
       const expectedPath = "collections";
 
@@ -86,7 +88,7 @@ describe("StoredCollectionsRepository", () => {
   });
 
   describe("getAllCollectionsByIds", async () => {
-    it("should return deserialized Collections", async () => {
+    it("should return deserialized collections", async () => {
       const firstRawCollection = _newCollection({ id: "id1" });
       const secondRawCollection = _newCollection({ id: "id2" });
 
@@ -102,7 +104,7 @@ describe("StoredCollectionsRepository", () => {
       assert.strictEqual(collections[1]!.id, secondRawCollection.id);
     });
 
-    it("should throw when a Collection is not in the expected schema format", () => {
+    it("should throw when a collection is not in the expected schema format", () => {
       const firstRawCollection = _newCollection({ id: "id1" });
       const secondRawCollection = { id: "2", foo: "bar" };
 
