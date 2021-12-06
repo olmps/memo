@@ -3,6 +3,7 @@ import { SchemaValidator } from "#data/schemas/schema-validator";
 import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
 import { newRawContributor, newRawLocalCollection, newRawResource } from "./collections-fakes";
+import { CollectionResourceType } from "#domainmodels/collection";
 
 describe("Public Collection Schema Validation", () => {
   const validator = new SchemaValidator(new Ajv2020());
@@ -170,6 +171,26 @@ describe("Public Collection Schema Validation", () => {
 
         throws(() => validator.validateObject("local-public-collection", rawCollection), SerializationError);
       }
+    });
+
+    it("should accept allowed resource type", () => {
+      const allowedTypes = Object.values(CollectionResourceType);
+
+      for (const type of allowedTypes) {
+        const rawCollection = newRawLocalCollection();
+
+        rawCollection.resources[0]["type"] = type;
+
+        doesNotThrow(() => validator.validateObject("local-public-collection", rawCollection), SerializationError);
+      }
+    });
+
+    it("show throw when using unexpected resource type", () => {
+      const rawCollection = newRawLocalCollection();
+
+      rawCollection.resources[0]["type"] = "unexpectedType";
+
+      throws(() => validator.validateObject("local-public-collection", rawCollection), SerializationError);
     });
   });
 });

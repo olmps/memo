@@ -23,7 +23,7 @@ interface CollectionContributor {
   readonly avatarUrl: string;
 }
 
-enum CollectionResourceType {
+export enum CollectionResourceType {
   article = "article",
   book = "book",
   video = "video",
