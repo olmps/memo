@@ -51,13 +51,14 @@ export interface StoredPublicCollection extends PublicCollection {
   readonly memosOrder: string[];
 }
 
-const publicCollectionSchema = Joi.object({
+export const maxDescriptionLength = 10000;
+export const publicCollectionSchema = Joi.object({
   id: Joi.string().max(defaultMaxStringLength).required(),
   name: Joi.string().max(defaultMaxStringLength).required(),
-  tags: Joi.array().items(Joi.string()).min(1).required(),
+  tags: Joi.array().items(Joi.string()).min(1).unique().required(),
   category: Joi.string().max(defaultMaxStringLength).required(),
-  description: Joi.string().max(10000).required(),
-  locale: Joi.string().max(defaultMaxStringLength).required(),
+  description: Joi.string().max(maxDescriptionLength).required(),
+  locale: Joi.string().max(defaultMaxStringLength),
   contributors: Joi.array()
     .items(
       Joi.object({
@@ -66,6 +67,7 @@ const publicCollectionSchema = Joi.object({
         avatarUrl: Joi.string().uri().required(),
       })
     )
+    .unique()
     .min(1)
     .required(),
   resources: Joi.array()
@@ -76,15 +78,16 @@ const publicCollectionSchema = Joi.object({
         description: Joi.string().max(defaultMaxStringLength).required(),
       })
     )
+    .unique()
     .min(1)
     .required(),
 });
 
-const localCollectionSchema = publicCollectionSchema.append({
+export const localCollectionSchema = publicCollectionSchema.append({
   memos: Joi.array().items(memoValidationSchema).min(1).required(),
 });
 
-const storedCollectionSchema = publicCollectionSchema.append({
+export const storedCollectionSchema = publicCollectionSchema.append({
   memosAmount: Joi.number().integer().min(1).required(),
   memosOrder: Joi.array().items(Joi.string()).min(1).required(),
 });
