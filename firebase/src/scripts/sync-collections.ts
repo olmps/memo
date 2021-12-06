@@ -3,13 +3,8 @@ import Provider from "#presentation/provider";
 
 // 1. Verificar se vale a pena fazer os "// TODO" pendentes.
 // 4. Testes:
-//  - Provider.
-//  - schemas (/schemas/*).
-//  - validators (/models/*).
-//  - repositórios.
 //  - gateways -> readFileAsString.
 //  - gateways -> deleteDocRecursively; setDoc.
-//  - utils (utils/*).
 //  - domain/use-cases.
 //  - scripts/sync-collections.
 
