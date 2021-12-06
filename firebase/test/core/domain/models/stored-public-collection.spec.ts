@@ -1,6 +1,9 @@
 import { storedCollectionSchema } from "#domain/models/collection";
+import ValidationError from "#faults/errors/validation-error";
 import { newRawStoredCollection } from "#test/core/data/schemas/collections-fakes";
 import { ModelTester, ValidationProperties } from "#test/entity-tester";
+import { validate } from "#utils/validate";
+import { throws } from "assert";
 
 describe("PublicCollection Validation", () => {
   const properties: ValidationProperties = {
@@ -20,4 +23,13 @@ describe("PublicCollection Validation", () => {
   });
 
   tester.runTests();
+
+  it("should throw when memosOrder length differ from memosAmount", () => {
+    const rawCollection = newRawStoredCollection();
+
+    rawCollection["memosAmount"] = 1;
+    rawCollection["memosOrder"] = ["1", "2"];
+
+    throws(() => validate(storedCollectionSchema, rawCollection), ValidationError);
+  });
 });
