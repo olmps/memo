@@ -2,41 +2,19 @@ import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
-import { newRawContributor, newRawResource, newRawStoredCollection } from "./collections-fakes";
+import { newRawStoredCollection } from "./collections-fakes";
 
 describe("Stored Public Collection Schema Validation", () => {
   const validator = new SchemaValidator(new Ajv2020());
-  const requiredProperties = [
-    "id",
-    "name",
-    "description",
-    "tags",
-    "category",
-    "contributors",
-    "resources",
-    "memosAmount",
-    "memosOrder",
-  ];
-  const optionalProperties = ["locale"];
-  const arrayProperties = ["tags", "contributors", "resources", "memosOrder"];
+  const requiredProperties = ["memosAmount", "memosOrder"];
+  const optionalProperties: string[] = [];
+  const arrayProperties = ["memosOrder"];
+  const stringProperties: string[] = [];
   // Maps an array property to a list of repeated items.
-  const nonRepeatableArrayProperties = new Map<string, any[]>([
-    ["tags", ["Tag", "Tag"]],
-    ["contributors", [newRawContributor(), newRawContributor()]],
-    ["resources", [newRawResource(), newRawResource()]],
-    ["memosOrder", ["id1", "id1", "id1"]],
-  ]);
+  const nonRepeatableArrayProperties = new Map<string, any[]>([["memosOrder", ["id1", "id1", "id1"]]]);
 
   // Maps a property to a type that couldn't be associated to it.
   const incorrectPropertiesTypes = new Map<string, any>([
-    ["id", true],
-    ["name", true],
-    ["description", true],
-    ["tags", "string"],
-    ["category", true],
-    ["contributors", "string"],
-    ["resources", "string"],
-    ["locale", 0],
     ["memosAmount", "string"],
     ["memosOrder", "string"],
   ]);
@@ -98,6 +76,16 @@ describe("Stored Public Collection Schema Validation", () => {
       rawCollection[property] = repeatedItems;
 
       throws(() => validator.validateObject("stored-public-collection", rawCollection), SerializationError);
+    }
+  });
+
+  it("should throw when a string property is empty", () => {
+    for (const stringProperty of stringProperties) {
+      const rawCollection = newRawStoredCollection();
+
+      rawCollection[stringProperty] = "";
+
+      throws(() => validator.validateObject("local-public-collection", rawCollection), SerializationError);
     }
   });
 });
