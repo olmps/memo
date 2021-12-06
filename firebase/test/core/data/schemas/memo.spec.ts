@@ -5,7 +5,15 @@ import SerializationError from "#faults/errors/serialization-error";
 
 describe("Memo Schema Validation", () => {
   const validator = new SchemaValidator(new Ajv2020());
-  const allowedProperties = ["bold", "italic", "underline", "code-block"];
+  const requiredProperties = ["id", "question", "answer"];
+  const arrayProperties = ["question", "answer"];
+  // Maps a property to a type that couldn't be associated to it.
+  const incorrectPropertiesTypes = new Map<string, any>([
+    ["id", true],
+    ["question", "string"],
+    ["answer", "string"],
+  ]);
+  const allowedAttributesProperties = ["bold", "italic", "underline", "code-block"];
 
   it("should validate raw memo structure", () => {
     const rawMemo = _newRawMemo();
@@ -13,80 +21,45 @@ describe("Memo Schema Validation", () => {
     doesNotThrow(() => validator.validateObject("memo", rawMemo));
   });
 
-  it("should throw when question id is not present", () => {
+  it("should throw when a required property is not set", () => {
+    for (const requiredProperty of requiredProperties) {
+      const rawMemo = _newRawMemo();
+
+      delete rawMemo[requiredProperty];
+
+      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
+    }
+  });
+
+  it("should thrown when a required array is empty", () => {
+    for (const arrayProperty of arrayProperties) {
+      const rawMemo = _newRawMemo();
+
+      rawMemo[arrayProperty] = [];
+
+      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
+    }
+  });
+
+  it("should thrown when assigning incorrect type to a property", () => {
+    for (const incorrectPropertyEntry of incorrectPropertiesTypes) {
+      const property = incorrectPropertyEntry[0];
+      const incorrectType = incorrectPropertyEntry[1];
+      const rawMemo = _newRawMemo();
+
+      rawMemo[property] = incorrectType;
+
+      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
+    }
+  });
+
+  it("should throw when question/answer content is not present", () => {
     const rawMemo = _newRawMemo();
 
-    delete rawMemo.id;
+    delete rawMemo.question[0].insert;
+    delete rawMemo.answer[0].insert;
 
     throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-  });
-
-  describe("Question - ", () => {
-    it("should throw when question is not present", () => {
-      const rawMemo = _newRawMemo();
-
-      delete rawMemo.question;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should throw when question content is not present", () => {
-      const rawMemo = _newRawMemo();
-
-      delete rawMemo.question[0].insert;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should throw when question is empty", () => {
-      const rawMemo = _newRawMemo();
-
-      rawMemo.question = [];
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should throw when question has incorrect type", () => {
-      const rawMemo = _newRawMemo();
-
-      rawMemo.question = true;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-  });
-
-  describe("Answer - ", () => {
-    it("should throw when answer is not present", () => {
-      const rawMemo = _newRawMemo();
-
-      delete rawMemo.answer;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should throw when answer content is not present", () => {
-      const rawMemo = _newRawMemo();
-
-      delete rawMemo.answer[0].insert;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should throw when answer is empty", () => {
-      const rawMemo = _newRawMemo();
-
-      delete rawMemo.answer;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should throw when answer has incorrect type", () => {
-      const rawMemo = _newRawMemo();
-
-      rawMemo.answer = true;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
   });
 
   describe("Attributes - ", () => {
@@ -95,7 +68,7 @@ describe("Memo Schema Validation", () => {
       rawMemo.question[0]!.attributes = {};
       rawMemo.answer[0]!.attributes = {};
 
-      for (const property of allowedProperties) {
+      for (const property of allowedAttributesProperties) {
         rawMemo.question[0]!.attributes = { ...rawMemo.question[0]!.attributes, [property]: true };
         rawMemo.answer[0]!.attributes = { ...rawMemo.answer[0]!.attributes, [property]: true };
 
@@ -103,34 +76,20 @@ describe("Memo Schema Validation", () => {
       }
     });
 
-    it("should deny not allowed question attribute", () => {
+    it("should deny not allowed question/answer attribute", () => {
       const rawMemo = _newRawMemo();
 
       rawMemo.question[0]!.attributes = { foo: "bar" };
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should deny not allowed answer attribute", () => {
-      const rawMemo = _newRawMemo();
-
       rawMemo.answer[0]!.attributes = { foo: "bar" };
 
       throws(() => validator.validateObject("memo", rawMemo), SerializationError);
     });
 
-    it("should deny empty question attributes", () => {
+    it("should deny empty question/answer attributes", () => {
       const rawMemo = _newRawMemo();
 
       rawMemo.question[0]!.attributes = {};
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    });
-
-    it("should deny empty answer attributes", () => {
-      const rawMemo = _newRawMemo();
-
-      rawMemo.question[0]!.attributes = {};
+      rawMemo.answer[0]!.attributes = {};
 
       throws(() => validator.validateObject("memo", rawMemo), SerializationError);
     });
@@ -140,15 +99,13 @@ describe("Memo Schema Validation", () => {
 function _newRawMemo(): any {
   return {
     id: "any",
-    question: [
-      {
-        insert: "Question string",
-      },
-    ],
-    answer: [
-      {
-        insert: "Answer string",
-      },
-    ],
+    question: [_newRawMemoContent()],
+    answer: [_newRawMemoContent()],
+  };
+}
+
+function _newRawMemoContent(): any {
+  return {
+    insert: "Content string",
   };
 }
