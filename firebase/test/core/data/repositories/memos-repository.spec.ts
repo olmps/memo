@@ -8,19 +8,24 @@ import { Memo } from "#domain/models/memo";
 import SerializationError from "#faults/errors/serialization-error";
 
 describe("MemosRepository", () => {
-  const firestoreMock = sinon.createStubInstance(FirestoreGateway);
-  const schemaMock = new SchemaValidator(new Ajv2020());
-  const memosRepo = new MemosRepository(<FirestoreGateway>(<any>firestoreMock), schemaMock);
+  const firestoreStub = sinon.createStubInstance(FirestoreGateway);
+  const schemaValidator = new SchemaValidator(new Ajv2020());
+  const memosRepo = new MemosRepository(<FirestoreGateway>(<any>firestoreStub), schemaValidator);
+  let transactionSpy: sinon.SinonSpy;
 
   before(() => {
     // Mocks the transaction function to always run what's is inside the context
-    firestoreMock.runTransaction.callsFake(async (context) => {
+    const transactionContext = async (context: any) => {
       await context();
-    });
+    };
+
+    transactionSpy = sinon.spy(transactionContext);
+    firestoreStub.runTransaction.callsFake(transactionSpy);
   });
 
   afterEach(() => {
-    firestoreMock.runTransaction.reset();
+    transactionSpy.resetHistory();
+    firestoreStub.runTransaction.resetHistory();
   });
 
   describe("setMemos", async () => {
@@ -28,13 +33,14 @@ describe("MemosRepository", () => {
     const mockMemo = _newRawMemo({ id: "id1" });
     const memosPerCollection = _newMemosPerCollection(mockCollectionId, [mockMemo]);
 
-    it("should update all Memos from a collection inside a single transaction", async () => {
+    it("should update all memos inside a single transaction", async () => {
       await memosRepo.setMemos(memosPerCollection);
 
-      assert.ok(firestoreMock.runTransaction.calledOnce);
+      assert.ok(firestoreStub.runTransaction.calledOnce);
+      assert.ok(transactionSpy.calledOnce);
     });
 
-    it("should throw when one of the memos has invalid format", () => {
+    it("should throw when raw memos have an invalid format", () => {
       const malformedMemo: Memo = <any>{ id: "id2", foo: "bar" };
       const mockMemosPerCollection = _newMemosPerCollection(mockCollectionId, [mockMemo]);
       mockMemosPerCollection.set("collectionId2", [malformedMemo]);
@@ -42,13 +48,13 @@ describe("MemosRepository", () => {
       assert.rejects(() => memosRepo.setMemos(mockMemosPerCollection), SerializationError);
     });
 
-    it("should update a Memo using its raw representation", async () => {
+    it("should update a memo using its raw representation", async () => {
       const expectedId = mockMemo.id;
       const expectedPath = `collections/${mockCollectionId}/memos`;
       const expectedData = <any>mockMemo;
 
       await memosRepo.setMemos(memosPerCollection);
-      const { id, path, data } = firestoreMock.setDoc.lastCall.firstArg;
+      const { id, path, data } = firestoreStub.setDoc.lastCall.firstArg;
 
       assert.strictEqual(id, expectedId);
       assert.strictEqual(path, expectedPath);
@@ -61,18 +67,19 @@ describe("MemosRepository", () => {
     const mockMemoId = "id1";
     const memosIdsPerCollection = _newMemosIdsPerCollection(mockCollectionId, [mockMemoId]);
 
-    it("should remove all Memos from a collection inside a single transaction", async () => {
+    it("should remove all memos inside a single transaction", async () => {
       await memosRepo.removeMemosByIds(memosIdsPerCollection);
 
-      assert.ok(firestoreMock.runTransaction.calledOnce);
+      assert.ok(firestoreStub.runTransaction.calledOnce);
+      assert.ok(transactionSpy.calledOnce);
     });
 
-    it("should remove a Memo by its id", async () => {
+    it("should remove a memo by its id", async () => {
       const expectedId = mockMemoId;
       const expectedPath = `collections/${mockCollectionId}/memos`;
 
       await memosRepo.removeMemosByIds(memosIdsPerCollection);
-      const { id, path } = firestoreMock.setDoc.lastCall.firstArg;
+      const { id, path } = firestoreStub.setDoc.lastCall.firstArg;
 
       assert.strictEqual(id, expectedId);
       assert.strictEqual(path, expectedPath);
@@ -80,11 +87,11 @@ describe("MemosRepository", () => {
   });
 
   describe("getAllMemos", async () => {
-    it("should return deserialized memos", async () => {
+    it("should return a list of deserialized memos", async () => {
       const firstRawMemo = _newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
       const secondRawMemo = _newRawMemo({ id: "2", question: "Question 2", answer: "Answer 2" });
 
-      firestoreMock.getCollection.resolves([firstRawMemo, secondRawMemo]);
+      firestoreStub.getCollection.resolves([firstRawMemo, secondRawMemo]);
       const memos = await memosRepo.getAllMemos("any");
 
       assert.strictEqual(memos.length, 2);
@@ -96,7 +103,7 @@ describe("MemosRepository", () => {
       const firstRawMemo = _newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
       const secondRawMemo = { id: "2", foo: "bar" };
 
-      firestoreMock.getCollection.resolves([firstRawMemo, secondRawMemo]);
+      firestoreStub.getCollection.resolves([firstRawMemo, secondRawMemo]);
 
       assert.rejects(() => memosRepo.getAllMemos("any"), SerializationError);
     });
