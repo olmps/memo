@@ -41,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^4.32.x",
     "@typescript-eslint/parser": "^4.32.x",
     "ajv": "^8.8.2",
+    "ajv-formats": "^2.1.1",
     "eslint": "^7.32.x",
     "eslint-config-prettier": "^8.3.x",
     "eslint-plugin-prettier": "^4.0.x",
