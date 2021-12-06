@@ -124,7 +124,7 @@ function newCollection(props?: { id?: string }): StoredPublicCollection {
     id: props?.id ?? "any",
     name: "Collection name",
     description: "Description",
-    tags: [],
+    tags: ["Tag"],
     category: "Category",
     contributors: [],
     resources: [],
