@@ -74,7 +74,7 @@ export const publicCollectionSchema = Joi.object({
 });
 
 export const localCollectionSchema = publicCollectionSchema.append({
-  memos: Joi.array().items(memoValidationSchema).min(1).required(),
+  memos: Joi.array().items(memoValidationSchema).unique().min(1).required(),
 });
 
 export const storedCollectionSchema = publicCollectionSchema.append({
