@@ -8,6 +8,13 @@ describe("Local Public Collection Schema Validation", () => {
   const requiredProperties = ["id", "name", "description", "tags", "category", "contributors", "resources", "memos"];
   const optionalProperties = ["locale"];
   const arrayProperties = ["tags", "contributors", "resources", "memos"];
+  // Maps an array property to a list of repeated items.
+  const nonRepeatableArrayProperties = new Map<string, any[]>([
+    ["tags", [_newRawTag(), _newRawTag()]],
+    ["contributors", [_newRawContributor(), _newRawContributor()]],
+    ["resources", [_newRawResource(), _newRawResource()]],
+    ["memos", [_newRawMemo(), _newRawMemo()]],
+  ]);
   // Maps a property to a type that couldn't be associated to it.
   const incorrectPropertiesTypes = new Map<string, any>([
     ["id", true],
@@ -47,7 +54,7 @@ describe("Local Public Collection Schema Validation", () => {
     }
   });
 
-  it("should thrown when a required array is empty", () => {
+  it("should throw when a required array is empty", () => {
     for (const arrayProperty of arrayProperties) {
       const rawCollection = _newRawLocalCollection();
 
@@ -57,7 +64,7 @@ describe("Local Public Collection Schema Validation", () => {
     }
   });
 
-  it("should thrown when assigning incorrect type to a property", () => {
+  it("should throw when assigning incorrect type to a property", () => {
     for (const incorrectPropertyEntry of incorrectPropertiesTypes) {
       const property = incorrectPropertyEntry[0];
       const incorrectType = incorrectPropertyEntry[1];
@@ -68,37 +75,58 @@ describe("Local Public Collection Schema Validation", () => {
       throws(() => validator.validateObject("local-public-collection", rawCollection), SerializationError);
     }
   });
+
+  it("should throw when array has repeated items", () => {
+    for (const repeatedProperty of nonRepeatableArrayProperties) {
+      const property = repeatedProperty[0];
+      const repeatedItems = repeatedProperty[1];
+      const rawCollection = _newRawLocalCollection();
+
+      rawCollection[property] = repeatedItems;
+
+      throws(() => validator.validateObject("local-public-collection", rawCollection), SerializationError);
+    }
+  });
 });
 
-function _newRawLocalCollection(): any {
-  const rawMemo = {
-    id: "any",
-    question: [{ insert: "content" }],
-    answer: [{ insert: "content" }],
-  };
-  const rawContributor = {
-    name: "name",
-    url: "url",
-    avatar: "avatarUrl",
-  };
-  const rawResource = {
-    type: "article",
-    url: "url",
-    description: "description",
-  };
+function _newRawTag(props?: { id?: string; name?: string }): any {
+  return { id: props?.id ?? "id", name: props?.name ?? "Tag Name" };
+}
 
+function _newRawResource(props?: { type?: string; url?: string; description?: string }): any {
+  return {
+    type: props?.type ?? "article",
+    url: props?.url ?? "url",
+    description: props?.description ?? "description",
+  };
+}
+
+function _newRawContributor(props?: { name?: string; url?: string; avatar?: string }): any {
+  return {
+    name: props?.name ?? "name",
+    url: props?.url ?? "url",
+    avatar: props?.avatar ?? "avatar",
+  };
+}
+
+function _newRawMemo(props?: { id?: string; question?: any[]; answer?: any[] }): any {
+  return {
+    id: props?.id ?? "any",
+    question: props?.question ?? [{ insert: "content" }],
+    answer: props?.answer ?? [{ insert: "content" }],
+  };
+}
+
+function _newRawLocalCollection(): any {
   return {
     id: "any",
     name: "name",
-    tags: [
-      { id: "id1", name: "Tag 1" },
-      { id: "id2", name: "Tag 2" },
-    ],
+    tags: [_newRawTag({ id: "id1", name: "Tag 1" }), _newRawTag({ id: "id2", name: "Tag 2" })],
     category: "Collection Category",
     description: "Collection Description",
     locale: "ptBR",
-    contributors: [rawContributor],
-    resources: [rawResource],
-    memos: [rawMemo],
+    contributors: [_newRawContributor()],
+    resources: [_newRawResource()],
+    memos: [_newRawMemo()],
   };
 }
