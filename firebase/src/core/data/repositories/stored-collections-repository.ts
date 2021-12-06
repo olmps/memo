@@ -14,12 +14,13 @@ export class StoredCollectionsRepository {
   async setCollections(collections: StoredPublicCollection[]): Promise<void> {
     await this.#firestore.runTransaction(async () => {
       const sets = collections.map((collection) => {
-        const serializedCollection = this.#deserializeCollection((<unknown>collection) as Record<string, unknown>);
+        const rawCollection = (<unknown>collection) as Record<string, unknown>;
+        this.#schemaValidator.validateObject("stored-public-collection", rawCollection);
 
         return this.#firestore.setDoc({
           id: collection.id,
           path: "collections",
-          data: (<unknown>serializedCollection) as Record<string, unknown>,
+          data: rawCollection,
         });
       });
 
@@ -28,8 +29,12 @@ export class StoredCollectionsRepository {
   }
 
   async deleteCollectionsByIds(collectionIds: string[]): Promise<void> {
-    const deletions = collectionIds.map((id) => this.#firestore.deleteDocRecursively({ id: id, path: "collections" }));
-    await Promise.all(deletions);
+    await this.#firestore.runTransaction(async () => {
+      const deletions = collectionIds.map((id) =>
+        this.#firestore.deleteDocRecursively({ id: id, path: "collections" })
+      );
+      await Promise.all(deletions);
+    });
   }
 
   async getAllCollectionsByIds(collectionIds: string[]): Promise<StoredPublicCollection[]> {
