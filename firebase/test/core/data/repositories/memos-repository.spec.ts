@@ -6,11 +6,12 @@ import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { Memo } from "#domain/models/memo";
 import SerializationError from "#faults/errors/serialization-error";
+import createSinonStub from "#test/sinon-stub";
 
 describe("MemosRepository", () => {
-  const firestoreStub = sinon.createStubInstance(FirestoreGateway);
+  const firestoreStub = createSinonStub(FirestoreGateway);
   const schemaValidator = new SchemaValidator(new Ajv2020());
-  const memosRepo = new MemosRepository(<FirestoreGateway>(<any>firestoreStub), schemaValidator);
+  const memosRepo = new MemosRepository(firestoreStub, schemaValidator);
   let transactionSpy: sinon.SinonSpy;
 
   before(() => {
