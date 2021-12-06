@@ -6,41 +6,46 @@
   "type": "object",
   "properties": {
     "id": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "category": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "description": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "tags": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" }
-        }
+        "type": "string",
+        "minLength": 1
       },
       "minItems": 1,
       "uniqueItems": true
     },
     "locale": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "contributors": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "url": { "type": "string" },
-          "avatarUrl": { "type": "string" }
-        }
+          "name": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "minLength": 1, "format": "url" },
+          "avatarUrl": { "type": "string", "minLength": 1, "format": "url" }
+        },
+        "required": [
+          "name", "url", "avatarUrl"
+        ]
       },
       "minItems": 1,
       "uniqueItems": true
@@ -50,10 +55,13 @@
       "items": {
         "type": "object",
         "properties": {
-          "description": { "type": "string" },
-          "type": { "type": "string" },
-          "url": { "type": "string" }
-        }
+          "description": { "type": "string", "minLength": 1 },
+          "type": { "type": "string", "minLength": 1},
+          "url": { "type": "string", "minLength": 1, "format": "url" }
+        },
+        "required": [
+          "description", "type", "url"
+        ]
       },
       "minItems": 1,
       "uniqueItems": true
