@@ -5,25 +5,30 @@ import SerializationError from "#faults/errors/serialization-error";
 import { StoredPublicCollection } from "#domain/models/collection";
 import { StoredCollectionsRepository } from "#data/repositories/stored-collections-repository";
 import { FirestoreGateway } from "#data/gateways/firestore-gateway";
+import createSinonStub from "#test/sinon-stub";
 
 describe("StoredCollectionsRepository", () => {
   let sandbox: sinon.SinonSandbox;
-  let firestoreGateway: sinon.SinonStubbedInstance<FirestoreGateway>;
-  let schemaValidator: sinon.SinonStubbedInstance<SchemaValidator>;
+  let firestoreStub: sinon.SinonStubbedInstance<FirestoreGateway>;
   let storedCollectionsRepo: StoredCollectionsRepository;
+  let transactionSpy: sinon.SinonSpy;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    firestoreGateway = sandbox.createStubInstance(FirestoreGateway);
+
+    const firestoreStubInstance = createSinonStub(FirestoreGateway, sandbox);
+    firestoreStub = firestoreStubInstance;
+
+    const schemaStubInstance = createSinonStub(SchemaValidator, sandbox);
+    storedCollectionsRepo = new StoredCollectionsRepository(firestoreStubInstance, schemaStubInstance);
+
     // Mocks the transaction function to always run what's is inside the context
-    firestoreGateway.runTransaction.callsFake(async (context) => {
+    const transactionContext = async (context: any) => {
       await context();
-    });
-    schemaValidator = sandbox.createStubInstance(SchemaValidator);
-    storedCollectionsRepo = new StoredCollectionsRepository(
-      <FirestoreGateway>(<any>firestoreGateway),
-      <SchemaValidator>(<any>schemaValidator)
-    );
+    };
+
+    transactionSpy = sandbox.spy(transactionContext);
+    firestoreStub.runTransaction.callsFake(transactionSpy);
   });
 
   afterEach(() => {
@@ -31,12 +36,12 @@ describe("StoredCollectionsRepository", () => {
   });
 
   describe("setCollections", () => {
-    it("should update Collections set inside a single transaction", async () => {
+    it("should set collections set inside a single transaction", async () => {
       const mockCollection = _newCollection();
 
       await storedCollectionsRepo.setCollections([mockCollection]);
 
-      assert.ok(firestoreGateway.runTransaction.calledOnce);
+      assert.ok(firestoreStub.runTransaction.calledOnce);
     });
 
     it("should throw when one of the Collections has invalid format", () => {
@@ -53,7 +58,7 @@ describe("StoredCollectionsRepository", () => {
       const expectedData = <any>mockCollection;
 
       await storedCollectionsRepo.setCollections([mockCollection]);
-      const { id, path, data } = firestoreGateway.setDoc.lastCall.firstArg;
+      const { id, path, data } = firestoreStub.setDoc.lastCall.firstArg;
 
       assert.strictEqual(id, expectedId);
       assert.strictEqual(path, expectedPath);
@@ -65,7 +70,7 @@ describe("StoredCollectionsRepository", () => {
     it("should remove Collections set from a collection inside a single transaction", async () => {
       await storedCollectionsRepo.deleteCollectionsByIds(["any"]);
 
-      assert.ok(firestoreGateway.runTransaction.calledOnce);
+      assert.ok(firestoreStub.runTransaction.calledOnce);
     });
 
     it("should remove a Collection by its id", async () => {
@@ -73,7 +78,7 @@ describe("StoredCollectionsRepository", () => {
       const expectedPath = "collections";
 
       await storedCollectionsRepo.deleteCollectionsByIds([expectedId]);
-      const { id, path } = firestoreGateway.deleteDocRecursively.lastCall.firstArg;
+      const { id, path } = firestoreStub.deleteDocRecursively.lastCall.firstArg;
 
       assert.strictEqual(id, expectedId);
       assert.strictEqual(path, expectedPath);
@@ -85,10 +90,8 @@ describe("StoredCollectionsRepository", () => {
       const firstRawCollection = _newCollection({ id: "id1" });
       const secondRawCollection = _newCollection({ id: "id2" });
 
-      firestoreGateway.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
-      firestoreGateway.getDoc
-        .withArgs({ id: secondRawCollection.id, path: "collections" })
-        .resolves(secondRawCollection);
+      firestoreStub.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
+      firestoreStub.getDoc.withArgs({ id: secondRawCollection.id, path: "collections" }).resolves(secondRawCollection);
       const collections = await storedCollectionsRepo.getAllCollectionsByIds([
         firstRawCollection.id,
         secondRawCollection.id,
@@ -103,10 +106,8 @@ describe("StoredCollectionsRepository", () => {
       const firstRawCollection = _newCollection({ id: "id1" });
       const secondRawCollection = { id: "2", foo: "bar" };
 
-      firestoreGateway.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
-      firestoreGateway.getDoc
-        .withArgs({ id: secondRawCollection.id, path: "collections" })
-        .resolves(secondRawCollection);
+      firestoreStub.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
+      firestoreStub.getDoc.withArgs({ id: secondRawCollection.id, path: "collections" }).resolves(secondRawCollection);
 
       assert.rejects(
         () => storedCollectionsRepo.getAllCollectionsByIds([firstRawCollection.id, secondRawCollection.id]),
@@ -120,6 +121,9 @@ function _newCollection(props?: { id?: string }): StoredPublicCollection {
   return {
     id: props?.id ?? "any",
     name: "Collection name",
+    description: "Description",
+    tags: [],
+    category: "Category",
     contributors: [],
     resources: [],
     memosAmount: 1,
