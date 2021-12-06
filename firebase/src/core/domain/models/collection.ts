@@ -36,11 +36,6 @@ interface CollectionResource {
   readonly url: string;
 }
 
-export interface CollectionTag {
-  readonly id: string;
-  readonly name: string;
-}
-
 export interface LocalPublicCollection extends PublicCollection {
   readonly memos: Memo[];
 }
