@@ -9,6 +9,7 @@
     "memos": {
       "type": "array",
       "minItems": 1,
+      "uniqueItems": true,
       "items": {
         "allOf": [{ "$ref": "memo#" }],
         "type": "object"
