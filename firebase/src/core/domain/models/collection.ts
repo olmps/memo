@@ -5,10 +5,10 @@ import * as Joi from "joi";
 interface Collection {
   readonly id: string;
   readonly name: string;
+  readonly description: string;
+  readonly tags: string[];
+  readonly category: string;
 
-  readonly tags?: string[];
-  readonly category?: string;
-  readonly description?: string;
   readonly locale?: string;
 }
 
