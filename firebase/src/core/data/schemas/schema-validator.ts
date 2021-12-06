@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import Ajv2020 from "ajv/dist/2020";
 import { JSONSchemaType } from "ajv";
+import addFormats from "ajv-formats";
 import { AnyValidateFunction } from "ajv/dist/types";
 import { EntitiesSchema } from "./entities-schemas/entities-schema";
 import SerializationError from "#faults/errors/serialization-error";
@@ -15,6 +16,7 @@ export class SchemaValidator {
 
   constructor(ajv: Ajv2020) {
     this.#ajv = ajv;
+    addFormats(ajv);
     // TODO(matuella): Find a way to load dependant schemas on demand, just like others are being loaded.
     // The below schemas are a dependancy from others (a "$ref").
     const loadedSchema = require(`${this.#entitiesSchemasRoot}/public-collection.json`);
