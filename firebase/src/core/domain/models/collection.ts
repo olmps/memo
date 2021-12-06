@@ -77,12 +77,12 @@ export const localCollectionSchema = publicCollectionSchema.append({
   memos: Joi.array().items(memoValidationSchema).unique().min(1).required(),
 });
 
-export const storedCollectionSchema = publicCollectionSchema.append({
-  memosAmount: Joi.number().integer().min(1).required(),
-  memosOrder: Joi.array().items(Joi.string()).unique().min(1).required(),
-});
-// TODO: How to compare between same-object properties?
-// .assert(Joi.ref("memosAmount"), Joi.ref("memosOrder.length"));
+export const storedCollectionSchema = publicCollectionSchema
+  .append({
+    memosAmount: Joi.number().integer().min(1).required(),
+    memosOrder: Joi.array().items(Joi.string()).unique().min(1).required(),
+  })
+  .assert(".memosAmount", Joi.ref("memosOrder.length"));
 
 export function validateLocalCollection(collection: LocalPublicCollection): void {
   validate(localCollectionSchema, collection);
