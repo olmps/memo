@@ -31,18 +31,18 @@ type ClassFactory = () => any;
 type ValidateFunction = (object: any) => void;
 
 /**
- * Exposes mutual validation functions between entities and schemas.
+ * Exposes mutual testing functions between models and schemas.
  *
- * Entities and Schemas share the same validation requirements. The abstract validator exposes such validations that
- * can be extended by both Entity and Schema validators in favor of validations reuse.
+ * Models and Schemas share the same testing requirements. This abstract tester exposes such testing features that
+ * can be extended by both Model and Schema in favor of reuse.
  *
- * @see SchemaValidatorBuilder for a Schema specialization.
- * @see EntityValidatorBuilder for an Entity specialization.
+ * @see SchemaTester for a Schema specialization.
+ * @see ModelTester for a Model specialization.
  */
-abstract class BaseValidator {
-  /** Set of properties and its reference values to be validated. */
+abstract class EntityTester {
+  /** Set of properties and its reference values to be tested. */
   readonly #properties: ValidationProperties;
-  /** Empty constructor for the entity being validated. */
+  /** Empty constructor for the entity being tested. */
   readonly #entityConstructor: ClassFactory;
   /** Validate function used to validate the modified entity. */
   readonly #validator: ValidateFunction;
@@ -227,8 +227,8 @@ abstract class BaseValidator {
   }
 }
 
-/** A {@link BaseValidator} specialization for Schema validations. */
-export class SchemaValidatorBuilder extends BaseValidator {
+/** A {@link EntityTester} specialization for Schema validations. */
+export class SchemaTester extends EntityTester {
   constructor(props: { schema: EntitiesSchema; properties: ValidationProperties; entityConstructor: ClassFactory }) {
     const validator = new SchemaValidator(new Ajv2020());
     const validateFunction = (object: any) => validator.validateObject(props.schema, object);
@@ -241,8 +241,8 @@ export class SchemaValidatorBuilder extends BaseValidator {
   }
 }
 
-/** A {@link BaseValidator} specialization for Entity validations. */
-export class EntityValidatorBuilder extends BaseValidator {
+/** A {@link EntityTester} specialization for Entity validations. */
+export class ModelTester extends EntityTester {
   constructor(props: { schema: Joi.Schema; properties: ValidationProperties; entityConstructor: ClassFactory }) {
     const validateFunction = (object: any) => validate(props.schema, object);
     super({
