@@ -1,3 +1,4 @@
+import * as admin from "firebase-admin";
 import Ajv2020 from "ajv/dist/2020";
 import { FirestoreGateway } from "#data/gateways/firestore-gateway";
 import { FileSystemGateway } from "#data/gateways/filesystem-gateway";
@@ -5,9 +6,10 @@ import { StoredCollectionsRepository } from "#data/repositories/stored-collectio
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { LocalCollectionsRepository } from "#data/repositories/local-collections-repository";
 import { MemosRepository } from "#data/repositories/memos-repository";
-import { app } from "#data/gateways/firebase-app";
+import { initializeFirebase } from "#data/gateways/firebase-app";
 import { ShellGateway } from "#data/gateways/shell-gateway";
 import { GitRepository } from "#data/repositories/git-repository";
+import { EnvGateway } from "#data/gateways/env-gateway";
 
 /**
  * Singleton that provides all injectable dependencies, which should be used as a pseudo-DI container.
@@ -24,15 +26,18 @@ export default class Provider {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
+  private constructor() {
+    this.#firebaseApp = initializeFirebase({ isLocalDevelopment: this.envGateway.isLocalDevelopment });
+  }
 
   //
   // Third Parties
   //
+  #firebaseApp: admin.app.App;
   #firestore?: FirebaseFirestore.Firestore;
 
   get firestore(): FirebaseFirestore.Firestore {
-    this.#firestore ??= app.firestore();
+    this.#firestore ??= this.#firebaseApp.firestore();
     return this.#firestore;
   }
 
@@ -43,6 +48,7 @@ export default class Provider {
   #fileSystemGateway?: FileSystemGateway;
   #schemaValidator?: SchemaValidator;
   #shellGateway?: ShellGateway;
+  #envGateway?: EnvGateway;
 
   get firestoreGateway(): FirestoreGateway {
     this.#firestoreGateway ??= new FirestoreGateway(this.firestore);
@@ -62,6 +68,11 @@ export default class Provider {
   get shellGateway(): ShellGateway {
     this.#shellGateway ??= new ShellGateway();
     return this.#shellGateway;
+  }
+
+  get envGateway(): EnvGateway {
+    this.#envGateway ??= new EnvGateway();
+    return this.#envGateway;
   }
 
   //
