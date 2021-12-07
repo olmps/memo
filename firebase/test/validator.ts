@@ -27,7 +27,7 @@ export interface ValidationProperties {
   readonly incorrectTypes: Map<string, any>;
 }
 
-type ClassConstructor = () => any;
+type ClassFactory = () => any;
 type ValidateFunction = (object: any) => void;
 
 /**
@@ -43,7 +43,7 @@ abstract class BaseValidator {
   /** Set of properties and its reference values to be validated. */
   readonly #properties: ValidationProperties;
   /** Empty constructor for the entity being validated. */
-  readonly #entityConstructor: ClassConstructor;
+  readonly #entityConstructor: ClassFactory;
   /** Validate function used to validate the modified entity. */
   readonly #validator: ValidateFunction;
   /** Expected error type that can be thrown when validating the entity. */
@@ -52,7 +52,7 @@ abstract class BaseValidator {
 
   constructor(props: {
     properties: ValidationProperties;
-    entityConstructor: ClassConstructor;
+    entityConstructor: ClassFactory;
     validator: ValidateFunction;
     // eslint-disable-next-line @typescript-eslint/ban-types
     expectedErrorType: object;
@@ -229,11 +229,7 @@ abstract class BaseValidator {
 
 /** A {@link BaseValidator} specialization for Schema validations. */
 export class SchemaValidatorBuilder extends BaseValidator {
-  constructor(props: {
-    schema: EntitiesSchema;
-    properties: ValidationProperties;
-    entityConstructor: ClassConstructor;
-  }) {
+  constructor(props: { schema: EntitiesSchema; properties: ValidationProperties; entityConstructor: ClassFactory }) {
     const validator = new SchemaValidator(new Ajv2020());
     const validateFunction = (object: any) => validator.validateObject(props.schema, object);
     super({
@@ -247,7 +243,7 @@ export class SchemaValidatorBuilder extends BaseValidator {
 
 /** A {@link BaseValidator} specialization for Entity validations. */
 export class EntityValidatorBuilder extends BaseValidator {
-  constructor(props: { schema: Joi.Schema; properties: ValidationProperties; entityConstructor: ClassConstructor }) {
+  constructor(props: { schema: Joi.Schema; properties: ValidationProperties; entityConstructor: ClassFactory }) {
     const validateFunction = (object: any) => validate(props.schema, object);
     super({
       properties: props.properties,
