@@ -1,5 +1,5 @@
 import { newRawContributor, newRawPublicCollection, newRawResource } from "./collections-fakes";
-import { SchemaTester, ValidationProperties } from "#test/validator";
+import { SchemaTester, ValidationProperties } from "#testentity-tester";
 import { CollectionResourceType } from "#domain/models/collection";
 
 describe("Public Collection Schema Validation", () => {

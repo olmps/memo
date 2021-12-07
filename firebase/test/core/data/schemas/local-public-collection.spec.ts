@@ -1,5 +1,5 @@
 import { newRawLocalCollection, newRawMemo } from "./collections-fakes";
-import { ValidationProperties, SchemaTester } from "#test/validator";
+import { ValidationProperties, SchemaTester } from "#testentity-tester";
 
 describe("Local Public Collection Schema Validation", () => {
   const properties: ValidationProperties = {

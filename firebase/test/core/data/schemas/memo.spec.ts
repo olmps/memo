@@ -2,7 +2,7 @@ import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
-import { SchemaTester, ValidationProperties } from "#test/validator";
+import { SchemaTester, ValidationProperties } from "#testentity-tester";
 import { newRawMemo, newRawMemoContent } from "./collections-fakes";
 
 describe("Memo Schema Validation", () => {
