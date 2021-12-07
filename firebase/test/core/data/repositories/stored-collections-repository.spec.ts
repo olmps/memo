@@ -37,7 +37,7 @@ describe("StoredCollectionsRepository", () => {
 
   describe("setCollections", () => {
     it("should set collections set inside a single transaction", async () => {
-      const mockCollection = _newCollection();
+      const mockCollection = newCollection();
 
       await storedCollectionsRepo.setCollections([mockCollection]);
 
@@ -47,13 +47,13 @@ describe("StoredCollectionsRepository", () => {
 
     it("should throw when raw collections have an invalid format", () => {
       const malformedCollection: StoredPublicCollection = <any>{ id: "id2", foo: "bar" };
-      const mockCollections = [_newCollection(), malformedCollection];
+      const mockCollections = [newCollection(), malformedCollection];
 
       assert.rejects(() => storedCollectionsRepo.setCollections(mockCollections), SerializationError);
     });
 
     it("should set collections using their raw representation", async () => {
-      const mockCollection = _newCollection();
+      const mockCollection = newCollection();
       const expectedId = mockCollection.id;
       const expectedPath = "collections";
       const expectedData = <any>mockCollection;
@@ -89,8 +89,8 @@ describe("StoredCollectionsRepository", () => {
 
   describe("getAllCollectionsByIds", async () => {
     it("should return deserialized collections", async () => {
-      const firstRawCollection = _newCollection({ id: "id1" });
-      const secondRawCollection = _newCollection({ id: "id2" });
+      const firstRawCollection = newCollection({ id: "id1" });
+      const secondRawCollection = newCollection({ id: "id2" });
 
       firestoreStub.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
       firestoreStub.getDoc.withArgs({ id: secondRawCollection.id, path: "collections" }).resolves(secondRawCollection);
@@ -105,7 +105,7 @@ describe("StoredCollectionsRepository", () => {
     });
 
     it("should throw when a collection is not in the expected schema format", () => {
-      const firstRawCollection = _newCollection({ id: "id1" });
+      const firstRawCollection = newCollection({ id: "id1" });
       const secondRawCollection = { id: "2", foo: "bar" };
 
       firestoreStub.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
@@ -119,7 +119,7 @@ describe("StoredCollectionsRepository", () => {
   });
 });
 
-function _newCollection(props?: { id?: string }): StoredPublicCollection {
+function newCollection(props?: { id?: string }): StoredPublicCollection {
   return {
     id: props?.id ?? "any",
     name: "Collection name",
