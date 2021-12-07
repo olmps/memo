@@ -14,11 +14,11 @@ describe("LocalCollectionsRepository", () => {
 
   describe("getAllCollectionsByIds", () => {
     it("should return local stored collections", async () => {
-      fsGatewayStub.readFileAsString.resolves(JSON.stringify(mockLocalCollectionJson));
+      fsGatewayStub.readFileAsString.resolves(JSON.stringify(fakeLocalCollectionJson));
 
       const localCollections = await localCollectionsRepo.getAllCollectionsByIds(["any"]);
 
-      assert.deepStrictEqual(localCollections[0], <LocalPublicCollection>mockLocalCollectionJson);
+      assert.deepStrictEqual(localCollections[0], <LocalPublicCollection>fakeLocalCollectionJson);
     });
 
     it("should throw when reading files from system fails", async () => {
@@ -39,7 +39,7 @@ describe("LocalCollectionsRepository", () => {
   });
 });
 
-const mockLocalCollectionJson = {
+const fakeLocalCollectionJson = {
   id: "id",
   name: "name",
   description: "Description",
