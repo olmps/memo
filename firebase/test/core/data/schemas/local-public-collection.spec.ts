@@ -37,7 +37,7 @@ describe("Local Public Collection Schema Validation", () => {
 
       delete rawCollection[optionalProperty];
 
-      doesNotThrow(() => validator.validateObject("local-public-collection", rawCollection), SerializationError);
+      doesNotThrow(() => validator.validateObject("local-public-collection", rawCollection));
     }
   });
 
