@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "memo://memo.schemas/collection-resources",
+  "title": "Collection Resources",
+  "description": "Properties of a Collection Resource.",
+  "type": "object",
+  "properties": {
+    "description": { "type": "string", "minLength": 1 },
+    "type": { "type": "string", "minLength": 1, "pattern": "article|book|video|other" },
+    "url": { "type": "string", "minLength": 1, "format": "url" }
+  },
+  "required": ["description", "type", "url"]
+}

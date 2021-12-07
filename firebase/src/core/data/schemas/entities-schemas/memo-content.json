@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "memo://memo.schemas/memo-content",
+  "title": "Memo Content",
+  "description": "Properties of a Memo content.",
+  "type": "object",
+  "properties": {
+    "insert": { "type": "string" },
+    "attributes": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "bold": { "type": "boolean" },
+        "underline": { "type": "boolean" },
+        "italic": { "type": "boolean" },
+        "code-block": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [ "insert" ]
+}

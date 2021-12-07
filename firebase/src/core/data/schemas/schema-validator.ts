@@ -24,6 +24,15 @@ export class SchemaValidator {
 
     const memoLoadedSchema = require(`${this.#entitiesSchemasRoot}/memo.json`);
     this.#ajv.addSchema(memoLoadedSchema, "memo");
+
+    const memoContentSchema = require(`${this.#entitiesSchemasRoot}/memo-content.json`);
+    this.#ajv.addSchema(memoContentSchema, "memo-content");
+
+    const contributorsSchema = require(`${this.#entitiesSchemasRoot}/collection-contributors.json`);
+    this.#ajv.addSchema(contributorsSchema, "collection-contributors");
+
+    const resourcesSchema = require(`${this.#entitiesSchemasRoot}/collection-resources.json`);
+    this.#ajv.addSchema(resourcesSchema, "collection-resources");
   }
 
   /**
