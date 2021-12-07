@@ -2,7 +2,6 @@ import * as assert from "assert";
 import * as sinon from "sinon";
 import { FirestoreGateway } from "#data/gateways/firestore-gateway";
 import { MemosRepository } from "#data/repositories/memos-repository";
-import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { Memo } from "#domain/models/memo";
 import SerializationError from "#faults/errors/serialization-error";
@@ -10,7 +9,7 @@ import createSinonStub from "#test/sinon-stub";
 
 describe("MemosRepository", () => {
   const firestoreStub = createSinonStub(FirestoreGateway);
-  const schemaValidator = new SchemaValidator(new Ajv2020());
+  const schemaValidator = createSinonStub(SchemaValidator);
   const memosRepo = new MemosRepository(firestoreStub, schemaValidator);
   let transactionSpy: sinon.SinonSpy;
 
@@ -27,6 +26,7 @@ describe("MemosRepository", () => {
   afterEach(() => {
     transactionSpy.resetHistory();
     firestoreStub.runTransaction.resetHistory();
+    schemaValidator.validateObject.resetHistory();
   });
 
   describe("setMemos", async () => {
@@ -39,6 +39,7 @@ describe("MemosRepository", () => {
 
       assert.ok(firestoreStub.runTransaction.calledOnce);
       assert.ok(transactionSpy.calledOnce);
+      assert.ok(schemaValidator.validateObject.calledOnce);
     });
 
     it("should throw when raw memos have an invalid format", () => {
@@ -60,6 +61,7 @@ describe("MemosRepository", () => {
       assert.strictEqual(id, expectedId);
       assert.strictEqual(path, expectedPath);
       assert.strictEqual(data, expectedData);
+      assert.ok(schemaValidator.validateObject.calledOnce);
     });
   });
 
@@ -98,6 +100,7 @@ describe("MemosRepository", () => {
       assert.strictEqual(memos.length, 2);
       assert.strictEqual(memos[0]!.id, firstRawMemo.id);
       assert.strictEqual(memos[1]!.id, secondRawMemo.id);
+      assert.ok(schemaValidator.validateObject.calledTwice);
     });
 
     it("should throw when a memo is not in the expected schema format", () => {
