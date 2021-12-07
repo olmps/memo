@@ -8,12 +8,7 @@ describe("FileSystemGateway", () => {
   const defaultEncoding: fs.BaseEncodingOptions = { encoding: "utf-8" };
   const fakeCwd = "test_cwd";
   const fakeFileDir = "file/dir";
-
-  const fakeFiles = ["file1", "file2"];
-
   const expectedDirectory = `${fakeCwd}/${fakeFileDir}`;
-
-  const fakeFilesContents = ["file1Contents", "file2Contents"];
 
   let sandbox: sinon.SinonSandbox;
   let fsStub: sinon.SinonStubbedInstance<typeof fs.promises>;
@@ -28,33 +23,61 @@ describe("FileSystemGateway", () => {
     sandbox.restore();
   });
 
-  it("should reject when readdir throws", async () => {
-    const fsGateway = new FileSystemGateway();
-    fsStub.readdir.rejects();
-    await assert.rejects(() => fsGateway.readDirFilesAsStrings("any"), FilesystemError);
+  describe("readDirFileAsStrings", () => {
+    const fakeFiles = ["file1", "file2"];
+    const fakeFilesContents = ["file1Contents", "file2Contents"];
+
+    it("should reject when readdir throws", async () => {
+      const fsGateway = new FileSystemGateway();
+      fsStub.readdir.rejects();
+      await assert.rejects(() => fsGateway.readDirFilesAsStrings("any"), FilesystemError);
+    });
+
+    it("should reject when readFile throws", async () => {
+      const fsGateway = new FileSystemGateway();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      fsStub.readdir.resolves(fakeFiles);
+      fsStub.readFile.rejects();
+      await assert.rejects(() => fsGateway.readDirFilesAsStrings("any"), FilesystemError);
+    });
+
+    it("should return all contained files in passed directory", async () => {
+      const fsGateway = new FileSystemGateway();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      fsStub.readdir.withArgs(expectedDirectory).resolves(fakeFiles);
+      fsStub.readFile.withArgs(`${expectedDirectory}/${fakeFiles[0]}`, defaultEncoding).resolves(fakeFilesContents[0]);
+      fsStub.readFile.withArgs(`${expectedDirectory}/${fakeFiles[1]}`, defaultEncoding).resolves(fakeFilesContents[1]);
+
+      const result = await fsGateway.readDirFilesAsStrings(fakeFileDir);
+
+      assert.deepStrictEqual(result, fakeFilesContents);
+      assert.ok(fsStub.readFile.calledTwice);
+      assert.ok(fsStub.readdir.calledOnce);
+    });
   });
 
-  it("should reject when readFile throws", async () => {
-    const fsGateway = new FileSystemGateway();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    fsStub.readdir.resolves(fakeFiles);
-    fsStub.readFile.rejects();
-    await assert.rejects(() => fsGateway.readDirFilesAsStrings("any"), FilesystemError);
-  });
+  describe("readFileAsString", () => {
+    const fakeFile = "file1";
+    const fakeFileContents = "file1Contents";
 
-  it("should return all contained files in passed directory", async () => {
-    const fsGateway = new FileSystemGateway();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    fsStub.readdir.withArgs(expectedDirectory).resolves(fakeFiles);
-    fsStub.readFile.withArgs(`${expectedDirectory}/${fakeFiles[0]}`, defaultEncoding).resolves(fakeFilesContents[0]);
-    fsStub.readFile.withArgs(`${expectedDirectory}/${fakeFiles[1]}`, defaultEncoding).resolves(fakeFilesContents[1]);
+    it("should reject when readFile throws", async () => {
+      const fsGateway = new FileSystemGateway();
+      fsStub.readFile.rejects();
+      await assert.rejects(() => fsGateway.readFileAsString("any"), FilesystemError);
+    });
 
-    const result = await fsGateway.readDirFilesAsStrings(fakeFileDir);
+    it("should return file in passed directory", async () => {
+      const fsGateway = new FileSystemGateway();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      fsStub.readFile.withArgs(`${fakeCwd}/${fakeFile}`, defaultEncoding).resolves(fakeFileContents);
 
-    assert.deepStrictEqual(result, fakeFilesContents);
-    assert.ok(fsStub.readFile.calledTwice);
-    assert.ok(fsStub.readdir.calledOnce);
+      const result = await fsGateway.readFileAsString(fakeFile);
+
+      assert.deepStrictEqual(result, fakeFileContents);
+      assert.ok(fsStub.readFile.calledOnce);
+    });
   });
 });
