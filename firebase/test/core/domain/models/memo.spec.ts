@@ -2,7 +2,7 @@ import ValidationError from "#faults/errors/validation-error";
 import { memoQuillValidationSchema, memoValidationSchema } from "#domain/models/memo";
 import { throws } from "assert";
 import { defaultMaxStringLength, validate } from "#utils/validate";
-import { EntityValidatorBuilder, ValidationProperties } from "#test/validator";
+import { ModelTester, ValidationProperties } from "#test/validator";
 import { newRawMemo, newRawMemoContent } from "#test/core/data/schemas/collections-fakes";
 
 describe("Memo Content Validation", () => {
@@ -22,13 +22,13 @@ describe("Memo Content Validation", () => {
       lengthRestricted: new Map<string, any>([["id", defaultMaxStringLength]]),
     };
 
-    const validator = new EntityValidatorBuilder({
+    const tester = new ModelTester({
       schema: memoValidationSchema,
       entityConstructor: newRawMemo,
       properties: properties,
     });
 
-    validator.runTests();
+    tester.runTests();
   });
 
   describe("Content Properties - ", () => {
@@ -41,13 +41,13 @@ describe("Memo Content Validation", () => {
       ]),
     };
 
-    const validator = new EntityValidatorBuilder({
+    const tester = new ModelTester({
       schema: memoQuillValidationSchema,
       entityConstructor: newRawMemoContent,
       properties: properties,
     });
 
-    validator.runTests();
+    tester.runTests();
 
     describe("Attributes - ", () => {
       it("should throw when attributes is empty", () => {
