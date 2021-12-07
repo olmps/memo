@@ -5,14 +5,17 @@ import * as Joi from "joi";
 interface Collection {
   readonly id: string;
   readonly name: string;
-  readonly description: string;
-  readonly tags: string[];
-  readonly category: string;
 
+  readonly description?: string;
+  readonly tags?: string[];
+  readonly category?: string;
   readonly locale?: string;
 }
 
 interface PublicCollection extends Collection {
+  readonly description: string;
+  readonly tags: string[];
+  readonly category: string;
   readonly contributors: CollectionContributor[];
   readonly resources: CollectionResource[];
 }
