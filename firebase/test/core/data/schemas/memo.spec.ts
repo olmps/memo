@@ -30,7 +30,7 @@ describe("Memo Schema Validation", () => {
       properties: properties,
     });
 
-    validator.validate();
+    validator.runTests();
   });
 
   describe("Attributes - ", () => {

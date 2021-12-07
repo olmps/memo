@@ -28,7 +28,7 @@ describe("Memo Content Validation", () => {
       properties: properties,
     });
 
-    validator.validate();
+    validator.runTests();
   });
 
   describe("Content Properties - ", () => {
@@ -47,7 +47,7 @@ describe("Memo Content Validation", () => {
       properties: properties,
     });
 
-    validator.validate();
+    validator.runTests();
 
     describe("Attributes - ", () => {
       it("should throw when attributes is empty", () => {

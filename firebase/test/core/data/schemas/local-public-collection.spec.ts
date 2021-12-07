@@ -15,5 +15,5 @@ describe("Local Public Collection Schema Validation", () => {
     properties: properties,
   });
 
-  validator.validate();
+  validator.runTests();
 });
