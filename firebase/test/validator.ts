@@ -14,7 +14,7 @@ export interface ValidationProperties {
   readonly url?: string[];
   readonly array?: string[];
   /** Maps an array property to a list of repeated items that shouldn't be allowed. */
-  readonly uniqueItems?: Map<string, any[]>;
+  readonly uniqueItems?: Map<string, unknown[]>;
   /**
    * Maps a property to a list of acceptable string values for that property.
    *
@@ -24,7 +24,7 @@ export interface ValidationProperties {
   /** Maps a string property to its maximum allowed length. */
   readonly lengthRestricted?: Map<string, number>;
   /** Maps a property to an incorrect type that shouldn't be acceptable. */
-  readonly incorrectTypes: Map<string, any>;
+  readonly incorrectTypes: Map<string, unknown>;
 }
 
 type ClassFactory = () => any;
@@ -171,7 +171,7 @@ abstract class BaseValidator {
     });
   }
 
-  #valideUniqueArrayItems(properties: Map<string, any[]>): void {
+  #valideUniqueArrayItems(properties: Map<string, unknown[]>): void {
     it("should throw when array has repeated items", () => {
       for (const repeatedProperty of properties) {
         const property = repeatedProperty[0];
