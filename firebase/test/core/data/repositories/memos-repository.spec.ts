@@ -31,8 +31,8 @@ describe("MemosRepository", () => {
 
   describe("setMemos", async () => {
     const mockCollectionId = "collectionId1";
-    const mockMemo = _newRawMemo({ id: "id1" });
-    const memosPerCollection = _newMemosPerCollection(mockCollectionId, [mockMemo]);
+    const mockMemo = newRawMemo({ id: "id1" });
+    const memosPerCollection = newMemosPerCollection(mockCollectionId, [mockMemo]);
 
     it("should update all memos inside a single transaction", async () => {
       await memosRepo.setMemos(memosPerCollection);
@@ -44,7 +44,7 @@ describe("MemosRepository", () => {
 
     it("should throw when raw memos have an invalid format", () => {
       const malformedMemo: Memo = <any>{ id: "id2", foo: "bar" };
-      const mockMemosPerCollection = _newMemosPerCollection(mockCollectionId, [mockMemo]);
+      const mockMemosPerCollection = newMemosPerCollection(mockCollectionId, [mockMemo]);
       mockMemosPerCollection.set("collectionId2", [malformedMemo]);
 
       assert.rejects(() => memosRepo.setMemos(mockMemosPerCollection), SerializationError);
@@ -68,7 +68,7 @@ describe("MemosRepository", () => {
   describe("removeMemosByIds", () => {
     const mockCollectionId = "collectionId1";
     const mockMemoId = "id1";
-    const memosIdsPerCollection = _newMemosIdsPerCollection(mockCollectionId, [mockMemoId]);
+    const memosIdsPerCollection = newMemosIdsPerCollection(mockCollectionId, [mockMemoId]);
 
     it("should remove all memos inside a single transaction", async () => {
       await memosRepo.removeMemosByIds(memosIdsPerCollection);
@@ -91,8 +91,8 @@ describe("MemosRepository", () => {
 
   describe("getAllMemos", async () => {
     it("should return a list of deserialized memos", async () => {
-      const firstRawMemo = _newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
-      const secondRawMemo = _newRawMemo({ id: "2", question: "Question 2", answer: "Answer 2" });
+      const firstRawMemo = newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
+      const secondRawMemo = newRawMemo({ id: "2", question: "Question 2", answer: "Answer 2" });
 
       firestoreStub.getCollection.resolves([firstRawMemo, secondRawMemo]);
       const memos = await memosRepo.getAllMemos("any");
@@ -104,7 +104,7 @@ describe("MemosRepository", () => {
     });
 
     it("should throw when a memo is not in the expected schema format", () => {
-      const firstRawMemo = _newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
+      const firstRawMemo = newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
       const secondRawMemo = { id: "2", foo: "bar" };
 
       firestoreStub.getCollection.resolves([firstRawMemo, secondRawMemo]);
@@ -114,15 +114,15 @@ describe("MemosRepository", () => {
   });
 });
 
-function _newMemosPerCollection(collectionId: string, memos: Memo[]): Map<string, Memo[]> {
+function newMemosPerCollection(collectionId: string, memos: Memo[]): Map<string, Memo[]> {
   return new Map<string, Memo[]>([[collectionId, memos]]);
 }
 
-function _newMemosIdsPerCollection(collectionId: string, memosIds: string[]): Map<string, string[]> {
+function newMemosIdsPerCollection(collectionId: string, memosIds: string[]): Map<string, string[]> {
   return new Map<string, string[]>([[collectionId, memosIds]]);
 }
 
-function _newRawMemo(props?: { id?: string; question?: string; answer?: string }): Memo {
+function newRawMemo(props?: { id?: string; question?: string; answer?: string }): Memo {
   return {
     id: props?.id ?? "any",
     question: [
