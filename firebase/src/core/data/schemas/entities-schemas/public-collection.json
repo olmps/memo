@@ -37,15 +37,7 @@
     "contributors": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string", "minLength": 1 },
-          "url": { "type": "string", "minLength": 1, "format": "url" },
-          "avatarUrl": { "type": "string", "minLength": 1, "format": "url" }
-        },
-        "required": [
-          "name", "url", "avatarUrl"
-        ]
+        "allOf": [{ "$ref": "collection-contributors#" }]
       },
       "minItems": 1,
       "uniqueItems": true
@@ -53,15 +45,7 @@
     "resources": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "description": { "type": "string", "minLength": 1 },
-          "type": { "type": "string", "minLength": 1, "pattern": "article|book|video|other" },
-          "url": { "type": "string", "minLength": 1, "format": "url" }
-        },
-        "required": [
-          "description", "type", "url"
-        ]
+        "allOf": [{ "$ref": "collection-resources#" }]
       },
       "minItems": 1,
       "uniqueItems": true

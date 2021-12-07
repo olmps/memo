@@ -9,46 +9,18 @@
     "question": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "insert": { "type": "string" },
-          "attributes": {
-            "type": "object",
-            "minProperties": 1,
-            "properties": {
-              "bold": { "type": "boolean" },
-              "underline": { "type": "boolean" },
-              "italic": { "type": "boolean" },
-              "code-block": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          }
-        },
-        "required": [ "insert" ]
+        "allOf": [{ "$ref": "memo-content#" }]
       },
-      "minItems": 1
+      "minItems": 1,
+      "uniqueItems": true
     },
     "answer": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "insert": { "type": "string" },
-          "attributes": {
-            "type": "object",
-            "minProperties": 1,
-            "properties": {
-              "bold": { "type": "boolean" },
-              "underline": { "type": "boolean" },
-              "italic": { "type": "boolean" },
-              "code-block": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          }
-        },
-        "required": [ "insert" ]
+        "allOf": [{ "$ref": "memo-content#" }]
       },
-      "minItems": 1
+      "minItems": 1,
+      "uniqueItems": true
     }
   },
   "required": [
