@@ -22,7 +22,7 @@ describe("StoredCollectionsRepository", () => {
     const schemaStubInstance = createSinonStub(SchemaValidator, sandbox);
     storedCollectionsRepo = new StoredCollectionsRepository(firestoreStubInstance, schemaStubInstance);
 
-    // Mocks the transaction function to always run what's is inside the context
+    // Mocks the transaction function to always run what is inside the context
     const transactionContext = async (context: any) => {
       await context();
     };
