@@ -2,69 +2,40 @@ import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
+import { SchemaValidatorBuilder, ValidationProperties } from "#test/validator";
+import { newRawMemo, newRawMemoContent } from "./collections-fakes";
 
 describe("Memo Schema Validation", () => {
   const validator = new SchemaValidator(new Ajv2020());
-  const requiredProperties = ["id", "question", "answer"];
-  const arrayProperties = ["question", "answer"];
-  // Maps a property to a type that couldn't be associated to it.
-  const incorrectPropertiesTypes = new Map<string, any>([
-    ["id", true],
-    ["question", "string"],
-    ["answer", "string"],
-  ]);
   const allowedAttributesProperties = ["bold", "italic", "underline", "code-block"];
 
-  it("should validate raw memo structure", () => {
-    const rawMemo = _newRawMemo();
+  describe("Root Properties - ", () => {
+    const properties: ValidationProperties = {
+      required: ["id", "question", "answer"],
+      array: ["question", "answer"],
+      uniqueItems: new Map<string, any[]>([
+        ["question", [newRawMemoContent(), newRawMemoContent()]],
+        ["answer", [newRawMemoContent(), newRawMemoContent()]],
+      ]),
+      incorrectTypes: new Map<string, any>([
+        ["id", true],
+        ["question", "string"],
+        ["answer", "string"],
+      ]),
+    };
 
-    doesNotThrow(() => validator.validateObject("memo", rawMemo));
-  });
+    const validator = new SchemaValidatorBuilder({
+      schema: "memo",
+      entityConstructor: newRawMemo,
+      properties: properties,
+    });
 
-  it("should throw when a required property is not set", () => {
-    for (const requiredProperty of requiredProperties) {
-      const rawMemo = _newRawMemo();
-
-      delete rawMemo[requiredProperty];
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    }
-  });
-
-  it("should thrown when a required array is empty", () => {
-    for (const arrayProperty of arrayProperties) {
-      const rawMemo = _newRawMemo();
-
-      rawMemo[arrayProperty] = [];
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    }
-  });
-
-  it("should thrown when assigning incorrect type to a property", () => {
-    for (const incorrectPropertyEntry of incorrectPropertiesTypes) {
-      const property = incorrectPropertyEntry[0];
-      const incorrectType = incorrectPropertyEntry[1];
-      const rawMemo = _newRawMemo();
-
-      rawMemo[property] = incorrectType;
-
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
-    }
-  });
-
-  it("should throw when question/answer content is not present", () => {
-    const rawMemo = _newRawMemo();
-
-    delete rawMemo.question[0].insert;
-    delete rawMemo.answer[0].insert;
-
-    throws(() => validator.validateObject("memo", rawMemo), SerializationError);
+    validator.validate();
   });
 
   describe("Attributes - ", () => {
     it("should accept allowed properties", () => {
-      const rawMemo = _newRawMemo();
+      const rawMemo = newRawMemo();
       rawMemo.question[0]!.attributes = {};
       rawMemo.answer[0]!.attributes = {};
 
@@ -77,7 +48,7 @@ describe("Memo Schema Validation", () => {
     });
 
     it("should deny not allowed question/answer attribute", () => {
-      const rawMemo = _newRawMemo();
+      const rawMemo = newRawMemo();
 
       rawMemo.question[0]!.attributes = { foo: "bar" };
       rawMemo.answer[0]!.attributes = { foo: "bar" };
@@ -86,7 +57,7 @@ describe("Memo Schema Validation", () => {
     });
 
     it("should deny empty question/answer attributes", () => {
-      const rawMemo = _newRawMemo();
+      const rawMemo = newRawMemo();
 
       rawMemo.question[0]!.attributes = {};
       rawMemo.answer[0]!.attributes = {};
@@ -95,17 +66,3 @@ describe("Memo Schema Validation", () => {
     });
   });
 });
-
-function _newRawMemo(): any {
-  return {
-    id: "any",
-    question: [_newRawMemoContent()],
-    answer: [_newRawMemoContent()],
-  };
-}
-
-function _newRawMemoContent(): any {
-  return {
-    insert: "Content string",
-  };
-}
