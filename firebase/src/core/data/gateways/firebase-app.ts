@@ -1,5 +1,9 @@
 import * as admin from "firebase-admin";
 
-// TODO: Properly initialize this, taking into consideration the environment
-process.env["FIRESTORE_EMULATOR_HOST"] = "localhost:8080";
-export const app = admin.initializeApp({ projectId: "test-rpoj" });
+export function initializeFirebase(options: { isLocalDevelopment: boolean }): admin.app.App {
+  if (options.isLocalDevelopment) {
+    process.env["FIRESTORE_EMULATOR_HOST"] = "localhost:8080";
+  }
+
+  return admin.initializeApp();
+}
