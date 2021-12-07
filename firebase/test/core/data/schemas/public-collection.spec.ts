@@ -1,5 +1,5 @@
 import { newRawContributor, newRawPublicCollection, newRawResource } from "./collections-fakes";
-import { SchemaValidatorBuilder, ValidationProperties } from "#test/validator";
+import { SchemaTester, ValidationProperties } from "#test/validator";
 import { CollectionResourceType } from "#domain/models/collection";
 
 describe("Public Collection Schema Validation", () => {
@@ -25,13 +25,13 @@ describe("Public Collection Schema Validation", () => {
         ["locale", 0],
       ]),
     };
-    const validator = new SchemaValidatorBuilder({
+    const tester = new SchemaTester({
       schema: "public-collection",
       entityConstructor: newRawPublicCollection,
       properties: properties,
     });
 
-    validator.runTests();
+    tester.runTests();
   });
 
   describe("Contributors - ", () => {
@@ -46,13 +46,13 @@ describe("Public Collection Schema Validation", () => {
       ]),
     };
 
-    const validator = new SchemaValidatorBuilder({
+    const tester = new SchemaTester({
       schema: "collection-contributors",
       entityConstructor: newRawContributor,
       properties: properties,
     });
 
-    validator.runTests();
+    tester.runTests();
   });
 
   describe("Resources - ", () => {
@@ -68,12 +68,12 @@ describe("Public Collection Schema Validation", () => {
       strictValue: new Map<string, string[]>([["type", Object.values(CollectionResourceType)]]),
     };
 
-    const validator = new SchemaValidatorBuilder({
+    const tester = new SchemaTester({
       schema: "collection-resources",
       entityConstructor: newRawResource,
       properties: properties,
     });
 
-    validator.runTests();
+    tester.runTests();
   });
 });

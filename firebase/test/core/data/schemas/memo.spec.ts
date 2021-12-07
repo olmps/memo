@@ -2,13 +2,10 @@ import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
-import { SchemaValidatorBuilder, ValidationProperties } from "#test/validator";
+import { SchemaTester, ValidationProperties } from "#test/validator";
 import { newRawMemo, newRawMemoContent } from "./collections-fakes";
 
 describe("Memo Schema Validation", () => {
-  const validator = new SchemaValidator(new Ajv2020());
-  const allowedAttributesProperties = ["bold", "italic", "underline", "code-block"];
-
   describe("Root Properties - ", () => {
     const properties: ValidationProperties = {
       required: ["id", "question", "answer"],
@@ -24,16 +21,19 @@ describe("Memo Schema Validation", () => {
       ]),
     };
 
-    const validator = new SchemaValidatorBuilder({
+    const tester = new SchemaTester({
       schema: "memo",
       entityConstructor: newRawMemo,
       properties: properties,
     });
 
-    validator.runTests();
+    tester.runTests();
   });
 
   describe("Attributes - ", () => {
+    const validator = new SchemaValidator(new Ajv2020());
+    const allowedAttributesProperties = ["bold", "italic", "underline", "code-block"];
+
     it("should accept allowed properties", () => {
       const rawMemo = newRawMemo();
       rawMemo.question[0]!.attributes = {};
