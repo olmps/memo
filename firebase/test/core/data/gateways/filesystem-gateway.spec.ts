@@ -5,7 +5,7 @@ import { FileSystemGateway } from "#data/gateways/filesystem-gateway";
 import FilesystemError from "#faults/errors/filesystem-error";
 
 describe("FileSystemGateway", () => {
-  const defaultEncoding = { encoding: "utf-8" };
+  const defaultEncoding: fs.BaseEncodingOptions = { encoding: "utf-8" };
   const fakeCwd = "test_cwd";
   const fakeFileDir = "file/dir";
 
@@ -15,52 +15,50 @@ describe("FileSystemGateway", () => {
 
   const fakeFilesContents = ["file1Contents", "file2Contents"];
 
-  // TODO(matuella): How to mock while maintaining types?
-  // This way, we won't have to call `fsMock.expect("unsafeMethodCall")` and could
-  // possibly use `createSinonStub`
   let sandbox: sinon.SinonSandbox;
-  let fsMock: sinon.SinonMock;
+  let fsStub: sinon.SinonStubbedInstance<typeof fs.promises>;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    fsMock = sandbox.mock(fs.promises);
+    fsStub = sandbox.stub(fs.promises);
     sandbox.stub(process, "cwd").returns(fakeCwd);
   });
 
   afterEach(() => {
     sandbox.restore();
+    sandbox.resetHistory();
   });
 
   it("should reject when readdir throws", async () => {
     const fsGateway = new FileSystemGateway();
-    fsMock.expects("readdir").rejects();
+    fsStub.readdir.rejects();
     await assert.rejects(() => fsGateway.readDirFilesAsStrings("any"), FilesystemError);
   });
 
   it("should reject when readFile throws", async () => {
     const fsGateway = new FileSystemGateway();
-    fsMock.expects("readdir").returns(fakeFiles);
-    fsMock.expects("readFile").rejects();
+    // Disable TS type-checking for `fsStub.readdir` call because `sinon` type definitions always invoke the last
+    // function signature by default when a function has overloads.
+    // See https://github.com/DefinitelyTyped/DefinitelyTyped/issues/36436 for more details about this issue.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    fsStub.readdir.resolves(fakeFiles);
+    fsStub.readFile.rejects();
     await assert.rejects(() => fsGateway.readDirFilesAsStrings("any"), FilesystemError);
   });
 
   it("should return all contained files in passed directory", async () => {
     const fsGateway = new FileSystemGateway();
-    fsMock.expects("readdir").withArgs(expectedDirectory).once().returns(fakeFiles);
-    fsMock
-      .expects("readFile")
-      .withArgs(`${expectedDirectory}/${fakeFiles[0]}`, defaultEncoding)
-      .once()
-      .returns(fakeFilesContents[0]);
-    fsMock
-      .expects("readFile")
-      .withArgs(`${expectedDirectory}/${fakeFiles[1]}`, defaultEncoding)
-      .once()
-      .returns(fakeFilesContents[1]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    fsStub.readdir.withArgs(expectedDirectory).resolves(fakeFiles);
+    fsStub.readFile.withArgs(`${expectedDirectory}/${fakeFiles[0]}`, defaultEncoding).resolves(fakeFilesContents[0]);
+    fsStub.readFile.withArgs(`${expectedDirectory}/${fakeFiles[1]}`, defaultEncoding).resolves(fakeFilesContents[1]);
 
     const result = await fsGateway.readDirFilesAsStrings(fakeFileDir);
 
     assert.deepStrictEqual(result, fakeFilesContents);
-    fsMock.verify();
+    assert.ok(fsStub.readFile.calledTwice);
+    assert.ok(fsStub.readdir.calledOnce);
   });
 });
