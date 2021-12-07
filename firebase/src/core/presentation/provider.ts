@@ -1,4 +1,5 @@
 import * as admin from "firebase-admin";
+import * as functions from "firebase-functions";
 import Ajv2020 from "ajv/dist/2020";
 import { FirestoreGateway } from "#data/gateways/firestore-gateway";
 import { FileSystemGateway } from "#data/gateways/filesystem-gateway";
@@ -25,9 +26,8 @@ export default class Provider {
     return this.#instance;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
-    this.#firebaseApp = initializeFirebase({ isLocalDevelopment: this.envGateway.isLocalDevelopment });
+    this.#firebaseApp = initializeFirebase(this.envGateway);
   }
 
   //
@@ -71,7 +71,7 @@ export default class Provider {
   }
 
   get envGateway(): EnvGateway {
-    this.#envGateway ??= new EnvGateway();
+    this.#envGateway ??= new EnvGateway(functions.config());
     return this.#envGateway;
   }
 
