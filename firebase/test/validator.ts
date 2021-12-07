@@ -63,7 +63,7 @@ abstract class BaseValidator {
     this.#expectedErrorType = props.expectedErrorType;
   }
 
-  validate(): void {
+  runTests(): void {
     it("should validate raw entity structure", () => {
       const rawEntity = this.#entityConstructor();
 

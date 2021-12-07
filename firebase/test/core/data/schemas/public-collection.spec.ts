@@ -31,7 +31,7 @@ describe("Public Collection Schema Validation", () => {
       properties: properties,
     });
 
-    validator.validate();
+    validator.runTests();
   });
 
   describe("Contributors - ", () => {
@@ -52,7 +52,7 @@ describe("Public Collection Schema Validation", () => {
       properties: properties,
     });
 
-    validator.validate();
+    validator.runTests();
   });
 
   describe("Resources - ", () => {
@@ -74,6 +74,6 @@ describe("Public Collection Schema Validation", () => {
       properties: properties,
     });
 
-    validator.validate();
+    validator.runTests();
   });
 });
