@@ -79,7 +79,7 @@ export const localCollectionSchema = publicCollectionSchema.append({
 
 export const storedCollectionSchema = publicCollectionSchema.append({
   memosAmount: Joi.number().integer().min(1).required(),
-  memosOrder: Joi.array().items(Joi.string()).min(1).required(),
+  memosOrder: Joi.array().items(Joi.string()).unique().min(1).required(),
 });
 // TODO: How to compare between same-object properties?
 // .assert(Joi.ref("memosAmount"), Joi.ref("memosOrder.length"));
