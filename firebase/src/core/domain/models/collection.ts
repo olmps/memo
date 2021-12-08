@@ -79,6 +79,7 @@ export const localCollectionSchema = publicCollectionSchema.append({
 
 export const storedCollectionSchema = publicCollectionSchema.append({
   memosAmount: Joi.number().integer().min(1).required(),
+  // Constraints `memosOrder` to have its length equals to `memosAmount`.
   memosOrder: Joi.array().items(Joi.string()).unique().length(Joi.ref("memosAmount")).required(),
 });
 
