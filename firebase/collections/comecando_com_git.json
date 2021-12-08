@@ -1,0 +1,329 @@
+{
+  "id": "comecando_com_git",
+  "name": "Começando com Git",
+  "description": "\"Git é um sistema de controle de versões distribuído, usado principalmente no desenvolvimento de software, mas pode ser usado para registrar o histórico de edições de qualquer tipo de arquivo. O Git foi inicialmente projetado e desenvolvido por Linus Torvalds para o desenvolvimento do kernel Linux, mas foi adotado por muitos outros projetos.\" - Wikipedia, 2021.",
+  "category": "Versionamento",
+  "tags": ["git", "versionamento"],
+  "contributors": [
+    {
+      "name": "@matuella",
+      "url": "https://github.com/matuella",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/13678134?v=4"
+    }
+  ],
+  "resources": [
+    {
+      "description": "Git Cheatsheet",
+      "type": "article",
+      "url": "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet/"
+    },
+    {
+      "description": "Git Handbook (enUS)",
+      "type": "article",
+      "url": "https://guides.github.com/introduction/git-handbook/"
+    },
+    {
+      "description": "Aprenda Git Branching (enUS)",
+      "type": "game",
+      "url": "https://learngitbranching.js.org/"
+    },
+    {
+      "description": "Comandos Git",
+      "type": "article",
+      "url": "https://comandosgit.github.io/"
+    },
+    {
+      "description": "Como usar o Git e Github na prática",
+      "type": "video",
+      "url": "https://www.youtube.com/watch?v=2alg7MQ6_sI&ab_channel=Rocketseat"
+    }
+  ],
+  "memos": [
+    {
+      "id": "03a5f9b4-b424-4010-8027-1ef22c7480e7",
+      "question": [
+        {
+          "insert": "O que é o Git?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um sistema de controle de versão distribuído\n"
+        }
+      ]
+    },
+    {
+      "id": "ef2c86e9-be54-46db-ae62-638a5dd4817b",
+      "question": [
+        {
+          "insert": "Git lida com os seus dados como se fossem uma série de _____ de seus arquivos.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "fotografias (snapshots)\n"
+        }
+      ]
+    },
+    {
+      "id": "96809017-5352-4840-9c33-06fa9b7d4707",
+      "question": [
+        {
+          "insert": "O que é um commit?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Fotografia do estado de todos os arquivos no git.\n"
+        }
+      ]
+    },
+    {
+      "id": "375a17e2-a43b-4cfc-83e8-4b9a2e3ac1ec",
+      "question": [
+        {
+          "insert": "A cada commit, o git tira uma _____  de todos os arquivos.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "fotografia (snapshot)\n"
+        }
+      ]
+    },
+    {
+      "id": "ad70d01b-6f79-4bc1-88a5-d7149d8e597d",
+      "question": [
+        {
+          "insert": "A cada commit, o git salva uma _____ para uma fotografia de todos os arquivos (snapshot).\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "referência\n"
+        }
+      ]
+    },
+    {
+      "id": "0ba9ffdd-2937-47f3-a349-3a9000e2fc29",
+      "question": [
+        {
+          "insert": "O Git aplica uma função de hash criptográfico _____ para verificar (checksum) seus conteúdos.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "SHA-1\n"
+        }
+      ]
+    },
+    {
+      "id": "8b1d2fd4-6b62-4932-a197-d822e9b149c1",
+      "question": [
+        {
+          "insert": "O que o seguinte texto se parece com: c5c0cba68b55bc343b292366cf8981586e237dab\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O resultado de um texto, aplicando a função hash SHA-1\n"
+        }
+      ]
+    },
+    {
+      "id": "4389e32f-eb66-48f2-b7fe-309c481329e4",
+      "question": [
+        {
+          "insert": "Quais são os 3 principais estados de arquivos, dentro Git?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Modificado (modified), preparado (stage) e salvo (committed)\n"
+        }
+      ]
+    },
+    {
+      "id": "0653e8cb-44f8-47d3-aee5-0f79bff6107d",
+      "question": [
+        {
+          "insert": "O que é o Working tree / Working directory (diretório de trabalho)?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Diretório de uma cópia do repositório git\n"
+        }
+      ]
+    },
+    {
+      "id": "a6014e7a-777c-40ea-87af-4c7449c456eb",
+      "question": [
+        {
+          "insert": "O que é index / staging (índice ou área de preparo)?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Arquivo (ou área) que contém todas as informações sobre o seu próximo commit\n"
+        }
+      ]
+    },
+    {
+      "id": "4e6e47d5-ef7c-4911-bd18-996a2a90ecbf",
+      "question": [
+        {
+          "insert": "Qual é o estado de um arquivo que tem uma versão no diretório git?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Salvo (committed)\n"
+        }
+      ]
+    },
+    {
+      "id": "3e51e6bc-3882-46b6-b95b-7bf3e99672bb",
+      "question": [
+        {
+          "insert": "Qual é o estado de um arquivo que tem foi adicionado à área de preparo (staging area)?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Preparado (staged)\n"
+        }
+      ]
+    },
+    {
+      "id": "e6f5a47b-19a4-42a5-af0c-b1ac078084db",
+      "question": [
+        {
+          "insert": "Qual é o estado de um arquivo que foi modificado mas não adicionado à área de preparo (staging area)?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Modificado (modified)\n"
+        }
+      ]
+    },
+    {
+      "id": "ff065ef5-1662-4267-b7fb-f1de1c30bb13",
+      "question": [
+        {
+          "insert": "O comando _____ _____ permite visualizar e atribuir variáveis que permitem o controle visual e comportamental do git\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "git config\n"
+        }
+      ]
+    },
+    {
+      "id": "9689f175-1fd5-4927-bc25-0bae65ff0869",
+      "question": [
+        {
+          "insert": "É muito importante configurar seu nome e email pois cada commit usa essa informação para ______, de forma imutável, os ______ feitos por você\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "identificar, commits\n"
+        }
+      ]
+    },
+    {
+      "id": "8d53e6f0-f7f3-44a6-b8de-8b38a6875181",
+      "question": [
+        {
+          "insert": "Qual é a diferença entre o comando\n\ngit config --global user.name \"Mestre do Git\"\n\ne o outro comando\n\ngit config user.name \"Mestre do Git\"\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Com --global, sua credencial fica salva para sempre no seu sistema\n"
+        }
+      ]
+    },
+    {
+      "id": "3fd47834-f656-4deb-8ebb-4f136df5ed90",
+      "question": [
+        {
+          "insert": "Qual é o objetivo do seguinte comando\n\ngit config --global user.name \"Mestre do Git\"\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Configurar globalmente o usuário do git como \"Mestre do Git\"\n"
+        }
+      ]
+    },
+    {
+      "id": "a7629f74-11ed-43d2-8aa5-bb1848bc2a6f",
+      "question": [
+        {
+          "insert": "Qual é o objetivo do seguinte comando\n\ngit config --global user.email mestre.do.git@provedor.com.br\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Configurar globalmente o email do git como \"mestre.do.git@provedor.com.br\"\n"
+        }
+      ]
+    },
+    {
+      "id": "007e5805-2893-4ba0-9014-24aaff3a8077",
+      "question": [
+        {
+          "insert": "Qual é o objetivo do seguinte comand \n\ngit config --global core.editor emacs\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Configurar o editor de texto padrão do git\n"
+        }
+      ]
+    },
+    {
+      "id": "2113e6d6-d788-4f50-a3ce-b539276a89fb",
+      "question": [
+        {
+          "insert": "Qual é o comando para listar todas as configurações do git?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "git config --list\n"
+        }
+      ]
+    },
+    {
+      "id": "cc2e93e2-b0b6-406d-b4be-3268d30f19fa",
+      "question": [
+        {
+          "insert": "Qual é o resultado do seguinte comando \n\ngit config user.email\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Mostrar o valor do email do usuário salvo no Git\n"
+        }
+      ]
+    },
+    {
+      "id": "c87fcf0e-9a3e-432a-a9e4-724844c5e9fa",
+      "question": [
+        {
+          "insert": "Qual é o comando para visualizar o manual de ajuda do git?\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "git help <comando>\n"
+        }
+      ]
+    }
+  ]
+}
