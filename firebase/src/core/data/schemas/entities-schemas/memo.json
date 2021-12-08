@@ -11,16 +11,14 @@
       "items": {
         "allOf": [{ "$ref": "memo-content#" }]
       },
-      "minItems": 1,
-      "uniqueItems": true
+      "minItems": 1
     },
     "answer": {
       "type": "array",
       "items": {
         "allOf": [{ "$ref": "memo-content#" }]
       },
-      "minItems": 1,
-      "uniqueItems": true
+      "minItems": 1
     }
   },
   "required": [

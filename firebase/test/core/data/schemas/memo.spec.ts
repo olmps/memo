@@ -3,17 +3,13 @@ import { SchemaValidator } from "#data/schemas/schema-validator";
 import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
 import { SchemaTester, ValidationProperties } from "#testentity-tester";
-import { newRawMemo, newRawMemoContent } from "./collections-fakes";
+import { newRawMemo } from "./collections-fakes";
 
 describe("Memo Schema Validation", () => {
   describe("Root Properties - ", () => {
     const properties: ValidationProperties = {
       required: ["id", "question", "answer"],
       array: ["question", "answer"],
-      uniqueItems: new Map<string, any[]>([
-        ["question", [newRawMemoContent(), newRawMemoContent()]],
-        ["answer", [newRawMemoContent(), newRawMemoContent()]],
-      ]),
       incorrectTypes: new Map<string, any>([
         ["id", true],
         ["question", "string"],
