@@ -1,0 +1,615 @@
+{
+  "id": "manifesto_agil",
+  "name": "Manifesto Ágil",
+  "description": "Em Fevereiro de 2001, no Snowbird ski resort em Utah, 17 pessoas se apresentam para falar, se divertir e encontrar caminhos comuns nas práticas de engenharia e organização de projetos que vinham testando, validando e aprendendo. O que emerge deste encontro de 2 dias foi o Agile ‘Software Development’ Manifesto. Representantes de diferentes metodologias estavam presentes nesta data: Extreme Programming, SCRUM, DSDM, Adaptive Software Development, Crystal, Feature-Driven Development, Pragmatic Programming, e outras pessoas que eram simpáticas a necessidade de alternativas para projetos direcionados por documentação, normalmente direcionados por processos de desenvolvimento de software pesados. Todos signatários terminam o encontro com o termo Agile, termo que aparece em cena por indicação de Martin Fowler, que já aparecia na cena de eXtreme Programming anos anteriores.",
+  "category": "Metodologia Ágil",
+  "tags": ["agile"],
+  "contributors": [
+    {
+      "name": "Daniel Wildt",
+      "url": "https://www.linkedin.com/in/danielwildt",
+      "avatarUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQFYmdJJeE9gmA/profile-displayphoto-shrink_400_400/0/1517688960443?e=1631750400&v=beta&t=bpxRB_CL0-3CaT4nzadf1PKpSblm2I_Z7yjm6gEdaBM"
+    }
+  ],
+  "resources": [
+    {
+      "description": "Manifesto Ágil (site oficial)",
+      "type": "other",
+      "url": "https://agilemanifesto.org/"
+    },
+    {
+      "description": "A história do manifesto ágil (enUS)",
+      "type": "article",
+      "url": "https://agilemanifesto.org/history.html"
+    },
+    {
+      "description": "Daniel Wildt sobre princípios do Manifesto Ágil (parte 1)",
+      "type": "video",
+      "url": "https://youtu.be/tmoRWy605Mg"
+    },
+    {
+      "description": "Daniel Wildt sobre princípios do Manifesto Ágil (parte 2)",
+      "type": "video",
+      "url": "https://youtu.be/z-ZRykB-lYo"
+    },
+    {
+      "description": "Agile Alliance (enUS)",
+      "type": "other",
+      "url": "https://www.agilealliance.org"
+    },
+    {
+      "description": "Agile Alliance Brazil",
+      "type": "other",
+      "url": "https://www.agilealliance.org/agilealliancebrazil"
+    },
+    {
+      "description": "Agile Brazil (Conferência)",
+      "type": "other",
+      "url": "https://twitter.com/agilebrazil"
+    },
+    {
+      "description": "Daniel Wildt Ser multidisciplinar e o velho novo jeito de desenvolver produtos.",
+      "type": "video",
+      "url": "https://youtu.be/IG5z3Sav8i8"
+    },
+    {
+      "description": "Martin Fowler - The New Methodology (original)  (enUS).",
+      "type": "article",
+      "url": "https://www.martinfowler.com/articles/newMethodologyOriginal.html"
+    }
+  ],
+  "memos": [
+    {
+      "id": "06ebc806-018e-44ef-9417-8537ea364c05",
+      "question": [
+        {
+          "insert": "Contratos são importantes, e servem para estabelecer regras e limites. Agora, tão importante quanto isso é conseguir estabelecer um canal de _________ com os clientes.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Contratos são importantes, e servem para estabelecer regras e limites. Agora, tão importante quanto isso é conseguir estabelecer um canal de "
+        },
+        {
+          "insert": "COLABORAÇÃO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " com os clientes.\n"
+        }
+      ]
+    },
+    {
+      "id": "11582f7a-af95-49a4-aa2a-d7362ad97c58",
+      "question": [
+        {
+          "insert": "A maior prioridade descrita no manifesto ágil é satisfazer o cliente através da ___________________ de software com valor agregado. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "A maior prioridade descrita no manifesto ágil é satisfazer o cliente através da "
+        },
+        {
+          "insert": "ENTREGA CONTÍNUA E ADIANTADA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " de software com valor agregado.\n"
+        }
+      ]
+    },
+    {
+      "id": "2cd99da7-9c51-461d-89b8-398d7feb5147",
+      "question": [
+        {
+          "insert": "Em 2001, na escrita do manifesto ágil, já era indicado entregar __________ software funcionando, de poucas semanas a poucos meses, com preferência à _________ escala de tempo. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Em 2001, na escrita do manifesto ágil, já era indicado entregar "
+        },
+        {
+          "insert": "FREQUENTEMENTE",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " software funcionando, de poucas semanas a poucos meses, com preferência à "
+        },
+        {
+          "insert": "MENOR",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " escala de tempo.\n"
+        }
+      ]
+    },
+    {
+      "id": "4d8d2ee4-a4bf-4be7-a936-b561b94a55b5",
+      "question": [
+        {
+          "insert": "Em projetos ágeis, pessoas de negócios e desenvolvedoras _______ trabalhar diariamente em conjunto por todo o projeto. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Em projetos ágeis, pessoas de negócios e desenvolvedoras "
+        },
+        {
+          "insert": "DEVEM",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " trabalhar diariamente em conjunto por todo o projeto.\n"
+        }
+      ]
+    },
+    {
+      "id": "4e7c0bca-75f4-49ef-a325-193470683423",
+      "question": [
+        {
+          "insert": "Bom design de código é importante, mas além disso uma equipe precisa ter atenção contínua à ________________ para aumentar sua agilidade.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Bom design de código é importante, mas além disso uma equipe precisa ter atenção contínua à "
+        },
+        {
+          "insert": "EXCELÊNCIA TÉCNICA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " para aumentar sua agilidade.\n"
+        }
+      ]
+    },
+    {
+      "id": "4eca529e-6067-4ff1-98c7-7ec052d3fca2",
+      "question": [
+        {
+          "insert": "Mudanças de requisitos são __________, lembrando que temos um valor no manifesto de _________ mais que seguir um plano.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Mudanças de requisitos são "
+        },
+        {
+          "insert": "BEM VINDAS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", lembrando que temos um valor no manifesto de "
+        },
+        {
+          "insert": "RESPONDER A MUDANÇAS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " mais que seguir um plano.\n"
+        }
+      ]
+    },
+    {
+      "id": "57349ab9-08bd-4225-9493-db91f483d8db",
+      "question": [
+        {
+          "insert": "O manifesto ágil é formado por quatro ______ e doze _______.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O manifesto ágil é formado por quatro "
+        },
+        {
+          "insert": "VALORES",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " e doze "
+        },
+        {
+          "insert": "PRINCÍPIOS.\n",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "5cf3ec66-bc9c-4af6-8e38-4fc8b30a06db",
+      "question": [
+        {
+          "insert": "O princípio da Simplicidade no manifesto ágil fala sobre a arte de ________________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O princípio da Simplicidade no manifesto ágil fala sobre a arte de "
+        },
+        {
+          "insert": "MAXIMIZAR A QUANTIDADE DE TRABALHO NÃO REALIZADO.",
+          "attributes": {
+            "underline": true,
+            "bold": true
+          }
+        },
+        {
+          "insert": "\n"
+        }
+      ]
+    },
+    {
+      "id": "6d75e0eb-7639-4f76-80db-b99e916763d0",
+      "question": [
+        {
+          "insert": "Em 2000, ano anterior ao da construção do manifesto ágil, metodologias eXtreme Programming, Scrum e Crystal eram referenciadas em artigos como _________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Em 2000, ano anterior ao da construção do manifesto ágil, metodologias eXtreme Programming, Scrum e Crystal eram referenciadas em artigos como "
+        },
+        {
+          "insert": "LIGHT METHODOLOGIES",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "id": "71da6e5d-10f9-4bb8-93fd-7b6c24c5725a",
+      "question": [
+        {
+          "insert": "O manifesto ágil tem um total de _______ pessoas autoras, que criaram metodologias como Extreme Programming, SCRUM, DSDM, Adaptive Software Development, Crystal, Feature-Driven Development, Pragmatic Programming e pessoas que simpatizavam por uma alternativa para processos de software pesados e orientados por documentação.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O manifesto ágil tem um total de "
+        },
+        {
+          "insert": "DEZESSETE",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " pessoas autoras, que criaram metodologias como Extreme Programming, SCRUM, DSDM, Adaptive Software Development, Crystal, Feature-Driven Development, Pragmatic Programming e pessoas que simpatizavam por uma alternativa para processos de software pesados e orientados por documentação.\n"
+        }
+      ]
+    },
+    {
+      "id": "7422c407-312c-4367-880b-fcadf7814c3e",
+      "question": [
+        {
+          "insert": "__________ são formas da equipe refletir em intervalos regulares sobre como se tornar mais eficaz e então refina e ajusta seu comportamento de acordo. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "RETROSPECTIVAS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " são formas da equipe refletir em intervalos regulares sobre como se tornar mais eficaz e então refina e ajusta seu comportamento de acordo.\n"
+        }
+      ]
+    },
+    {
+      "id": "75c937f2-b6ef-41c7-a4e5-36491bcd18d0",
+      "question": [
+        {
+          "insert": "As melhores arquiteturas, requisitos e designs _________ de equipes __________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "As melhores arquiteturas, requisitos e designs "
+        },
+        {
+          "insert": "EMERGEM",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " de equipes melhores arquiteturas, requisitos e designs "
+        },
+        {
+          "insert": "AUTO-ORGANIZÁVEIS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ".\n"
+        }
+      ]
+    },
+    {
+      "id": "82ad11c8-c29f-45cc-b6ee-99424758c8fb",
+      "question": [
+        {
+          "insert": "Um dos valores do manifesto ágil é:  \"_______________ mais que processos e ferramentas\".\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Um dos valores do manifesto ágil é: "
+        },
+        {
+          "insert": "INDIVÍDUOS E INTERAÇÕES",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " mais que processos e ferramentas.\n"
+        }
+      ]
+    },
+    {
+      "id": "8884496c-0136-475f-99a1-612aa9fa0214",
+      "question": [
+        {
+          "insert": "O movimento Agile não é anti metodologia. Quem atua neste ambiente deseja restaurar a credibilidade na palavra metodologia, restaurar um _______. Entender _______ sem que ela fique presa em armazenar diagramas em pastas. Entender _________, mas que seja capaz de se manter a mesma. ________, mas entendendo sobre natureza e complexidade de sistemas e problemas sendo resolvidos. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O movimento Agile não é anti metodologia. Quem atua neste ambiente deseja restaurar a credibilidade na palavra metodologia, restaurar um "
+        },
+        {
+          "insert": "BALANÇO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ". Entender "
+        },
+        {
+          "insert": "MODELAGEM",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " sem que ela fique presa em armazenar diagramas em pastas. Entender "
+        },
+        {
+          "insert": "DOCUMENTAÇÃO",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", mas que seja capaz de se manter a mesma. "
+        },
+        {
+          "insert": "PLANEJAR",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": ", mas entendendo sobre natureza e complexidade de sistemas e problemas sendo resolvidos.\n"
+        }
+      ]
+    },
+    {
+      "id": "96e956b6-22c1-47e0-a883-5fe950f75963",
+      "question": [
+        {
+          "insert": "_________ servem para a equipe refletir sobre como se tornar mais eficaz. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "RETROSPECTIVAS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " servem para a equipe refletir sobre como se tornar mais eficaz. \n"
+        }
+      ]
+    },
+    {
+      "id": "b7be6a6b-e8fc-4956-8f1d-bbb40feadea6",
+      "question": [
+        {
+          "insert": "Software funcionando é a medida primária de _________. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Software funcionando é a medida primária de "
+        },
+        {
+          "insert": "PROGRESSO.\n",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "baedee00-9ba2-45d4-885c-1b973c09ec8c",
+      "question": [
+        {
+          "insert": "O manifesto ágil demonstra o foco prático e documental desde o início, inclusive humildade, considerando métodos na época com 3-6 anos em experimentação, quando trazem: \"Estamos ________ maneiras melhores de desenvolver software, fazendo-o nós mesmos e ajudando outros a fazerem o mesmo.\"\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O manifesto ágil demonstra o foco prático e documental desde o início, inclusive humildade, considerando métodos na época com 3-6 anos em experimentação, quando trazem: \"Estamos "
+        },
+        {
+          "insert": "DESCOBRINDO.",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " maneiras melhores de desenvolver software, fazendo-o nós mesmos e ajudando outros a fazerem o mesmo.\"\n"
+        }
+      ]
+    },
+    {
+      "id": "dc52964e-b9b6-4ea0-8c56-b650e14ad758",
+      "question": [
+        {
+          "insert": "Em projetos ágeis, mais que seguir um plano é preciso conseguir ___________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Em projetos ágeis, mais que seguir um plano é preciso conseguir "
+        },
+        {
+          "insert": "RESPONDER A MUDANÇAS.\n",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "dd7c966a-68bd-4cc9-b2bb-1a8f4c803af6",
+      "question": [
+        {
+          "insert": "O manifesto ágil _________ princípios que os praticantes já percebiam nas suas atuações e metodologias. Não é uma visão ________.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "O manifesto ágil "
+        },
+        {
+          "insert": "DOCUMENTA",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " princípios que os praticantes já percebiam nas suas atuações e metodologias. Não é uma visão "
+        },
+        {
+          "insert": "ASPIRACIONAL.\n",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "df7091c7-663e-4715-8b93-da5829dc5163",
+      "question": [
+        {
+          "insert": "Construa projetos em torno de pessoas motivadas. Para isso você precisa entregar o _____________ necessário. Além disso precisa confiar nas pessoas para _________. \n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Construa projetos em torno de pessoas motivadas. Para isso você precisa entregar o "
+        },
+        {
+          "insert": "AMBIENTE E SUPORTE",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " necessário. Além disso precisa confiar nas pessoas para "
+        },
+        {
+          "insert": "FAZER O TRABALHO.\n",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "e7ca5a2b-2ba4-4f46-a0fc-505fdc056c14",
+      "question": [
+        {
+          "insert": "Uma das formas de visar vantagens competitivas com processos ágeis é tirar ____________ para o cliente.\n"
+        }
+      ],
+      "answer": [
+        {
+          "insert": "Uma das formas de visar vantagens competitivas com processos ágeis é tirar "
+        },
+        {
+          "insert": "VANTAGEM DAS MUDANÇAS",
+          "attributes": {
+            "bold": true,
+            "underline": true
+          }
+        },
+        {
+          "insert": " para o cliente.\n"
+        }
+      ]
+    }
+  ]
+}
