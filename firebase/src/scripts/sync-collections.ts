@@ -1,9 +1,7 @@
 import { SyncCollectionsUseCase } from "#domain/use-cases/collections/sync-collections";
 import Provider from "#presentation/provider";
 
-// 1. Verificar se vale a pena fazer os "// TODO" pendentes.
 // 4. Testes:
-//  - gateways -> readFileAsString.
 //  - gateways -> deleteDocRecursively; setDoc.
 //  - domain/use-cases.
 //  - scripts/sync-collections.
