@@ -18,6 +18,7 @@
     "deploy:functions": "firebase deploy --only functions",
     "test": "run-p --print-label test:*",
     "test:core": "mocha -r ts-node/register -r tsconfig-paths/register --recursive \"./test/core/**/*.spec.ts\" --timeout 10000 --exit",
+    "test:collections": "mocha -r ts-node/register -r tsconfig-paths/register --recursive \"./test/collections/**/*.spec.ts\" --timeout 10000 --exit",
     "test:firebase-rules": "firebase emulators:exec --only firestore 'mocha -r ts-node/register -r tsconfig-paths/register --file \"./test/firebase-rules/setup.ts\" --recursive \"./test/firebase-rules/**/*.spec.ts\" --timeout 10000 --exit'",
     "build": "run-p --print-label build:*",
     "build:functions": "tsc -p tsconfig.functions.json",

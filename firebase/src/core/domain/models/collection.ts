@@ -30,6 +30,7 @@ export enum CollectionResourceType {
   article = "article",
   book = "book",
   video = "video",
+  game = "game",
   other = "other",
 }
 

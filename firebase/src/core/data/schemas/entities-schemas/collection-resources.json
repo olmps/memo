@@ -6,7 +6,7 @@
   "type": "object",
   "properties": {
     "description": { "type": "string", "minLength": 1 },
-    "type": { "type": "string", "minLength": 1, "pattern": "article|book|video|other" },
+    "type": { "type": "string", "minLength": 1, "pattern": "article|book|video|game|other" },
     "url": { "type": "string", "minLength": 1, "format": "url" }
   },
   "required": ["description", "type", "url"]
