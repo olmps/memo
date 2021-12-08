@@ -10,10 +10,6 @@ describe("Memo Content Validation", () => {
     const properties: ValidationProperties = {
       required: ["id", "question", "answer"],
       array: ["question", "answer"],
-      uniqueItems: new Map<string, any[]>([
-        ["question", [newRawMemoContent(), newRawMemoContent()]],
-        ["answer", [newRawMemoContent(), newRawMemoContent()]],
-      ]),
       incorrectTypes: new Map<string, any>([
         ["id", true],
         ["question", "string"],

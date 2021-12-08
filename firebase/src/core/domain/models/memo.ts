@@ -29,8 +29,8 @@ export const memoQuillValidationSchema = Joi.object({
 
 export const memoValidationSchema = Joi.object({
   id: Joi.string().max(defaultMaxStringLength).required(),
-  question: Joi.array().items(memoQuillValidationSchema).unique().min(1).required(),
-  answer: Joi.array().items(memoQuillValidationSchema).unique().min(1).required(),
+  question: Joi.array().items(memoQuillValidationSchema).min(1).required(),
+  answer: Joi.array().items(memoQuillValidationSchema).min(1).required(),
 });
 
 export function validateMemo(memo: Memo): void {
