@@ -52,6 +52,16 @@ export interface StoredPublicCollection extends PublicCollection {
 }
 
 export const maxDescriptionLength = 10000;
+export const collectionContributorSchema = Joi.object({
+  name: Joi.string().max(defaultMaxStringLength).required(),
+  url: Joi.string().uri().required(),
+  avatarUrl: Joi.string().uri().required(),
+});
+export const collectionResourcesSchema = Joi.object({
+  type: Joi.valid(...Object.values(CollectionResourceType)).required(),
+  url: Joi.string().uri().required(),
+  description: Joi.string().max(defaultMaxStringLength).required(),
+});
 export const publicCollectionSchema = Joi.object({
   id: Joi.string().max(defaultMaxStringLength).required(),
   name: Joi.string().max(defaultMaxStringLength).required(),
@@ -59,28 +69,8 @@ export const publicCollectionSchema = Joi.object({
   category: Joi.string().max(defaultMaxStringLength).required(),
   description: Joi.string().max(maxDescriptionLength).required(),
   locale: Joi.string().max(defaultMaxStringLength),
-  contributors: Joi.array()
-    .items(
-      Joi.object({
-        name: Joi.string().max(defaultMaxStringLength).required(),
-        url: Joi.string().uri().required(),
-        avatarUrl: Joi.string().uri().required(),
-      })
-    )
-    .unique()
-    .min(1)
-    .required(),
-  resources: Joi.array()
-    .items(
-      Joi.object({
-        type: Joi.valid(...Object.values(CollectionResourceType)).required(),
-        url: Joi.string().uri().required(),
-        description: Joi.string().max(defaultMaxStringLength).required(),
-      })
-    )
-    .unique()
-    .min(1)
-    .required(),
+  contributors: Joi.array().items(collectionContributorSchema).unique().min(1).required(),
+  resources: Joi.array().items(collectionResourcesSchema).unique().min(1).required(),
 });
 
 export const localCollectionSchema = publicCollectionSchema.append({
