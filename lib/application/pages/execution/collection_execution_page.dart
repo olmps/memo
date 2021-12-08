@@ -16,8 +16,6 @@ import 'package:memo/application/utils/bottom_sheet.dart';
 import 'package:memo/application/view-models/execution/collection_execution_vm.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
 import 'package:memo/application/widgets/material/asset_icon_button.dart';
-import 'package:memo/application/widgets/theme/destructive_button.dart';
-import 'package:memo/application/widgets/theme/secondary_button.dart';
 
 class CollectionExecutionPage extends ConsumerStatefulWidget {
   @override
@@ -103,27 +101,13 @@ class _ExecutionAppBar extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   /// Displays an bottom sheet alert to reinforce the discard of the current execution.
-  Future<void> _showCloseSheet(BuildContext context, WidgetRef ref) async {
-    final textTheme = Theme.of(context).textTheme;
-
-    return showSnappableDraggableModalBottomSheet(
-      context,
-      isDismissible: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(strings.executionDiscardStudy, style: textTheme.subtitle1),
-          context.verticalBox(Spacing.xLarge),
-          Text(strings.executionDiscardStudyDescription, style: textTheme.bodyText1),
-          context.verticalBox(Spacing.xxxLarge),
-          DestructiveButton(
-            onPressed: readCoordinator(ref).pop,
-            text: strings.executionDiscard.toUpperCase(),
-          ),
-          context.verticalBox(Spacing.medium),
-          SecondaryButton(onPressed: Navigator.of(context).pop, child: Text(strings.executionBackToStudy.toUpperCase()))
-        ],
-      ).withAllPadding(context, Spacing.medium),
-    );
-  }
+  Future<void> _showCloseSheet(BuildContext context, WidgetRef ref) => showDestructiveOperationModalBottomSheet(
+        context,
+        title: strings.executionDiscardStudy,
+        message: strings.executionDiscardStudyDescription,
+        destructiveActionTitle: strings.executionDiscard.toUpperCase(),
+        cancelActionTitle: strings.executionBackToStudy.toUpperCase(),
+        onDestructiveTapped: readCoordinator(ref).pop,
+        onCancelTapped: Navigator.of(context).pop,
+      );
 }

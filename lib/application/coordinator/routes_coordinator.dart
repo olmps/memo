@@ -5,6 +5,8 @@ import 'package:memo/application/pages/details/collection_details_page.dart';
 import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/pages/execution/collection_execution_page.dart';
 import 'package:memo/application/pages/execution/execution_providers.dart';
+import 'package:memo/application/pages/home/collections/update/update_collection_page.dart';
+import 'package:memo/application/pages/home/collections/update/update_collection_providers.dart';
 import 'package:memo/application/pages/home/home_page.dart';
 import 'package:memo/application/pages/settings/settings_page.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
@@ -110,6 +112,16 @@ class RoutesCoordinator extends ChangeNotifier {
       _addPage(SettingsPage(), name: path.formattedPath);
     }
 
+    if (path is UpdateCollectionPath) {
+      _addPage(
+        ProviderScope(
+          overrides: [updateCollectionId.overrideWithValue(path.collectionId)],
+          child: UpdateCollectionPage(),
+        ),
+        name: path.formattedPath,
+      );
+    }
+
     notifyListeners();
   }
 
@@ -159,6 +171,10 @@ class RoutesCoordinator extends ChangeNotifier {
 
   void navigateToSettings() {
     setNewRoutePath(SettingsPath());
+  }
+
+  void navigateToUpdateCollection() {
+    setNewRoutePath(UpdateCollectionPath());
   }
 
   void navigateToCollectionDetails(String collectionId) {

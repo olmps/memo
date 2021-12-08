@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/widgets/theme/destructive_button.dart';
+import 'package:memo/application/widgets/theme/secondary_button.dart';
 
 class _DragIndicator extends ConsumerWidget {
   @override
@@ -69,5 +71,35 @@ Future<T?> showSnappableDraggableModalBottomSheet<T>(
         ),
       );
     },
+  );
+}
+
+/// Uses [showSnappableDraggableModalBottomSheet] to present a modal bottom sheet tha confirms a destructive operation.
+Future<T?> showDestructiveOperationModalBottomSheet<T>(
+  BuildContext context, {
+  required String title,
+  required String message,
+  required String destructiveActionTitle,
+  required String cancelActionTitle,
+  VoidCallback? onDestructiveTapped,
+  VoidCallback? onCancelTapped,
+}) {
+  final textTheme = Theme.of(context).textTheme;
+
+  return showSnappableDraggableModalBottomSheet(
+    context,
+    isDismissible: true,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(title, style: textTheme.subtitle1),
+        context.verticalBox(Spacing.xLarge),
+        Text(message, style: textTheme.bodyText1),
+        context.verticalBox(Spacing.xxxLarge),
+        DestructiveButton(onPressed: onDestructiveTapped, text: destructiveActionTitle),
+        context.verticalBox(Spacing.medium),
+        SecondaryButton(onPressed: onCancelTapped, child: Text(cancelActionTitle))
+      ],
+    ).withAllPadding(context, Spacing.medium),
   );
 }

@@ -391,9 +391,7 @@ class _ThemedEditor extends ConsumerWidget {
       padding: EdgeInsets.zero,
       enableInteractiveSelection: !readOnly,
       showCursor: !readOnly,
-      // TODO(ggirotto): Placeholder is crashing. This is a problem related to `FlutterQuill`.
-      // TODO(ggirotto): https://github.com/singerdmx/flutter-quill/issues/348
-      // placeholder: placeholder,
+      placeholder: placeholder,
       customStyles: quill.DefaultStyles(
         paragraph: quill.DefaultTextBlockStyle(textTheme.bodyText2!, zeroTuple, zeroTuple, null),
         placeHolder: quill.DefaultTextBlockStyle(

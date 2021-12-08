@@ -11,6 +11,13 @@ import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 
 //
+// Exceptions
+//
+const oops = 'Oops';
+const tryAgain = 'Tente Novamente';
+String fieldMaxCharsMessage(int maxChars) => 'Este campo tem limite máximo de $maxChars caracteres';
+
+//
 // Collections
 //
 const collectionsNavigationTab = 'Coleções';
@@ -57,6 +64,40 @@ const detailsResources = 'Materiais de apoio';
 const detailsResourcesWarning =
     'Cuidado, estes materiais são referências para outros sites que não estão sob nosso controle';
 const detailsStudyNow = 'Estudar agora';
+
+//
+// Update Collection
+//
+const newCollection = 'Nova Coleção';
+const editCollection = 'Editar Coleção';
+const saveCollection = 'Salvar Coleção';
+
+const collectionName = 'Nome da Coleção';
+const collectionDescription = 'Descrição da Coleção';
+
+String updateMemoQuestionTitle(int memoIndex) => '### Pergunta $memoIndex';
+const updateMemoQuestionPlaceholder = 'Escreva a questão';
+
+const updateMemoAnswer = '### Resposta';
+const updateMemoAnswerPlaceholder = 'Escreva a resposta';
+
+const removeMemoTitle = 'Remover Memo';
+const removeMemoMessage = 'Você tem certeza que deseja remover este memo?';
+
+const newMemo = 'Novo Memo';
+
+String fieldCharactersAmount(int amount, int max) => '$amount/$max caracteres';
+
+const jumpTo = 'Pular para';
+
+//
+// Tags Component
+//
+const tags = 'Tags';
+const tagsHint = 'Adicione as tags...';
+const suggestions = 'Sugestões';
+const addTags = 'Adicionar Tags';
+String tagsAmount(int tagsAmount, int maxTags) => '$tagsAmount/$maxTags tags';
 
 //
 // Contributors
@@ -141,6 +182,10 @@ String settingsDescriptionForNamedCustom(NamedCustomSettings custom) {
 const yes = 'Sim';
 const no = 'Não';
 const ok = 'Ok';
+const memos = 'Memos';
+const next = 'Próximo';
+const cancel = 'Cancelar';
+const remove = 'Remover';
 
 const recallLevel = 'Nível de Fixação';
 

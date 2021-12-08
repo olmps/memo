@@ -9,7 +9,7 @@ typedef ExceptionObserver = void Function(BaseException exception);
 /// `dart.core`.
 @immutable
 abstract class BaseException extends Equatable implements Exception {
-  BaseException({required this.type, this.debugInfo, this.debugData}) {
+  BaseException({required this.type, this.debugInfo, this.debugData, this.message}) {
     observer?.call(this);
   }
 
@@ -17,6 +17,9 @@ abstract class BaseException extends Equatable implements Exception {
 
   final String? debugInfo;
   final dynamic debugData;
+
+  /// Optional message used as the exception message in the Scaffold when the exception is thrown.
+  final String? message;
 
   /// Unique instance to observe all [BaseException] instances.
   ///
@@ -36,4 +39,8 @@ abstract class BaseException extends Equatable implements Exception {
 enum ExceptionType {
   // UrlException
   failedToOpenUrl,
+
+  // Validation
+  emptyField,
+  fieldLengthExceeded,
 }
