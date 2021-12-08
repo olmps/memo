@@ -37,9 +37,6 @@ describe("FileSystemGateway", () => {
 
   it("should reject when readFile throws", async () => {
     const fsGateway = new FileSystemGateway();
-    // Disable TS type-checking for `fsStub.readdir` call because `sinon` type definitions always invoke the last
-    // function signature by default when a function has overloads.
-    // See https://github.com/DefinitelyTyped/DefinitelyTyped/issues/36436 for more details about this issue.
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     fsStub.readdir.resolves(fakeFiles);
