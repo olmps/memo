@@ -1,6 +1,6 @@
+import * as assert from "assert";
 import ValidationError from "#faults/errors/validation-error";
 import { memoQuillValidationSchema, memoValidationSchema } from "#domain/models/memo";
-import { throws } from "assert";
 import { defaultMaxStringLength, validate } from "#utils/validate";
 import { ModelTester, ValidationProperties } from "#testentity-tester";
 import { newRawMemo, newRawMemoContent } from "#test/core/data/schemas/collections-fakes";
@@ -53,7 +53,7 @@ describe("Memo Content Validation", () => {
           answer: [{ insert: "any", attributes: {} }],
         };
 
-        throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
+        assert.throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
       });
 
       it("should throw when attributes has invalid property", () => {
@@ -66,7 +66,7 @@ describe("Memo Content Validation", () => {
           answer: [{ insert: "any", attributes: fakeAttributes }],
         };
 
-        throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
+        assert.throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
       });
 
       it("should throw when attributes has invalid type", () => {
@@ -82,7 +82,7 @@ describe("Memo Content Validation", () => {
           answer: [{ insert: "any", attributes: fakeAttributes }],
         };
 
-        throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
+        assert.throws(() => validate(memoQuillValidationSchema, fakeMemo), ValidationError);
       });
     });
   });
