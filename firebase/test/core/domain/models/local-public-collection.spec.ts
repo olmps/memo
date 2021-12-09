@@ -2,7 +2,7 @@ import { localCollectionSchema } from "#domain/models/collection";
 import { newRawLocalCollection, newRawMemo } from "#test/core/data/schemas/collections-fakes";
 import { ModelTester, ValidationProperties } from "#test/entity-tester";
 
-describe("PublicCollection Validation", () => {
+describe("LocalPublicCollection Validation", () => {
   const properties: ValidationProperties = {
     required: ["memos"],
     array: ["memos"],

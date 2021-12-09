@@ -28,23 +28,23 @@ export function newRawMemo(props?: { id?: string; question?: any[]; answer?: any
   };
 }
 
-export function newRawPublicCollection(): any {
+export function newRawPublicCollection(props?: { id?: string }): any {
   return {
-    id: "any",
+    id: props?.id ?? "any",
     name: "name",
+    description: "Collection Description",
     tags: ["Tag 1", "Tag 2"],
     category: "Collection Category",
-    description: "Collection Description",
     locale: "ptBR",
     contributors: [newRawContributor()],
     resources: [newRawResource()],
   };
 }
 
-export function newRawLocalCollection(): any {
+export function newRawLocalCollection(props?: { id?: string; memos?: any[] }): any {
   return {
-    ...newRawPublicCollection(),
-    memos: [newRawMemo()],
+    ...newRawPublicCollection({ id: props?.id }),
+    memos: props?.memos ?? [newRawMemo()],
   };
 }
 
