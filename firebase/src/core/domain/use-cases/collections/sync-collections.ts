@@ -83,11 +83,19 @@ export class SyncCollectionsUseCase {
       // Adding/Updating collection
       //
       const memosOrder = localCollection.memos.map(({ id }) => id);
-      const storableCollection = {
-        ...localCollection,
+      const storableCollection: StoredPublicCollection = {
+        id: localCollection.id,
+        name: localCollection.name,
+        description: localCollection.description,
+        tags: localCollection.tags,
+        category: localCollection.category,
+        locale: localCollection.locale,
+        contributors: localCollection.contributors,
+        resources: localCollection.resources,
         memosAmount: memosOrder.length,
         memosOrder: memosOrder,
       };
+
       validateStoredCollection(storableCollection);
       updateableCollections.push(storableCollection);
 
