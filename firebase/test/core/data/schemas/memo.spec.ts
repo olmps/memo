@@ -1,6 +1,6 @@
+import * as assert from "assert";
 import Ajv2020 from "ajv/dist/2020";
 import { SchemaValidator } from "#data/schemas/schema-validator";
-import { doesNotThrow, throws } from "assert";
 import SerializationError from "#faults/errors/serialization-error";
 import { SchemaTester, ValidationProperties } from "#testentity-tester";
 import { newRawMemo } from "./collections-fakes";
@@ -39,7 +39,7 @@ describe("Memo Schema Validation", () => {
         rawMemo.question[0]!.attributes = { ...rawMemo.question[0]!.attributes, [property]: true };
         rawMemo.answer[0]!.attributes = { ...rawMemo.answer[0]!.attributes, [property]: true };
 
-        doesNotThrow(() => validator.validateObject("memo", rawMemo));
+        assert.doesNotThrow(() => validator.validateObject("memo", rawMemo));
       }
     });
 
@@ -49,7 +49,7 @@ describe("Memo Schema Validation", () => {
       rawMemo.question[0]!.attributes = { foo: "bar" };
       rawMemo.answer[0]!.attributes = { foo: "bar" };
 
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
+      assert.throws(() => validator.validateObject("memo", rawMemo), SerializationError);
     });
 
     it("should deny empty question/answer attributes", () => {
@@ -58,7 +58,7 @@ describe("Memo Schema Validation", () => {
       rawMemo.question[0]!.attributes = {};
       rawMemo.answer[0]!.attributes = {};
 
-      throws(() => validator.validateObject("memo", rawMemo), SerializationError);
+      assert.throws(() => validator.validateObject("memo", rawMemo), SerializationError);
     });
   });
 });

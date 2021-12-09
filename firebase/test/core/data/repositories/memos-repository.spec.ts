@@ -51,12 +51,13 @@ describe("MemosRepository", () => {
       assert.ok(schemaStub.validateObject.calledOnce);
     });
 
-    it("should throw when raw memos have an invalid format", () => {
-      const malformedMemo: Memo = <any>{ id: "id2", foo: "bar" };
+    it("should throw when raw memos have an invalid format", async () => {
+      const mockError = new SerializationError({ message: "Error Message" });
       const mockMemosPerCollection = newMemosPerCollection(mockCollectionId, [mockMemo]);
-      mockMemosPerCollection.set("collectionId2", [malformedMemo]);
 
-      assert.rejects(() => memosRepo.setMemos(mockMemosPerCollection), SerializationError);
+      schemaStub.validateObject.throws(mockError);
+
+      await assert.rejects(() => memosRepo.setMemos(mockMemosPerCollection), mockError);
     });
 
     it("should update a memo using its raw representation", async () => {
@@ -112,13 +113,14 @@ describe("MemosRepository", () => {
       assert.ok(schemaStub.validateObject.calledTwice);
     });
 
-    it("should throw when a memo is not in the expected schema format", () => {
-      const firstRawMemo = newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
-      const secondRawMemo = { id: "2", foo: "bar" };
+    it("should throw when a memo is not in the expected schema format", async () => {
+      const mockMemo = newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
+      const mockError = new SerializationError({ message: "Error Message" });
 
-      firestoreStub.getCollection.resolves([firstRawMemo, secondRawMemo]);
+      firestoreStub.getCollection.resolves([mockMemo]);
+      schemaStub.validateObject.throws(mockError);
 
-      assert.rejects(() => memosRepo.getAllMemos("any"), SerializationError);
+      await assert.rejects(() => memosRepo.getAllMemos("any"), mockError);
     });
   });
 });
