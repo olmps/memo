@@ -11,7 +11,7 @@ export const defaultMaxStringLength = 255;
  * @param allowUnknown Allows object to contain unknown keys which are ignored.
  * @param convert Attempts to cast values to the required types.
  */
-export function validate(schema: Joi.Schema, data: unknown, allowUnknown = true, convert = false): void {
+export function validate(schema: Joi.Schema, data: unknown, allowUnknown = false, convert = false): void {
   const { error } = schema.validate(data, { allowUnknown, convert });
 
   if (error) {
