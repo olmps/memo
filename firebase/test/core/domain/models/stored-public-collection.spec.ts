@@ -5,7 +5,7 @@ import { newRawStoredCollection } from "#test/core/data/schemas/collections-fake
 import { ModelTester, ValidationProperties } from "#test/entity-tester";
 import { validate } from "#utils/validate";
 
-describe("PublicCollection Validation", () => {
+describe("StoredPublicCollection Validation", () => {
   const properties: ValidationProperties = {
     required: ["memosAmount", "memosOrder"],
     array: ["memosOrder"],

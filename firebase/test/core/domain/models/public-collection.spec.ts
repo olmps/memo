@@ -6,7 +6,7 @@ import {
   collectionResourcesSchema,
 } from "#domain/models/collection";
 import { defaultMaxStringLength } from "#utils/validate";
-import { newRawContributor, newRawLocalCollection, newRawResource } from "#test/core/data/schemas/collections-fakes";
+import { newRawContributor, newRawPublicCollection, newRawResource } from "#test/core/data/schemas/collections-fakes";
 import { ValidationProperties, ModelTester } from "#test/entity-tester";
 
 describe("PublicCollection Validation", () => {
@@ -41,7 +41,7 @@ describe("PublicCollection Validation", () => {
 
     const tester = new ModelTester({
       schema: publicCollectionSchema,
-      entityConstructor: newRawLocalCollection,
+      entityConstructor: newRawPublicCollection,
       properties: properties,
     });
 
