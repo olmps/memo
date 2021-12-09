@@ -31,7 +31,6 @@ Table of contents
   - [`test/` - Unit and UI testing](#test---unit-and-ui-testing)
     - [`utils/`](#utils-1)
     - [`fixtures/`](#fixtures)
-  - [`web/`](#web)
 - [Relevant Topics](#relevant-topics)
   - [Why `river_pod` and not "x" state management library?](#why-river_pod-and-not-x-state-management-library)
   - [Why `mocktail` and not `mockito`?](#why-mocktail-and-not-mockito)
@@ -364,10 +363,6 @@ Shared functionality amongst all test cases.
 Tests [fixtures](https://en.wikipedia.org/wiki/Test_fixture#Software) - here is a
 [good SO answer](https://stackoverflow.com/a/14684400/8558606) explaining what they represent. In our scenario, they
 usually represent raw data, models or entities.
-
-## `web/`
-
-Stores all required (and generated) files to output builds for the Web platform. Currently not supported.
 
 ---
 
