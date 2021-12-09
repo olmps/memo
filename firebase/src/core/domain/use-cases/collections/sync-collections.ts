@@ -164,10 +164,10 @@ export class SyncCollectionsUseCase {
     // Filter by the files under `firebase/collections` directory.
     const changedCollections = changedFiles.filter((changedFile) => changedFile.includes("firebase/collections"));
 
-    const addedCollections = changedCollections.filter((collectionFile) => collectionFile.startsWith("A"));
-    const updatedCollections = changedCollections.filter((collectionFile) => collectionFile.startsWith("M"));
-    const removedCollections = changedCollections.filter((collectionFile) => collectionFile.startsWith("D"));
-    const renamedFiles = changedCollections.filter((collectionFile) => collectionFile.startsWith("R"));
+    const addedCollections = changedCollections.filter((collectionFile) => collectionFile.trim().startsWith("A"));
+    const updatedCollections = changedCollections.filter((collectionFile) => collectionFile.trim().startsWith("M"));
+    const removedCollections = changedCollections.filter((collectionFile) => collectionFile.trim().startsWith("D"));
+    const renamedFiles = changedCollections.filter((collectionFile) => collectionFile.trim().startsWith("R"));
 
     const addedCollectionsIds = addedCollections.map((collectionPath) =>
       collectionPath.substring(collectionPath.lastIndexOf("/") + 1, collectionPath.lastIndexOf(".json"))
