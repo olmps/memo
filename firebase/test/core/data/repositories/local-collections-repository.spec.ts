@@ -14,21 +14,20 @@ describe("LocalCollectionsRepository", () => {
   let schemaValidatorStub: sinon.SinonStubbedInstance<SchemaValidator>;
   let localCollectionsRepo: LocalCollectionsRepository;
 
-  beforeEach(() => {
+  before(() => {
     sandbox = sinon.createSandbox();
 
-    const fsStub = createSinonStub(FileSystemGateway);
-    fsGatewayStub = fsStub;
-
-    const schemaStub = createSinonStub(SchemaValidator);
-    schemaValidatorStub = schemaStub;
+    const fsStub = (fsGatewayStub = createSinonStub(FileSystemGateway, sandbox));
+    const schemaStub = (schemaValidatorStub = createSinonStub(SchemaValidator, sandbox));
 
     localCollectionsRepo = new LocalCollectionsRepository(fsStub, schemaStub, "any");
   });
 
-  afterEach(() => {
-    sandbox.restore();
+  beforeEach(() => {
+    fsGatewayStub.readFileAsString.resolves(JSON.stringify(fakeLocalCollectionJson));
   });
+
+  afterEach(() => sandbox.reset());
 
   describe("getAllCollectionsByIds", () => {
     it("should return local stored collections", async () => {

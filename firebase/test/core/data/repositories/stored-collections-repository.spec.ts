@@ -10,30 +10,28 @@ import createSinonStub from "#test/sinon-stub";
 describe("StoredCollectionsRepository", () => {
   let sandbox: sinon.SinonSandbox;
   let firestoreStub: sinon.SinonStubbedInstance<FirestoreGateway>;
+  let schemaStub: sinon.SinonStubbedInstance<SchemaValidator>;
   let storedCollectionsRepo: StoredCollectionsRepository;
   let transactionSpy: sinon.SinonSpy;
 
-  beforeEach(() => {
+  before(() => {
     sandbox = sinon.createSandbox();
 
-    const firestoreStubInstance = createSinonStub(FirestoreGateway, sandbox);
-    firestoreStub = firestoreStubInstance;
-
-    const schemaStubInstance = createSinonStub(SchemaValidator, sandbox);
+    const firestoreStubInstance = (firestoreStub = createSinonStub(FirestoreGateway, sandbox));
+    const schemaStubInstance = (schemaStub = createSinonStub(SchemaValidator, sandbox));
     storedCollectionsRepo = new StoredCollectionsRepository(firestoreStubInstance, schemaStubInstance);
+  });
 
+  beforeEach(() => {
     // Mocks the transaction function to always run what is inside the context
     const transactionContext = async (context: any) => {
       await context();
     };
-
     transactionSpy = sandbox.spy(transactionContext);
     firestoreStub.runTransaction.callsFake(transactionSpy);
   });
 
-  afterEach(() => {
-    sandbox.restore();
-  });
+  afterEach(() => sandbox.reset());
 
   describe("setCollections", () => {
     it("should set collections set inside a single transaction", async () => {

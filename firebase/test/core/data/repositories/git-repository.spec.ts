@@ -2,21 +2,20 @@ import * as assert from "assert";
 import * as sinon from "sinon";
 import { ShellGateway } from "#data/gateways/shell-gateway";
 import { GitRepository } from "#data/repositories/git-repository";
+import createSinonStub from "#test/sinon-stub";
 
 describe("GitRepository", () => {
   let sandbox: sinon.SinonSandbox;
   let shellMock: sinon.SinonStubbedInstance<ShellGateway>;
   let gitRepo: GitRepository;
 
-  beforeEach(() => {
+  before(() => {
     sandbox = sinon.createSandbox();
-    shellMock = sandbox.createStubInstance(ShellGateway);
+    shellMock = createSinonStub(ShellGateway, sandbox);
     gitRepo = new GitRepository(shellMock);
   });
 
-  afterEach(() => {
-    sandbox.reset();
-  });
+  afterEach(() => sandbox.reset());
 
   it("should use rev-list to fetch the last merge commit hash", async () => {
     const expectedCommand = "git rev-list --min-parents=2 --max-count=1 HEAD";

@@ -14,7 +14,7 @@ describe("MemosRepository", () => {
   let memosRepo: MemosRepository;
   let transactionSpy: sinon.SinonSpy;
 
-  beforeEach(() => {
+  before(() => {
     sandbox = sinon.createSandbox();
 
     const firestoreStubInstance = createSinonStub(FirestoreGateway, sandbox);
@@ -24,7 +24,9 @@ describe("MemosRepository", () => {
     schemaStub = schemaValidatorStub;
 
     memosRepo = new MemosRepository(firestoreStubInstance, schemaValidatorStub);
+  });
 
+  beforeEach(() => {
     // Mocks the transaction function to always run what's is inside the context
     const transactionContext = async (context: any) => {
       await context();
@@ -34,9 +36,7 @@ describe("MemosRepository", () => {
     firestoreStub.runTransaction.callsFake(transactionSpy);
   });
 
-  afterEach(() => {
-    sandbox.resetHistory();
-  });
+  afterEach(() => sandbox.reset());
 
   describe("setMemos", async () => {
     const mockCollectionId = "collectionId1";
