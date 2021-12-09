@@ -17,15 +17,13 @@ describe("FirestoreGateway", () => {
   let firestoreMock: sinon.SinonStubbedInstance<firebase.firestore.Firestore>;
   let firestoreGateway: FirestoreGateway;
 
-  beforeEach(() => {
+  before(() => {
     sandbox = sinon.createSandbox();
-    firestoreMock = sandbox.createStubInstance(firebase.firestore.Firestore);
+    firestoreMock = createSinonStub(firebase.firestore.Firestore, sandbox);
     firestoreGateway = new FirestoreGateway(firestoreMock as firebase.firestore.Firestore);
   });
 
-  afterEach(() => {
-    sandbox.restore();
-  });
+  afterEach(() => sandbox.reset());
 
   function createTransactionMock(): sinon.SinonStubbedInstance<firebase.firestore.Transaction> {
     const transactionMock = createSinonStub(firebase.firestore.Transaction);
