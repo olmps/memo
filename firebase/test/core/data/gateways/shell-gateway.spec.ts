@@ -8,14 +8,12 @@ describe("ShellGateway", () => {
   let sandbox: sinon.SinonSandbox;
   let childProcessStub: sinon.SinonStubbedInstance<typeof child_process>;
 
-  beforeEach(() => {
+  before(() => {
     sandbox = sinon.createSandbox();
     childProcessStub = sandbox.stub(child_process);
   });
 
-  afterEach(() => {
-    sandbox.restore();
-  });
+  afterEach(() => sandbox.reset());
 
   it("should reject when exec returns an error", async () => {
     const shellGateway = new ShellGateway();
