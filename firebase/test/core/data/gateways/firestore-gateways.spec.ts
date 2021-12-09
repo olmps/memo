@@ -313,6 +313,47 @@ describe("FirestoreGateway", () => {
       });
     });
 
+    describe("setDoc", () => {
+      let collectionMock: sinon.SinonStubbedInstance<firebase.firestore.CollectionReference>;
+      let collectionDocMock: sinon.SinonStubbedInstance<firebase.firestore.DocumentReference>;
+
+      beforeEach(() => {
+        collectionDocMock = createSinonStub(firebase.firestore.DocumentReference);
+        collectionDocMock.update.withArgs(fakeObject as any, undefined).resolves();
+
+        collectionMock = createCollectionMock();
+        collectionMock.doc.withArgs(fakeDocId).returns(collectionDocMock as any);
+      });
+
+      it("should set a new or existing doc", async () => {
+        await firestoreGateway.setDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject });
+
+        assert(collectionDocMock.set.calledOnce);
+      });
+
+      it("should reject when doc set throws", async () => {
+        collectionDocMock.set.rejects();
+
+        await assert.rejects(
+          () => firestoreGateway.setDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject }),
+          FirebaseFirestoreError
+        );
+        assert(collectionDocMock.set.calledOnce);
+      });
+
+      it("should set using the transaction when available", async () => {
+        const transactionMock = createTransactionMock();
+        transactionMock.set.withArgs(collectionDocMock, fakeObject as any).resolves();
+
+        await firestoreGateway.runTransaction(async () => {
+          await firestoreGateway.setDoc({ id: fakeDocId, path: fakeCollection, data: fakeObject });
+        });
+
+        assert(collectionDocMock.set.notCalled);
+        assert(transactionMock.set.calledOnce);
+      });
+    });
+
     describe("deleteDoc", () => {
       let collectionMock: sinon.SinonStubbedInstance<firebase.firestore.CollectionReference>;
       let collectionDocMock: sinon.SinonStubbedInstance<firebase.firestore.DocumentReference>;
@@ -351,6 +392,34 @@ describe("FirestoreGateway", () => {
 
         assert(collectionDocMock.delete.notCalled);
         assert(transactionMock.delete.calledOnce);
+      });
+    });
+
+    describe("deleteDocRecursively", () => {
+      let collectionMock: sinon.SinonStubbedInstance<firebase.firestore.CollectionReference>;
+      let collectionDocMock: sinon.SinonStubbedInstance<firebase.firestore.DocumentReference>;
+
+      beforeEach(() => {
+        firestoreMock.recursiveDelete.resolves();
+
+        collectionMock = createCollectionMock();
+        collectionMock.doc.withArgs(fakeDocId).returns(collectionDocMock as any);
+      });
+
+      it("should perform recursive deletion from an existing doc", async () => {
+        await firestoreGateway.deleteDocRecursively({ id: fakeDocId, path: fakeCollection });
+
+        assert(firestoreMock.recursiveDelete.calledOnce);
+      });
+
+      it("should reject when recursive delete throws", async () => {
+        firestoreMock.recursiveDelete.rejects();
+
+        await assert.rejects(
+          () => firestoreGateway.deleteDocRecursively({ id: fakeDocId, path: fakeCollection }),
+          FirebaseFirestoreError
+        );
+        assert(firestoreMock.recursiveDelete.calledOnce);
       });
     });
 
