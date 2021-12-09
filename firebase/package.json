@@ -11,7 +11,7 @@
     "lint:core": "eslint 'src/core/**/*.ts'",
     "lint:scripts": "eslint 'src/scripts/**/*.ts'",
     "lint:test": "eslint 'test/**/*.ts'",
-    "deploy": "firebase deploy",
+    "deploy": "firebase deploy --project memo-312313",
     "deploy:firestore": "firebase deploy --only firestore",
     "deploy:functions": "firebase deploy --only functions",
     "test": "run-p --print-label test:*",
