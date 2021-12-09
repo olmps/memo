@@ -23,7 +23,7 @@
     "functions:serve": "run-s --print-label build:functions functions:start-emulators watch",
     "functions:fetch-env": "firebase functions:config:get > .runtimeconfig.json",
     "functions:start-emulators": "firebase emulators:start --only auth,functions,firestore --inspect-functions",
-    "scripts:sync-collections": "ts-node -r tsconfig-paths/register src/scripts/sync-collections.ts"
+    "scripts:sync-collections": "ENVIRONMENT=DEV ts-node -r tsconfig-paths/register src/scripts/sync-collections.ts"
   },
   "imports": {
     "#presentation/*": ".dist/src/core/presentation/*.js",
