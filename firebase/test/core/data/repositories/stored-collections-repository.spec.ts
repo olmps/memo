@@ -45,11 +45,13 @@ describe("StoredCollectionsRepository", () => {
       assert.ok(transactionSpy.calledOnce);
     });
 
-    it("should throw when raw collections have an invalid format", () => {
-      const malformedCollection: StoredPublicCollection = <any>{ id: "id2", foo: "bar" };
-      const mockCollections = [newCollection(), malformedCollection];
+    it("should throw when raw collections have an invalid format", async () => {
+      const mockError = new SerializationError({ message: "Error Message" });
+      const mockCollections = [newCollection()];
 
-      assert.rejects(() => storedCollectionsRepo.setCollections(mockCollections), SerializationError);
+      schemaStub.validateObject.throws(mockError);
+
+      await assert.rejects(() => storedCollectionsRepo.setCollections(mockCollections), SerializationError);
     });
 
     it("should set collections using their raw representation", async () => {
@@ -104,17 +106,14 @@ describe("StoredCollectionsRepository", () => {
       assert.strictEqual(collections[1]!.id, secondRawCollection.id);
     });
 
-    it("should throw when a collection is not in the expected schema format", () => {
+    it("should throw when a collection is not in the expected schema format", async () => {
+      const mockError = new SerializationError({ message: "Error Message" });
       const firstRawCollection = newCollection({ id: "id1" });
-      const secondRawCollection = { id: "2", foo: "bar" };
 
       firestoreStub.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
-      firestoreStub.getDoc.withArgs({ id: secondRawCollection.id, path: "collections" }).resolves(secondRawCollection);
+      schemaStub.validateObject.throws(mockError);
 
-      assert.rejects(
-        () => storedCollectionsRepo.getAllCollectionsByIds([firstRawCollection.id, secondRawCollection.id]),
-        SerializationError
-      );
+      await assert.rejects(() => storedCollectionsRepo.getAllCollectionsByIds([firstRawCollection.id]), mockError);
     });
   });
 });

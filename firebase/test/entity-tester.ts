@@ -1,6 +1,6 @@
-import Ajv2020 from "ajv/dist/2020";
 import * as Joi from "joi";
-import { doesNotThrow, throws } from "assert";
+import * as assert from "assert";
+import Ajv2020 from "ajv/dist/2020";
 import { EntitiesSchema } from "#data/schemas/entities-schemas/entities-schema";
 import { SchemaValidator } from "#data/schemas/schema-validator";
 import { validate } from "#utils/validate";
@@ -67,7 +67,7 @@ abstract class EntityTester {
     it("should validate raw entity structure", () => {
       const rawEntity = this.#entityConstructor();
 
-      doesNotThrow(() => this.#validator(rawEntity));
+      assert.doesNotThrow(() => this.#validator(rawEntity));
     });
 
     it("should throw when a required property is not set", () => {
@@ -76,7 +76,7 @@ abstract class EntityTester {
 
         delete rawEntity[requiredProperty];
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
 
@@ -88,7 +88,7 @@ abstract class EntityTester {
 
         rawEntity[property] = incorrectType;
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
 
@@ -130,7 +130,7 @@ abstract class EntityTester {
 
         delete rawEntity[optionalProperty];
 
-        doesNotThrow(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.doesNotThrow(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
   }
@@ -142,7 +142,7 @@ abstract class EntityTester {
 
         rawEntity[stringProperty] = "";
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
   }
@@ -154,7 +154,7 @@ abstract class EntityTester {
 
         rawEntity[urlProperty] = "invalidUrlFormat";
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
   }
@@ -166,7 +166,7 @@ abstract class EntityTester {
 
         rawEntity[arrayProperty] = [];
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
   }
@@ -180,7 +180,7 @@ abstract class EntityTester {
 
         rawEntity[property] = repeatedItems;
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
   }
@@ -196,7 +196,7 @@ abstract class EntityTester {
 
           rawEntity[property] = value;
 
-          doesNotThrow(() => this.#validator(rawEntity));
+          assert.doesNotThrow(() => this.#validator(rawEntity));
         }
       }
     });
@@ -207,7 +207,7 @@ abstract class EntityTester {
 
         rawEntity[strictProperty] = "unexpectedType";
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
   }
@@ -221,7 +221,7 @@ abstract class EntityTester {
 
         rawEntity[property] = "a".repeat(propertyMaxLength + 1);
 
-        throws(() => this.#validator(rawEntity), this.#expectedErrorType);
+        assert.throws(() => this.#validator(rawEntity), this.#expectedErrorType);
       }
     });
   }

@@ -32,27 +32,25 @@ describe("LocalCollectionsRepository", () => {
 
   describe("getAllCollectionsByIds", () => {
     it("should return local stored collections", async () => {
-      fsGatewayStub.readFileAsString.resolves(JSON.stringify(fakeLocalCollectionJson));
-
       const localCollections = await localCollectionsRepo.getAllCollectionsByIds(["any"]);
 
       assert.deepStrictEqual(localCollections[0], <LocalPublicCollection>fakeLocalCollectionJson);
     });
 
     it("should throw when reading files from system fails", async () => {
-      const mockFsError = new FilesystemError({ message: "Error Message" });
+      const errorMock = new FilesystemError({ message: "Error Message" });
 
-      fsGatewayStub.readFileAsString.rejects(mockFsError);
+      fsGatewayStub.readFileAsString.rejects(errorMock);
 
-      assert.rejects(() => localCollectionsRepo.getAllCollectionsByIds([]), FilesystemError);
+      await assert.rejects(async () => await localCollectionsRepo.getAllCollectionsByIds(["any"]), errorMock);
     });
 
     it("should throw when collection de-serialization fails", async () => {
-      const mockSerializationError = new SerializationError({ message: "Error Message" });
+      const errorMock = new SerializationError({ message: "Error Message" });
 
-      schemaValidatorStub.validateObject.throws(mockSerializationError);
+      schemaValidatorStub.validateObject.throws(errorMock);
 
-      assert.rejects(() => localCollectionsRepo.getAllCollectionsByIds([]), SerializationError);
+      await assert.rejects(async () => await localCollectionsRepo.getAllCollectionsByIds(["any"]), errorMock);
     });
   });
 });
