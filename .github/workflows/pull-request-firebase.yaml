@@ -1,0 +1,56 @@
+# Triggers on all changes committed to Pull Requests pointing to `main` branch
+name: "[Firebase] Pull Request"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "firebase/**"
+
+env:
+  node_version: "14.x"
+  java_version: "12.x"
+
+jobs:
+  firebase-pull-request:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./firebase
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node_version }}
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.java_version }}
+
+      - name: Cache firebase emulators
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
+
+      - name: Setup Firebase project
+        run: npm run setup-ci
+
+      - name: Setup Environment
+        run: npm run functions:fetch-env -- --token ${{ secrets.FIREBASE_CLI_TOKEN }}
+
+      - name: Build Firebase project
+        run: npm run build
+
+      - name: Run Firebase project linter
+        run: npm run lint
+
+      - name: Run Firebase tests
+        run: npm run test
