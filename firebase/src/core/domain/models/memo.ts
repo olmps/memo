@@ -7,7 +7,8 @@ interface MemoContent {
     bold?: boolean;
     italic?: boolean;
     underline?: boolean;
-    codeBlock?: boolean;
+    // Quill uses `kebab-case` format for attributes
+    "code-block"?: boolean;
   };
 }
 
@@ -17,13 +18,14 @@ export interface Memo {
   readonly answer: MemoContent[];
 }
 
+const maxInsertLength = 3000;
 export const memoQuillValidationSchema = Joi.object({
-  insert: Joi.string().max(defaultMaxStringLength).required(),
+  insert: Joi.string().max(maxInsertLength).required(),
   attributes: Joi.object({
     bold: Joi.boolean(),
     italic: Joi.boolean(),
     underline: Joi.boolean(),
-    codeBlock: Joi.boolean(),
+    "code-block": Joi.boolean(),
   }).min(1),
 });
 
