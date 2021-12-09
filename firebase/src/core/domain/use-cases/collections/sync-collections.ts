@@ -9,7 +9,7 @@ import {
   validateLocalCollection,
   validateStoredCollection,
 } from "#domain/models/collection";
-import { Memo, validateMemo } from "#domain/models/memo";
+import { Memo, validateLocalMemo } from "#domain/models/memo";
 import { GitRepository } from "#data/repositories/git-repository";
 
 type CollectionMemosDiff = [Memo[], string[]];
@@ -126,7 +126,7 @@ export class SyncCollectionsUseCase {
 
     const storedMemos = await this.#memosRepo.getAllMemos(collectionId);
     for (const localMemo of localMemos) {
-      validateMemo(localMemo);
+      validateLocalMemo(localMemo);
 
       const storedMemo = storedMemos.find((storedMemo) => storedMemo.id === localMemo.id);
       if (!objectsEqual(storedMemo, localMemo)) {

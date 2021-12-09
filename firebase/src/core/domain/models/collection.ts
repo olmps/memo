@@ -1,4 +1,4 @@
-import { Memo, memoValidationSchema } from "#domain/models/memo";
+import { localMemoValidationSchema, Memo } from "#domain/models/memo";
 import { defaultMaxStringLength, validate } from "#utils/validate";
 import * as Joi from "joi";
 
@@ -75,7 +75,7 @@ export const publicCollectionSchema = Joi.object({
 });
 
 export const localCollectionSchema = publicCollectionSchema.append({
-  memos: Joi.array().items(memoValidationSchema).unique().min(1).required(),
+  memos: Joi.array().items(localMemoValidationSchema).unique().min(1).required(),
 });
 
 export const storedCollectionSchema = publicCollectionSchema.append({
