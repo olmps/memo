@@ -25,3 +25,11 @@ application's architecture.
 
 Don't forget to check out both [General ARCHITECTURE.md](../ARCHITECTURE.md) and
 [Firebase ARCHITECTURE.md](../firebase/ARCHITECTURE.md), which also impact on how the Flutter application is structured.
+
+### Platforms Minimum Supported Version
+
+Which dependencies raises our application minimal version support:
+
+Minimum supported Android `minSdkVersion` = `19`. Reasons: [`cloud_firestore: >=3.0.0`](https://github.com/FirebaseExtended/flutterfire/blob/master/packages/cloud_firestore/cloud_firestore/CHANGELOG.md#300).
+
+Minimum supported iOS version = `10`. Reasons: [`cloud_firestore: >=0.15.0`](https://github.com/FirebaseExtended/flutterfire/blob/master/packages/cloud_firestore/cloud_firestore/CHANGELOG.md#0150).
