@@ -37,6 +37,25 @@
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "stopOnEntry": false,
       "args": ["-r", "ts-node/register", "-r", "tsconfig-paths/register", "${workspaceRoot}/${relativeFile}"]
-    }
+    },
+    {
+      "name": "Debug script in window",
+      "request": "launch",
+      "type": "node",
+      "runtimeArgs": [
+        "-r",
+        "${workspaceFolder}/node_modules/ts-node/register",
+        "-r",
+        "${workspaceFolder}/node_modules/tsconfig-paths/register"
+      ],
+      "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+      "args": ["${workspaceFolder}/${relativeFile}"],
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "env": {
+        "ENVIRONMENT": "DEV",
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.json"
+      }
+    },
   ]
 }
