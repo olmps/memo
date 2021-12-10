@@ -8,7 +8,7 @@ import { MemosRepository } from "#data/repositories/memos-repository";
 import { GitRepository } from "#data/repositories/git-repository";
 import createSinonStub from "#test/sinon-stub";
 import { SyncCollectionsUseCase } from "#domain/use-cases/collections/sync-collections";
-import { newRawLocalCollection } from "#test/core/data/schemas/collections-fakes";
+import { newRawLocalCollection, newRawMemo, newRawMemoContent } from "#test/core/data/schemas/collections-fakes";
 
 describe("SyncCollectionsUseCase", () => {
   let sandbox: sinon.SinonSandbox;
@@ -196,25 +196,112 @@ describe("SyncCollectionsUseCase", () => {
 
   // Simulates memos entity modifications.
   describe("Memos Operations", () => {
-    it("should update collections with memos metadata", async () => {
-      const fakeMemoId = "memoId";
-      const fakeMemo = { id: fakeMemoId, foo: "bar" };
-      const fakeFirstAddedCollection = { id: "a", foo: "bar", memos: [fakeMemo] };
-      const fakeSecondAddedCollection = { id: "b", foo: "bar", memos: [] };
-      const fakeAddedCollections: any[] = [fakeFirstAddedCollection, fakeSecondAddedCollection];
-      const expectedAddedCollections: any[] = [
-        { ...fakeFirstAddedCollection, memosAmount: 1, memosOrder: [fakeMemoId] },
-        { ...fakeSecondAddedCollection, memosAmount: 0, memosOrder: [] },
-      ];
+    const fakeMemo = newRawMemo({ id: "a" });
+    const secondFakeMemo = newRawMemo({ id: "b" });
+    const fakeMemos = [fakeMemo, secondFakeMemo];
 
-      const fakeAddedCollectionsIds = fakeAddedCollections.map((collection) => collection.id);
-      const gitDiff = fakeAddedCollectionsIds.map((id) => `A firebase/collections/${id}.json\n`).join(" ");
-      gitRepoStub.gitDiff.resolves(gitDiff);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs(fakeAddedCollectionsIds).resolves(fakeAddedCollections);
+    it("should save memos from an added collection", async () => {
+      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo] };
+      const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 1, memosOrder: [fakeMemo.id] }];
+      const expectedAddedMemos = new Map<string, memo.Memo[]>([[fakeCollection.id, [fakeMemo]]]);
+
+      gitRepoStub.gitDiff.resolves(`A firebase/collections/${fakeCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      memosRepoStub.getAllMemos.resolves([]);
 
       await syncCollectionsUseCase.run();
+      const addedCollections = storedCollectionsRepoStub.setCollections.lastCall
+        .lastArg as collection.StoredPublicCollection[];
+      const removedMemos = memosRepoStub.removeMemosByIds.lastCall.lastArg as Map<string, string>;
+      const updatedMemos = memosRepoStub.setMemos.lastCall.lastArg as Map<string, memo.Memo[]>;
 
-      assert.ok(storedCollectionsRepoStub.setCollections.calledOnceWithExactly(expectedAddedCollections));
+      assert.deepStrictEqual(addedCollections, expectedAddedCollections);
+      assert.deepStrictEqual(removedMemos, new Map<string, string>());
+      assert.deepStrictEqual(updatedMemos, expectedAddedMemos);
+    });
+
+    it("should save new memos from an updated collection", async () => {
+      const fakeNewMemo = newRawMemo({ id: "c" });
+      const fakeCollection: any = { id: "a", foo: "bar", memos: [...fakeMemos, fakeNewMemo] };
+      const fakeMemosIds = fakeCollection.memos.map((memo: any) => memo.id);
+      const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 3, memosOrder: fakeMemosIds }];
+      const expectedAddedMemos = new Map<string, memo.Memo[]>([[fakeCollection.id, [fakeNewMemo]]]);
+
+      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      memosRepoStub.getAllMemos.resolves(fakeMemos);
+
+      await syncCollectionsUseCase.run();
+      const addedCollections = storedCollectionsRepoStub.setCollections.lastCall
+        .lastArg as collection.StoredPublicCollection[];
+      const removedMemos = memosRepoStub.removeMemosByIds.lastCall.lastArg as Map<string, string>;
+      const updatedMemos = memosRepoStub.setMemos.lastCall.lastArg as Map<string, memo.Memo[]>;
+
+      assert.deepStrictEqual(addedCollections, expectedAddedCollections);
+      assert.deepStrictEqual(removedMemos, new Map<string, string>());
+      assert.deepStrictEqual(updatedMemos, expectedAddedMemos);
+    });
+
+    it("should update modified memos from an existing collection", async () => {
+      const fakeUpdatedMemo = newRawMemo({ id: "b", question: newRawMemoContent({ insert: "updated" }) });
+      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo, fakeUpdatedMemo] };
+      const fakeMemosIds = fakeCollection.memos.map((memo: any) => memo.id);
+      const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 2, memosOrder: fakeMemosIds }];
+      const expectedAddedMemos = new Map<string, memo.Memo[]>([[fakeCollection.id, [fakeUpdatedMemo]]]);
+
+      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      memosRepoStub.getAllMemos.resolves([fakeMemo, secondFakeMemo]);
+
+      await syncCollectionsUseCase.run();
+      const addedCollections = storedCollectionsRepoStub.setCollections.lastCall
+        .lastArg as collection.StoredPublicCollection[];
+      const removedMemos = memosRepoStub.removeMemosByIds.lastCall.lastArg as Map<string, string>;
+      const updatedMemos = memosRepoStub.setMemos.lastCall.lastArg as Map<string, memo.Memo[]>;
+
+      assert.deepStrictEqual(addedCollections, expectedAddedCollections);
+      assert.deepStrictEqual(removedMemos, new Map<string, string>());
+      assert.deepStrictEqual(updatedMemos, expectedAddedMemos);
+    });
+
+    it("should remove a subset of memos from an existing collection", async () => {
+      const removedMemoId = secondFakeMemo.id;
+      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo] };
+      const fakeMemosIds = fakeCollection.memos.map((memo: any) => memo.id);
+      const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 1, memosOrder: fakeMemosIds }];
+      const expectedRemovedMemos = new Map<string, string[]>([[fakeCollection.id, [removedMemoId]]]);
+
+      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      memosRepoStub.getAllMemos.resolves([fakeMemo, secondFakeMemo]);
+
+      await syncCollectionsUseCase.run();
+      const addedCollections = storedCollectionsRepoStub.setCollections.lastCall
+        .lastArg as collection.StoredPublicCollection[];
+      const removedMemos = memosRepoStub.removeMemosByIds.lastCall.lastArg as Map<string, string>;
+      const updatedMemos = memosRepoStub.setMemos.lastCall.lastArg as Map<string, memo.Memo[]>;
+
+      assert.deepStrictEqual(addedCollections, expectedAddedCollections);
+      assert.deepStrictEqual(removedMemos, expectedRemovedMemos);
+      assert.deepStrictEqual(updatedMemos, new Map<string, memo.Memo[]>());
+    });
+
+    it("should remove all memos from a removed collection", async () => {
+      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo, secondFakeMemo] };
+
+      gitRepoStub.gitDiff.resolves(`D firebase/collections/${fakeCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([]);
+      memosRepoStub.getAllMemos.resolves([fakeMemo, secondFakeMemo]);
+
+      await syncCollectionsUseCase.run();
+      const removedCollections = storedCollectionsRepoStub.deleteCollectionsByIds.lastCall.lastArg as string[];
+
+      assert.deepStrictEqual(removedCollections, [fakeCollection.id]);
+      assert.ok(storedCollectionsRepoStub.setCollections.notCalled);
+      // removeMemosByIds shouldn't be called because the memos of a deleted collection are deleted recursively when
+      // deleteCollectionsByIds is invoked.
+      assert.ok(memosRepoStub.removeMemosByIds.notCalled);
+      assert.ok(memosRepoStub.setMemos.notCalled);
     });
   });
 });
