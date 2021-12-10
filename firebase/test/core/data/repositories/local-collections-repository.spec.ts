@@ -38,19 +38,19 @@ describe("LocalCollectionsRepository", () => {
     });
 
     it("should throw when reading files from system fails", async () => {
-      const errorMock = new FilesystemError({ message: "Error Message" });
+      const fakeError = new FilesystemError({ message: "Error Message" });
 
-      fsGatewayStub.readFileAsString.rejects(errorMock);
+      fsGatewayStub.readFileAsString.rejects(fakeError);
 
-      await assert.rejects(async () => await localCollectionsRepo.getAllCollectionsByIds(["any"]), errorMock);
+      await assert.rejects(async () => await localCollectionsRepo.getAllCollectionsByIds(["any"]), fakeError);
     });
 
     it("should throw when collection de-serialization fails", async () => {
-      const errorMock = new SerializationError({ message: "Error Message" });
+      const fakeError = new SerializationError({ message: "Error Message" });
 
-      schemaValidatorStub.validateObject.throws(errorMock);
+      schemaValidatorStub.validateObject.throws(fakeError);
 
-      await assert.rejects(async () => await localCollectionsRepo.getAllCollectionsByIds(["any"]), errorMock);
+      await assert.rejects(async () => await localCollectionsRepo.getAllCollectionsByIds(["any"]), fakeError);
     });
   });
 });
