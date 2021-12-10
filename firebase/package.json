@@ -12,8 +12,6 @@
     "lint:scripts": "eslint 'src/scripts/**/*.ts'",
     "lint:test": "eslint 'test/**/*.ts'",
     "deploy": "firebase deploy --project memo-312313",
-    "deploy:firestore": "firebase deploy --only firestore",
-    "deploy:functions": "firebase deploy --only functions",
     "test": "run-p --print-label test:*",
     "test:core": "mocha -r ts-node/register -r tsconfig-paths/register --recursive \"./test/core/**/*.spec.ts\" --timeout 10000 --exit",
     "test:collections": "mocha -r ts-node/register -r tsconfig-paths/register --recursive \"./test/collections/**/*.spec.ts\" --timeout 10000 --exit",
