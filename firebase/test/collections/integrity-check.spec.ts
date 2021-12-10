@@ -14,8 +14,6 @@ describe("Collections Integrity Check", () => {
     rawLocalCollections = localCollections.map((collection) => JSON.parse(collection));
   });
 
-  it("should have at least one collection", () => assert.ok(rawLocalCollections.length > 0));
-
   it("should maintain naming/id consistency", () => {
     for (let index = 0; index < localCollectionsPaths.length; index++) {
       const collectionId: string = rawLocalCollections[index]["id"];
