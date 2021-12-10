@@ -39,9 +39,9 @@ describe("MemosRepository", () => {
   });
 
   describe("setMemos", async () => {
-    const mockCollectionId = "collectionId1";
-    const mockMemo = newRawMemo({ id: "id1" });
-    const memosPerCollection = newMemosPerCollection(mockCollectionId, [mockMemo]);
+    const fakeCollectionId = "collectionId1";
+    const fakeMemo = newRawMemo({ id: "id1" });
+    const memosPerCollection = newMemosPerCollection(fakeCollectionId, [fakeMemo]);
 
     it("should update all memos inside a single transaction", async () => {
       await memosRepo.setMemos(memosPerCollection);
@@ -52,18 +52,18 @@ describe("MemosRepository", () => {
     });
 
     it("should throw when raw memos have an invalid format", async () => {
-      const mockError = new SerializationError({ message: "Error Message" });
-      const mockMemosPerCollection = newMemosPerCollection(mockCollectionId, [mockMemo]);
+      const fakeError = new SerializationError({ message: "Error Message" });
+      const fakeMemosPerCollection = newMemosPerCollection(fakeCollectionId, [fakeMemo]);
 
-      schemaStub.validateObject.throws(mockError);
+      schemaStub.validateObject.throws(fakeError);
 
-      await assert.rejects(() => memosRepo.setMemos(mockMemosPerCollection), mockError);
+      await assert.rejects(() => memosRepo.setMemos(fakeMemosPerCollection), fakeError);
     });
 
     it("should update a memo using its raw representation", async () => {
-      const expectedId = mockMemo.id;
-      const expectedPath = `collections/${mockCollectionId}/memos`;
-      const expectedData = <any>mockMemo;
+      const expectedId = fakeMemo.id;
+      const expectedPath = `collections/${fakeCollectionId}/memos`;
+      const expectedData = <any>fakeMemo;
 
       await memosRepo.setMemos(memosPerCollection);
       const { id, path, data } = firestoreStub.setDoc.lastCall.firstArg;
@@ -76,9 +76,9 @@ describe("MemosRepository", () => {
   });
 
   describe("removeMemosByIds", () => {
-    const mockCollectionId = "collectionId1";
-    const mockMemoId = "id1";
-    const memosIdsPerCollection = newMemosIdsPerCollection(mockCollectionId, [mockMemoId]);
+    const fakeCollectionId = "collectionId1";
+    const fakeMemoId = "id1";
+    const memosIdsPerCollection = newMemosIdsPerCollection(fakeCollectionId, [fakeMemoId]);
 
     it("should remove all memos inside a single transaction", async () => {
       await memosRepo.removeMemosByIds(memosIdsPerCollection);
@@ -88,8 +88,8 @@ describe("MemosRepository", () => {
     });
 
     it("should remove a memo by its id", async () => {
-      const expectedId = mockMemoId;
-      const expectedPath = `collections/${mockCollectionId}/memos`;
+      const expectedId = fakeMemoId;
+      const expectedPath = `collections/${fakeCollectionId}/memos`;
 
       await memosRepo.removeMemosByIds(memosIdsPerCollection);
       const { id, path } = firestoreStub.deleteDoc.lastCall.firstArg;
@@ -114,13 +114,13 @@ describe("MemosRepository", () => {
     });
 
     it("should throw when a memo is not in the expected schema format", async () => {
-      const mockMemo = newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
-      const mockError = new SerializationError({ message: "Error Message" });
+      const fakeMemo = newRawMemo({ id: "1", question: "Question 1", answer: "Answer 1" });
+      const fakeError = new SerializationError({ message: "Error Message" });
 
-      firestoreStub.getCollection.resolves([mockMemo]);
-      schemaStub.validateObject.throws(mockError);
+      firestoreStub.getCollection.resolves([fakeMemo]);
+      schemaStub.validateObject.throws(fakeError);
 
-      await assert.rejects(() => memosRepo.getAllMemos("any"), mockError);
+      await assert.rejects(() => memosRepo.getAllMemos("any"), fakeError);
     });
   });
 });

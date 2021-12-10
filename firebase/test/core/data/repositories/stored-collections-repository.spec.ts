@@ -37,30 +37,30 @@ describe("StoredCollectionsRepository", () => {
 
   describe("setCollections", () => {
     it("should set collections set inside a single transaction", async () => {
-      const mockCollection = newCollection();
+      const fakeCollection = newCollection();
 
-      await storedCollectionsRepo.setCollections([mockCollection]);
+      await storedCollectionsRepo.setCollections([fakeCollection]);
 
       assert.ok(firestoreStub.runTransaction.calledOnce);
       assert.ok(transactionSpy.calledOnce);
     });
 
     it("should throw when raw collections have an invalid format", async () => {
-      const mockError = new SerializationError({ message: "Error Message" });
-      const mockCollections = [newCollection()];
+      const fakeError = new SerializationError({ message: "Error Message" });
+      const fakeCollections = [newCollection()];
 
-      schemaStub.validateObject.throws(mockError);
+      schemaStub.validateObject.throws(fakeError);
 
-      await assert.rejects(() => storedCollectionsRepo.setCollections(mockCollections), SerializationError);
+      await assert.rejects(() => storedCollectionsRepo.setCollections(fakeCollections), SerializationError);
     });
 
     it("should set collections using their raw representation", async () => {
-      const mockCollection = newCollection();
-      const expectedId = mockCollection.id;
+      const fakeCollection = newCollection();
+      const expectedId = fakeCollection.id;
       const expectedPath = "collections";
-      const expectedData = <any>mockCollection;
+      const expectedData = <any>fakeCollection;
 
-      await storedCollectionsRepo.setCollections([mockCollection]);
+      await storedCollectionsRepo.setCollections([fakeCollection]);
       const { id, path, data } = firestoreStub.setDoc.lastCall.firstArg;
 
       assert.strictEqual(id, expectedId);
@@ -107,13 +107,13 @@ describe("StoredCollectionsRepository", () => {
     });
 
     it("should throw when a collection is not in the expected schema format", async () => {
-      const mockError = new SerializationError({ message: "Error Message" });
+      const fakeError = new SerializationError({ message: "Error Message" });
       const firstRawCollection = newCollection({ id: "id1" });
 
       firestoreStub.getDoc.withArgs({ id: firstRawCollection.id, path: "collections" }).resolves(firstRawCollection);
-      schemaStub.validateObject.throws(mockError);
+      schemaStub.validateObject.throws(fakeError);
 
-      await assert.rejects(() => storedCollectionsRepo.getAllCollectionsByIds([firstRawCollection.id]), mockError);
+      await assert.rejects(() => storedCollectionsRepo.getAllCollectionsByIds([firstRawCollection.id]), fakeError);
     });
   });
 });
