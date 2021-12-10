@@ -1,16 +1,22 @@
 import * as assert from "assert";
 import * as fs from "fs";
-import Provider from "#presentation/provider";
+import Ajv2020 from "ajv/dist/2020";
+import { SchemaValidator } from "#data/schemas/schema-validator";
 
 describe("Collections Integrity Check", () => {
   let localCollectionsPaths: string[];
   let rawLocalCollections: any[];
 
   before(async () => {
-    localCollectionsPaths = await fs.promises.readdir(`${process.cwd()}/collections`);
+    const rootDir = process.cwd();
+    console.log(process.cwd());
+    localCollectionsPaths = await fs.promises.readdir(`${rootDir}/collections`);
 
-    const fsGateway = Provider.instance.fileSystemGateway;
-    const localCollections = await fsGateway.readDirFilesAsStrings("./collections");
+    const collectionsDir = `${rootDir}/collections`;
+    const files = await fs.promises.readdir(collectionsDir);
+    const localCollections = await Promise.all(
+      files.map((file) => fs.promises.readFile(`${collectionsDir}/${file}`, "utf-8"))
+    );
     rawLocalCollections = localCollections.map((collection) => JSON.parse(collection));
   });
 
@@ -34,7 +40,7 @@ describe("Collections Integrity Check", () => {
     });
   });
 
-  it("should have unique memo ids amongst themselves", () => {
+  it("should have unique memo ids in each collection", () => {
     const memosIds: string[] = [];
     for (const collection of rawLocalCollections) {
       const memos: any[] = collection["memos"];
@@ -50,7 +56,8 @@ describe("Collections Integrity Check", () => {
   });
 
   it("should have expected JSON structure", () => {
-    const schemaValidator = Provider.instance.schemaValidator;
+    const ajv = new Ajv2020();
+    const schemaValidator = new SchemaValidator(ajv);
 
     for (const rawCollection of rawLocalCollections) {
       assert.doesNotThrow(() => schemaValidator.validateObject("local-public-collection", rawCollection));
