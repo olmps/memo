@@ -8,7 +8,13 @@ import { MemosRepository } from "#data/repositories/memos-repository";
 import { GitRepository } from "#data/repositories/git-repository";
 import createSinonStub from "#test/sinon-stub";
 import { SyncCollectionsUseCase } from "#domain/use-cases/collections/sync-collections";
-import { newRawLocalCollection, newRawMemo, newRawMemoContent } from "#test/core/data/schemas/collections-fakes";
+import {
+  newRawLocalCollection,
+  newRawMemo,
+  newRawMemoContent,
+  newRawPublicCollection,
+  newRawStoredCollection,
+} from "#test/core/data/schemas/collections-fakes";
 
 describe("SyncCollectionsUseCase", () => {
   let sandbox: sinon.SinonSandbox;
@@ -167,51 +173,64 @@ describe("SyncCollectionsUseCase", () => {
 
   // Simulates collections operations (additions, removals, updates and renames).
   describe("Collections Operations", () => {
+    const firstFakeCollection = newRawPublicCollection({ id: "a" });
+    const secondFakeCollection = newRawPublicCollection({ id: "b" });
+    const fakeLocalCollections = [
+      { ...firstFakeCollection, memos: [] },
+      { ...secondFakeCollection, memos: [] },
+    ];
+    const fakeLocalCollectionsIds = fakeLocalCollections.map((collection) => collection.id);
+
     it("should save all added collections", async () => {
-      const fakeCollections: any[] = [
-        { id: "a", foo: "bar", memos: [], memosAmount: 0, memosOrder: [] },
-        { id: "b", foo: "bar", memos: [], memosAmount: 0, memosOrder: [] },
+      const gitDiff = fakeLocalCollectionsIds.map((id) => `A firebase/collections/${id}.json\n`).join(" ");
+      const expectedUpdatedCollections = [
+        { ...firstFakeCollection, memosAmount: 0, memosOrder: [] },
+        { ...secondFakeCollection, memosAmount: 0, memosOrder: [] },
       ];
-      const fakeCollectionsIds = fakeCollections.map((collection) => collection.id);
-      const gitDiff = fakeCollectionsIds.map((id) => `A firebase/collections/${id}.json\n`).join(" ");
+
       gitRepoStub.gitDiff.resolves(gitDiff);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs(fakeCollectionsIds).resolves(fakeCollections);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs(fakeLocalCollectionsIds).resolves(fakeLocalCollections);
 
       await syncCollectionsUseCase.run();
+      const updatedCollections = storedCollectionsRepoStub.setCollections.lastCall
+        .lastArg as collection.StoredPublicCollection[];
 
-      assert.ok(storedCollectionsRepoStub.setCollections.calledOnceWithExactly(fakeCollections));
+      assert.deepStrictEqual(updatedCollections, expectedUpdatedCollections);
     });
 
     it("should save all updated collections", async () => {
-      const fakeCollections: any[] = [
-        { id: "a", foo: "bar", memos: [], memosAmount: 0, memosOrder: [] },
-        { id: "b", foo: "bar", memos: [], memosAmount: 0, memosOrder: [] },
+      const gitDiff = fakeLocalCollectionsIds.map((id) => `M firebase/collections/${id}.json\n`).join(" ");
+      const expectedUpdatedCollections = [
+        { ...newRawStoredCollection({ id: "a", memosAmount: 0, memosOrder: [] }) },
+        { ...newRawStoredCollection({ id: "b", memosAmount: 0, memosOrder: [] }) },
       ];
-      const fakeCollectionsIds = fakeCollections.map((collection) => collection.id);
-      const gitDiff = fakeCollectionsIds.map((id) => `M firebase/collections/${id}.json\n`).join(" ");
+
       gitRepoStub.gitDiff.resolves(gitDiff);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs(fakeCollectionsIds).resolves(fakeCollections);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs(fakeLocalCollectionsIds).resolves(fakeLocalCollections);
 
       await syncCollectionsUseCase.run();
+      const updatedCollections = storedCollectionsRepoStub.setCollections.lastCall
+        .lastArg as collection.StoredPublicCollection[];
 
-      assert.ok(storedCollectionsRepoStub.setCollections.calledOnceWithExactly(fakeCollections));
+      assert.deepStrictEqual(updatedCollections, expectedUpdatedCollections);
     });
 
     it("should remove all deleted collections", async () => {
-      const fakeCollectionsIds = ["a", "b"];
-      const gitDiff = fakeCollectionsIds.map((id) => `D firebase/collections/${id}.json\n`).join(" ");
+      const gitDiff = fakeLocalCollectionsIds.map((id) => `D firebase/collections/${id}.json\n`).join(" ");
       gitRepoStub.gitDiff.resolves(gitDiff);
 
       await syncCollectionsUseCase.run();
+      const removedCollectionsIds = storedCollectionsRepoStub.deleteCollectionsByIds.lastCall.lastArg as string[];
 
-      assert.ok(storedCollectionsRepoStub.deleteCollectionsByIds.calledOnceWithExactly(fakeCollectionsIds));
+      assert.deepStrictEqual(removedCollectionsIds, fakeLocalCollectionsIds);
     });
 
     it("should remove previous name and add new name collections", async () => {
       const fakeAddedCollectionId = "b";
       const fakeRemovedCollectionId = "a";
-      const fakeAddedCollections: any[] = [
-        { id: fakeAddedCollectionId, foo: "bar", memos: [], memosAmount: 0, memosOrder: [] },
+      const fakeAddedCollections: any[] = [newRawLocalCollection({ id: fakeAddedCollectionId, memos: [] })];
+      const expectedUpdatedCollections = [
+        newRawStoredCollection({ id: fakeAddedCollectionId, memosAmount: 0, memosOrder: [] }),
       ];
 
       gitRepoStub.gitDiff.resolves(
@@ -220,9 +239,12 @@ describe("SyncCollectionsUseCase", () => {
       localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeAddedCollectionId]).resolves(fakeAddedCollections);
 
       await syncCollectionsUseCase.run();
+      const updatedCollections = storedCollectionsRepoStub.setCollections.lastCall
+        .lastArg as collection.StoredPublicCollection[];
+      const removedCollectionsIds = storedCollectionsRepoStub.deleteCollectionsByIds.lastCall.lastArg as string[];
 
-      assert.ok(storedCollectionsRepoStub.setCollections.calledOnceWithExactly(fakeAddedCollections));
-      assert.ok(storedCollectionsRepoStub.deleteCollectionsByIds.calledOnceWithExactly([fakeRemovedCollectionId]));
+      assert.deepStrictEqual(removedCollectionsIds, [fakeRemovedCollectionId]);
+      assert.deepStrictEqual(updatedCollections, expectedUpdatedCollections);
     });
   });
 
@@ -231,14 +253,17 @@ describe("SyncCollectionsUseCase", () => {
     const fakeMemo = newRawMemo({ id: "a" });
     const secondFakeMemo = newRawMemo({ id: "b" });
     const fakeMemos = [fakeMemo, secondFakeMemo];
+    const fakeCollection: any = newRawPublicCollection({ id: "a" });
 
     it("should save memos from an added collection", async () => {
-      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo] };
+      const fakeLocalCollection = { ...fakeCollection, memos: [fakeMemo] };
       const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 1, memosOrder: [fakeMemo.id] }];
       const expectedAddedMemos = new Map<string, memo.Memo[]>([[fakeCollection.id, [fakeMemo]]]);
 
-      gitRepoStub.gitDiff.resolves(`A firebase/collections/${fakeCollection.id}.json\n`);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      gitRepoStub.gitDiff.resolves(`A firebase/collections/${fakeLocalCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds
+        .withArgs([fakeLocalCollection.id])
+        .resolves([fakeLocalCollection]);
       memosRepoStub.getAllMemos.resolves([]);
 
       await syncCollectionsUseCase.run();
@@ -254,13 +279,15 @@ describe("SyncCollectionsUseCase", () => {
 
     it("should save new memos from an updated collection", async () => {
       const fakeNewMemo = newRawMemo({ id: "c" });
-      const fakeCollection: any = { id: "a", foo: "bar", memos: [...fakeMemos, fakeNewMemo] };
-      const fakeMemosIds = fakeCollection.memos.map((memo: any) => memo.id);
+      const fakeLocalCollection: any = { ...fakeCollection, memos: [...fakeMemos, fakeNewMemo] };
+      const fakeMemosIds = fakeLocalCollection.memos.map((memo: any) => memo.id);
       const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 3, memosOrder: fakeMemosIds }];
       const expectedAddedMemos = new Map<string, memo.Memo[]>([[fakeCollection.id, [fakeNewMemo]]]);
 
-      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeCollection.id}.json\n`);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeLocalCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds
+        .withArgs([fakeLocalCollection.id])
+        .resolves([fakeLocalCollection]);
       memosRepoStub.getAllMemos.resolves(fakeMemos);
 
       await syncCollectionsUseCase.run();
@@ -276,13 +303,15 @@ describe("SyncCollectionsUseCase", () => {
 
     it("should update modified memos from an existing collection", async () => {
       const fakeUpdatedMemo = newRawMemo({ id: "b", question: newRawMemoContent({ insert: "updated" }) });
-      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo, fakeUpdatedMemo] };
-      const fakeMemosIds = fakeCollection.memos.map((memo: any) => memo.id);
+      const fakeLocalCollection: any = { ...fakeCollection, memos: [fakeMemo, fakeUpdatedMemo] };
+      const fakeMemosIds = fakeLocalCollection.memos.map((memo: any) => memo.id);
       const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 2, memosOrder: fakeMemosIds }];
       const expectedAddedMemos = new Map<string, memo.Memo[]>([[fakeCollection.id, [fakeUpdatedMemo]]]);
 
-      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeCollection.id}.json\n`);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeLocalCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds
+        .withArgs([fakeLocalCollection.id])
+        .resolves([fakeLocalCollection]);
       memosRepoStub.getAllMemos.resolves([fakeMemo, secondFakeMemo]);
 
       await syncCollectionsUseCase.run();
@@ -298,13 +327,15 @@ describe("SyncCollectionsUseCase", () => {
 
     it("should remove a subset of memos from an existing collection", async () => {
       const removedMemoId = secondFakeMemo.id;
-      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo] };
-      const fakeMemosIds = fakeCollection.memos.map((memo: any) => memo.id);
+      const fakeLocalCollection: any = { ...fakeCollection, memos: [fakeMemo] };
+      const fakeMemosIds = fakeLocalCollection.memos.map((memo: any) => memo.id);
       const expectedAddedCollections: any[] = [{ ...fakeCollection, memosAmount: 1, memosOrder: fakeMemosIds }];
       const expectedRemovedMemos = new Map<string, string[]>([[fakeCollection.id, [removedMemoId]]]);
 
-      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeCollection.id}.json\n`);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([fakeCollection]);
+      gitRepoStub.gitDiff.resolves(`M firebase/collections/${fakeLocalCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds
+        .withArgs([fakeLocalCollection.id])
+        .resolves([fakeLocalCollection]);
       memosRepoStub.getAllMemos.resolves([fakeMemo, secondFakeMemo]);
 
       await syncCollectionsUseCase.run();
@@ -319,10 +350,10 @@ describe("SyncCollectionsUseCase", () => {
     });
 
     it("should remove all memos from a removed collection", async () => {
-      const fakeCollection: any = { id: "a", foo: "bar", memos: [fakeMemo, secondFakeMemo] };
+      const fakeLocalCollection: any = { ...fakeCollection, memos: [fakeMemo, secondFakeMemo] };
 
-      gitRepoStub.gitDiff.resolves(`D firebase/collections/${fakeCollection.id}.json\n`);
-      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeCollection.id]).resolves([]);
+      gitRepoStub.gitDiff.resolves(`D firebase/collections/${fakeLocalCollection.id}.json\n`);
+      localCollectionsRepoStub.getAllCollectionsByIds.withArgs([fakeLocalCollection.id]).resolves([]);
       memosRepoStub.getAllMemos.resolves([fakeMemo, secondFakeMemo]);
 
       await syncCollectionsUseCase.run();

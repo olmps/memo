@@ -48,10 +48,10 @@ export function newRawLocalCollection(props?: { id?: string; memos?: any[] }): a
   };
 }
 
-export function newRawStoredCollection(): any {
+export function newRawStoredCollection(props?: { id?: string; memosAmount?: number; memosOrder?: string[] }): any {
   return {
-    ...newRawPublicCollection(),
-    memosAmount: 3,
-    memosOrder: ["id1", "id2", "id3"],
+    ...newRawPublicCollection({ id: props?.id }),
+    memosAmount: props?.memosAmount ?? 3,
+    memosOrder: props?.memosOrder ?? ["id1", "id2", "id3"],
   };
 }
