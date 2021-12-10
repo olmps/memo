@@ -68,68 +68,100 @@ describe("SyncCollectionsUseCase", () => {
 
   // Simulates all possible failures during collections sync that must make the whole use-case fail.
   describe("Failures - ", () => {
-    it("should fail when GitRepository.lastCommitHash rejects", async () => {
-      const mockError = Error("lastCommitHashMockedErrorMessage");
+    it("should fail when failing to retrieve last commit hash", async () => {
+      const fakeError = Error("lastCommitHashMockedErrorMessage");
 
-      gitRepoStub.lastCommitHash.rejects(mockError);
+      gitRepoStub.lastCommitHash.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
 
-    it("should fail when GitRepository.lastMergeCommitHash rejects", async () => {
-      const mockError = Error("lastMergeCommitHashMockedErrorMessage");
+    it("should fail when failing to retrieve last merge commit hash", async () => {
+      const fakeError = Error("lastMergeCommitHashMockedErrorMessage");
 
-      gitRepoStub.lastMergeCommitHash.rejects(mockError);
+      gitRepoStub.lastMergeCommitHash.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
 
-    it("should fail when GitRepository.gitDiff rejects", async () => {
-      const mockError = Error("gitDiffMockedErrorMessage");
+    it("should fail when failing to retrieve git diff between two commits", async () => {
+      const fakeError = Error("gitDiffMockedErrorMessage");
 
-      gitRepoStub.gitDiff.rejects(mockError);
+      gitRepoStub.gitDiff.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
 
-    it("should fail when LocalCollectionsRepository.getAllCollectionsByIds rejects", async () => {
-      const mockError = Error("getAllCollectionsByIdsMockedErrorMessage");
+    it("should fail when failing to retrieve a set of collections by their ids", async () => {
+      const fakeError = Error("getAllCollectionsByIdsMockedErrorMessage");
 
-      localCollectionsRepoStub.getAllCollectionsByIds.rejects(mockError);
+      localCollectionsRepoStub.getAllCollectionsByIds.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
 
-    it("should fail when StoredCollectionsRepository.deleteCollectionsByIds rejects", async () => {
-      const mockError = Error("deleteCollectionsByIdsMockedErrorMessage");
+    it("should fail when failing to delete a set of collections by their ids", async () => {
+      const fakeError = Error("deleteCollectionsByIdsMockedErrorMessage");
 
-      storedCollectionsRepoStub.deleteCollectionsByIds.rejects(mockError);
+      storedCollectionsRepoStub.deleteCollectionsByIds.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
 
-    it("should fail when validateLocalCollection rejects", async () => {
-      const mockError = Error("validateLocalCollectionMockedErrorMessage");
+    it("should fail when failing to update a set of collections", async () => {
+      const fakeError = Error("setCollectionsMockedErrorMessage");
 
-      validateLocalCollectionStub.throws(mockError);
+      storedCollectionsRepoStub.setCollections.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
 
-    it("should fail when validateStoredCollection rejects", async () => {
-      const mockError = Error("validateStoredCollectionMockedErrorMessage");
+    it("should fail when failing to retrieve all memos from a given collection", async () => {
+      const fakeError = Error("getAllMemosMockedErrorMessage");
 
-      validateStoredCollectionStub.throws(mockError);
+      memosRepoStub.getAllMemos.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
 
-    it("should fail when validateMemo rejects", async () => {
-      const mockError = Error("validateMemoMockedErrorMessage");
+    it("should fail when failing to update a set of memos", async () => {
+      const fakeError = Error("setMemosMockedErrorMessage");
 
-      validateMemoStub.throws(mockError);
+      memosRepoStub.setMemos.rejects(fakeError);
 
-      await assert.rejects(async () => await syncCollectionsUseCase.run(), mockError);
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
+    });
+
+    it("should fail when failing to delete a set of memos", async () => {
+      const fakeError = Error("removeMemosByIdsMockedErrorMessage");
+
+      memosRepoStub.removeMemosByIds.rejects(fakeError);
+
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
+    });
+
+    it("should fail when failing to validate local collection entity", async () => {
+      const fakeError = Error("validateLocalCollectionMockedErrorMessage");
+
+      validateLocalCollectionStub.throws(fakeError);
+
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
+    });
+
+    it("should fail when to validate stored collection entity", async () => {
+      const fakeError = Error("validateStoredCollectionMockedErrorMessage");
+
+      validateStoredCollectionStub.throws(fakeError);
+
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
+    });
+
+    it("should fail when to validate memo entity", async () => {
+      const fakeError = Error("validateMemoMockedErrorMessage");
+
+      validateMemoStub.throws(fakeError);
+
+      await assert.rejects(async () => await syncCollectionsUseCase.run(), fakeError);
     });
   });
 
