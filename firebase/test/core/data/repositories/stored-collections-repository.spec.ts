@@ -17,8 +17,12 @@ describe("StoredCollectionsRepository", () => {
   before(() => {
     sandbox = sinon.createSandbox();
 
-    const firestoreStubInstance = (firestoreStub = createSinonStub(FirestoreGateway, sandbox));
-    const schemaStubInstance = (schemaStub = createSinonStub(SchemaValidator, sandbox));
+    const firestoreStubInstance = createSinonStub(FirestoreGateway, sandbox);
+    firestoreStub = firestoreStubInstance;
+
+    const schemaStubInstance = createSinonStub(SchemaValidator, sandbox);
+    schemaStub = schemaStubInstance;
+
     storedCollectionsRepo = new StoredCollectionsRepository(firestoreStubInstance, schemaStubInstance);
   });
 

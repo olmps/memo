@@ -17,8 +17,11 @@ describe("LocalCollectionsRepository", () => {
   before(() => {
     sandbox = sinon.createSandbox();
 
-    const fsStub = (fsGatewayStub = createSinonStub(FileSystemGateway, sandbox));
-    const schemaStub = (schemaValidatorStub = createSinonStub(SchemaValidator, sandbox));
+    const fsStub = createSinonStub(FileSystemGateway, sandbox);
+    fsGatewayStub = fsStub;
+
+    const schemaStub = createSinonStub(SchemaValidator, sandbox);
+    schemaValidatorStub = schemaStub;
 
     localCollectionsRepo = new LocalCollectionsRepository(fsStub, schemaStub, "any");
   });
