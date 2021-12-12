@@ -36,6 +36,10 @@ jobs:
       - name: Install Dependencies
         run: npm run setup-ci
 
+      # Verify collections integrity
+      - name: Verify Collections Integrity
+        run: npm run test:collections
+
       # Run script that sync the collections.
       - name: Run sync-collections
         run: npm run scripts:sync-collections
