@@ -2,7 +2,7 @@ import * as assert from "assert";
 import ValidationError from "#faults/errors/validation-error";
 import { memoQuillValidationSchema, memoValidationSchema } from "#domain/models/memo";
 import { defaultMaxStringLength, validate } from "#utils/validate";
-import { ModelTester, ValidationProperties } from "#testentity-tester";
+import { ModelTester, ValidationProperties } from "#test/entity-tester";
 import { newRawMemo, newRawMemoContent } from "#test/core/data/schemas/collections-fakes";
 
 describe("Memo Content Validation", () => {
