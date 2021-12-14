@@ -26,14 +26,15 @@
     "scripts:sync-collections": "ts-node -r tsconfig-paths/register src/scripts/sync-collections.ts"
   },
   "imports": {
-    "#presentation/*": ".dist/src/core/presentation/*.js",
-    "#data/*": ".dist/src/core/data/*.js",
-    "#domain/*": ".dist/src/core/domain/*.js",
-    "#faults/*": ".dist/src/core/faults/*.js",
-    "#utils/*": ".dist/src/core/utils/*.js"
+    "#presentation/*": "./dist/core/presentation/*.js",
+    "#data/*": "./dist/core/data/*.js",
+    "#domain/*": "./dist/core/domain/*.js",
+    "#faults/*": "./dist/core/faults/*.js",
+    "#utils/*": "./dist/core/utils/*.js"
   },
   "dependencies": {
-    "ajv": "^8.6.x",
+    "ajv": "^8.8.x",
+    "ajv-formats": "^2.1.x",
     "firebase-admin": "^9.12.x",
     "firebase-functions": "^3.16.x",
     "joi": "^17.4.x"
@@ -46,8 +47,6 @@
     "@types/sinon": "^10.0.x",
     "@typescript-eslint/eslint-plugin": "^4.32.x",
     "@typescript-eslint/parser": "^4.32.x",
-    "ajv": "^8.8.x",
-    "ajv-formats": "^2.1.x",
     "eslint": "^7.32.x",
     "eslint-config-prettier": "^8.3.x",
     "eslint-plugin-prettier": "^4.0.x",
