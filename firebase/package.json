@@ -21,7 +21,7 @@
     "build": "run-p --print-label build:*",
     "build:functions": "tsc -p tsconfig.functions.json",
     "functions:serve": "run-s --print-label build:functions functions:start-emulators watch",
-    "functions:fetch-env": "firebase functions:config:get > .runtimeconfig.json",
+    "functions:fetch-env": "firebase functions:config:get > .runtimeconfig.json --project memo-312313",
     "functions:start-emulators": "firebase emulators:start --only auth,functions,firestore --inspect-functions",
     "scripts:sync-collections": "ts-node -r tsconfig-paths/register src/scripts/sync-collections.ts"
   },

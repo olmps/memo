@@ -9,13 +9,14 @@ on:
 
 env:
   node_version: "14.x"
+  java_version: "12.x"
 
 jobs:
   update-collections:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./firebase
+        working-directory: firebase/
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -24,7 +25,6 @@ jobs:
           ref: "main"
           token: ${{ secrets.ADMIN_TOKEN }}
 
-      # Setup Node.js with version `env.node_version`.
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
@@ -32,7 +32,11 @@ jobs:
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
 
-      # Install project dependencies.
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.java_version }}
+
       - name: Install Dependencies
         run: npm i
 
@@ -40,6 +44,8 @@ jobs:
       - name: Verify Collections Integrity
         run: npm run test:collections
 
-      # Run script that sync the collections.
+      - name: Setup Environment
+        run: npm run functions:fetch-env -- --token ${{ secrets.FIREBASE_CLI_TOKEN }}
+
       - name: Run sync-collections
         run: npm run scripts:sync-collections
