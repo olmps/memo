@@ -20,7 +20,10 @@ export class EnvGateway {
 
   /** Returns `true` if running in local environment, i.e, under Firebase Emulators. */
   get isLocalDevelopment(): boolean {
-    return process.env["FUNCTIONS_EMULATOR"] === "true";
+    const isProduction = process.env["NODE_ENV"] === "production";
+    const isCi = process.env["CI"] === "true";
+
+    return !isProduction && !isCi;
   }
 
   get firebaseServiceAccount(): FirebaseServiceAccountMetadata {
