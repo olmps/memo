@@ -9,7 +9,6 @@ on:
 
 env:
   node_version: "14.x"
-  java_version: "12.x"
 
 jobs:
   update-collections:
@@ -31,11 +30,6 @@ jobs:
           node-version: ${{ env.node_version }}
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
-
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ env.java_version }}
 
       - name: Install Dependencies
         run: npm i
