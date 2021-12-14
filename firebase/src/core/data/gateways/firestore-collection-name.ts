@@ -12,6 +12,7 @@ type PublicCollectionsPaths = "collections" | `collections/${Id}/memos`;
 
 /** User-related collection paths, which are available to the respective authenticated users. */
 type UsersPaths =
+  | `users`
   | `users/${Id}/collections`
   | `users/${Id}/collections/${Id}/memos`
   | `users/${Id}/collection_categories`

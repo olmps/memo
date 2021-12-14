@@ -1,7 +1,7 @@
 import { defaultMaxStringLength, validate } from "#utils/validate";
 import * as Joi from "joi";
 
-interface MemoContent {
+export interface MemoContent {
   insert: string;
   attributes?: {
     bold?: boolean;
