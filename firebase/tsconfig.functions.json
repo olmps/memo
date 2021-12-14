@@ -4,6 +4,6 @@
     "noEmit": false,
     "outDir": "./dist",
   },
-  "include": ["functions/"],
+  "include": ["src/functions", "src/core"],
   "exclude": ["dist/**/*"]
 }
