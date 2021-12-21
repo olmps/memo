@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:memo/domain/enums/memo_difficulty.dart';
+import 'package:memo/domain/enums/resource_type.dart';
 import 'package:memo/domain/models/memo_execution.dart';
 import 'package:meta/meta.dart';
 
@@ -7,91 +7,68 @@ import 'package:meta/meta.dart';
 ///
 /// Through [MemoExecutionsMetadata], this class also includes properties that describes its executed `Memo`s.
 @immutable
-class Collection extends MemoExecutionsMetadata with EquatableMixin implements CollectionMetadata {
+class Collection with EquatableMixin {
   Collection({
     required this.id,
     required this.name,
-    required this.description,
-    required this.category,
-    required this.tags,
-    required this.uniqueMemosAmount,
-    required this.contributors,
-    this.uniqueMemoExecutionsAmount = 0,
-    Map<MemoDifficulty, int> executionsAmounts = const {},
-    int timeSpentInMillis = 0,
-  })  : assert(uniqueMemosAmount > 0, 'must be a positive integer'),
-        assert(uniqueMemoExecutionsAmount >= 0, 'must be a positive (or zero) integer'),
-        assert(timeSpentInMillis >= 0, 'must be a positive (or zero) integer'),
-        assert(
-          uniqueMemosAmount >= uniqueMemoExecutionsAmount,
-          'executions should never exceed the unique total amount',
-        ),
-        assert(contributors.isNotEmpty, 'must have at least one contributor'),
-        super(timeSpentInMillis, executionsAmounts);
+    required this.memosAmount,
+    required this.memosOrder,
+    this.category,
+    this.description,
+    this.locale,
+    this.tags,
+    this.contributors,
+    this.resources,
+  });
 
-  @override
   final String id;
-
-  @override
   final String name;
 
-  @override
-  final String description;
+  final int memosAmount;
+  final List<String> memosOrder;
 
-  @override
-  final String category;
+  final String? locale;
+  final String? description;
+  final String? category;
 
-  @override
-  final List<String> tags;
-
-  @override
-  final List<Contributor> contributors;
-
-  @override
-  final int uniqueMemosAmount;
-
-  @override
-  final int uniqueMemoExecutionsAmount;
-
-  /// `true` if this [Collection] has never executed any `Memo`.
-  bool get isPristine => uniqueMemoExecutionsAmount == 0;
-
-  /// `true` if this [Collection] has executed (at least once) all of its `Memo`s.
-  bool get isCompleted => uniqueMemoExecutionsAmount == uniqueMemosAmount;
+  final List<String>? tags;
+  final List<Contributor>? contributors;
+  final List<Resource>? resources;
 
   @override
   List<Object?> get props => [
         id,
         name,
+        memosAmount,
+        memosOrder,
+        locale,
         description,
         category,
         tags,
         contributors,
-        uniqueMemoExecutionsAmount,
-        uniqueMemosAmount,
-        ...super.props,
+        resources,
       ];
 }
 
 /// Metadata for a collection.
-abstract class CollectionMetadata {
-  String get id;
-  String get name;
-  String get description;
-  String get category;
+// abstract class CollectionMetadata {
+//   String get id;
+//   String get name;
+//   String get description;
+//   String get category;
 
-  /// Abstract tags that are used to group and identify this collection.
-  List<String> get tags;
+//   /// Abstract tags that are used to group and identify this collection.
+//   List<String> get tags;
 
-  /// Contributors (or owners) that have created (or made changes) to this collection.
-  List<Contributor> get contributors;
+//   /// Contributors (or owners) that have created (or made changes) to this collection.
+//   List<Contributor> get contributors;
 
-  /// Total amount of unique `Memo`s associated with this collection.
-  int get uniqueMemosAmount;
+//   /// Total amount of unique `Memo`s associated with this collection.
+//   int get uniqueMemosAmount;
 
-  /// Total amount of unique `Memo`s associated with this collection that have been executed at least once.
-  int get uniqueMemoExecutionsAmount;
-}
+//   /// Total amount of unique `Memo`s associated with this collection that have been executed at least once.
+//   int get uniqueMemoExecutionsAmount;
+// }
 
 /// A collection contributor.
 @immutable
@@ -109,4 +86,24 @@ class Contributor extends Equatable {
 
   @override
   List<Object?> get props => [name, imageUrl, url];
+}
+
+/// Enhances the usage of a single [url] with associated properties, like [description] and [type].
+@immutable
+class Resource extends Equatable {
+  const Resource({required this.id, required this.description, required this.type, required this.url});
+
+  final String id;
+
+  /// Human-readable description for this description.
+  final String description;
+
+  /// Describes which type of [url] this resource refers to.
+  final ResourceType type;
+
+  /// URL that links to this particular [Resource].
+  final String url;
+
+  @override
+  List<Object?> get props => [id, description, type, url];
 }
