@@ -1,57 +1,26 @@
-import 'package:memo/data/serializers/memo_difficulty_parser.dart';
-import 'package:memo/data/serializers/memo_execution_serializer.dart';
 import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/memo.dart';
 
 class MemoKeys {
-  static const collectionId = 'collectionId';
-  static const uniqueId = 'uniqueId';
-  static const rawQuestion = 'question';
-  static const rawAnswer = 'answer';
-  static const executionsAmounts = 'executionsAmounts';
-  static const lastExecution = 'lastExecution';
-  static const timeSpentInMillis = 'timeSpentInMillis';
+  static const id = 'id';
+  static const question = 'question';
+  static const answer = 'answer';
 }
 
 class MemoSerializer implements Serializer<Memo, Map<String, dynamic>> {
-  final executionSerializer = MemoExecutionSerializer();
-
   @override
   Memo from(Map<String, dynamic> json) {
-    final collectionId = json[MemoKeys.collectionId] as String;
-    final uniqueId = json[MemoKeys.uniqueId] as String;
+    final id = json[MemoKeys.id] as String;
+    final question = List<Map<String, dynamic>>.from(json[MemoKeys.question] as List);
+    final answer = List<Map<String, dynamic>>.from(json[MemoKeys.answer] as List);
 
-    final rawQuestion = List<Map<String, dynamic>>.from(json[MemoExecutionKeys.rawQuestion] as List);
-    final rawAnswer = List<Map<String, dynamic>>.from(json[MemoExecutionKeys.rawAnswer] as List);
-
-    final rawExecutionsAmounts = json[MemoKeys.executionsAmounts] as Map<String, dynamic>?;
-    final executionsAmounts =
-        rawExecutionsAmounts?.map((key, dynamic value) => MapEntry(memoDifficultyFromRaw(key), value as int));
-
-    final timeSpentInMillis = json[MemoKeys.timeSpentInMillis] as int?;
-
-    final rawLastExecution = json[MemoKeys.lastExecution] as Map<String, dynamic>?;
-    final lastExecution = rawLastExecution == null ? null : executionSerializer.from(rawLastExecution);
-
-    return Memo(
-      collectionId: collectionId,
-      uniqueId: uniqueId,
-      rawQuestion: rawQuestion,
-      rawAnswer: rawAnswer,
-      executionsAmounts: executionsAmounts ?? {},
-      timeSpentInMillis: timeSpentInMillis ?? 0,
-      lastExecution: lastExecution,
-    );
+    return Memo(id: id, question: question, answer: answer);
   }
 
   @override
-  Map<String, dynamic> to(Memo memo) => <String, dynamic>{
-        MemoKeys.collectionId: memo.collectionId,
-        MemoKeys.uniqueId: memo.uniqueId,
-        MemoKeys.rawQuestion: memo.rawQuestion,
-        MemoKeys.rawAnswer: memo.rawAnswer,
-        MemoKeys.executionsAmounts: memo.executionsAmounts.map((key, value) => MapEntry(key.raw, value)),
-        MemoKeys.timeSpentInMillis: memo.timeSpentInMillis,
-        if (memo.lastExecution != null) MemoKeys.lastExecution: executionSerializer.to(memo.lastExecution!),
+  Map<String, dynamic> to(Memo execution) => <String, dynamic>{
+        MemoKeys.id: execution.id,
+        MemoKeys.question: execution.question,
+        MemoKeys.answer: execution.answer,
       };
 }
