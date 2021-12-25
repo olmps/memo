@@ -16,12 +16,12 @@
       "uniqueId": "03c9a8d5-9e27-4ec2-8a3c-7bf20431b823",
       "question": [
         {
-          "insert": "Os cenários no desenvolvimento orientado a comportamente (BDD) segue o fomato DADO-QUANDO-ENTÃO, popularlmente conhecido como ___.\n"
+          "insert": "Os cenários no desenvolvimento orientado a comportamento (BDD) segue o fomato DADO-QUANDO-ENTÃO, popularlmente conhecido como ___.\n"
         }
       ],
       "answer": [
         {
-          "insert": "Os cenários no desenvolvimento orientado a comportamente (BDD) segue o fomato DADO-QUANDO-ENTÃO, popularlmente conhecido como "
+          "insert": "Os cenários no desenvolvimento orientado a comportamento (BDD) segue o fomato DADO-QUANDO-ENTÃO, popularlmente conhecido como "
         },
         {
           "insert": "Gherkin",
@@ -95,12 +95,12 @@
       "uniqueId": "1c1bd79b-476a-4e97-aea5-40da115313ee",
       "question": [
         {
-          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se ___ que especifiquem as interação e/ou interferência dos usuários.\n"
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamento (BDD), existe a necessidade de estabelecerem-se ___ que especifiquem as interação e/ou interferência dos usuários.\n"
         }
       ],
       "answer": [
         {
-          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se "
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamento (BDD), existe a necessidade de estabelecerem-se "
         },
         {
           "insert": "ações",
@@ -233,12 +233,12 @@
       "uniqueId": "7bdf94ad-0942-40fd-ba07-9c1bbdc2b6b7",
       "question": [
         {
-          "insert": "Assim como o desenvolvimento orientado a testes (TDD), uma das garantias do desenvolvimento orientado a comportamente (BDD) é  ____, visto que os testes que não apresentavam falhas irão falhar.\n"
+          "insert": "Assim como o desenvolvimento orientado a testes (TDD), uma das garantias do desenvolvimento orientado a comportamento (BDD) é  ____, visto que os testes que não apresentavam falhas irão falhar.\n"
         }
       ],
       "answer": [
         {
-          "insert": "Assim como o desenvolvimento orientado a testes (TDD), uma das garantias do desenvolvimento orientado a comportamente (BDD) é "
+          "insert": "Assim como o desenvolvimento orientado a testes (TDD), uma das garantias do desenvolvimento orientado a comportamento (BDD) é "
         },
         {
           "insert": "detecção de problemas no código assim que acontecem",
@@ -302,12 +302,12 @@
       "uniqueId": "ac0451d6-aea7-49c9-a74f-2c2610c063c3",
       "question": [
         {
-          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se ____ que especifiquem o estado final do sistema posteriomente a execução das ações.\n"
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamento (BDD), existe a necessidade de estabelecerem-se ____ que especifiquem o estado final do sistema posteriomente a execução das ações.\n"
         }
       ],
       "answer": [
         {
-          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se "
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamento (BDD), existe a necessidade de estabelecerem-se "
         },
         {
           "insert": "resultados",
@@ -348,12 +348,12 @@
       "uniqueId": "c69f1f76-0c49-41e4-8447-18b3d3026d6f",
       "question": [
         {
-          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se ___ que especifiquem o que deve ter ocorrido antes de realização das ações do cenário.\n"
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamento (BDD), existe a necessidade de estabelecerem-se ___ que especifiquem o que deve ter ocorrido antes de realização das ações do cenário.\n"
         }
       ],
       "answer": [
         {
-          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamente (BDD), existe a necessidade de estabelecerem-se "
+          "insert": "Nos cenários de uma user story do desenvolvimento orientado a comportamento (BDD), existe a necessidade de estabelecerem-se "
         },
         {
           "insert": "pré-condições",
@@ -478,7 +478,7 @@
       ],
       "answer": [
         {
-          "insert": "O idealizar do desenvolvimento orientado a comportamente é "
+          "insert": "O idealizar do desenvolvimento orientado a comportamento é "
         },
         {
           "insert": "Dan North.",
