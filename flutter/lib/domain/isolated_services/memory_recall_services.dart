@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:memo/domain/enums/memo_difficulty.dart';
+import 'package:memo/domain/models/collection_execution.dart';
 import 'package:memo/domain/models/memo.dart';
+import 'package:memo/domain/models/memo_execution.dart';
 
 /// Handles all domain-specific operations associated with "Memory Recall".
 abstract class MemoryRecallServices {
@@ -13,19 +15,19 @@ abstract class MemoryRecallServices {
   ///
   /// This may return `null` if [Memo.isPristine] is `true`, meaning that it has no execution to execute the recall
   /// calculation.
-  double? evaluateMemoryRecall(Memo memo);
+  double? evaluateMemoryRecall(MemoExecutionRecallMetadata memo);
 }
 
 class MemoryRecallServicesImpl implements MemoryRecallServices {
   @override
-  double? evaluateMemoryRecall(Memo memo) {
+  double? evaluateMemoryRecall(MemoExecutionRecallMetadata memo) {
     if (memo.isPristine) {
       return null;
     }
 
     final now = DateTime.now().toUtc();
-    final totalRepetitions = memo.totalExecutionsAmount;
-    final millisSinceLastExecution = now.difference(memo.lastExecuted!).inMilliseconds;
+    final totalRepetitions = memo.totalExecutions;
+    final millisSinceLastExecution = now.difference(memo.lastExecution!).inMilliseconds;
 
     return _evaluateMemoRecall(
       millisSinceLastExecution: millisSinceLastExecution,

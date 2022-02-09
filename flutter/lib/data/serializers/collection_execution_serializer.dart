@@ -5,6 +5,7 @@ import 'package:memo/domain/models/collection_execution.dart';
 class CollectionExecutionKeys {
   static const id = 'id';
   static const executions = 'executions';
+  static const isPrivate = 'isPrivate';
   static const timeSpentInMillis = 'timeSpentInMillis';
   static const executionsDifficulty = 'executionsDifficulty';
 }
@@ -20,6 +21,8 @@ class CollectionExecutionSerializer implements Serializer<CollectionExecution, M
     final executions = rawExecutions.map<String, MemoExecutionRecallMetadata>((key, dynamic value) =>
         MapEntry(key, memoExecutionRecallMetadataSerializer.from(value as Map<String, dynamic>)));
 
+    final isPrivate = json[CollectionExecutionKeys.isPrivate] as bool;
+
     final timeSpentInMillis = json[CollectionExecutionKeys.timeSpentInMillis] as int;
     final rawExecutionsDifficulty = json[CollectionExecutionKeys.executionsDifficulty] as Map<String, dynamic>;
     final executionsDifficulty =
@@ -28,6 +31,7 @@ class CollectionExecutionSerializer implements Serializer<CollectionExecution, M
     return CollectionExecution(
       id: id,
       executions: executions,
+      isPrivate: isPrivate,
       timeSpentInMillis: timeSpentInMillis,
       difficulties: executionsDifficulty,
     );

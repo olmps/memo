@@ -5,7 +5,7 @@ typedef TotalExecutions = int;
 
 /// `Memo` executions metadata.
 abstract class MemoExecutionsMetadata extends Equatable {
-  MemoExecutionsMetadata(this.timeSpentInMillis, Map<MemoDifficulty, TotalExecutions> difficulties)
+  MemoExecutionsMetadata(this.timeSpentInMillis, DifficultyMap difficulties)
       :
         // Normalize executions difficulties by making sure that all dificulties have a related value, even if zero.
         executionsDifficulty = Map.fromEntries(
@@ -26,7 +26,7 @@ abstract class MemoExecutionsMetadata extends Equatable {
   final int timeSpentInMillis;
 
   /// Maps each [MemoDifficulty] to its amount of executions.
-  final Map<MemoDifficulty, TotalExecutions> executionsDifficulty;
+  final DifficultyMap executionsDifficulty;
 
   @override
   List<Object?> get props => [timeSpentInMillis, executionsDifficulty];
