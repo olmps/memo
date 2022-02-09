@@ -24,9 +24,16 @@ dependencies:
   path_provider: ^2.0.6
   url_launcher: ^6.0.12
   package_info_plus: ^1.3.0
-  firebase_core: ^1.8.0
-  firebase_crashlytics: ^2.2.4
-  firebase_analytics: ^8.3.4
+  # Firebase
+  firebase_auth: 3.3.3
+  firebase_core: 1.10.5
+  firebase_crashlytics: 2.4.3
+  firebase_analytics: 9.0.2
+  cloud_firestore: 3.1.4
+  # Social Auth
+  sign_in_with_apple: 3.3.0
+  google_sign_in: 5.2.1
+  github_sign_in: 0.0.5-dev.3
 
   ###
   # Database & Storage
