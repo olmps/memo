@@ -3,33 +3,37 @@ import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/user.dart';
 
 class UserKeys {
-  static const memosExecutionChunkGoal = 'memosExecutionChunkGoal';
-  static const executionsAmounts = 'executionsAmounts';
+  static const id = 'id';
+  static const executionChunk = 'executionsChunk';
+  static const executionsDifficulty = 'executionsDifficulty';
   static const timeSpentInMillis = 'timeSpentInMillis';
 }
 
 class UserSerializer implements Serializer<User, Map<String, dynamic>> {
   @override
   User from(Map<String, dynamic> json) {
-    final memosExecutionChunkGoal = json[UserKeys.memosExecutionChunkGoal] as int;
+    final id = json[UserKeys.id] as String;
+    final executionChunk = json[UserKeys.executionChunk] as int;
 
-    final rawExecutionsAmounts = json[UserKeys.executionsAmounts] as Map<String, dynamic>?;
-    final executionsAmounts =
-        rawExecutionsAmounts?.map((key, dynamic value) => MapEntry(memoDifficultyFromRaw(key), value as int));
+    final rawExecutionsDifficulty = json[UserKeys.executionsDifficulty] as Map<String, dynamic>?;
+    final executionsDifficulty =
+        rawExecutionsDifficulty?.map((key, dynamic value) => MapEntry(memoDifficultyFromRaw(key), value as int));
 
     final timeSpentInMillis = json[UserKeys.timeSpentInMillis] as int?;
 
     return User(
-      memosExecutionChunkGoal: memosExecutionChunkGoal,
-      executionsAmounts: executionsAmounts ?? {},
+      id: id,
+      executionChunk: executionChunk,
+      executionsDifficulty: executionsDifficulty ?? {},
       timeSpentInMillis: timeSpentInMillis ?? 0,
     );
   }
 
   @override
-  Map<String, dynamic> to(User memo) => <String, dynamic>{
-        UserKeys.memosExecutionChunkGoal: memo.memosExecutionChunkGoal,
-        UserKeys.executionsAmounts: memo.executionsAmounts.map((key, value) => MapEntry(key.raw, value)),
-        UserKeys.timeSpentInMillis: memo.timeSpentInMillis,
+  Map<String, dynamic> to(User user) => <String, dynamic>{
+        UserKeys.id: user.id,
+        UserKeys.executionChunk: user.executionChunk,
+        UserKeys.executionsDifficulty: user.executionsDifficulty.map((key, value) => MapEntry(key.raw, value)),
+        UserKeys.timeSpentInMillis: user.timeSpentInMillis,
       };
 }
