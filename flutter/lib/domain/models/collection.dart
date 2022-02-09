@@ -107,3 +107,17 @@ class Resource extends Equatable {
   @override
   List<Object?> get props => [id, description, type, url];
 }
+
+@immutable
+class Category extends Equatable {
+  const Category({required this.id, required this.name});
+
+  /// Name identifer for this contributor.
+  final String id;
+
+  /// Name for this category.
+  final String name;
+
+  @override
+  List<Object?> get props => [id, name];
+}

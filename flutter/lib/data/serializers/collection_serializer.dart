@@ -151,3 +151,24 @@ class ContributorSerializer implements Serializer<Contributor, Map<String, dynam
         if (contributor.imageUrl != null) ContributorKeys.imageUrl: contributor.imageUrl,
       };
 }
+
+class CategoryKeys {
+  static const id = 'id';
+  static const name = 'name';
+}
+
+class CategorySerializer implements Serializer<Category, Map<String, dynamic>> {
+  @override
+  Category from(Map<String, dynamic> json) {
+    final id = json[CategoryKeys.id] as String;
+    final name = json[CategoryKeys.name] as String;
+
+    return Category(id: id, name: name);
+  }
+
+  @override
+  Map<String, dynamic> to(Category category) => <String, dynamic>{
+        CategoryKeys.id: category.id,
+        CategoryKeys.name: category.name,
+      };
+}
