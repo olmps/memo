@@ -1,82 +1,175 @@
-import 'package:memo/data/gateways/sembast_database.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firestore_olmps/firestore_olmps.dart';
+import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
+import 'package:memo/core/faults/exceptions/http_exception.dart';
+import 'package:memo/data/repositories/paths.dart' as paths;
+import 'package:memo/data/serializers/collection_execution_serializer.dart';
 import 'package:memo/data/serializers/memo_serializer.dart';
+import 'package:memo/domain/models/collection_execution.dart';
 import 'package:memo/domain/models/memo.dart';
 
-/// Handles all IO and serialization operations associated with [Memo]s.
-abstract class MemoRepository {
-  /// Retrieves all [Memo]s that have their [Memo.collectionId] set to [collectionId].
-  Future<List<Memo>> getAllMemos({required String collectionId});
+class MemoRepositoryImpl {
+  MemoRepositoryImpl(this._db, this._auth);
 
-  /// Retrieves all [Memo]s that have their [Memo.collectionId] set to any of the [collectionIds].
-  Future<List<Memo>> getAllMemosByAnyCollectionId({required List<String> collectionIds});
+  final firebase_auth.FirebaseAuth _auth;
+  final FirestoreDatabase _db;
 
-  /// Puts a list of [memos].
-  ///
-  /// If [updatesOnlyCollectionMetadata] is `true`, updates only those properties related to `MemoCollectionMetadata`.
-  Future<void> putMemos(List<Memo> memos, {required bool updatesOnlyCollectionMetadata});
-
-  /// Removes a list of memos by their respective [ids].
-  Future<void> removeMemosByIds(List<String> ids);
-
-  /// Retrieves a list of memos by their respective [ids].
-  Future<List<Memo?>> getMemosByIds(List<String> ids);
-}
-
-class MemoRepositoryImpl implements MemoRepository {
-  MemoRepositoryImpl(this._db);
-
-  final SembastDatabase _db;
   final _memoSerializer = MemoSerializer();
-  final _memoStore = 'memos';
+  final _memoExecutionMetadataSerializer = MemoExecutionRecallMetadataSerializer();
 
-  @override
-  Future<List<Memo>> getAllMemos({required String collectionId}) async {
-    final finder = Finder(filter: Filter.equals(MemoKeys.collectionId, collectionId));
+  Future<List<Memo>> getMemosByIds({
+    required bool isPrivate,
+    required String collectionId,
+    required List<String> ids,
+  }) async {
+    final currentUserId = _auth.currentUser?.uid;
+    if (currentUserId == null) {
+      throw InconsistentStateError.repository('Missing required user while getting memos by their ids');
+    }
 
-    final rawMemos = await _db.getAll(store: _memoStore, finder: finder);
-    return rawMemos.map(_memoSerializer.from).toList();
-  }
+    try {
+      final memosPath = isPrivate
+          ? paths.userCollectionMemos(userId: currentUserId, collectionId: collectionId)
+          : paths.collectionsMemos(collectionId: collectionId);
 
-  @override
-  Future<List<Memo>> getAllMemosByAnyCollectionId({required List<String> collectionIds}) async {
-    final finder = Finder(filter: Filter.inList(MemoKeys.collectionId, collectionIds));
+      // TODO(matuella): Does queryIn with documentId works for more than 10 docs? Test it -> QueryFilter(field: FieldPath.documentId, whereIn: ids);
+      final responses = await Future.wait(ids.map((id) => _db.get(id: id, collectionPath: memosPath)).toList());
 
-    final rawMemos = await _db.getAll(store: _memoStore, finder: finder);
-    return rawMemos.map(_memoSerializer.from).toList();
-  }
+      return responses.map((doc) {
+        if (doc == null) {
+          throw InconsistentStateError.repository('Missing an expected memo when retrieving by their ids: $ids');
+        }
 
-  @override
-  Future<void> putMemos(List<Memo> memos, {required bool updatesOnlyCollectionMetadata}) async {
-    if (updatesOnlyCollectionMetadata) {
-      return _db.putAll(
-        ids: memos.map((memo) => memo.uniqueId).toList(),
-        objects: memos
-            .map(
-              (memo) => {
-                MemoKeys.uniqueId: memo.uniqueId,
-                MemoKeys.collectionId: memo.collectionId,
-                MemoKeys.rawQuestion: memo.rawQuestion,
-                MemoKeys.rawAnswer: memo.rawAnswer,
-              },
-            )
-            .toList(),
-        store: _memoStore,
-      );
-    } else {
-      return _db.putAll(
-        ids: memos.map((memo) => memo.uniqueId).toList(),
-        objects: memos.map(_memoSerializer.to).toList(),
-        store: _memoStore,
-      );
+        return _memoSerializer.from(doc.data);
+      }).toList();
+    } on FirestoreDatabaseError catch (error) {
+      throw HttpException.failedRequest(debugInfo: error.toString());
     }
   }
 
-  @override
-  Future<void> removeMemosByIds(List<String> ids) => _db.removeAll(ids: ids, store: _memoStore);
+  Future<void> addMemo({required String userId, required String collectionId, required Memo memo}) async {
+    final currentUserId = _auth.currentUser?.uid;
+    if (currentUserId == null) {
+      throw InconsistentStateError.repository('Missing required user while getting memos by their ids');
+    }
 
-  @override
-  Future<List<Memo?>> getMemosByIds(List<String> ids) async {
-    final rawMemos = await _db.getAllByIds(ids: ids, store: _memoStore);
-    return rawMemos.map((rawMemo) => rawMemo != null ? _memoSerializer.from(rawMemo) : null).toList();
+    try {
+      await _db.runInTransaction(() async {
+        final newMemo = _db.set(
+          collectionPath: paths.userCollectionMemos(userId: userId, collectionId: collectionId),
+          data: _memoSerializer.to(memo),
+          id: memo.id,
+          shouldMerge: false,
+        );
+
+        await Future.wait([
+          newMemo,
+          _updateAddMemoReferences(userId: userId, collectionId: collectionId, memoId: memo.id),
+        ]);
+      });
+    } on FirestoreDatabaseError catch (error) {
+      throw HttpException.failedRequest(debugInfo: error.toString());
+    }
+  }
+
+  Future<void> updateMemo({required String userId, required String collectionId, required Memo memo}) async {
+    try {
+      await _db.update(
+        collectionPath: paths.userCollectionMemos(userId: userId, collectionId: collectionId),
+        data: _memoSerializer.to(memo),
+        id: memo.id,
+      );
+    } on FirestoreDatabaseError catch (error) {
+      throw HttpException.failedRequest(debugInfo: error.toString());
+    }
+  }
+
+  Future<void> deleteMemoById({required String userId, required String collectionId, required String id}) async {
+    try {
+      await _db.runInTransaction(() async {
+        final deleteMemo = _db.delete(
+          id: id,
+          collectionPath: paths.userCollectionMemos(userId: userId, collectionId: collectionId),
+        );
+
+        await Future.wait([
+          deleteMemo,
+          _updateDeleteMemoReferences(userId: userId, collectionId: collectionId, memoId: id),
+        ]);
+      });
+    } on FirestoreDatabaseError catch (error) {
+      throw HttpException.failedRequest(debugInfo: error.toString());
+    }
+  }
+
+  Future<void> _updateAddMemoReferences({
+    required String userId,
+    required String collectionId,
+    required String memoId,
+  }) async {
+    final executionPath = paths.userCollectionsExecutions(userId: userId);
+    final execution = await _db.get(id: collectionId, collectionPath: executionPath);
+    Future<void>? executionUpdate;
+    if (execution != null) {
+      executionUpdate = _db.set(
+        collectionPath: executionPath,
+        data: <String, dynamic>{
+          'executions': {
+            memoId: _memoExecutionMetadataSerializer.to(MemoExecutionRecallMetadata.blank(id: memoId)),
+          },
+        },
+        id: memoId,
+      );
+    }
+
+    final collectionUpdate = _db.set(
+      collectionPath: paths.userCollections(userId: userId),
+      id: collectionId,
+      data: <String, dynamic>{
+        'memosAmount': FieldValue.increment(1),
+        'memosOrder': FieldValue.arrayUnion(<String>[memoId]),
+      },
+    );
+
+    await Future.wait([
+      collectionUpdate,
+      if (executionUpdate != null) executionUpdate,
+    ]);
+  }
+
+  Future<void> _updateDeleteMemoReferences({
+    required String userId,
+    required String collectionId,
+    required String memoId,
+  }) async {
+    final executionPath = paths.userCollectionsExecutions(userId: userId);
+    final execution = await _db.get(id: collectionId, collectionPath: executionPath);
+    Future<void>? executionUpdate;
+    if (execution != null) {
+      executionUpdate = _db.set(
+        collectionPath: executionPath,
+        data: <String, dynamic>{
+          // TODO: How to remove a object key without sending it whole?
+          // 'executions': {
+          //   memoId: _memoExecutionMetadataSerializer.to(MemoExecutionRecallMetadata.blank(id: memoId)),
+          // },
+        },
+        id: memoId,
+      );
+    }
+
+    final collectionUpdate = _db.set(
+      collectionPath: paths.userCollections(userId: userId),
+      id: collectionId,
+      data: <String, dynamic>{
+        'memosAmount': FieldValue.increment(-1),
+        'memosOrder': FieldValue.arrayRemove(<String>[memoId]),
+      },
+    );
+
+    await Future.wait([
+      collectionUpdate,
+      if (executionUpdate != null) executionUpdate,
+    ]);
   }
 }
