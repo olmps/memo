@@ -35,7 +35,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.1"
+    version: "2.8.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -49,7 +49,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   charcode:
     dependency: transitive
     description:
@@ -72,12 +72,12 @@ packages:
     source: hosted
     version: "1.1.0"
   cloud_firestore:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.4"
+    version: "3.1.0"
   cloud_firestore_platform_interface:
     dependency: transitive
     description:
@@ -196,14 +196,23 @@ packages:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.3"
+    version: "3.2.0"
+  firebase_auth_olmps:
+    dependency: "direct main"
+    description:
+      path: "packages/firebase_auth_olmps"
+      ref: firebase_auth_olmps
+      resolved-ref: "2ac5a5fc71dc40e04d88090cb0c5ad94f5999364"
+      url: "https://github.com/olmps/flutter_packages.git"
+    source: git
+    version: "0.0.1"
   firebase_auth_platform_interface:
     dependency: transitive
     description:
       name: firebase_auth_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.8"
+    version: "6.1.9"
   firebase_auth_web:
     dependency: transitive
     description:
@@ -246,6 +255,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.10"
+  firestore_olmps:
+    dependency: "direct main"
+    description:
+      path: "packages/firestore_olmps"
+      ref: HEAD
+      resolved-ref: "2e5918257077a42deb7ca517dd10aa155ed7dc73"
+      url: "https://github.com/olmps/flutter_packages.git"
+    source: git
+    version: "0.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -257,7 +275,7 @@ packages:
       name: flutter_colorpicker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0"
+    version: "1.0.3"
   flutter_hooks:
     dependency: transitive
     description:
@@ -320,7 +338,7 @@ packages:
       name: flutter_quill
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.22"
+    version: "2.4.0"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -353,7 +371,7 @@ packages:
     source: hosted
     version: "0.2.0"
   github_sign_in:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: github_sign_in
       url: "https://pub.dartlang.org"
@@ -367,7 +385,7 @@ packages:
     source: hosted
     version: "2.0.1"
   google_sign_in:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_sign_in
       url: "https://pub.dartlang.org"
@@ -379,14 +397,14 @@ packages:
       name: google_sign_in_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   google_sign_in_web:
     dependency: transitive
     description:
       name: google_sign_in_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.0+3"
+    version: "0.10.0+4"
   hooks_riverpod:
     dependency: "direct main"
     description:
@@ -498,7 +516,7 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.10"
+    version: "0.12.11"
   meta:
     dependency: "direct main"
     description:
@@ -731,7 +749,7 @@ packages:
     source: hosted
     version: "1.0.1"
   sign_in_with_apple:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sign_in_with_apple
       url: "https://pub.dartlang.org"
@@ -846,21 +864,21 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.17.10"
+    version: "1.17.12"
   test_api:
     dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.2"
+    version: "0.4.3"
   test_core:
     dependency: transitive
     description:
       name: test_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.2"
   tuple:
     dependency: transitive
     description:
@@ -937,7 +955,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   video_player:
     dependency: transitive
     description:
@@ -1000,7 +1018,7 @@ packages:
       name: webview_flutter_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.0"
+    version: "2.8.2"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -1014,7 +1032,7 @@ packages:
       name: webview_flutter_wkwebview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0"
+    version: "2.7.1"
   win32:
     dependency: transitive
     description:

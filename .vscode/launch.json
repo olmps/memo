@@ -5,7 +5,7 @@
       "name": "DEV - App",
       "type": "dart",
       "request": "launch",
-      "program": "lib/main.dart",
+      "program": "flutter/lib/main.dart",
       "args": [
         "--dart-define=ENV=DEV"
       ]
