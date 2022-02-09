@@ -7,8 +7,9 @@ class CollectionExecution extends MemoExecutionsMetadata {
   CollectionExecution({
     required this.id,
     required this.executions,
+    required this.isPrivate,
     required int timeSpentInMillis,
-    required Map<MemoDifficulty, int> difficulties,
+    required DifficultyMap difficulties,
   })  : assert(executions.isNotEmpty, 'Requires memos executions'),
         super(timeSpentInMillis, difficulties);
 
@@ -18,6 +19,9 @@ class CollectionExecution extends MemoExecutionsMetadata {
   int get totalMemos => executions.entries.length;
   int get uniqueExecutedMemos => executions.values.where((exec) => !exec.isPristine).length;
 
+  /// `true` if this parent `Collection` is private to its owner `User`.
+  final bool isPrivate;
+
   /// `true` if not a single `Memo` have been executed.
   bool get isPristine => uniqueExecutedMemos == 0;
 
@@ -26,6 +30,19 @@ class CollectionExecution extends MemoExecutionsMetadata {
 
   @override
   List<Object?> get props => [id, executions, ...super.props];
+
+  CollectionExecution copyWith({
+    required Map<MemoId, MemoExecutionRecallMetadata> executions,
+    required int timeSpentInMillis,
+    required DifficultyMap difficulties,
+  }) =>
+      CollectionExecution(
+        id: id,
+        executions: executions,
+        isPrivate: isPrivate,
+        timeSpentInMillis: timeSpentInMillis,
+        difficulties: difficulties,
+      );
 }
 
 class MemoExecutionRecallMetadata {
@@ -40,6 +57,11 @@ class MemoExecutionRecallMetadata {
           'Inconsistency between one or multiple execution-related properties, as they must be mutually exclusive',
         );
 
+  MemoExecutionRecallMetadata.blank({required this.id})
+      : totalExecutions = 0,
+        lastExecution = null,
+        lastMarkedDifficulty = null;
+
   final String id;
 
   /// `true` if this `Memo` was never executed.
@@ -48,4 +70,16 @@ class MemoExecutionRecallMetadata {
   final int totalExecutions;
   final DateTime? lastExecution;
   final MemoDifficulty? lastMarkedDifficulty;
+
+  MemoExecutionRecallMetadata copyWith({
+    required int totalExecutions,
+    required DateTime lastExecution,
+    required MemoDifficulty lastMarkedDifficulty,
+  }) =>
+      MemoExecutionRecallMetadata(
+        id: id,
+        totalExecutions: totalExecutions,
+        lastExecution: lastExecution,
+        lastMarkedDifficulty: lastMarkedDifficulty,
+      );
 }
