@@ -11,7 +11,7 @@
     "source": ".",
     "predeploy": [
       "npm --prefix \"$PROJECT_DIR\" run lint",
-      "npm --prefix \"$PROJECT_DIR\" run build:functions"
+      "npm --prefix \"$PROJECT_DIR\" run build"
     ]
   },
   "emulators": {
