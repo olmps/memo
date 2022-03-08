@@ -26,7 +26,7 @@ Memo é um software de código aberto (escrito em Flutter) de
 Este README e todos os sub-documentos presentes aqui (CONTRIBUTING, ARCHITECTURE & CHANGELOG) visa guiar a
 estrutura deste projeto e devem auxiliar na escalabilidade das funcionalidades existentes hoje e nas que serão criadas
 com o decorrer do andamento do projeto. Estes documentos servem como um conjunto flexível de regras que guiam as
-decisões tomadas no andamento do projeto. Embora estas regras possam - e provavelmente irão - mudar, discussões devem
+decisões tomadas no andamento do projeto. Embora estas regras possam — e provavelmente irão — mudar, discussões devem
 ser levantadas sobre os motivos para tais mudanças, de maneira que essas discussões e decisões sejam transparentes para
 todos.
 
@@ -51,7 +51,7 @@ isso em [ARCHITECTURE#firebase](ARCHITECTURE.md#firebase).
 
 ## Arquitetura
 
-Como essa aplicação foi estruturada e como ela interage com dependência externas - escrito em detalhes em
+Como essa aplicação foi estruturada e como ela interage com dependência externas — escrito em detalhes em
 [ARCHITECTURE](ARCHITECTURE.md) (em inglês).
 
 ## Background
