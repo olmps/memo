@@ -56,7 +56,7 @@ Como essa aplicação foi estruturada e como ela interage com dependência exter
 
 ## Background
 
-Se está interessado em dar uma olhadinha sobre como acabamos lidando com o processo de software deste projeto (dentro
+Se está interessado em dar uma olhadinha sobre como lidamos com o processo de software deste projeto (dentro
 da nossa equipe), dê uma olhada no [.process/](.process/README.md).
 
 ## Contribuição & Boas Práticas
