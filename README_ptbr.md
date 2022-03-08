@@ -17,13 +17,13 @@ Monorepo do Memo.
 Memo é um software de código aberto (escrito em Flutter) de
 [repetição espaçada](https://en.wikipedia.org/wiki/Spaced_repetition) (SRS, em inglês) voltado ao tema de programação.
 
-> Atualmente, este projeto está construído apenas para gerar _builds_ para Android e iOS. Embora o fato de que, dado a
+> Atualmente, este projeto está construído apenas para gerar _builds_ para Android e iOS. Embora que, dado a
 > estabilidade da SDK do Flutter para desktop (Windows, Linux e macOS) e web, existe uma alta probabilidade que este
 > projeto eventualmente suportará _builds_ para todas as plataformas.
 
 ---
 
-Este README e todos os sub-documentos presentes aqui (CONTRIBUTING, ARCHITECTURE & CHANGELOG) tem como objetivo guiar a
+Este README e todos os sub-documentos presentes aqui (CONTRIBUTING, ARCHITECTURE & CHANGELOG) visa guiar a
 estrutura deste projeto e devem auxiliar na escalabilidade das funcionalidades existentes hoje e nas que serão criadas
 com o decorrer do andamento do projeto. Estes documentos servem como um conjunto flexível de regras que guiam as
 decisões tomadas no andamento do projeto. Embora estas regras possam - e provavelmente irão - mudar, discussões devem
