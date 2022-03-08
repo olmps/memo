@@ -71,6 +71,6 @@ Memo está licenciado sobre a licença [BSD 3-Clause](LICENSE).
 
 Este projeto foi construído com a ajuda dos patrocinadores abaixo:
 
-- [Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover): Aprenda programação na prática. E de graça.
+- [Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover): Aprenda programação, na prática, e de graça.
 - [Startup Life Podcast](https://bit.ly/lucas-montano-startup-life): O seu podcast sobre negócios, tecnologia e inovação.
 - [Pingback](https://bit.ly/lucas-montano-pingback): Crie conteúdo com total liberdade.
