@@ -41,7 +41,7 @@ todos.
 Se não tem ideia de como instalar o Flutter e rodá-lo localmente, dê uma olhada nesse
 [_Get started_ (em inglês)](https://flutter.dev/docs/get-started/install)
 
-Agora, se já tem o Flutter configurado localmente, na pasta raíz do projeto, instale as dependências através do
+Agora, se já tem o Flutter configurado localmente, na pasta raiz do projeto, instale as dependências através do
 comando `flutter pub get`.
 
 ### Dependências do Firebase
