@@ -47,7 +47,10 @@ dependencies:
   layoutr: ^1.0.0
 
   # Keep dependency locked, as we need it to be the exact same in `memo-editor`
-  flutter_quill: 2.0.22
+  flutter_quill:
+    git:
+      url: https://github.com/singerdmx/flutter-quill.git
+      ref: master
 
 dev_dependencies:
   flutter_test:

@@ -6,13 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:memo/application/app.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 import 'package:memo/core/env.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final env = envMetadata();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final crashlytics = FirebaseCrashlytics.instance;
   await crashlytics.setCrashlyticsCollectionEnabled(!env.isDev);
   FlutterError.onError = crashlytics.recordFlutterError;
