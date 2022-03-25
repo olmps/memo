@@ -40,33 +40,54 @@ void main() {
   });
 
   test('CollectionMemosSerializer should fail to decode without required properties', () {
-    expect(() {
-      final rawCollection = completeFixture()..remove(CollectionMemosKeys.id);
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = completeFixture()..remove(CollectionMemosKeys.name);
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = completeFixture()..remove(CollectionMemosKeys.description);
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = completeFixture()..remove(CollectionMemosKeys.category);
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = completeFixture()..remove(CollectionMemosKeys.tags);
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = completeFixture()..remove(CollectionMemosKeys.contributors);
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawCollection = completeFixture()..remove(CollectionMemosKeys.memosMetadata);
-      serializer.from(rawCollection);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.id);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.name);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.description);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.category);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.tags);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.contributors);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.memosMetadata);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
   });
 }

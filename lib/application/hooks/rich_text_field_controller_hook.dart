@@ -25,9 +25,12 @@ class _RichTextEditingControllerHookCreator {
 }
 
 class _RichTextEditingControllerHook extends Hook<RichTextFieldController> {
-  const _RichTextEditingControllerHook(this.initialRichText, this.initialPlainText, this.initialSelection,
-      [List<Object?>? keys])
-      : super(keys: keys);
+  const _RichTextEditingControllerHook(
+    this.initialRichText,
+    this.initialPlainText,
+    this.initialSelection, [
+    List<Object?>? keys,
+  ]) : super(keys: keys);
 
   final String? initialRichText;
   final String? initialPlainText;
@@ -41,7 +44,10 @@ class _RichTextEditingControllerHook extends Hook<RichTextFieldController> {
 
 class _RichTextEditingControllerHookState extends HookState<RichTextFieldController, _RichTextEditingControllerHook> {
   late final _controller = RichTextFieldController(
-      richText: hook.initialRichText, plainText: hook.initialPlainText, selection: hook.initialSelection);
+    richText: hook.initialRichText,
+    plainText: hook.initialPlainText,
+    selection: hook.initialSelection,
+  );
 
   @override
   RichTextFieldController build(BuildContext context) => _controller;

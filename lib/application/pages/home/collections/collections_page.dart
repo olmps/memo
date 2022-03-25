@@ -21,22 +21,25 @@ class CollectionsPage extends HookConsumerWidget {
       initialIndex: initialState.segmentIndex,
     );
 
-    useEffect(() {
-      void tabListener() {
-        final currentState = ref.read(collectionsVM);
+    useEffect(
+      () {
+        void tabListener() {
+          final currentState = ref.read(collectionsVM);
 
-        // Mandatory check because this listener is called multiple times by the tab controller.
-        //
-        // Should only call the VM when the `indexIsChanging` AND if the current segment is different.
-        if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
-          final newTab = availableSegments.elementAt(collectionsTabController.index);
-          ref.read(collectionsVM.notifier).updateCollectionsSegment(newTab);
+          // Mandatory check because this listener is called multiple times by the tab controller.
+          //
+          // Should only call the VM when the `indexIsChanging` AND if the current segment is different.
+          if (collectionsTabController.indexIsChanging && currentState.segmentIndex != collectionsTabController.index) {
+            final newTab = availableSegments.elementAt(collectionsTabController.index);
+            ref.read(collectionsVM.notifier).updateCollectionsSegment(newTab);
+          }
         }
-      }
 
-      collectionsTabController.addListener(tabListener);
-      return () => collectionsTabController.removeListener(tabListener);
-    }, [collectionsTabController]);
+        collectionsTabController.addListener(tabListener);
+        return () => collectionsTabController.removeListener(tabListener);
+      },
+      [collectionsTabController],
+    );
 
     final tabs = availableSegments.map(_widgetForTab).toList();
     return Column(

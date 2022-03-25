@@ -24,19 +24,28 @@ void main() {
   });
 
   test('MemoCollectionMetadataSerializer should fail to decode without required properties', () {
-    expect(() {
-      final rawMemo = fixtures.memoCollectionMetadata()..remove(MemoCollectionMetadataKeys.uniqueId);
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawMemo = fixtures.memoCollectionMetadata()..remove(MemoCollectionMetadataKeys.uniqueId);
+        serializer.from(rawMemo);
+      },
+      throwsA(isA<TypeError>()),
+    );
 
-    expect(() {
-      final rawMemo = fixtures.memoCollectionMetadata()..remove(MemoCollectionMetadataKeys.rawQuestion);
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawMemo = fixtures.memoCollectionMetadata()..remove(MemoCollectionMetadataKeys.rawQuestion);
+        serializer.from(rawMemo);
+      },
+      throwsA(isA<TypeError>()),
+    );
 
-    expect(() {
-      final rawMemo = fixtures.memoCollectionMetadata()..remove(MemoCollectionMetadataKeys.rawAnswer);
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawMemo = fixtures.memoCollectionMetadata()..remove(MemoCollectionMetadataKeys.rawAnswer);
+        serializer.from(rawMemo);
+      },
+      throwsA(isA<TypeError>()),
+    );
   });
 }

@@ -159,10 +159,16 @@ class UpdateCollectionLoaded extends UpdateCollectionState {
       );
 
   UpdateCollectionSaving copyForSaving() => UpdateCollectionSaving(
-      metadata: collectionMetadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
+        metadata: collectionMetadata,
+        memosMetadata: memosMetadata,
+        hasValidDetails: hasValidDetails,
+      );
 
   UpdateCollectionSaved copyForSaved() => UpdateCollectionSaved(
-      metadata: collectionMetadata, memosMetadata: memosMetadata, hasValidDetails: hasValidDetails);
+        metadata: collectionMetadata,
+        memosMetadata: memosMetadata,
+        hasValidDetails: hasValidDetails,
+      );
 
   @override
   List<Object?> get props => [...super.props, collectionMetadata, memosMetadata, hasValidDetails];

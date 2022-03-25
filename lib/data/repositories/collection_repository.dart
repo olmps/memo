@@ -58,7 +58,8 @@ class CollectionRepositoryImpl implements CollectionRepository {
     final rawCollection = await _db.get(id: id, store: _collectionStore);
     if (rawCollection == null) {
       throw InconsistentStateError.repository(
-          'Missing required collection (of record "$id") in store "$_collectionStore"');
+        'Missing required collection (of record "$id") in store "$_collectionStore"',
+      );
     }
 
     return _collectionSerializer.from(rawCollection);

@@ -28,25 +28,37 @@ void main() {
   });
 
   test('MemoSerializer should fail to decode without required properties', () {
-    expect(() {
-      final rawMemo = fixtures.memo()..remove(MemoKeys.uniqueId);
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawMemo = fixtures.memo()..remove(MemoKeys.uniqueId);
+        serializer.from(rawMemo);
+      },
+      throwsA(isA<TypeError>()),
+    );
 
-    expect(() {
-      final rawMemo = fixtures.memo()..remove(MemoKeys.collectionId);
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawMemo = fixtures.memo()..remove(MemoKeys.collectionId);
+        serializer.from(rawMemo);
+      },
+      throwsA(isA<TypeError>()),
+    );
 
-    expect(() {
-      final rawMemo = fixtures.memo()..remove(MemoKeys.rawQuestion);
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawMemo = fixtures.memo()..remove(MemoKeys.rawQuestion);
+        serializer.from(rawMemo);
+      },
+      throwsA(isA<TypeError>()),
+    );
 
-    expect(() {
-      final rawMemo = fixtures.memo()..remove(MemoKeys.rawAnswer);
-      serializer.from(rawMemo);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawMemo = fixtures.memo()..remove(MemoKeys.rawAnswer);
+        serializer.from(rawMemo);
+      },
+      throwsA(isA<TypeError>()),
+    );
   });
 
   test('MemoSerializer should decode with optional properties', () {

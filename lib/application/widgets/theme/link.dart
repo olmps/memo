@@ -102,10 +102,14 @@ class UrlLinkButton extends StatelessWidget {
     this.textStyle,
     Key? key,
   }) : super(key: key) {
-    _allowedSchemes.firstWhere((scheme) => url.toLowerCase().startsWith(scheme), orElse: () {
-      throw InconsistentStateError.layout(
-          'All links must start with one of the following schemes: $_allowedSchemes - actual: "$url"');
-    });
+    _allowedSchemes.firstWhere(
+      (scheme) => url.toLowerCase().startsWith(scheme),
+      orElse: () {
+        throw InconsistentStateError.layout(
+          'All links must start with one of the following schemes: $_allowedSchemes - actual: "$url"',
+        );
+      },
+    );
   }
 
   final String url;
@@ -154,10 +158,14 @@ class UnderlinedUrlLink extends ConsumerWidget {
     this.onFailLaunchingUrl,
     Key? key,
   }) : super(key: key) {
-    _allowedSchemes.firstWhere((scheme) => url.toLowerCase().startsWith(scheme), orElse: () {
-      throw InconsistentStateError.layout(
-          'All links must start with one of the following schemes: $_allowedSchemes - actual: "$url"');
-    });
+    _allowedSchemes.firstWhere(
+      (scheme) => url.toLowerCase().startsWith(scheme),
+      orElse: () {
+        throw InconsistentStateError.layout(
+          'All links must start with one of the following schemes: $_allowedSchemes - actual: "$url"',
+        );
+      },
+    );
   }
 
   final String url;
@@ -179,7 +187,9 @@ class UnderlinedUrlLink extends ConsumerWidget {
         child: Text(
           text ?? url,
           style: Theme.of(context).textTheme.caption?.copyWith(
-              color: ref.watch(themeController).neutralSwatch.shade300, decoration: TextDecoration.underline),
+                color: ref.watch(themeController).neutralSwatch.shade300,
+                decoration: TextDecoration.underline,
+              ),
         ),
       ),
     );

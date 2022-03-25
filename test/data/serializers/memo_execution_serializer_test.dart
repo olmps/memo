@@ -31,34 +31,55 @@ void main() {
     });
 
     test('should fail to decode without required properties', () {
-      expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.uniqueId);
-        serializer.from(rawExecution);
-      }, throwsA(isA<TypeError>()));
-      expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.collectionId);
-        serializer.from(rawExecution);
-      }, throwsA(isA<TypeError>()));
-      expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.started);
-        serializer.from(rawExecution);
-      }, throwsA(isA<TypeError>()));
-      expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.finished);
-        serializer.from(rawExecution);
-      }, throwsA(isA<TypeError>()));
-      expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.rawQuestion);
-        serializer.from(rawExecution);
-      }, throwsA(isA<TypeError>()));
-      expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.rawAnswer);
-        serializer.from(rawExecution);
-      }, throwsA(isA<TypeError>()));
-      expect(() {
-        final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.markedDifficulty);
-        serializer.from(rawExecution);
-      }, throwsA(isA<TypeError>()));
+      expect(
+        () {
+          final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.uniqueId);
+          serializer.from(rawExecution);
+        },
+        throwsA(isA<TypeError>()),
+      );
+      expect(
+        () {
+          final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.collectionId);
+          serializer.from(rawExecution);
+        },
+        throwsA(isA<TypeError>()),
+      );
+      expect(
+        () {
+          final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.started);
+          serializer.from(rawExecution);
+        },
+        throwsA(isA<TypeError>()),
+      );
+      expect(
+        () {
+          final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.finished);
+          serializer.from(rawExecution);
+        },
+        throwsA(isA<TypeError>()),
+      );
+      expect(
+        () {
+          final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.rawQuestion);
+          serializer.from(rawExecution);
+        },
+        throwsA(isA<TypeError>()),
+      );
+      expect(
+        () {
+          final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.rawAnswer);
+          serializer.from(rawExecution);
+        },
+        throwsA(isA<TypeError>()),
+      );
+      expect(
+        () {
+          final rawExecution = fixtures.memoExecution()..remove(MemoExecutionKeys.markedDifficulty);
+          serializer.from(rawExecution);
+        },
+        throwsA(isA<TypeError>()),
+      );
     });
   });
 }

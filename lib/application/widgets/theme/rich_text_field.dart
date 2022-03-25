@@ -58,11 +58,13 @@ class RichTextFieldController extends ValueNotifier<RichTextEditingValue> {
     String? richText,
     String? plainText,
     TextSelection? selection,
-  }) : super(RichTextEditingValue(
-          richText: richText ?? '',
-          plainText: plainText ?? '',
-          selection: selection ?? const TextSelection.collapsed(offset: -1),
-        ));
+  }) : super(
+          RichTextEditingValue(
+            richText: richText ?? '',
+            plainText: plainText ?? '',
+            selection: selection ?? const TextSelection.collapsed(offset: -1),
+          ),
+        );
 
   RichTextFieldController.fromValue(RichTextEditingValue value) : super(value);
 
@@ -453,13 +455,15 @@ class _RichTextFieldToolbar extends HookConsumerWidget {
     bool isSelected(quill.Attribute attribute) => selectedAttributes.value.contains(attribute);
 
     final attributesIcons = _toolBarAsset.keys
-        .map((attribute) => AssetIconButton(
-              _toolBarAsset[attribute]!,
-              iconColor: isSelected(attribute) ? theme.neutralSwatch.shade800 : null,
-              iconBackgroundColor: isSelected(attribute) ? theme.neutralSwatch.shade500 : null,
-              isSplashEffectEnabled: false,
-              onPressed: () => onToggle(attribute),
-            ))
+        .map(
+          (attribute) => AssetIconButton(
+            _toolBarAsset[attribute]!,
+            iconColor: isSelected(attribute) ? theme.neutralSwatch.shade800 : null,
+            iconBackgroundColor: isSelected(attribute) ? theme.neutralSwatch.shade500 : null,
+            isSplashEffectEnabled: false,
+            onPressed: () => onToggle(attribute),
+          ),
+        )
         .toList();
 
     return ThemedBottomContainer(
