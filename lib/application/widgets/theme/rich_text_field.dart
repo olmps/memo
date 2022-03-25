@@ -508,12 +508,12 @@ class _QuillControllerHookState extends HookState<quill.QuillController, _QuillC
     final selection = hook.textController?.selection;
     final hasSelection = selection != null && selection.isValid;
 
-    final document = hasText ? quill.Document.fromJson(json.decode(text!) as List<dynamic>) : quill.Document();
+    final document = hasText ? quill.Document.fromJson(json.decode(text) as List<dynamic>) : quill.Document();
     final selectionOffset = document.toPlainText().isNotEmpty ? document.toPlainText().length - 1 : 0;
 
     _controller = quill.QuillController(
       document: document,
-      selection: hasSelection ? selection! : TextSelection.collapsed(offset: selectionOffset),
+      selection: hasSelection ? selection : TextSelection.collapsed(offset: selectionOffset),
     );
   }
 
