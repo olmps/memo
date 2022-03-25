@@ -168,7 +168,7 @@ class _ProgressContainer extends ConsumerWidget {
       border: Border.all(color: borderColor, width: dimens.cardBorderWidth),
     );
 
-    return Container(
+    return DecoratedBox(
       decoration: decoration,
       child: contents.withAllPadding(context, Spacing.large),
     );

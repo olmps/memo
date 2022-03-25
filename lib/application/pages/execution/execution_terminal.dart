@@ -421,7 +421,7 @@ class _TerminalActions extends HookWidget {
       child: Container(color: Colors.transparent),
     );
 
-    final highlightDecoration = Container(
+    final highlightDecoration = DecoratedBox(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.transparent,
