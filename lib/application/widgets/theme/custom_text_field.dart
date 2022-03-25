@@ -116,7 +116,7 @@ class CustomTextField extends HookConsumerWidget {
         ? textTheme.caption?.copyWith(color: neutralSwatch.shade300)
         : textTheme.subtitle1;
 
-    final textField = Container(
+    final textField = DecoratedBox(
       decoration: BoxDecoration(
         color: _hasErrorText ? theme.destructiveSwatch : null,
         borderRadius: dimens.genericRoundedElementBorderRadius,

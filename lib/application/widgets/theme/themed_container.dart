@@ -17,7 +17,7 @@ class ThemedTopContainer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeController);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(bottom: _useThemedBorderSide(theme)),
       ),
@@ -39,7 +39,7 @@ class ThemedBottomContainer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeController);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(top: _useThemedBorderSide(theme)),
       ),
