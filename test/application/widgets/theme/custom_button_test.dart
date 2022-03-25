@@ -203,7 +203,7 @@ Future<void> _pumpAndTap<T extends Widget>(WidgetTester tester, T button) async 
 /// Pumps [button] and press (a single pointer down gesture) it.
 Future<void> _pumpAndPress<T extends Widget>(WidgetTester tester, T button) async {
   await pumpProviderScoped(tester, button);
-  await tester.startGesture(const Offset(0, 0));
+  await tester.startGesture(Offset.zero);
   await tester.pump();
 }
 
