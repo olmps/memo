@@ -115,11 +115,11 @@ class AnimatableLinearProgress extends AnimatableProgress implements ProgressPai
   final double? minWidth;
 
   @override
-  AnimatableLinearProgressState createState() => AnimatableLinearProgressState();
+  AnimatableProgressState<AnimatableLinearProgress> createState() => _AnimatableLinearProgressState();
 }
 
 /// Implements the [AnimatableProgressState] for a linear-styled progress indicator.
-class AnimatableLinearProgressState extends AnimatableProgressState<AnimatableLinearProgress> {
+class _AnimatableLinearProgressState extends AnimatableProgressState<AnimatableLinearProgress> {
   CustomPaint _progressPaintBuilder(BuildContext context, Widget? child) {
     return CustomPaint(
       painter: _LinearProgressPainter(
@@ -248,11 +248,11 @@ class AnimatableCircularProgress extends AnimatableProgress implements ProgressP
   final double? minSize;
 
   @override
-  AnimatableCircularProgressState createState() => AnimatableCircularProgressState();
+  AnimatableProgressState<AnimatableCircularProgress> createState() => _AnimatableCircularProgressState();
 }
 
 /// Implements the [AnimatableProgressState] for a circular-styled progress indicator.
-class AnimatableCircularProgressState extends AnimatableProgressState<AnimatableCircularProgress> {
+class _AnimatableCircularProgressState extends AnimatableProgressState<AnimatableCircularProgress> {
   CustomPaint _progressPaintBuilder(BuildContext context, Widget? child) {
     return CustomPaint(
       painter: _CircularProgressPainter(
