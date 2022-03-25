@@ -100,6 +100,8 @@ class CollectionExecutionVMImpl extends CollectionExecutionVM {
           totalUniqueMemos: updatedCollection.uniqueMemosAmount,
         );
       }
+
+      return null;
     } else {
       // Otherwise we proceed with the next available memo and start counting a new start date.
       final completionValue = _executions.length / _memos.length;
