@@ -2,10 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_quill/src/models/documents/document.dart' as quill_doc;
-import 'package:flutter_quill/src/widgets/controller.dart';
-import 'package:flutter_quill/src/widgets/editor.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/animations.dart' as anims;
@@ -197,7 +194,7 @@ class _ExecutionTerminalState extends ConsumerState<ExecutionTerminal> {
       ),
     );
     final editor = _TerminalQuillEditor(
-      document: quill_doc.Document.fromJson(controller.rawContents),
+      document: quill.Document.fromJson(controller.rawContents),
       animationController: controller.editorAnimationController,
       scrollController: controller.editorScrollController,
     );
@@ -247,18 +244,18 @@ class _TerminalQuillEditor extends StatelessWidget {
     required this.scrollController,
   });
 
-  final quill_doc.Document document;
+  final quill.Document document;
   final AnimationController animationController;
   final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
-    final quillController = QuillController(
+    final quillController = quill.QuillController(
       document: document,
       selection: const TextSelection.collapsed(offset: 0),
     );
 
-    final quillEditor = QuillEditor(
+    final quillEditor = quill.QuillEditor(
       controller: quillController,
       focusNode: FocusNode(),
       scrollController: scrollController,
