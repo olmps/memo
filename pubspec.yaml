@@ -20,6 +20,8 @@ dependencies:
   ###
   meta: ^1.7.0
   equatable: ^2.0.3
+  collection: ^1.15.0
+  tuple: ^2.0.0
   path: ^1.8.0
   path_provider: ^2.0.9
   url_launcher: ^6.0.20
@@ -38,6 +40,7 @@ dependencies:
   # State Management
   ###
   flutter_riverpod: ^1.0.3
+  flutter_hooks: ^0.18.2+1
   hooks_riverpod: ^1.0.3
   rxdart: ^0.27.3
 
