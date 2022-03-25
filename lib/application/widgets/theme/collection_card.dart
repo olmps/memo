@@ -68,7 +68,7 @@ class CollectionCard extends ConsumerWidget {
     // We are not using the `Card` widget because we need to customize the background with border + painter.
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: DecoratedBox(
         decoration: _buildCardDecoration(theme),
         child: CustomPaint(
           painter: _buildBackgroundPainter(theme),

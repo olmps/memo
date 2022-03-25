@@ -30,7 +30,7 @@ class AssetIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageAsset = AssetImage(asset);
-    final icon = Container(
+    final icon = DecoratedBox(
       decoration: BoxDecoration(
         color: iconBackgroundColor,
         borderRadius: dimens.genericRoundedElementBorderRadius,
