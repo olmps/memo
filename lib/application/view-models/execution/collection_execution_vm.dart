@@ -149,8 +149,11 @@ abstract class CollectionExecutionState extends Equatable {
 class LoadingCollectionExecutionState extends CollectionExecutionState {}
 
 class LoadedCollectionExecutionState extends CollectionExecutionState {
-  LoadedCollectionExecutionState(
-      {required this.initialMemo, required this.completionValue, required this.collectionName});
+  LoadedCollectionExecutionState({
+    required this.initialMemo,
+    required this.completionValue,
+    required this.collectionName,
+  });
 
   final String collectionName;
   final MemoMetadata initialMemo;

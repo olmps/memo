@@ -24,7 +24,9 @@ class UpdateCollectionDetails extends ConsumerWidget {
     final parentVM = ref.watch(updateCollectionVM.notifier);
 
     ref.listen<UpdatedDetailsState>(
-        updateCollectionDetailsVM, (_, state) => parentVM.updateMetadata(metadata: state.metadata));
+      updateCollectionDetailsVM,
+      (_, state) => parentVM.updateMetadata(metadata: state.metadata),
+    );
 
     return UnfocusPointer(
       child: SingleChildScrollView(
@@ -84,15 +86,18 @@ class _TagsField extends HookConsumerWidget {
     final hasInitialData = useState(false);
     final controller = useTagsController(tags: state.metadata.tags);
 
-    useEffect(() {
-      void onTagsUpdate() {
-        vm.updateTags(controller.tags);
-        hasInitialData.value = true;
-      }
+    useEffect(
+      () {
+        void onTagsUpdate() {
+          vm.updateTags(controller.tags);
+          hasInitialData.value = true;
+        }
 
-      controller.addListener(onTagsUpdate);
-      return () => controller.removeListener(onTagsUpdate);
-    }, []);
+        controller.addListener(onTagsUpdate);
+        return () => controller.removeListener(onTagsUpdate);
+      },
+      [],
+    );
 
     return StreamBuilder(
       stream: vm.tags,
@@ -119,17 +124,20 @@ class _DescriptionField extends HookConsumerWidget {
     final hasInitialData = useState(false);
     final controller = useRichTextEditingController(richText: state.metadata.description.richContent);
 
-    useEffect(() {
-      void onDescriptionUpdate() {
-        final content = mapRichTextValueToMemoUpdateContent(controller.value);
-        vm.updateDescription(content);
-        hasInitialData.value = true;
-      }
+    useEffect(
+      () {
+        void onDescriptionUpdate() {
+          final content = mapRichTextValueToMemoUpdateContent(controller.value);
+          vm.updateDescription(content);
+          hasInitialData.value = true;
+        }
 
-      controller.addListener(onDescriptionUpdate);
+        controller.addListener(onDescriptionUpdate);
 
-      return () => controller.removeListener(onDescriptionUpdate);
-    }, []);
+        return () => controller.removeListener(onDescriptionUpdate);
+      },
+      [],
+    );
 
     final descriptionLength = state.metadata.description.plainContent.length;
 

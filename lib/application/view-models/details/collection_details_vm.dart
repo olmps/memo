@@ -23,9 +23,11 @@ abstract class CollectionDetailsVM extends StateNotifier<CollectionDetailsState>
 }
 
 class CollectionDetailsVMImpl extends CollectionDetailsVM {
-  CollectionDetailsVMImpl(
-      {required this.collectionId, required this.collectionServices, required this.resourceServices})
-      : super(LoadingCollectionDetailsState()) {
+  CollectionDetailsVMImpl({
+    required this.collectionId,
+    required this.collectionServices,
+    required this.resourceServices,
+  }) : super(LoadingCollectionDetailsState()) {
     _loadCollection();
   }
 

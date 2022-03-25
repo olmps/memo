@@ -32,12 +32,15 @@ class UpdateCollectionPage extends HookConsumerWidget {
     final tabController = useTabController(initialLength: _Segment.values.length);
     final memosPageController = usePageController(viewportFraction: dimens.memosPageControllerViewportFraction);
 
-    useEffect(() {
-      void tabListener() => selectedSegment.value = _Segment.values[tabController.index];
+    useEffect(
+      () {
+        void tabListener() => selectedSegment.value = _Segment.values[tabController.index];
 
-      tabController.addListener(tabListener);
-      return () => tabController.removeListener(tabListener);
-    }, []);
+        tabController.addListener(tabListener);
+        return () => tabController.removeListener(tabListener);
+      },
+      [],
+    );
 
     final tabs = _Segment.values.map((segment) => Text(segment.title)).toList();
 

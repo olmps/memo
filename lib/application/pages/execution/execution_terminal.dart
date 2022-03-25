@@ -129,8 +129,11 @@ class TerminalController extends ChangeNotifier {
       // Reverse the editor animation (to fade out its contents).
       editorAnimationController.reverse(),
       // ... and make sure that the editor scroll goes to the top.
-      editorScrollController.animateTo(0,
-          duration: anims.terminalAnimationDuration, curve: anims.defaultAnimationCurve),
+      editorScrollController.animateTo(
+        0,
+        duration: anims.terminalAnimationDuration,
+        curve: anims.defaultAnimationCurve,
+      ),
       // Respectively hide/show the actions depending on the `isDisplayingQuestion`.
       if (isDisplayingQuestion) actionsAnimationController.forward() else actionsAnimationController.reverse(),
     ]);
@@ -403,7 +406,11 @@ class _TerminalActions extends HookWidget {
   }
 
   Widget _buildDifficultyAction(
-      bool isMarkedAnswer, Image difficultyEmoji, Color highlightColor, Color actionBackgroundColor) {
+    bool isMarkedAnswer,
+    Image difficultyEmoji,
+    Color highlightColor,
+    Color actionBackgroundColor,
+  ) {
     final hasMarkedAnswer = markedAnswer != null;
 
     final blurFilter = BackdropFilter(

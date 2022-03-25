@@ -27,25 +27,40 @@ void main() {
   });
 
   test('ResourceSerializer should fail to decode without required properties', () {
-    expect(() {
-      final rawBlock = fixtures.resource()..remove('id');
-      serializer.from(rawBlock);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawBlock = fixtures.resource()..remove('description');
-      serializer.from(rawBlock);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawBlock = fixtures.resource()..remove('url');
-      serializer.from(rawBlock);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawBlock = fixtures.resource()..remove('tags');
-      serializer.from(rawBlock);
-    }, throwsA(isA<TypeError>()));
-    expect(() {
-      final rawBlock = fixtures.resource()..remove('type');
-      serializer.from(rawBlock);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawBlock = fixtures.resource()..remove('id');
+        serializer.from(rawBlock);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawBlock = fixtures.resource()..remove('description');
+        serializer.from(rawBlock);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawBlock = fixtures.resource()..remove('url');
+        serializer.from(rawBlock);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawBlock = fixtures.resource()..remove('tags');
+        serializer.from(rawBlock);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawBlock = fixtures.resource()..remove('type');
+        serializer.from(rawBlock);
+      },
+      throwsA(isA<TypeError>()),
+    );
   });
 }

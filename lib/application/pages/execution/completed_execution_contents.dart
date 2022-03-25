@@ -97,7 +97,8 @@ class CompletedExecutionContents extends ConsumerWidget {
       progressSemanticValue = strings.linearIndicatorCollectionRecallLabel(completeState.readableRecall);
     } else {
       throw InconsistentStateError.layout(
-          'Unexpected `FinishedCollectionExecutionState` subtype: ${state.runtimeType}');
+        'Unexpected `FinishedCollectionExecutionState` subtype: ${state.runtimeType}',
+      );
     }
 
     final showsRecallLevelLink = state is FinishedCompleteCollectionExecutionState;
