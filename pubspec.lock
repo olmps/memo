@@ -72,7 +72,7 @@ packages:
     source: hosted
     version: "1.1.0"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       url: "https://pub.dartlang.org"
@@ -259,7 +259,7 @@ packages:
     source: hosted
     version: "1.0.3"
   flutter_hooks:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_hooks
       url: "https://pub.dartlang.org"
@@ -841,7 +841,7 @@ packages:
     source: hosted
     version: "0.4.9"
   tuple:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: tuple
       url: "https://pub.dartlang.org"
