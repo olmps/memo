@@ -21,7 +21,9 @@ import 'package:memo/application/widgets/theme/link.dart';
 class MultiContributorsView extends ConsumerWidget {
   const MultiContributorsView(this.contributors)
       : assert(
-            contributors.length > 1, 'At least 2 contributors must be provided. Use `SingleContributorView` instead.');
+          contributors.length > 1,
+          'At least 2 contributors must be provided. Use `SingleContributorView` instead.',
+        );
 
   static const _visibleContributorsLimit = 5;
 

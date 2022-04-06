@@ -125,6 +125,9 @@ class CollectionDetailsPage extends ConsumerWidget {
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-  Widget _buildSectionTitle(BuildContext context, WidgetRef ref, String text) => Text(text,
-      style: Theme.of(context).textTheme.subtitle1?.copyWith(color: ref.watch(themeController).neutralSwatch.shade300));
+  Widget _buildSectionTitle(BuildContext context, WidgetRef ref, String text) => Text(
+        text,
+        style:
+            Theme.of(context).textTheme.subtitle1?.copyWith(color: ref.watch(themeController).neutralSwatch.shade300),
+      );
 }

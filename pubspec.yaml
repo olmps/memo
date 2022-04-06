@@ -8,8 +8,8 @@ publish_to: "none"
 version: 0.2.0+0
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
-  flutter: 2.5.3
+  sdk: ">=2.16.0 <3.0.0"
+  flutter: 2.10.3
 
 dependencies:
   flutter:
@@ -18,27 +18,30 @@ dependencies:
   ###
   # Core
   ###
-  meta: ^1.6.0
+  meta: ^1.7.0
   equatable: ^2.0.3
+  collection: ^1.15.0
+  tuple: ^2.0.0
   path: ^1.8.0
-  path_provider: ^2.0.6
-  url_launcher: ^6.0.12
-  package_info_plus: ^1.3.0
-  firebase_core: ^1.8.0
-  firebase_crashlytics: ^2.2.4
-  firebase_analytics: ^8.3.4
+  path_provider: ^2.0.9
+  url_launcher: ^6.0.20
+  package_info_plus: ^1.4.0
+  firebase_core: ^1.13.1
+  firebase_crashlytics: ^2.5.3
+  firebase_analytics: ^9.1.2
 
   ###
   # Database & Storage
   ###
-  sembast: ^3.1.1
-  uuid: ^3.0.5
+  sembast: ^3.2.0
+  uuid: ^3.0.6
 
   ###
   # State Management
   ###
-  flutter_riverpod: ^1.0.0
-  hooks_riverpod: ^1.0.0
+  flutter_riverpod: ^1.0.3
+  flutter_hooks: ^0.18.2+1
+  hooks_riverpod: ^1.0.3
   rxdart: ^0.27.3
 
   ###
@@ -47,7 +50,7 @@ dependencies:
   layoutr: ^1.0.0
 
   # Keep dependency locked, as we need it to be the exact same in `memo-editor`
-  flutter_quill: 2.0.22
+  flutter_quill: 4.0.10
 
 dev_dependencies:
   flutter_test:
@@ -56,12 +59,12 @@ dev_dependencies:
   ###
   # Lint
   ###
-  strict: ^1.2.0
+  strict: ^1.4.0
 
   ###
   # Testing
   ###
-  mocktail: ^0.1.0
+  mocktail: ^0.3.0
 
   ###
   # Icon auto-generator

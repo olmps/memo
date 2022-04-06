@@ -6,7 +6,7 @@ on:
       - published
 
 env:
-  flutter_version: "2.5.3"
+  flutter_version: "2.10.3"
   java_version: "12.x"
   flutter_channel: "stable"
 

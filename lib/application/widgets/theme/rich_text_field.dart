@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/dimensions.dart' as dimens;
@@ -58,11 +57,13 @@ class RichTextFieldController extends ValueNotifier<RichTextEditingValue> {
     String? richText,
     String? plainText,
     TextSelection? selection,
-  }) : super(RichTextEditingValue(
-          richText: richText ?? '',
-          plainText: plainText ?? '',
-          selection: selection ?? const TextSelection.collapsed(offset: -1),
-        ));
+  }) : super(
+          RichTextEditingValue(
+            richText: richText ?? '',
+            plainText: plainText ?? '',
+            selection: selection ?? const TextSelection.collapsed(offset: -1),
+          ),
+        );
 
   RichTextFieldController.fromValue(RichTextEditingValue value) : super(value);
 
@@ -453,13 +454,15 @@ class _RichTextFieldToolbar extends HookConsumerWidget {
     bool isSelected(quill.Attribute attribute) => selectedAttributes.value.contains(attribute);
 
     final attributesIcons = _toolBarAsset.keys
-        .map((attribute) => AssetIconButton(
-              _toolBarAsset[attribute]!,
-              iconColor: isSelected(attribute) ? theme.neutralSwatch.shade800 : null,
-              iconBackgroundColor: isSelected(attribute) ? theme.neutralSwatch.shade500 : null,
-              isSplashEffectEnabled: false,
-              onPressed: () => onToggle(attribute),
-            ))
+        .map(
+          (attribute) => AssetIconButton(
+            _toolBarAsset[attribute]!,
+            iconColor: isSelected(attribute) ? theme.neutralSwatch.shade800 : null,
+            iconBackgroundColor: isSelected(attribute) ? theme.neutralSwatch.shade500 : null,
+            isSplashEffectEnabled: false,
+            onPressed: () => onToggle(attribute),
+          ),
+        )
         .toList();
 
     return ThemedBottomContainer(
@@ -508,12 +511,12 @@ class _QuillControllerHookState extends HookState<quill.QuillController, _QuillC
     final selection = hook.textController?.selection;
     final hasSelection = selection != null && selection.isValid;
 
-    final document = hasText ? quill.Document.fromJson(json.decode(text!) as List<dynamic>) : quill.Document();
+    final document = hasText ? quill.Document.fromJson(json.decode(text) as List<dynamic>) : quill.Document();
     final selectionOffset = document.toPlainText().isNotEmpty ? document.toPlainText().length - 1 : 0;
 
     _controller = quill.QuillController(
       document: document,
-      selection: hasSelection ? selection! : TextSelection.collapsed(offset: selectionOffset),
+      selection: hasSelection ? selection : TextSelection.collapsed(offset: selectionOffset),
     );
   }
 

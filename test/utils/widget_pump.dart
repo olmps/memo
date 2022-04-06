@@ -17,11 +17,13 @@ Future<void> pumpProviderScoped(WidgetTester tester, Widget widget, [List<Overri
     tester.pumpWidget(
       ProviderScope(
         overrides: overrides,
-        child: Consumer(builder: (context, ref, child) {
-          return MaterialApp(
-            theme: ref.read(themeController.notifier).currentThemeData(context),
-            home: Scaffold(body: widget),
-          );
-        }),
+        child: Consumer(
+          builder: (context, ref, child) {
+            return MaterialApp(
+              theme: ref.read(themeController.notifier).currentThemeData(context),
+              home: Scaffold(body: widget),
+            );
+          },
+        ),
       ),
     );

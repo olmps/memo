@@ -115,7 +115,7 @@ class AnimatableLinearProgress extends AnimatableProgress implements ProgressPai
   final double? minWidth;
 
   @override
-  _AnimatableLinearProgressState createState() => _AnimatableLinearProgressState();
+  AnimatableProgressState<AnimatableLinearProgress> createState() => _AnimatableLinearProgressState();
 }
 
 /// Implements the [AnimatableProgressState] for a linear-styled progress indicator.
@@ -248,7 +248,7 @@ class AnimatableCircularProgress extends AnimatableProgress implements ProgressP
   final double? minSize;
 
   @override
-  _AnimatableCircularProgressState createState() => _AnimatableCircularProgressState();
+  AnimatableProgressState<AnimatableCircularProgress> createState() => _AnimatableCircularProgressState();
 }
 
 /// Implements the [AnimatableProgressState] for a circular-styled progress indicator.

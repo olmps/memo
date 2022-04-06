@@ -18,9 +18,12 @@ Future<void> main() async {
   FlutterError.onError = crashlytics.recordFlutterError;
 
   // Wraps `AppRoot` in a guarded zone where all errors are reported to `crashlytics.recordError`.
-  runZonedGuarded(() {
-    final appVM = AppVMImpl();
+  runZonedGuarded(
+    () {
+      final appVM = AppVMImpl();
 
-    runApp(AppRoot(appVM));
-  }, crashlytics.recordError);
+      runApp(AppRoot(appVM));
+    },
+    crashlytics.recordError,
+  );
 }

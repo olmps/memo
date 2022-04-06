@@ -31,8 +31,11 @@ void main() {
       final collectionId = collections[index][CollectionMemosKeys.id] as String;
       final fullCollectionPath = collectionsPaths[index];
 
-      expect(fullCollectionPath.contains('/$collectionId.json'), isTrue,
-          reason: 'Collection had id "$collectionId" but file path "$fullCollectionPath"');
+      expect(
+        fullCollectionPath.contains('/$collectionId.json'),
+        isTrue,
+        reason: 'Collection had id "$collectionId" but file path "$fullCollectionPath"',
+      );
     }
   });
 
@@ -53,8 +56,11 @@ void main() {
       ).forEach(
         (rawMemo) {
           final memoUniqueId = rawMemo[MemoCollectionMetadataKeys.uniqueId] as String;
-          expect(memosIds.contains(memoUniqueId), isFalse,
-              reason: 'Duplicate memo id "$memoUniqueId" in collection "$collection"');
+          expect(
+            memosIds.contains(memoUniqueId),
+            isFalse,
+            reason: 'Duplicate memo id "$memoUniqueId" in collection "$collection"',
+          );
           memosIds.add(memoUniqueId);
         },
       );

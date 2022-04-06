@@ -19,10 +19,13 @@ void main() {
   });
 
   test('ContributorSerializer should fail to decode without required properties', () {
-    expect(() {
-      final rawContributor = fixtures.contributor()..remove(ContributorKeys.name);
-      serializer.from(rawContributor);
-    }, throwsA(isA<TypeError>()));
+    expect(
+      () {
+        final rawContributor = fixtures.contributor()..remove(ContributorKeys.name);
+        serializer.from(rawContributor);
+      },
+      throwsA(isA<TypeError>()),
+    );
   });
 
   test('ContributorSerializer should decode with optional properties', () {

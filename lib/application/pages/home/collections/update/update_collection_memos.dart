@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/animations.dart' as anims;
@@ -29,12 +28,15 @@ class UpdateCollectionMemos extends HookConsumerWidget {
     final parentVM = ref.watch(updateCollectionVM.notifier);
     ref.listen<UpdateMemosState>(updateCollectionMemosVM, (_, state) => parentVM.updateMemos(memos: state.memos));
 
-    useEffect(() {
-      void onPageUpdate() => currentPageIndex.value = controller.page!.toInt();
+    useEffect(
+      () {
+        void onPageUpdate() => currentPageIndex.value = controller.page!.toInt();
 
-      controller.addListener(onPageUpdate);
-      return () => controller.removeListener(onPageUpdate);
-    }, []);
+        controller.addListener(onPageUpdate);
+        return () => controller.removeListener(onPageUpdate);
+      },
+      [],
+    );
 
     // Uses `PageView.custom` to support pages reordering.
     final pagesView = PageView.custom(
@@ -116,33 +118,36 @@ class _MemoPage extends HookConsumerWidget {
     final answerValue = mapMemoUpdateContentToRichTextValue(metadata.answer);
     final answerController = RichTextFieldController.fromValue(answerValue);
 
-    useEffect(() {
-      void onQuestionUpdate() {
-        final updatedContent = MemoUpdateContent(
-          richContent: questionController.value.richText,
-          plainContent: questionController.value.plainText,
-        );
+    useEffect(
+      () {
+        void onQuestionUpdate() {
+          final updatedContent = MemoUpdateContent(
+            richContent: questionController.value.richText,
+            plainContent: questionController.value.plainText,
+          );
 
-        onUpdate(metadata.copyWith(question: updatedContent));
-      }
+          onUpdate(metadata.copyWith(question: updatedContent));
+        }
 
-      void onAnswerUpdate() {
-        final updatedContent = MemoUpdateContent(
-          richContent: answerController.value.richText,
-          plainContent: answerController.value.plainText,
-        );
+        void onAnswerUpdate() {
+          final updatedContent = MemoUpdateContent(
+            richContent: answerController.value.richText,
+            plainContent: answerController.value.plainText,
+          );
 
-        onUpdate(metadata.copyWith(answer: updatedContent));
-      }
+          onUpdate(metadata.copyWith(answer: updatedContent));
+        }
 
-      questionController.addListener(onQuestionUpdate);
-      answerController.addListener(onAnswerUpdate);
+        questionController.addListener(onQuestionUpdate);
+        answerController.addListener(onAnswerUpdate);
 
-      return () {
-        questionController.removeListener(onQuestionUpdate);
-        answerController.removeListener(onAnswerUpdate);
-      };
-    }, []);
+        return () {
+          questionController.removeListener(onQuestionUpdate);
+          answerController.removeListener(onAnswerUpdate);
+        };
+      },
+      [],
+    );
 
     return UpdateMemoTerminal(
       memoIndex: pageIndex + 1,

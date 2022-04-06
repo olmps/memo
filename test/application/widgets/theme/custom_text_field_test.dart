@@ -114,8 +114,8 @@ void main() {
 
         await pumpProviderScoped(tester, textField);
 
-        final wrapperContainer = find.byType(Container).first.evaluate().single.widget as Container;
-        final containerDecoration = wrapperContainer.decoration! as BoxDecoration;
+        final wrapperContainer = find.byType(DecoratedBox).first.evaluate().single.widget as DecoratedBox;
+        final containerDecoration = wrapperContainer.decoration as BoxDecoration;
 
         expect(containerDecoration.color, expectedColor);
       });

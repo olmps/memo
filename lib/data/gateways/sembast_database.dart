@@ -35,7 +35,8 @@ abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
       // ignore: avoid_catches_without_on_clauses
     } catch (error, stack) {
       throw InconsistentStateError.gateway(
-          'Failed transaction with Error:\n${error.toString()} \nStackTrace:\n${stack.toString()}');
+        'Failed transaction with Error:\n${error.toString()} \nStackTrace:\n${stack.toString()}',
+      );
     } finally {
       currentTransaction = null;
     }
