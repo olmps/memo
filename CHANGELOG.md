@@ -11,7 +11,7 @@ a beta or production release, they must be documented here).
 ## [Unreleased]
 
 ### Added
-- Visually Opinionated Buttons (Primary, Secondary and Text).
+- Spelling corrections according to the Portuguese language
 
 ## [0.2.0] - 2021-08-13
 
