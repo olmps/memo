@@ -379,35 +379,37 @@ class _ThemedEditor extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     // Default [quill.DefaultTextBlockStyle] vertical and line spacings.
-    const zeroTuple = Tuple2<double, double>(0, 0);
+    const zeroTuple = quill.VerticalSpacing(0, 0);
 
     return quill.QuillEditor(
-      controller: controller,
       scrollController: ScrollController(),
-      scrollable: true,
-      focusNode: focus ?? FocusNode(),
-      autoFocus: !readOnly,
-      readOnly: readOnly,
-      expands: false,
-      padding: EdgeInsets.zero,
-      enableInteractiveSelection: !readOnly,
-      showCursor: !readOnly,
-      placeholder: placeholder,
-      customStyles: quill.DefaultStyles(
-        paragraph: quill.DefaultTextBlockStyle(textTheme.bodyText2!, zeroTuple, zeroTuple, null),
-        placeHolder: quill.DefaultTextBlockStyle(
-          textTheme.bodyText1!.copyWith(color: theme.neutralSwatch.shade400),
-          zeroTuple,
-          zeroTuple,
-          null,
-        ),
-        code: quill.DefaultTextBlockStyle(
-          textTheme.bodyText1!,
-          zeroTuple,
-          zeroTuple,
-          BoxDecoration(color: codeBackgroundColor),
+      configurations: quill.QuillEditorConfigurations(
+        controller: controller,
+        scrollable: true,
+        padding: EdgeInsets.zero,
+        autoFocus: !readOnly,
+        readOnly: readOnly,
+        expands: false,
+        enableInteractiveSelection: !readOnly,
+        showCursor: !readOnly,
+        placeholder: placeholder,
+        customStyles: quill.DefaultStyles(
+          paragraph: quill.DefaultTextBlockStyle(textTheme.bodyText2!, zeroTuple, zeroTuple, null),
+          placeHolder: quill.DefaultTextBlockStyle(
+            textTheme.bodyText1!.copyWith(color: theme.neutralSwatch.shade400),
+            zeroTuple,
+            zeroTuple,
+            null,
+          ),
+          code: quill.DefaultTextBlockStyle(
+            textTheme.bodyText1!,
+            zeroTuple,
+            zeroTuple,
+            BoxDecoration(color: codeBackgroundColor),
+          ),
         ),
       ),
+      focusNode: focus ?? FocusNode(),
     );
   }
 }

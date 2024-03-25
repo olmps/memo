@@ -256,21 +256,20 @@ class _TerminalQuillEditor extends StatelessWidget {
     );
 
     final quillEditor = quill.QuillEditor(
-      controller: quillController,
       focusNode: FocusNode(),
       scrollController: scrollController,
-      scrollable: true,
-      padding: EdgeInsets.symmetric(
-        vertical: dimens.terminalWindowHeaderHeight,
-        horizontal: context.rawSpacing(Spacing.medium),
+      configurations: quill.QuillEditorConfigurations(
+        controller: quillController,
+        scrollable: true,
+        padding: EdgeInsets.symmetric(
+            vertical: dimens.terminalWindowHeaderHeight, horizontal: context.rawSpacing(Spacing.medium)),
+        autoFocus: false,
+        readOnly: true,
+        showCursor: false,
+        expands: false,
+        enableInteractiveSelection: false,
       ),
-      autoFocus: false,
-      showCursor: false,
-      readOnly: true,
-      expands: false,
-      enableInteractiveSelection: false,
     );
-
     return FadeTransition(
       opacity: animationController.drive(CurveTween(curve: anims.defaultAnimationCurve)),
       child: quillEditor,

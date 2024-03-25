@@ -40,13 +40,13 @@ ThemeData buildThemeData({
       elevation: 0,
       minimumSize: Size.fromHeight(minButtonHeight),
       shape: roundedCornersShape,
-      primary: primarySwatch,
-      onPrimary: textColor,
+      backgroundColor: primarySwatch,
+      foregroundColor: textColor,
     ),
   );
 
   final textButtonTheme = TextButtonThemeData(
-    style: TextButton.styleFrom(primary: secondarySwatch.shade400),
+    style: TextButton.styleFrom(foregroundColor: secondarySwatch.shade400),
   );
 
   final iconTheme = IconThemeData(color: iconColor, size: iconSize);

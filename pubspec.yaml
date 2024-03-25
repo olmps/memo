@@ -25,23 +25,23 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.9
   url_launcher: ^6.0.20
-  package_info_plus: ^1.4.0
-  firebase_core: ^1.13.1
-  firebase_crashlytics: ^2.5.3
-  firebase_analytics: ^9.1.2
+  package_info_plus: ^6.0.0
+  firebase_core: ^2.27.1
+  firebase_crashlytics: ^3.4.19
+  firebase_analytics: ^10.8.10
 
   ###
   # Database & Storage
   ###
   sembast: ^3.2.0
-  uuid: ^3.0.6
+  uuid: ^4.3.3
 
   ###
   # State Management
   ###
-  flutter_riverpod: ^1.0.3
-  flutter_hooks: ^0.18.2+1
-  hooks_riverpod: ^1.0.3
+  flutter_riverpod: ^2.5.1
+  flutter_hooks: ^0.20.5
+  hooks_riverpod: ^2.5.1
   rxdart: ^0.27.3
 
   ###
@@ -50,7 +50,7 @@ dependencies:
   layoutr: ^1.0.0
 
   # Keep dependency locked, as we need it to be the exact same in `memo-editor`
-  flutter_quill: 4.0.10
+  flutter_quill: ^9.3.3
 
 dev_dependencies:
   flutter_test:
@@ -59,22 +59,22 @@ dev_dependencies:
   ###
   # Lint
   ###
-  strict: ^1.4.0
+  strict: ^2.0.0
 
   ###
   # Testing
   ###
-  mocktail: ^0.3.0
+  mocktail: ^1.0.3
 
   ###
   # Icon auto-generator
   ###
-  flutter_launcher_icons: "^0.9.0"
+  flutter_launcher_icons: ^0.13.1
 
   ###
   # Splash Screen auto-generator
   ###
-  flutter_native_splash: "^1.1.8"
+  flutter_native_splash: ^2.4.0
 
 flutter:
   # The following line ensures that the Material Icons font is
