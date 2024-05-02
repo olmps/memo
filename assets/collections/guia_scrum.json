@@ -3,7 +3,11 @@
   "name": "Guia do Scrum",
   "description": "O guia do scrum é um documento pequeno, que descreve tudo o que existe no Scrum. Muitas pessoas que dizem conhecer o Scrum, nunca leram o documento. Não pode ser pela quantidade de páginas, que são menos de 20. O guia do scrum estabelece pilares, valores, artefatos, papéis e responsabilidades para que uma equipe possa organizar o seu fluxo de trabalho, encontrando formas de priorizar o trabalho a ser realizado, acompanhar dificuldades e progresso, revisar o trabalho feito e ainda garantir ações de melhoria ao longo do tempo.",
   "category": "Scrum",
-  "tags": ["agile", "scrum"],
+  "tags": [
+    "agile",
+    "scrum"
+  ],
+  "isAvailable": true,
   "contributors": [
     {
       "name": "Daniel Wildt",

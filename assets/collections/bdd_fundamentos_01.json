@@ -3,7 +3,11 @@
   "name": "BDD - Fundamentos",
   "description": "Existem diversos paradigmas de desenvolvimento de software. Dentre estes, está o desenvolvimento orientado a comportamento (BDD). Neste deck, vamos conhecer um pouco sobre o BDD, uma das melhores formas de otimizar tanto seu processo de desenvolvimento quanto o produto final gerado.",
   "category": "Testes",
-  "tags": ["tests", "bdd"],
+  "tags": [
+    "tests",
+    "bdd"
+  ],
+  "isAvailable": true,
   "contributors": [
     {
       "name": "Nicolas Nascimento",

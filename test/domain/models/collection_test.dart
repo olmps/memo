@@ -16,6 +16,7 @@ void main() {
       description: 'description',
       category: 'category',
       tags: const [],
+      isAvailable: false,
       contributors: contributors ?? const [Contributor(name: 'name')],
       uniqueMemosAmount: uniqueMemosAmount,
       executionsAmounts: executionsAmounts,

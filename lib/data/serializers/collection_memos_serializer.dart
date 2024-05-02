@@ -11,6 +11,7 @@ class CollectionMemosKeys {
   static const contributors = 'contributors';
   static const tags = 'tags';
   static const memosMetadata = 'memos';
+  static const isAvailable = 'isAvailable';
 }
 
 class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<String, dynamic>> {
@@ -23,6 +24,7 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
     final name = json[CollectionMemosKeys.name] as String;
     final description = json[CollectionMemosKeys.description] as String;
     final category = json[CollectionMemosKeys.category] as String;
+    final isAvailable = json[CollectionMemosKeys.isAvailable] as bool;
 
     final tags = List<String>.from(json[CollectionMemosKeys.tags] as List);
 
@@ -40,6 +42,7 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
       tags: tags,
       memosMetadata: memosMetadata,
       contributors: contributors,
+      isAvailable: isAvailable,
     );
   }
 
@@ -52,5 +55,6 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
         CollectionMemosKeys.tags: collection.tags,
         CollectionMemosKeys.memosMetadata: collection.memosMetadata.map(memoMetadataSerializer.to).toList(),
         CollectionMemosKeys.contributors: collection.contributors.map(contributorSerializer.to).toList(),
+        CollectionMemosKeys.isAvailable: collection.isAvailable,
       };
 }

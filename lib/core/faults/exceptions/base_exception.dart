@@ -43,4 +43,7 @@ enum ExceptionType {
   // Validation
   emptyField,
   fieldLengthExceeded,
+
+  // PurchaseException
+  failedPurchase
 }

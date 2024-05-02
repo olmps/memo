@@ -15,13 +15,14 @@ void main() {
     description: 'This collection represents a collection.',
     category: 'Category',
     tags: const ['Tag 1', 'Tag 2'],
+    isAvailable: false,
     contributors: [const Contributor(name: 'name')],
     memosMetadata: [
       MemoCollectionMetadata(
         uniqueId: '1',
         rawQuestion: fakes.question,
         rawAnswer: fakes.answer,
-      )
+      ),
     ],
   );
 
@@ -71,6 +72,13 @@ void main() {
     expect(
       () {
         final rawCollection = completeFixture()..remove(CollectionMemosKeys.tags);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.isAvailable);
         serializer.from(rawCollection);
       },
       throwsA(isA<TypeError>()),

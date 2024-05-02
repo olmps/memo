@@ -30,6 +30,9 @@ const collectionsSectionHeaderSeeAll = 'Ver todos';
 
 const collectionsStartNow = 'Começar Agora';
 
+const collectionPurchase = 'Deseja comprar este Deck?';
+const collectionSuccessPurchase = 'Deck comprado com sucesso!';
+
 String collectionsEmptyTitleSegment(CollectionsSegment segment) {
   switch (segment) {
     case CollectionsSegment.explore:
@@ -186,6 +189,7 @@ const memos = 'Memos';
 const next = 'Próximo';
 const cancel = 'Cancelar';
 const remove = 'Remover';
+const purchase = 'Comprar';
 
 const recallLevel = 'Nível de Fixação';
 

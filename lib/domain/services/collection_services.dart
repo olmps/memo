@@ -23,6 +23,9 @@ abstract class CollectionServices {
 
   /// Streams a [CollectionStatus] - of [collectionId] - which emits a new event when any change occurs.
   Future<Stream<CollectionStatus>> listenToCollectionStatus({required String collectionId});
+
+  /// Get the collection - of [id] - and change the state of [isAvailable].
+  Future<void> getPurchaseCollection({required String id, required bool isAvailable});
 }
 
 class CollectionServicesImpl implements CollectionServices {
@@ -87,4 +90,8 @@ class CollectionServicesImpl implements CollectionServices {
       return _mapCollectionToCollectionStatus(collection);
     });
   }
+
+  @override
+  Future<void> getPurchaseCollection({required String id, required bool isAvailable}) =>
+      collectionRepo.updatePurchaseCollection(id: id, isAvailable: isAvailable);
 }

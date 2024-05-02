@@ -41,5 +41,6 @@ Widget buildCollectionCardFromItem(
     progressValue: progressValue,
     progressSemanticLabel: progressSemanticLabel,
     onTap: onTap,
+    isAvailable: item.isAvailable,
   );
 }

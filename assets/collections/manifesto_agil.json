@@ -3,7 +3,10 @@
   "name": "Manifesto Ágil",
   "description": "Em Fevereiro de 2001, no Snowbird ski resort em Utah, 17 pessoas se apresentam para falar, se divertir e encontrar caminhos comuns nas práticas de engenharia e organização de projetos que vinham testando, validando e aprendendo. O que emerge deste encontro de 2 dias foi o Agile ‘Software Development’ Manifesto. Representantes de diferentes metodologias estavam presentes nesta data: Extreme Programming, SCRUM, DSDM, Adaptive Software Development, Crystal, Feature-Driven Development, Pragmatic Programming, e outras pessoas que eram simpáticas a necessidade de alternativas para projetos direcionados por documentação, normalmente direcionados por processos de desenvolvimento de software pesados. Todos signatários terminam o encontro com o termo Agile, termo que aparece em cena por indicação de Martin Fowler, que já aparecia na cena de eXtreme Programming anos anteriores.",
   "category": "Metodologia Ágil",
-  "tags": ["agile"],
+  "tags": [
+    "agile"
+  ],
+  "isAvailable": true,
   "contributors": [
     {
       "name": "Daniel Wildt",

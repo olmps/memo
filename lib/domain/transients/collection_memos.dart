@@ -14,6 +14,7 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
     required this.tags,
     required this.contributors,
     required this.memosMetadata,
+    required this.isAvailable,
     int uniqueMemoExecutionsAmount = 0,
   })  : _uniqueMemoExecutionsAmount = uniqueMemoExecutionsAmount,
         assert(memosMetadata.isNotEmpty, 'must not be an empty list of memos'),
@@ -41,6 +42,9 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
   final List<Contributor> contributors;
 
   @override
+  final bool isAvailable;
+
+  @override
   int get uniqueMemosAmount => memosMetadata.length;
 
   @override
@@ -64,5 +68,6 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
         _uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
         memosMetadata,
+        isAvailable,
       ];
 }

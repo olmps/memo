@@ -16,6 +16,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
     required this.tags,
     required this.uniqueMemosAmount,
     required this.contributors,
+    required this.isAvailable,
     this.uniqueMemoExecutionsAmount = 0,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
@@ -59,6 +60,10 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   /// `true` if this [Collection] has executed (at least once) all of its `Memo`s.
   bool get isCompleted => uniqueMemoExecutionsAmount == uniqueMemosAmount;
 
+  /// `true` if this [Collection] is available or has already been purchased.
+  @override
+  final bool isAvailable;
+
   @override
   List<Object?> get props => [
         id,
@@ -69,6 +74,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
         contributors,
         uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
+        isAvailable,
         ...super.props,
       ];
 }
@@ -79,6 +85,9 @@ abstract class CollectionMetadata {
   String get name;
   String get description;
   String get category;
+
+  /// Informs if the deck is paid or free.
+  bool get isAvailable;
 
   /// Abstract tags that are used to group and identify this collection.
   List<String> get tags;

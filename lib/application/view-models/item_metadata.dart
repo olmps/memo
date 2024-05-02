@@ -15,15 +15,22 @@ class CollectionsCategoryMetadata extends ItemMetadata {
 }
 
 abstract class CollectionItem extends ItemMetadata {
-  CollectionItem({required this.id, required this.name, required this.category, required this.tags});
+  CollectionItem({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.tags,
+    required this.isAvailable,
+  });
 
   final String id;
   final String name;
   final String category;
   final List<String> tags;
+  final bool isAvailable;
 
   @override
-  List<Object?> get props => [id, name, category, tags];
+  List<Object?> get props => [id, name, category, tags, isAvailable];
 }
 
 /// Represents a collection that have been fully executed - where no pristine memos are left.
@@ -34,7 +41,8 @@ class CompletedCollectionItem extends CollectionItem {
     required String name,
     required String category,
     required List<String> tags,
-  }) : super(id: id, name: name, category: category, tags: tags);
+    required bool isAvailable,
+  }) : super(id: id, name: name, category: category, tags: tags, isAvailable: isAvailable);
 
   final double recallLevel;
   String get readableRecall => (recallLevel * 100).round().toString();
@@ -52,7 +60,8 @@ class IncompleteCollectionItem extends CollectionItem {
     required String name,
     required String category,
     required List<String> tags,
-  }) : super(id: id, name: name, category: category, tags: tags);
+    required bool isAvailable,
+  }) : super(id: id, name: name, category: category, tags: tags, isAvailable: isAvailable);
 
   final int executedUniqueMemos;
   final int totalUniqueMemos;
@@ -75,6 +84,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       name: collection.name,
       category: collection.category,
       tags: collection.tags,
+      isAvailable: collection.isAvailable,
     );
   } else {
     return IncompleteCollectionItem(
@@ -84,6 +94,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       name: collection.name,
       category: collection.category,
       tags: collection.tags,
+      isAvailable: collection.isAvailable,
     );
   }
 }

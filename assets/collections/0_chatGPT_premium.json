@@ -1,0 +1,42 @@
+{
+    "id": "0_chatGPT_premium",
+    "name": "teste",
+    "description": "teste",
+    "category": "Premium",
+    "tags": [
+        "ChatGPT"
+    ],
+    "isAvailable": false,
+    "contributors": [
+        {
+            "name": "chatGPT",
+            "url": "https://www.linkedin.com/",
+            "imageUrl": "https://media-exp1.licdn.com/dms/image/C4E03AQFYmdJJeE9gmA/profile-displayphoto-shrink_400_400/0/1517688960443?e=1631750400&v=beta&t=bpxRB_CL0-3CaT4nzadf1PKpSblm2I_Z7yjm6gEdaBM"
+        }
+    ],
+    "memos": [
+        {
+            "uniqueId": "03c9a8d5-9e27-4ec2-8a3c-7bf20431b890",
+            "question": [
+                {
+                    "insert": "Testes e mais testes\n"
+                }
+            ],
+            "answer": [
+                {
+                    "insert": "Isso é mais conhecido como "
+                },
+                {
+                    "insert": "testes",
+                    "attributes": {
+                        "bold": true,
+                        "underline": true
+                    }
+                },
+                {
+                    "insert": ".\n"
+                }
+            ]
+        }
+    ]
+}

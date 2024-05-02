@@ -3,7 +3,12 @@
   "name": "Ecossistema do Flutter - Fundamentos",
   "description": "\"Flutter é um kit de desenvolvimento de interface de usuário (UI toolkit), de código aberto, criado pelo Google, que possibilita a criação de aplicativos compilados nativamente. Atualmente pode compilar para Android, iOS, Windows, Mac, Linux, Google Fuchsia e Web.\" - Wikipedia, 2021.",
   "category": "Flutter",
-  "tags": ["flutter", "framework", "cross-platform"],
+  "tags": [
+    "flutter",
+    "framework",
+    "cross-platform"
+  ],
+  "isAvailable": true,
   "contributors": [
     {
       "name": "@matuella",
