@@ -6,7 +6,9 @@
     "tags": [
         "ChatGPT"
     ],
-    "isAvailable": false,
+    "isPremium": true,
+    "appStoreId": "com.olmps.memo_099_in_app_purchase_deck",
+    "playStoreId": null,
     "contributors": [
         {
             "name": "chatGPT",

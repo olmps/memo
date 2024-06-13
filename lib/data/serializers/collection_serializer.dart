@@ -14,7 +14,8 @@ class CollectionKeys {
   static const executionsAmounts = 'executionsAmounts';
   static const timeSpentInMillis = 'timeSpentInMillis';
   static const contributors = 'contributors';
-  static const isAvailable = 'isAvailable';
+  static const isPremium = 'isPremium';
+  static const appStoreId = 'appStoreId';
 }
 
 class CollectionSerializer implements Serializer<Collection, Map<String, dynamic>> {
@@ -26,7 +27,6 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
     final name = json[CollectionKeys.name] as String;
     final description = json[CollectionKeys.description] as String;
     final category = json[CollectionKeys.category] as String;
-    final isAvailable = json[CollectionKeys.isAvailable] as bool;
 
     final rawTags = json[CollectionKeys.tags] as List;
     final tags = List<String>.from(rawTags);
@@ -43,6 +43,10 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
     final rawContributors = List<Map<String, dynamic>>.from(json[CollectionKeys.contributors] as List);
     final contributors = rawContributors.map(contributorSerializer.from).toList();
 
+    final isPremium = json[CollectionKeys.isPremium] as bool;
+
+    final appStoreId = json[CollectionKeys.appStoreId] as String?;
+
     return Collection(
       id: id,
       name: name,
@@ -54,7 +58,8 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
       executionsAmounts: executionsAmounts ?? {},
       timeSpentInMillis: timeSpentInMillis ?? 0,
       contributors: contributors,
-      isAvailable: isAvailable,
+      isPremium: isPremium,
+      appStoreId: appStoreId ?? '',
     );
   }
 
@@ -70,6 +75,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
         CollectionKeys.executionsAmounts: collection.executionsAmounts.map((key, value) => MapEntry(key.raw, value)),
         CollectionKeys.contributors: collection.contributors.map(contributorSerializer.to),
         CollectionKeys.timeSpentInMillis: collection.timeSpentInMillis,
-        CollectionKeys.isAvailable: collection.isAvailable,
+        CollectionKeys.isPremium: collection.isPremium,
+        CollectionKeys.appStoreId: collection.appStoreId,
       };
 }

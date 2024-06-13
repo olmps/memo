@@ -45,5 +45,6 @@ enum ExceptionType {
   fieldLengthExceeded,
 
   // PurchaseException
-  failedPurchase
+  purchaseProductFailed,
+  failedPurchase,
 }

@@ -38,9 +38,6 @@ abstract class CollectionRepository {
     required int timeSpentInMillis,
     int? uniqueExecutionsAmount,
   });
-
-  /// Updates a [Collection] - of [isAvailable] - with confirmation of the [id] and release of the deck.
-  Future<void> updatePurchaseCollection({required String id, required bool isAvailable});
 }
 
 class CollectionRepositoryImpl implements CollectionRepository {
@@ -93,7 +90,8 @@ class CollectionRepositoryImpl implements CollectionRepository {
               CollectionKeys.contributors: collection.contributors.map(_contributorSerializer.to),
               CollectionKeys.uniqueMemosAmount: collection.uniqueMemosAmount,
               CollectionKeys.uniqueMemoExecutionsAmount: collection.uniqueMemoExecutionsAmount,
-              CollectionKeys.isAvailable: collection.isAvailable,
+              CollectionKeys.isPremium: collection.isPremium,
+              CollectionKeys.appStoreId: collection.appStoreId,
             },
           )
           .toList(),
@@ -126,15 +124,6 @@ class CollectionRepositoryImpl implements CollectionRepository {
           CollectionKeys.executionsAmounts: executionsAmounts.map((key, value) => MapEntry(key.raw, value)),
           CollectionKeys.timeSpentInMillis: timeSpentInMillis,
           if (uniqueExecutionsAmount != null) CollectionKeys.uniqueMemoExecutionsAmount: uniqueExecutionsAmount,
-        },
-        store: _collectionStore,
-      );
-
-  @override
-  Future<void> updatePurchaseCollection({required String id, required bool isAvailable}) => _db.put(
-        id: id,
-        object: <String, dynamic>{
-          CollectionKeys.isAvailable: isAvailable,
         },
         store: _collectionStore,
       );

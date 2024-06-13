@@ -16,7 +16,8 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
     required this.tags,
     required this.uniqueMemosAmount,
     required this.contributors,
-    required this.isAvailable,
+    required this.isPremium,
+    required this.appStoreId,
     this.uniqueMemoExecutionsAmount = 0,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
@@ -48,6 +49,13 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   @override
   final List<Contributor> contributors;
 
+  /// `true` if this [Collection] is a premium.
+  @override
+  final bool isPremium;
+
+  @override
+  final String appStoreId;
+
   @override
   final int uniqueMemosAmount;
 
@@ -60,10 +68,6 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   /// `true` if this [Collection] has executed (at least once) all of its `Memo`s.
   bool get isCompleted => uniqueMemoExecutionsAmount == uniqueMemosAmount;
 
-  /// `true` if this [Collection] is available or has already been purchased.
-  @override
-  final bool isAvailable;
-
   @override
   List<Object?> get props => [
         id,
@@ -72,9 +76,10 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
         category,
         tags,
         contributors,
+        isPremium,
+        appStoreId,
         uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
-        isAvailable,
         ...super.props,
       ];
 }
@@ -86,14 +91,17 @@ abstract class CollectionMetadata {
   String get description;
   String get category;
 
-  /// Informs if the deck is paid or free.
-  bool get isAvailable;
-
   /// Abstract tags that are used to group and identify this collection.
   List<String> get tags;
 
   /// Contributors (or owners) that have created (or made changes) to this collection.
   List<Contributor> get contributors;
+
+  /// Informs whether the collection is premium or not.
+  bool get isPremium;
+
+  /// App store id for this collection.
+  String get appStoreId;
 
   /// Total amount of unique `Memo`s associated with this collection.
   int get uniqueMemosAmount;

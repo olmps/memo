@@ -37,27 +37,31 @@ class CollectionsListView extends ConsumerWidget {
       }
     });
 
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        // Builds the respective widget based on the item's `ItemMetadata` subtype.
-        final item = items[index];
+    return RefreshIndicator(
+      onRefresh: vm.onRefresh,
+      child: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          // Builds the respective widget based on the item's `ItemMetadata` subtype.
+          final item = items[index];
 
-        if (item is CollectionsCategoryMetadata) {
-          return _CollectionsSectionHeader(title: item.name)
-              .withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.small);
-        } else if (item is CollectionItem) {
-          return buildCollectionCardFromItem(
-            item,
-            padding: context.symmetricInsets(vertical: Spacing.large, horizontal: Spacing.small),
-            onTap: item.isAvailable
-                ? () => readCoordinator(ref).navigateToCollectionDetails(item.id)
-                : () async => collectionPurchaseBottomSheet(context, () => vm.purchaseCollection(item.id)),
-          ).withOnlyPadding(context, bottom: Spacing.medium);
-        }
+          if (item is CollectionsCategoryMetadata) {
+            return _CollectionsSectionHeader(title: item.name)
+                .withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.small);
+          } else if (item is CollectionItem) {
+            return buildCollectionCardFromItem(
+              item,
+              padding: context.symmetricInsets(vertical: Spacing.large, horizontal: Spacing.small),
+              onTap: item.isVisible
+                  ? () async => collectionPurchaseBottomSheet(context, () => vm.purchaseCollection(item.id))
+                  : () => readCoordinator(ref).navigateToCollectionDetails(item.id),
+              isVisible: item.isVisible,
+            ).withOnlyPadding(context, bottom: Spacing.medium);
+          }
 
-        throw InconsistentStateError.layout('Unsupported subtype (${item.runtimeType}) of `CollectionItemMetadata`');
-      },
+          throw InconsistentStateError.layout('Unsupported subtype (${item.runtimeType}) of `CollectionItemMetadata`');
+        },
+      ),
     );
   }
 }

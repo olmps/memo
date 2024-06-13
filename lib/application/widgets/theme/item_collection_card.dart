@@ -9,6 +9,7 @@ Widget buildCollectionCardFromItem(
   required EdgeInsets padding,
   bool hasBorder = true,
   VoidCallback? onTap,
+  bool isVisible = false,
 }) {
   String? progressDescription;
   double? progressValue;
@@ -41,6 +42,6 @@ Widget buildCollectionCardFromItem(
     progressValue: progressValue,
     progressSemanticLabel: progressSemanticLabel,
     onTap: onTap,
-    isAvailable: item.isAvailable,
+    isVisible: isVisible,
   );
 }

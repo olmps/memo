@@ -11,7 +11,9 @@ class CollectionMemosKeys {
   static const contributors = 'contributors';
   static const tags = 'tags';
   static const memosMetadata = 'memos';
-  static const isAvailable = 'isAvailable';
+  static const isPremium = 'isPremium';
+  static const appStoreId = 'appStoreId';
+  static const playStoreId = 'playStoreId';
 }
 
 class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<String, dynamic>> {
@@ -24,7 +26,9 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
     final name = json[CollectionMemosKeys.name] as String;
     final description = json[CollectionMemosKeys.description] as String;
     final category = json[CollectionMemosKeys.category] as String;
-    final isAvailable = json[CollectionMemosKeys.isAvailable] as bool;
+    final isPremium = json[CollectionMemosKeys.isPremium] as bool?;
+    final appStoreId = json[CollectionMemosKeys.appStoreId] as String?;
+    final playStoreId = json[CollectionMemosKeys.playStoreId] as String?;
 
     final tags = List<String>.from(json[CollectionMemosKeys.tags] as List);
 
@@ -42,7 +46,9 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
       tags: tags,
       memosMetadata: memosMetadata,
       contributors: contributors,
-      isAvailable: isAvailable,
+      isPremium: isPremium ?? false,
+      appStoreId: appStoreId ?? '',
+      playStoreId: playStoreId,
     );
   }
 
@@ -55,6 +61,8 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
         CollectionMemosKeys.tags: collection.tags,
         CollectionMemosKeys.memosMetadata: collection.memosMetadata.map(memoMetadataSerializer.to).toList(),
         CollectionMemosKeys.contributors: collection.contributors.map(contributorSerializer.to).toList(),
-        CollectionMemosKeys.isAvailable: collection.isAvailable,
+        CollectionMemosKeys.isPremium: collection.isPremium,
+        CollectionMemosKeys.appStoreId: collection.appStoreId,
+        CollectionMemosKeys.playStoreId: collection.playStoreId,
       };
 }

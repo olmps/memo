@@ -20,17 +20,18 @@ abstract class CollectionItem extends ItemMetadata {
     required this.name,
     required this.category,
     required this.tags,
-    required this.isAvailable,
+    required this.isVisible,
   });
 
   final String id;
   final String name;
   final String category;
   final List<String> tags;
-  final bool isAvailable;
+
+  final bool isVisible;
 
   @override
-  List<Object?> get props => [id, name, category, tags, isAvailable];
+  List<Object?> get props => [id, name, category, tags, isVisible];
 }
 
 /// Represents a collection that have been fully executed - where no pristine memos are left.
@@ -41,8 +42,14 @@ class CompletedCollectionItem extends CollectionItem {
     required String name,
     required String category,
     required List<String> tags,
-    required bool isAvailable,
-  }) : super(id: id, name: name, category: category, tags: tags, isAvailable: isAvailable);
+    required bool isVisible,
+  }) : super(
+          id: id,
+          name: name,
+          category: category,
+          tags: tags,
+          isVisible: isVisible,
+        );
 
   final double recallLevel;
   String get readableRecall => (recallLevel * 100).round().toString();
@@ -60,8 +67,14 @@ class IncompleteCollectionItem extends CollectionItem {
     required String name,
     required String category,
     required List<String> tags,
-    required bool isAvailable,
-  }) : super(id: id, name: name, category: category, tags: tags, isAvailable: isAvailable);
+    required bool isVisibile,
+  }) : super(
+          id: id,
+          name: name,
+          category: category,
+          tags: tags,
+          isVisible: isVisibile,
+        );
 
   final int executedUniqueMemos;
   final int totalUniqueMemos;
@@ -84,7 +97,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       name: collection.name,
       category: collection.category,
       tags: collection.tags,
-      isAvailable: collection.isAvailable,
+      isVisible: status.isVisible,
     );
   } else {
     return IncompleteCollectionItem(
@@ -94,7 +107,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       name: collection.name,
       category: collection.category,
       tags: collection.tags,
-      isAvailable: collection.isAvailable,
+      isVisibile: status.isVisible,
     );
   }
 }

@@ -8,7 +8,6 @@
     "framework",
     "cross-platform"
   ],
-  "isAvailable": true,
   "contributors": [
     {
       "name": "@matuella",

@@ -21,7 +21,7 @@ class CollectionCard extends ConsumerWidget {
     required this.name,
     required this.tags,
     required this.padding,
-    required this.isAvailable,
+    required this.isVisible,
     this.hasBorder = true,
     this.progressDescription,
     this.progressValue,
@@ -55,7 +55,7 @@ class CollectionCard extends ConsumerWidget {
   final VoidCallback? onTap;
 
   /// Indicator if deck is available.
-  final bool isAvailable;
+  final bool isVisible;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,7 +84,7 @@ class CollectionCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Flexible(
-                  child: !isAvailable ? _buildLockedCollection(context, firstRowElements, theme) : firstRowElements,
+                  child: isVisible ? _buildLockedCollection(context, firstRowElements, theme) : firstRowElements,
                 ),
                 if (progressDescription != null && progressValue != null) ...[
                   context.verticalBox(Spacing.large),

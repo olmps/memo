@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
 import 'package:memo/core/faults/exceptions/base_exception.dart';
-import 'package:memo/core/faults/exceptions/purchase_exception.dart';
+import 'package:memo/domain/services/collection_purchase_services.dart';
 import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/transients/collection_status.dart';
 import 'package:meta/meta.dart';
 
 final collectionsVM = StateNotifierProvider<CollectionsVM, CollectionsState>((ref) {
-  return CollectionsVMImpl(ref.read(collectionServices));
+  return CollectionsVMImpl(ref.read(collectionServices), ref.read(collectionPurchaseServices));
 });
 
 /// Segment used to filter the current state of the [CollectionsVM].
@@ -21,6 +21,9 @@ const availableSegments = CollectionsSegment.values;
 
 abstract class CollectionsVM extends StateNotifier<CollectionsState> {
   CollectionsVM(CollectionsState state) : super(state);
+
+  /// Updates the collections list when connected to the internet.
+  Future<void> onRefresh();
 
   /// Updates the current [state] with [segment].
   ///
@@ -32,26 +35,28 @@ abstract class CollectionsVM extends StateNotifier<CollectionsState> {
 }
 
 class CollectionsVMImpl extends CollectionsVM {
-  CollectionsVMImpl(this._services) : super(LoadingCollectionsState(availableSegments.first)) {
+  CollectionsVMImpl(this._services, this._purchaseServices) : super(LoadingCollectionsState(availableSegments.first)) {
     _addCollectionsListeners();
   }
 
   final CollectionServices _services;
+  final CollectionPurchaseServices _purchaseServices;
 
   StreamSubscription<List<CollectionStatus>>? _statusListener;
   List<CollectionItem> _cachedCollectionItems = [];
 
   @override
+  Future<void> onRefresh() async {
+    await _addCollectionsListeners();
+  }
+
+  @override
   Future<void> purchaseCollection(String id) async {
-    final index = _cachedCollectionItems.indexWhere((collection) => collection.id == id);
-    final collection = _cachedCollectionItems[index];
-
-    if (index != -1 && !collection.isAvailable) {
-      await _services.getPurchaseCollection(id: id, isAvailable: true);
-
+    try {
+      await _purchaseServices.purchaseCollection(id: id);
       state = PurchaseCollectionSuccess(state.currentSegment);
-    } else {
-      state = PurchaseCollectionFailed(PurchaseException.failedPurchase(), state.currentSegment);
+    } on BaseException catch (exception) {
+      state = PurchaseCollectionFailed(exception, state.currentSegment);
     }
     _updateToLoadedStateWithCachedMetadata();
   }
