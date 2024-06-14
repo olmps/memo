@@ -30,9 +30,7 @@ class CollectionsListView extends ConsumerWidget {
         Navigator.of(context).pop();
         showSnackBar(
           ref,
-          const SnackBar(
-            content: Text(strings.collectionSuccessPurchase),
-          ),
+          const SnackBar(content: Text(strings.collectionSuccessPurchase)),
         );
       }
     });

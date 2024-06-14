@@ -55,7 +55,7 @@ class CollectionServicesImpl implements CollectionServices {
       final isAvailbleList = await collectionPurchaseRepo.isAvailable();
       if (isAvailbleList.isNotEmpty) {
         return collectionsStream.asyncMap(
-          (collections) async {
+          (collections) {
             final mappedStatuses = collections.map(_mapCollectionToCollectionStatus).toList();
             return Future.wait(mappedStatuses);
           },
@@ -65,7 +65,7 @@ class CollectionServicesImpl implements CollectionServices {
       final errorCode = PurchasesErrorHelper.getErrorCode(exception);
       if (errorCode == PurchasesErrorCode.offlineConnectionError) {
         return collectionsStream.asyncMap(
-          (collections) async {
+          (collections) {
             final offlineCollections = collections.where((collection) => !collection.isPremium).toList();
             final mappedStatuses = offlineCollections.map(_mapCollectionToCollectionStatus).toList();
             return Future.wait(mappedStatuses);
