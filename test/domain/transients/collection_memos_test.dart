@@ -15,8 +15,7 @@ void main() {
       description: 'description',
       category: 'category',
       tags: const [],
-      isPremium: false,
-      appStoreId: 'appStoreId',
+      isAvailable: false,
       contributors: contributors ?? const [Contributor(name: 'name')],
       memosMetadata:
           memosMetadata ?? [MemoCollectionMetadata(uniqueId: '1', rawAnswer: const [], rawQuestion: const [])],

@@ -8,8 +8,7 @@
     "Tag 1",
     "Tag 2"
   ],
-  "isPremium": false,
-  "appStoreId": "appStoreId",
+  "isAvailable": false,
   "uniqueMemosAmount": 1,
   "uniqueMemoExecutionsAmount": 0,
   "executionsAmounts": {

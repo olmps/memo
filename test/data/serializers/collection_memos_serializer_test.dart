@@ -15,8 +15,7 @@ void main() {
     description: 'This collection represents a collection.',
     category: 'Category',
     tags: const ['Tag 1', 'Tag 2'],
-    isPremium: false,
-    appStoreId: 'appStoreId',
+    isAvailable: false,
     contributors: [const Contributor(name: 'name')],
     memosMetadata: [
       MemoCollectionMetadata(
@@ -73,6 +72,13 @@ void main() {
     expect(
       () {
         final rawCollection = completeFixture()..remove(CollectionMemosKeys.tags);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
+        final rawCollection = completeFixture()..remove(CollectionMemosKeys.isAvailable);
         serializer.from(rawCollection);
       },
       throwsA(isA<TypeError>()),

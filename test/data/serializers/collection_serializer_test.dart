@@ -13,8 +13,7 @@ void main() {
     name: 'My Collection',
     description: 'This collection represents a collection.',
     category: 'Category',
-    isPremium: false,
-    appStoreId: 'appStoreId',
+    isAvailable: false,
     contributors: const [Contributor(name: 'name')],
     tags: const ['Tag 1', 'Tag 2'],
     uniqueMemosAmount: 1,
@@ -71,6 +70,13 @@ void main() {
     );
     expect(
       () {
+        final rawCollection = completeFixture()..remove(CollectionKeys.isAvailable);
+        serializer.from(rawCollection);
+      },
+      throwsA(isA<TypeError>()),
+    );
+    expect(
+      () {
         final rawCollection = completeFixture()..remove(CollectionKeys.contributors);
         serializer.from(rawCollection);
       },
@@ -104,8 +110,7 @@ void main() {
       category: 'Category',
       contributors: const [Contributor(name: 'name')],
       tags: const ['Tag 1', 'Tag 2'],
-      isPremium: false,
-      appStoreId: 'appStoreId',
+      isAvailable: false,
       uniqueMemosAmount: 1,
       uniqueMemoExecutionsAmount: 1,
       executionsAmounts: const {MemoDifficulty.easy: 1},
