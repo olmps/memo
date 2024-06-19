@@ -90,6 +90,8 @@ class CollectionRepositoryImpl implements CollectionRepository {
               CollectionKeys.contributors: collection.contributors.map(_contributorSerializer.to),
               CollectionKeys.uniqueMemosAmount: collection.uniqueMemosAmount,
               CollectionKeys.uniqueMemoExecutionsAmount: collection.uniqueMemoExecutionsAmount,
+              CollectionKeys.isPremium: collection.isPremium,
+              CollectionKeys.appStoreId: collection.appStoreId,
             },
           )
           .toList(),

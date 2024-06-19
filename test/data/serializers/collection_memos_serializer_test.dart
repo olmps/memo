@@ -15,13 +15,15 @@ void main() {
     description: 'This collection represents a collection.',
     category: 'Category',
     tags: const ['Tag 1', 'Tag 2'],
+    isPremium: false,
+    appStoreId: 'appStoreId',
     contributors: [const Contributor(name: 'name')],
     memosMetadata: [
       MemoCollectionMetadata(
         uniqueId: '1',
         rawQuestion: fakes.question,
         rawAnswer: fakes.answer,
-      )
+      ),
     ],
   );
 

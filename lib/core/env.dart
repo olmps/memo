@@ -13,6 +13,9 @@ abstract class EnvMetadata {
 
   /// `true` when running in [Env.dev].
   bool get isDev;
+
+  /// RevenueCat SDK API Key.
+  String get inAppPurchaseKey;
 }
 
 class EnvMetadataImpl implements EnvMetadata {
@@ -33,6 +36,17 @@ class EnvMetadataImpl implements EnvMetadata {
     }
 
     throw InconsistentStateError('Unsupported platform - ${Platform.operatingSystem}');
+  }
+
+  @override
+  String get inAppPurchaseKey {
+    switch (platform) {
+      case SupportedPlatform.ios:
+        return 'appl_edKVhziuBuXDpmVPASASRdEJhKc';
+      default:
+        // TODO joao: Replace with the correct key for Android
+        return 'appl_edKVhziuBuXDpmVPASASRdEJhKc';
+    }
   }
 }
 

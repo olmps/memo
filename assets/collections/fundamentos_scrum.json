@@ -3,7 +3,10 @@
   "name": "Fundamentos do Scrum",
   "description": "O Scrum é um framework de gerenciamento de projetos, da organização ao desenvolvimento ágil de produtos complexos e adaptativos com o mais alto valor possível, através de várias técnicas, utilizado desde o início de 1990 e que atualmente é utilizado em mais de 60% dos projetos ágeis em todo o mundo. - Wikipedia, 2021",
   "category": "Scrum",
-  "tags": ["agile", "scrum"],
+  "tags": [
+    "agile",
+    "scrum"
+  ],
   "contributors": [
     {
       "name": "Olympus",

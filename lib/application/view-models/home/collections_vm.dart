@@ -4,36 +4,62 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
+import 'package:memo/core/faults/exceptions/base_exception.dart';
+import 'package:memo/domain/services/collection_purchase_services.dart';
 import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/transients/collection_status.dart';
 import 'package:meta/meta.dart';
 
 final collectionsVM = StateNotifierProvider<CollectionsVM, CollectionsState>((ref) {
-  return CollectionsVMImpl(ref.read(collectionServices));
+  return CollectionsVMImpl(ref.read(collectionServices), ref.read(collectionPurchaseServices));
 });
 
 /// Segment used to filter the current state of the [CollectionsVM].
 enum CollectionsSegment { explore, review }
+
 const availableSegments = CollectionsSegment.values;
 
 abstract class CollectionsVM extends StateNotifier<CollectionsState> {
   CollectionsVM(CollectionsState state) : super(state);
 
+  /// Updates the collections list when connected to the internet.
+  Future<void> onRefresh();
+
   /// Updates the current [state] with [segment].
   ///
   /// Changing this [segment] also updates the displayed collections based on this [CollectionsSegment].
   Future<void> updateCollectionsSegment(CollectionsSegment segment);
+
+  /// Purchase a deck, comparing its [id] and updating the isAvailable state to `true`.
+  Future<void> purchaseCollection(String id);
 }
 
 class CollectionsVMImpl extends CollectionsVM {
-  CollectionsVMImpl(this._services) : super(LoadingCollectionsState(availableSegments.first)) {
+  CollectionsVMImpl(this._services, this._purchaseServices) : super(LoadingCollectionsState(availableSegments.first)) {
     _addCollectionsListeners();
   }
 
   final CollectionServices _services;
+  final CollectionPurchaseServices _purchaseServices;
 
   StreamSubscription<List<CollectionStatus>>? _statusListener;
   List<CollectionItem> _cachedCollectionItems = [];
+
+  @override
+  Future<void> onRefresh() async {
+    await _addCollectionsListeners();
+  }
+
+  @override
+  Future<void> purchaseCollection(String id) async {
+    try {
+      await _purchaseServices.purchaseCollection(id: id);
+      state = PurchaseCollectionSuccess(state.currentSegment);
+    } on BaseException catch (exception) {
+      state = PurchaseCollectionFailed(exception, state.currentSegment);
+    }
+    _updateToLoadedStateWithCachedMetadata();
+  }
 
   @override
   Future<void> updateCollectionsSegment(CollectionsSegment segment) async {
@@ -131,4 +157,17 @@ class LoadedCollectionsState extends CollectionsState {
 
   @override
   List<Object?> get props => [collectionItems, ...super.props];
+}
+
+class PurchaseCollectionFailed extends CollectionsState {
+  const PurchaseCollectionFailed(this.exception, CollectionsSegment currentSegment) : super(currentSegment);
+
+  final BaseException exception;
+
+  @override
+  List<Object?> get props => [exception, ...super.props];
+}
+
+class PurchaseCollectionSuccess extends CollectionsState {
+  const PurchaseCollectionSuccess(CollectionsSegment currentSegment) : super(currentSegment);
 }

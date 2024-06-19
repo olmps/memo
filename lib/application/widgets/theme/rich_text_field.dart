@@ -388,7 +388,6 @@ class _ThemedEditor extends ConsumerWidget {
         scrollable: true,
         padding: EdgeInsets.zero,
         autoFocus: !readOnly,
-        readOnly: readOnly,
         expands: false,
         enableInteractiveSelection: !readOnly,
         showCursor: !readOnly,

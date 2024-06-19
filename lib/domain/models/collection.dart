@@ -16,6 +16,8 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
     required this.tags,
     required this.uniqueMemosAmount,
     required this.contributors,
+    required this.isPremium,
+    required this.appStoreId,
     this.uniqueMemoExecutionsAmount = 0,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
@@ -47,6 +49,13 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   @override
   final List<Contributor> contributors;
 
+  /// `true` if this [Collection] is a premium.
+  @override
+  final bool isPremium;
+
+  @override
+  final String appStoreId;
+
   @override
   final int uniqueMemosAmount;
 
@@ -67,6 +76,8 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
         category,
         tags,
         contributors,
+        isPremium,
+        appStoreId,
         uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
         ...super.props,
@@ -85,6 +96,12 @@ abstract class CollectionMetadata {
 
   /// Contributors (or owners) that have created (or made changes) to this collection.
   List<Contributor> get contributors;
+
+  /// Informs whether the collection is premium or not.
+  bool get isPremium;
+
+  /// App store id for this collection.
+  String get appStoreId;
 
   /// Total amount of unique `Memo`s associated with this collection.
   int get uniqueMemosAmount;

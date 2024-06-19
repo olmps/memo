@@ -264,7 +264,6 @@ class _TerminalQuillEditor extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             vertical: dimens.terminalWindowHeaderHeight, horizontal: context.rawSpacing(Spacing.medium)),
         autoFocus: false,
-        readOnly: true,
         showCursor: false,
         expands: false,
         enableInteractiveSelection: false,

@@ -31,6 +31,7 @@ abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
       await db.transaction((transaction) async {
         currentTransaction = transaction;
         await run();
+        currentTransaction = null;
       });
       // ignore: avoid_catches_without_on_clauses
     } catch (error, stack) {
@@ -133,7 +134,7 @@ class SembastDatabaseImpl extends SembastDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?> get({required String id, required String store}) {
+  Future<Map<String, dynamic>?> get({required String id, required String store}) async {
     final storeMap = sembast.stringMapStoreFactory.store(store);
     return storeMap.record(id).get(currentTransaction ?? db);
   }
