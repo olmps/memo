@@ -16,6 +16,8 @@ void main() {
       description: 'description',
       category: 'category',
       tags: const [],
+      isPremium: false,
+      appStoreId: 'appStoreId',
       contributors: contributors ?? const [Contributor(name: 'name')],
       uniqueMemosAmount: uniqueMemosAmount,
       executionsAmounts: executionsAmounts,

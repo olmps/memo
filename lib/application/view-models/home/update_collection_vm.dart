@@ -94,7 +94,6 @@ class UpdateCollectionVMImpl extends UpdateCollectionVM {
     final loadedState = state as UpdateCollectionLoaded;
     try {
       // TODO(ggirotto): Call services to save the collection
-
     } on BaseException catch (exception) {
       state = UpdateCollectionFailedSaving(
         exception,
