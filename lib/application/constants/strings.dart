@@ -30,6 +30,7 @@ const collectionsSectionHeaderSeeAll = 'Ver todos';
 
 const collectionsStartNow = 'Começar Agora';
 
+const collectionPurchaseDeck = r'Comprar deck - R$ 0.99';
 const collectionPurchase = 'Deseja comprar este Deck?';
 const collectionSuccessPurchase = 'Deck comprado com sucesso!';
 
@@ -97,6 +98,7 @@ const jumpTo = 'Pular para';
 // Tags Component
 //
 const tags = 'Tags';
+const premium = 'PREMIUM';
 const tagsHint = 'Adicione as tags...';
 const suggestions = 'Sugestões';
 const addTags = 'Adicionar Tags';

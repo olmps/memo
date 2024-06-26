@@ -6,6 +6,8 @@ import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/pages/details/contributor_view.dart';
 import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/utils/bottom_sheet.dart';
+import 'package:memo/application/utils/scaffold_messenger.dart';
 import 'package:memo/application/view-models/details/collection_details_vm.dart';
 import 'package:memo/application/widgets/theme/custom_button.dart';
 import 'package:memo/application/widgets/theme/item_collection_card.dart';
@@ -18,6 +20,21 @@ class CollectionDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final memoTheme = ref.watch(themeController);
     final state = watchCollectionDetailsState(ref);
+    final id = ref.read(detailsCollectionId);
+
+    ref.listen(collectionDetailsVM(id), (_, state) {
+      if (state is PurchaseCollectionFailed) {
+        Navigator.of(context).pop();
+        showExceptionSnackBar(ref, state.exception);
+      }
+      if (state is PurchaseCollectionSuccess) {
+        Navigator.of(context).pop();
+        showSnackBar(
+          ref,
+          const SnackBar(content: Text(strings.collectionSuccessPurchase)),
+        );
+      }
+    });
 
     if (state is LoadedCollectionDetailsState) {
       final sections = <Widget>[];
@@ -84,13 +101,24 @@ class CollectionDetailsPage extends ConsumerWidget {
         child: Container(
           color: memoTheme.neutralSwatch.shade800,
           child: SafeArea(
-            child: PrimaryElevatedButton(
-              onPressed: () {
-                final id = ref.read(detailsCollectionId);
-                readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false);
-              },
-              text: strings.detailsStudyNow.toUpperCase(),
-            ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
+            child: !state.metadata.isVisible
+                ? PrimaryElevatedButton(
+                    onPressed: () {
+                      readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false);
+                    },
+                    text: strings.detailsStudyNow.toUpperCase(),
+                  ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium)
+                : SecondaryElevatedButton(
+                    backgroundColor: memoTheme.secondarySwatch,
+                    text: strings.collectionPurchaseDeck,
+                    onPressed: () async => collectionPurchaseBottomSheet(context, () {
+                      ref.watch(collectionDetailsVM(id).notifier).purchaseCollection(state.metadata.id);
+                    }),
+                  ).withSymmetricalPadding(
+                    context,
+                    vertical: Spacing.small,
+                    horizontal: Spacing.medium,
+                  ),
           ),
         ),
       );
@@ -131,3 +159,19 @@ class CollectionDetailsPage extends ConsumerWidget {
             Theme.of(context).textTheme.subtitle1?.copyWith(color: ref.watch(themeController).neutralSwatch.shade300),
       );
 }
+
+/// This Modal Bottom Sheet representing the option to purchase a specific `Collection`.
+Future<void> collectionPurchaseBottomSheet(BuildContext context, VoidCallback? onPressed) =>
+    showSnappableDraggableModalBottomSheet<void>(
+      context,
+      title: strings.collectionPurchase,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          context.verticalBox(Spacing.xLarge),
+          PrimaryElevatedButton(text: strings.purchase, onPressed: onPressed),
+          context.verticalBox(Spacing.medium),
+          SecondaryElevatedButton(text: strings.cancel, onPressed: Navigator.of(context).pop),
+        ],
+      ).withAllPadding(context, Spacing.medium),
+    );

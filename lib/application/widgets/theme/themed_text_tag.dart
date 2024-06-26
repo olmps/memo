@@ -28,7 +28,7 @@ class SecondaryTextTag extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => TextTag(
         text,
-        backgroundColor: ref.watch(themeController).secondarySwatch.shade600,
+        backgroundColor: ref.watch(themeController).premiumSwatch,
         padding: context.allInsets(Spacing.xxSmall),
         textStyle: Theme.of(context).textTheme.overline,
       );

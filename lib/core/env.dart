@@ -43,9 +43,8 @@ class EnvMetadataImpl implements EnvMetadata {
     switch (platform) {
       case SupportedPlatform.ios:
         return 'appl_edKVhziuBuXDpmVPASASRdEJhKc';
-      default:
-        // TODO joao: Replace with the correct key for Android
-        return 'appl_edKVhziuBuXDpmVPASASRdEJhKc';
+      case SupportedPlatform.android:
+        return 'goog_PlRbIRkgyhwGbBiUugCHBjzXsTL';
     }
   }
 }
