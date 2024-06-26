@@ -83,3 +83,22 @@ MaterialColor buildClassicNeutralSwatch() {
     },
   );
 }
+
+MaterialColor buildPremiumSwatch() {
+  const defaultPremium = Color(0xFFA87B05);
+  return MaterialColor(
+    defaultPremium.value,
+    const {
+      50: Color(0xFFFFF8E0),
+      100: Color(0xFFFFE6B3),
+      200: Color(0xFFFFD280),
+      300: Color(0xFFFFC04D),
+      400: Color(0xFFFFB02A),
+      500: defaultPremium,
+      600: Color(0xFF8C5E03),
+      700: Color(0xFF6B4A02),
+      800: Color(0xFF4A3601),
+      900: Color(0xFF2A2300),
+    },
+  );
+}

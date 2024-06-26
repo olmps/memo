@@ -6,7 +6,7 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/colors.dart' as colors;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
-import 'package:memo/application/constants/images.dart' as images;
+import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/memo_theme_data.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
@@ -21,7 +21,6 @@ class CollectionCard extends ConsumerWidget {
     required this.name,
     required this.tags,
     required this.padding,
-    required this.isVisible,
     this.hasBorder = true,
     this.progressDescription,
     this.progressValue,
@@ -54,9 +53,6 @@ class CollectionCard extends ConsumerWidget {
 
   final VoidCallback? onTap;
 
-  /// Indicator if deck is available.
-  final bool isVisible;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeController);
@@ -84,7 +80,7 @@ class CollectionCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Flexible(
-                  child: isVisible ? _buildLockedCollection(context, firstRowElements, theme) : firstRowElements,
+                  child: firstRowElements,
                 ),
                 if (progressDescription != null && progressValue != null) ...[
                   context.verticalBox(Spacing.large),
@@ -133,7 +129,13 @@ class CollectionCard extends ConsumerWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       spacing: tagsSpacing,
       runSpacing: tagsSpacing,
-      children: tags.map((tag) => PrimaryTextTag(tag.toUpperCase())).toList(),
+      children: tags
+          .map(
+            (tag) => tag.toUpperCase().contains(strings.premium)
+                ? SecondaryTextTag(tag.toUpperCase())
+                : PrimaryTextTag(tag.toUpperCase()),
+          )
+          .toList(),
     );
   }
 
@@ -154,26 +156,6 @@ class CollectionCard extends ConsumerWidget {
       lineColor: lineColor,
       lineBackgroundColor: theme.neutralSwatch.shade900.withOpacity(0.4),
       semanticLabel: progressSemanticLabel,
-    );
-  }
-
-  Widget _buildLockedCollection(BuildContext context, Widget child, MemoThemeData theme) {
-    return Stack(
-      children: [
-        Center(
-          child: Transform.scale(
-            scale: 2,
-            child: Image.asset(images.lockAsset, color: theme.neutralSwatch),
-          ),
-        ).withAllPadding(context, Spacing.small),
-        ImageFiltered(
-          imageFilter: ui.ImageFilter.blur(
-            sigmaX: dimens.collectionsBlurSize,
-            sigmaY: dimens.collectionsBlurSize,
-          ),
-          child: child,
-        ),
-      ],
     );
   }
 }

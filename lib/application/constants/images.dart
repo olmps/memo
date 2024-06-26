@@ -20,7 +20,6 @@ enum ImageKey {
   folder,
   italic,
   link,
-  lock,
   organize,
   settings,
   trash,
@@ -62,8 +61,6 @@ extension ImageKeyPath on ImageKey {
         return '$_editorIconsRoot/italic.png';
       case ImageKey.link:
         return '$_iconsRoot/link.png';
-      case ImageKey.lock:
-        return '$_iconsRoot/lock.png';
       case ImageKey.organize:
         return '$_iconsRoot/organize.png';
       case ImageKey.settings:
@@ -103,7 +100,6 @@ final dragAsset = ImageKey.drag.path;
 final folderAsset = ImageKey.folder.path;
 final italicAsset = ImageKey.italic.path;
 final linkAsset = ImageKey.link.path;
-final lockAsset = ImageKey.lock.path;
 final organizeAsset = ImageKey.organize.path;
 final settingsAsset = ImageKey.settings.path;
 final trashAsset = ImageKey.trash.path;
