@@ -60,7 +60,7 @@ class CollectionCard extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(name, style: Theme.of(context).textTheme.headline6),
+        Text(name, style: Theme.of(context).textTheme.headlineSmall),
         context.verticalBox(Spacing.xSmall),
         Flexible(child: _buildTagsWrap(context)),
       ],
@@ -141,7 +141,7 @@ class CollectionCard extends ConsumerWidget {
 
   Text _buildMemoryRecallTitle(BuildContext context, MemoThemeData theme) {
     final captionColor = theme.neutralSwatch.shade200;
-    final captionStyle = Theme.of(context).textTheme.caption;
+    final captionStyle = Theme.of(context).textTheme.bodySmall;
     return Text(progressDescription!, style: captionStyle?.copyWith(color: captionColor));
   }
 

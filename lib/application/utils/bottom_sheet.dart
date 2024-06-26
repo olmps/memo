@@ -41,7 +41,7 @@ Future<T?> showSnappableDraggableModalBottomSheet<T>(
         Text(
           title,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.headlineSmall,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium)
@@ -92,9 +92,9 @@ Future<T?> showDestructiveOperationModalBottomSheet<T>(
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(title, style: textTheme.subtitle1),
+        Text(title, style: textTheme.titleMedium),
         context.verticalBox(Spacing.xLarge),
-        Text(message, style: textTheme.bodyText1),
+        Text(message, style: textTheme.bodyLarge),
         context.verticalBox(Spacing.xxxLarge),
         DestructiveButton(onPressed: onDestructiveTapped, text: destructiveActionTitle),
         context.verticalBox(Spacing.medium),

@@ -114,8 +114,8 @@ class ProgressPage extends ConsumerWidget {
         TextSpan(
           text: texts[index],
           style: index.isOdd
-              ? textTheme.headline4?.copyWith(color: titleColor)
-              : textTheme.headline3?.copyWith(color: titleColor),
+              ? textTheme.headlineLarge?.copyWith(color: titleColor)
+              : textTheme.displaySmall?.copyWith(color: titleColor),
         ),
       );
     }
@@ -147,7 +147,7 @@ class _ProgressContainer extends ConsumerWidget {
       children: [
         title,
         context.verticalBox(Spacing.xSmall),
-        Text(description, style: textTheme.caption),
+        Text(description, style: textTheme.bodySmall),
       ],
     );
 

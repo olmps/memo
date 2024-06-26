@@ -112,7 +112,7 @@ class CustomTextButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeController);
     final buttonColorSwatch = color ?? theme.primarySwatch;
-    final textTheme = Theme.of(context).textTheme.button!;
+    final textTheme = Theme.of(context).textTheme.labelLarge!;
 
     Color? buttonColor(_ButtonState state) {
       switch (state) {
@@ -173,7 +173,7 @@ class _CustomElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme.button!;
+    final textTheme = Theme.of(context).textTheme.labelLarge!;
 
     Widget leadingAssetBuilder(_ButtonState state) => Image.asset(leadingAsset!, color: textTheme.color);
 

@@ -186,7 +186,7 @@ class UnderlinedUrlLink extends ConsumerWidget {
         onTap: isEnabled ? () => _handleUrlLaunch(url, onFailLaunchingUrl) : null,
         child: Text(
           text ?? url,
-          style: Theme.of(context).textTheme.caption?.copyWith(
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: ref.watch(themeController).neutralSwatch.shade300,
                 decoration: TextDecoration.underline,
               ),

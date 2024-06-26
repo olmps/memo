@@ -169,11 +169,11 @@ class RichTextField extends HookConsumerWidget {
           collapsedEditor,
           if (errorText != null) ...[
             context.verticalBox(Spacing.xxxSmall),
-            Text(errorText!, style: textTheme.caption?.copyWith(color: theme.destructiveSwatch))
+            Text(errorText!, style: textTheme.bodySmall?.copyWith(color: theme.destructiveSwatch))
                 .withOnlyPadding(context, left: Spacing.small)
           ] else if (helperText != null) ...[
             context.verticalBox(Spacing.xxxSmall),
-            Text(helperText!, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400))
+            Text(helperText!, style: textTheme.bodySmall?.copyWith(color: theme.neutralSwatch.shade400))
                 .withOnlyPadding(context, left: Spacing.small)
           ]
         ],
@@ -239,7 +239,7 @@ class _CollapsedEditor extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (hasContent) ...[
-            Text(placeholder, style: textTheme.caption?.copyWith(color: theme.neutralSwatch.shade400)),
+            Text(placeholder, style: textTheme.bodySmall?.copyWith(color: theme.neutralSwatch.shade400)),
             context.verticalBox(Spacing.small),
             Flexible(
               child: AbsorbPointer(
@@ -252,7 +252,7 @@ class _CollapsedEditor extends ConsumerWidget {
               ),
             ),
           ] else
-            Text(placeholder, style: textTheme.subtitle1)
+            Text(placeholder, style: textTheme.titleMedium)
         ],
       ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium),
     );
@@ -393,15 +393,15 @@ class _ThemedEditor extends ConsumerWidget {
         showCursor: !readOnly,
         placeholder: placeholder,
         customStyles: quill.DefaultStyles(
-          paragraph: quill.DefaultTextBlockStyle(textTheme.bodyText2!, zeroTuple, zeroTuple, null),
+          paragraph: quill.DefaultTextBlockStyle(textTheme.bodyMedium!, zeroTuple, zeroTuple, null),
           placeHolder: quill.DefaultTextBlockStyle(
-            textTheme.bodyText1!.copyWith(color: theme.neutralSwatch.shade400),
+            textTheme.bodyLarge!.copyWith(color: theme.neutralSwatch.shade400),
             zeroTuple,
             zeroTuple,
             null,
           ),
           code: quill.DefaultTextBlockStyle(
-            textTheme.bodyText1!,
+            textTheme.bodyLarge!,
             zeroTuple,
             zeroTuple,
             BoxDecoration(color: codeBackgroundColor),

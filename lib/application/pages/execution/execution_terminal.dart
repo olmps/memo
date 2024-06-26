@@ -371,7 +371,8 @@ class _TerminalActions extends HookWidget {
               Expanded(
                 child: Text(
                   strings.memoDifficulty(difficulty),
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(color: isMarkedAnswer ? highlightColor : null),
+                  style:
+                      Theme.of(context).textTheme.bodyMedium?.copyWith(color: isMarkedAnswer ? highlightColor : null),
                 ),
               ),
             ],
