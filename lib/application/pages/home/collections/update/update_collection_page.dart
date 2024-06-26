@@ -260,7 +260,7 @@ class _MemosReorderableList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
 
-    final listHeader = Text('${strings.jumpTo}...', style: textTheme.subtitle1, textAlign: TextAlign.center);
+    final listHeader = Text('${strings.jumpTo}...', style: textTheme.titleMedium, textAlign: TextAlign.center);
 
     return Theme(
       // Overrides theme to remove canvasColor and shadowColor when dragging a Memo card
@@ -321,7 +321,7 @@ class _MemosReorderableListRow extends ConsumerWidget {
       children: [
         Text(
           strings.updateMemoQuestionTitle(index + 1),
-          style: textTheme.bodyText1?.copyWith(color: theme.secondarySwatch),
+          style: textTheme.bodyLarge?.copyWith(color: theme.secondarySwatch),
         ),
         context.verticalBox(Spacing.xSmall),
         Text(metadata.question.plainContent, maxLines: 3),

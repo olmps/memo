@@ -113,8 +113,8 @@ class CustomTextField extends HookConsumerWidget {
     });
 
     final labelStyle = hasFocus.value || hasText.value
-        ? textTheme.caption?.copyWith(color: neutralSwatch.shade300)
-        : textTheme.subtitle1;
+        ? textTheme.bodySmall?.copyWith(color: neutralSwatch.shade300)
+        : textTheme.titleMedium;
 
     final textField = DecoratedBox(
       decoration: BoxDecoration(
@@ -129,7 +129,7 @@ class CustomTextField extends HookConsumerWidget {
         focusNode: focusNode,
         enabled: enabled,
         textAlign: textAlign,
-        style: textTheme.bodyText2,
+        style: textTheme.bodyMedium,
         cursorColor: theme.secondarySwatch.shade400,
         decoration: InputDecoration(
           labelText: labelText,
@@ -152,7 +152,8 @@ class CustomTextField extends HookConsumerWidget {
         if (_hasErrorText || _hasHelperText)
           Text(
             _hasErrorText ? errorText! : helperText!,
-            style: textTheme.caption?.copyWith(color: _hasErrorText ? theme.destructiveSwatch : neutralSwatch.shade400),
+            style:
+                textTheme.bodySmall?.copyWith(color: _hasErrorText ? theme.destructiveSwatch : neutralSwatch.shade400),
           ).withOnlyPadding(context, left: Spacing.small)
       ],
     );

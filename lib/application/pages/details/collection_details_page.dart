@@ -83,7 +83,7 @@ class CollectionDetailsPage extends ConsumerWidget {
           context.verticalBox(Spacing.small),
           Text(
             strings.detailsResourcesWarning,
-            style: Theme.of(context).textTheme.caption?.copyWith(color: memoTheme.neutralSwatch.shade300),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: memoTheme.neutralSwatch.shade300),
           ),
           context.verticalBox(Spacing.small),
           ResourcesList(
@@ -156,7 +156,7 @@ class CollectionDetailsPage extends ConsumerWidget {
   Widget _buildSectionTitle(BuildContext context, WidgetRef ref, String text) => Text(
         text,
         style:
-            Theme.of(context).textTheme.subtitle1?.copyWith(color: ref.watch(themeController).neutralSwatch.shade300),
+            Theme.of(context).textTheme.titleMedium?.copyWith(color: ref.watch(themeController).neutralSwatch.shade300),
       );
 }
 

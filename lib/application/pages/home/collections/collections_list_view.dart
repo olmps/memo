@@ -52,7 +52,7 @@ class _CollectionsSectionHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titleColor = ref.watch(themeController).neutralSwatch.shade300;
-    final sectionTitleStyle = Theme.of(context).textTheme.headline6?.copyWith(color: titleColor);
+    final sectionTitleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(color: titleColor);
     return Text(title, style: sectionTitleStyle);
   }
 }
