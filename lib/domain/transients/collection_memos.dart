@@ -16,7 +16,7 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
     required this.memosMetadata,
     required this.isPremium,
     required this.appStoreId,
-    this.playStoreId,
+    required this.playStoreId,
     int uniqueMemoExecutionsAmount = 0,
   })  : _uniqueMemoExecutionsAmount = uniqueMemoExecutionsAmount,
         assert(memosMetadata.isNotEmpty, 'must not be an empty list of memos'),
@@ -49,7 +49,8 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
   @override
   final String appStoreId;
 
-  final String? playStoreId;
+  @override
+  final String playStoreId;
 
   @override
   int get uniqueMemosAmount => memosMetadata.length;

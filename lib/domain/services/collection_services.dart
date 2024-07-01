@@ -7,7 +7,6 @@ import 'package:memo/domain/isolated_services/memory_recall_services.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/services/collection_purchase_services.dart';
 import 'package:memo/domain/transients/collection_status.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 /// Handles all domain-specific operations associated with [Collection]s.
 abstract class CollectionServices {
@@ -61,17 +60,14 @@ class CollectionServicesImpl implements CollectionServices {
           },
         );
       }
-    } on PlatformException catch (exception) {
-      final errorCode = PurchasesErrorHelper.getErrorCode(exception);
-      if (errorCode == PurchasesErrorCode.offlineConnectionError) {
-        return collectionsStream.asyncMap(
-          (collections) {
-            final offlineCollections = collections.where((collection) => !collection.isPremium).toList();
-            final mappedStatuses = offlineCollections.map(_mapCollectionToCollectionStatus).toList();
-            return Future.wait(mappedStatuses);
-          },
-        );
-      }
+    } on PlatformException catch (_) {
+      return collectionsStream.asyncMap(
+        (collections) {
+          final offlineCollections = collections.where((collection) => !collection.isPremium).toList();
+          final mappedStatuses = offlineCollections.map(_mapCollectionToCollectionStatus).toList();
+          return Future.wait(mappedStatuses);
+        },
+      );
     }
     throw InconsistentStateError.service('Missing required collection purchase information');
   }
