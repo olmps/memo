@@ -9,7 +9,7 @@
     ],
     "isPremium": true,
     "appStoreId": "com.olmps.memo_099_in_app_purchase_deck",
-    "playStoreId": null,
+    "playStoreId": "com.olmps.memo_099_in_app_purchase",
     "contributors": [
         {
             "name": "chatGPT",

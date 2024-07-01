@@ -18,6 +18,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
     required this.contributors,
     required this.isPremium,
     required this.appStoreId,
+    required this.playStoreId,
     this.uniqueMemoExecutionsAmount = 0,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
@@ -57,6 +58,9 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   final String appStoreId;
 
   @override
+  final String playStoreId;
+
+  @override
   final int uniqueMemosAmount;
 
   @override
@@ -78,6 +82,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
         contributors,
         isPremium,
         appStoreId,
+        playStoreId,
         uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
         ...super.props,
@@ -102,6 +107,9 @@ abstract class CollectionMetadata {
 
   /// App store id for this collection.
   String get appStoreId;
+
+  /// Play store id for this collection.
+  String get playStoreId;
 
   /// Total amount of unique `Memo`s associated with this collection.
   int get uniqueMemosAmount;

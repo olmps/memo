@@ -92,6 +92,7 @@ class CollectionRepositoryImpl implements CollectionRepository {
               CollectionKeys.uniqueMemoExecutionsAmount: collection.uniqueMemoExecutionsAmount,
               CollectionKeys.isPremium: collection.isPremium,
               CollectionKeys.appStoreId: collection.appStoreId,
+              CollectionKeys.playStoreId: collection.playStoreId,
             },
           )
           .toList(),

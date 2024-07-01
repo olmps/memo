@@ -38,7 +38,7 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
     final collection = await collectionRepo.getCollection(id: id);
     final isPurchased = await collectionPurchaseRepo.getPurchasesInfo();
 
-    if (isPurchased.contains(collection.appStoreId)) {
+    if (isPurchased.contains(collection.appStoreId) || isPurchased.contains(collection.playStoreId)) {
       await collectionPurchaseRepo.updatePurchaseCollection(id: id, isPremium: isPremium);
     }
   }
@@ -49,6 +49,7 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
         await collectionPurchaseRepo.purchaseInApp(storeId: collection.appStoreId);
         break;
       case SupportedPlatform.android:
+        await collectionPurchaseRepo.purchaseInApp(storeId: collection.playStoreId);
         break;
     }
   }
@@ -61,8 +62,8 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
       final isAvailable = await collectionPurchaseRepo.isAvailable();
       final isPurchased = await collectionPurchaseRepo.getPurchasesInfo();
 
-      if (isAvailable.contains(collection.appStoreId)) {
-        return !isPurchased.contains(collection.appStoreId);
+      if (isAvailable.contains(collection.appStoreId) || isAvailable.contains(collection.playStoreId)) {
+        return !isPurchased.contains(collection.appStoreId) || !isPurchased.contains(collection.playStoreId);
       }
     }
     return collection.isPremium;

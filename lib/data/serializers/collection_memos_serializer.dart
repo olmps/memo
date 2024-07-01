@@ -48,7 +48,7 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
       contributors: contributors,
       isPremium: isPremium ?? false,
       appStoreId: appStoreId ?? '',
-      playStoreId: playStoreId,
+      playStoreId: playStoreId ?? '',
     );
   }
 

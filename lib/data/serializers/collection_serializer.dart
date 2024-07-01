@@ -16,6 +16,7 @@ class CollectionKeys {
   static const contributors = 'contributors';
   static const isPremium = 'isPremium';
   static const appStoreId = 'appStoreId';
+  static const playStoreId = 'playStoreId';
 }
 
 class CollectionSerializer implements Serializer<Collection, Map<String, dynamic>> {
@@ -47,6 +48,8 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
 
     final appStoreId = json[CollectionKeys.appStoreId] as String?;
 
+    final playStoreId = json[CollectionKeys.playStoreId] as String?;
+
     return Collection(
       id: id,
       name: name,
@@ -60,6 +63,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
       contributors: contributors,
       isPremium: isPremium,
       appStoreId: appStoreId ?? '',
+      playStoreId: playStoreId ?? '',
     );
   }
 
