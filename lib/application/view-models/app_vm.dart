@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/core/env.dart';
 import 'package:memo/data/gateways/application_bundle.dart';
+import 'package:memo/data/gateways/purchase_gateway.dart';
 import 'package:memo/data/gateways/sembast.dart' as sembast;
 import 'package:memo/data/gateways/sembast_database.dart';
+import 'package:memo/data/repositories/collection_purchase_repository.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_execution_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
@@ -12,6 +15,7 @@ import 'package:memo/data/repositories/transaction_handler.dart';
 import 'package:memo/data/repositories/user_repository.dart';
 import 'package:memo/data/repositories/version_repository.dart';
 import 'package:memo/domain/isolated_services/memory_recall_services.dart';
+import 'package:memo/domain/services/collection_purchase_services.dart';
 import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/services/execution_services.dart';
 import 'package:memo/domain/services/progress_services.dart';
@@ -53,6 +57,8 @@ class AppVMImpl extends AppVM {
     }
     _hasRequestedLoading = true;
 
+    final env = envMetadata();
+
     // Set a minimum (reasonable) duration for this first load, as it may simply flick a splash screen if too fast.
     final splashMinDuration = Future<dynamic>.delayed(const Duration(milliseconds: 500));
 
@@ -64,6 +70,7 @@ class AppVMImpl extends AppVM {
     // Gateways
     final dbRepo = SembastDatabaseImpl(firstClassDependencies[0] as Database);
     final appBundle = ApplicationBundleImpl(assetBundle);
+    final purchaseGateway = PurchaseGatewayImpl(env);
 
     // Repositories
     final collectionRepo = CollectionRepositoryImpl(dbRepo, appBundle);
@@ -72,6 +79,7 @@ class AppVMImpl extends AppVM {
     final userRepo = UserRepositoryImpl(dbRepo);
     final versionRepo = VersionRepositoryImpl(dbRepo);
     final resourceRepo = ResourceRepositoryImpl(dbRepo, appBundle);
+    final collectionPurchaseRepo = CollectionPurchaseRepositoryImpl(dbRepo, purchaseGateway, collectionRepo);
 
     final transactionHandler = TransactionHandlerImpl(dbRepo);
 
@@ -79,10 +87,18 @@ class AppVMImpl extends AppVM {
     final memoryServices = MemoryRecallServicesImpl();
 
     // Services
+    final collectionPurchaseServices = CollectionPurchaseServicesImpl(
+      env: env,
+      collectionPurchaseRepo: collectionPurchaseRepo,
+      collectionRepo: collectionRepo,
+    );
+
     final collectionServices = CollectionServicesImpl(
       collectionRepo: collectionRepo,
       memoRepo: memoRepo,
       memoryServices: memoryServices,
+      collectionPurchaseRepo: collectionPurchaseRepo,
+      collectionPurchaseServices: collectionPurchaseServices,
     );
 
     final executionServices = ExecutionServicesImpl(
@@ -103,6 +119,7 @@ class AppVMImpl extends AppVM {
       executionServices: executionServices,
       progressServices: progressServices,
       resourceServices: resourceServices,
+      collectionPurchaseServices: collectionPurchaseServices,
     );
 
     // Scope-specific Services
@@ -132,12 +149,14 @@ class AppState {
     required this.executionServices,
     required this.progressServices,
     required this.resourceServices,
+    required this.collectionPurchaseServices,
   });
 
   final CollectionServices collectionServices;
   final ExecutionServices executionServices;
   final ProgressServices progressServices;
   final ResourceServices resourceServices;
+  final CollectionPurchaseServices collectionPurchaseServices;
 }
 
 // Creates uninitialized Provider for all services, which MUST BE overriden in the root `ProviderScope.overrides`.
@@ -152,4 +171,7 @@ final progressServices = Provider<ProgressServices>((_) {
 });
 final resourceServices = Provider<ResourceServices>((_) {
   throw UnimplementedError('resourceServices Provider must be overridden');
+});
+final collectionPurchaseServices = Provider<CollectionPurchaseServices>((_) {
+  throw UnimplementedError('collectionPurchaseServices Provider must be overridden');
 });

@@ -144,14 +144,14 @@ class _TagsFieldContainer extends ConsumerWidget {
 
     // Simulates `TextField.helperText` animating the label when the field is focused or not.
     final helperTitle = AnimatedDefaultTextStyle(
-      style: hasFocus ? textTheme.caption!.copyWith(color: theme.neutralSwatch.shade300) : textTheme.subtitle1!,
+      style: hasFocus ? textTheme.bodySmall!.copyWith(color: theme.neutralSwatch.shade300) : textTheme.titleMedium!,
       duration: anims.textFieldHelperTextDuration,
       child: const Text(strings.addTags),
     );
 
     final helperText = Text(
       errorText != null ? errorText! : strings.tagsAmount(tagsAmount, maxTags),
-      style: textTheme.caption?.copyWith(
+      style: textTheme.bodySmall?.copyWith(
         color: errorText != null ? theme.destructiveSwatch : theme.neutralSwatch.shade400,
       ),
     );
@@ -231,10 +231,10 @@ class _TagsTextField extends HookConsumerWidget {
         contentPadding: EdgeInsets.zero,
         fillColor: Colors.transparent,
         hintText: strings.tagsHint,
-        hintStyle: textTheme.bodyText2?.copyWith(color: theme.neutralSwatch.shade600),
+        hintStyle: textTheme.bodyMedium?.copyWith(color: theme.neutralSwatch.shade600),
       ),
       textAlignVertical: TextAlignVertical.center,
-      style: textTheme.bodyText2,
+      style: textTheme.bodyMedium,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       inputFormatters: [_TagFieldFormatter()],
@@ -280,7 +280,7 @@ class _SelectedTag extends ConsumerWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(tag, style: textTheme.caption),
+              Text(tag, style: textTheme.bodySmall),
               context.horizontalBox(Spacing.xxxSmall),
               Image.asset(images.closeAsset, height: dimens.tagsRemoveIconSize, width: dimens.tagsRemoveIconSize),
             ],

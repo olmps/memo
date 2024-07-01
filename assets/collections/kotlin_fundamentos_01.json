@@ -3,7 +3,10 @@
   "name": "Kotlin - Fundamentos",
   "description": "Nessa coleção de memórias você vai ser introduzido na linguagem de programação Kotlin. Embora ler a documentação do Kotlin seja fácil e agradável, aprender por exemplos é um tipo diferente de diversão (confira os links abaixo).",
   "category": "Kotlin",
-  "tags": ["kotlin", "linguagem de programação"],
+  "tags": [
+    "kotlin",
+    "linguagem de programação"
+  ],
   "contributors": [
     {
       "name": "Lucas Montano",

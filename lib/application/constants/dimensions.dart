@@ -11,6 +11,8 @@ const double genericBorderHeight = 2;
 const textTagBorderRadius = BorderRadius.all(Radius.circular(2));
 const double cardBorderWidth = 4;
 
+const double collectionsBlurSize = 5;
+
 const double resourceLinkEmojiTextSize = 20;
 
 const double iconSize = 24;

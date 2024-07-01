@@ -55,7 +55,7 @@ ThemeData buildThemeData({
     elevation: 0,
     iconTheme: iconTheme,
     backgroundColor: Colors.transparent,
-    titleTextStyle: textTheme.subtitle1,
+    titleTextStyle: textTheme.titleMedium,
     foregroundColor: Colors.white,
   );
 
@@ -70,13 +70,13 @@ ThemeData buildThemeData({
     labelPadding: tabBarLabelPadding,
     labelColor: secondarySwatch.shade400,
     unselectedLabelColor: neutralSwatch.shade300,
-    labelStyle: textTheme.subtitle2,
-    unselectedLabelStyle: textTheme.subtitle2,
+    labelStyle: textTheme.titleSmall,
+    unselectedLabelStyle: textTheme.titleSmall,
   );
 
   final snackBarTheme = SnackBarThemeData(
     backgroundColor: neutralSwatch.shade800,
-    contentTextStyle: textTheme.bodyText2,
+    contentTextStyle: textTheme.bodyMedium,
     actionTextColor: secondarySwatch.shade400,
   );
 
@@ -120,91 +120,91 @@ ThemeData buildThemeData({
 //
 TextTheme _buildTextTheme(String fontFamily, {required Color textColor}) {
   return TextTheme(
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontFamily: fontFamily,
       fontSize: 96,
       height: 1.17,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
       fontFamily: fontFamily,
       fontSize: 60,
       height: 1.2,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    headline3: TextStyle(
+    displaySmall: TextStyle(
       fontFamily: fontFamily,
       fontSize: 48,
       height: 1,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    headline4: TextStyle(
+    headlineLarge: TextStyle(
       fontFamily: fontFamily,
       fontSize: 32,
       height: 1.19,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    headline5: TextStyle(
+    headlineMedium: TextStyle(
       fontFamily: fontFamily,
       fontSize: 24,
       height: 1.17,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    headline6: TextStyle(
+    headlineSmall: TextStyle(
       fontFamily: fontFamily,
       fontSize: 20,
       height: 1.2,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    subtitle1: TextStyle(
+    titleMedium: TextStyle(
       fontFamily: fontFamily,
       fontSize: 16,
       height: 1.25,
       fontWeight: FontWeight.w700,
       color: textColor,
     ),
-    subtitle2: TextStyle(
+    titleSmall: TextStyle(
       fontFamily: fontFamily,
       fontSize: 14,
       height: 1.14,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontFamily: fontFamily,
       fontSize: 16,
       height: 1.5,
       fontWeight: FontWeight.w300,
       color: textColor,
     ),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
       fontFamily: fontFamily,
       fontSize: 14,
       height: 1.57,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    button: TextStyle(
+    labelLarge: TextStyle(
       fontFamily: fontFamily,
       fontSize: 16,
       height: 1.25,
       fontWeight: FontWeight.w700,
       color: textColor,
     ),
-    caption: TextStyle(
+    bodySmall: TextStyle(
       fontFamily: fontFamily,
       fontSize: 12,
       height: 1.33,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    overline: TextStyle(
+    labelSmall: TextStyle(
       fontFamily: fontFamily,
       fontSize: 10,
       height: 1,

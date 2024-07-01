@@ -2,7 +2,7 @@ import 'package:memo/domain/models/collection.dart';
 
 /// Groups a [Collection] with its memory recall.
 class CollectionStatus {
-  CollectionStatus(this.collection, this.memoryRecall);
+  CollectionStatus(this.collection, this.memoryRecall, {required this.isVisible});
 
   final Collection collection;
 
@@ -10,4 +10,6 @@ class CollectionStatus {
   ///
   /// Should be `null` if [Collection.isCompleted] is `false`.
   final double? memoryRecall;
+
+  final bool isVisible;
 }

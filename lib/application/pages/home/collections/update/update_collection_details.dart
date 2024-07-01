@@ -148,7 +148,7 @@ class _DescriptionField extends HookConsumerWidget {
           controller: controller,
           modalTitle: Text(
             strings.detailsDescription,
-            style: textTheme.bodyText1?.copyWith(color: theme.primarySwatch.shade400),
+            style: textTheme.bodyLarge?.copyWith(color: theme.primarySwatch.shade400),
           ),
           placeholder: strings.collectionDescription,
           helperText: strings.fieldCharactersAmount(descriptionLength, validators.collectionDescriptionMaxLength),

@@ -4,6 +4,12 @@
   "description": "This collection represents a collection.",
   "category": "Category",
   "contributors": [],
-  "tags": ["Tag 1", "Tag 2"],
+  "tags": [
+    "Tag 1",
+    "Tag 2"
+  ],
+  "isPremium": false,
+  "appStoreId": "appStoreId",
+  "playStoreId": null,
   "memos": []
 }

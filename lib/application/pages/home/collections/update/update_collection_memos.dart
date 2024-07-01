@@ -184,7 +184,7 @@ class _NavigationIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AssetIconButton(images.chevronLeftAsset, onPressed: onLeftTapped),
-        Text('$currentPage/$pagesAmount', style: textTheme.subtitle2),
+        Text('$currentPage/$pagesAmount', style: textTheme.titleSmall),
         AssetIconButton(images.chevronRightAsset, onPressed: onRightTapped),
       ],
     );
@@ -209,7 +209,7 @@ class _CreateMemoEmptyState extends ConsumerWidget {
         context.verticalBox(Spacing.small),
         Text(
           strings.newMemo.toUpperCase(),
-          style: textTheme.button?.copyWith(color: theme.primarySwatch.shade400),
+          style: textTheme.labelLarge?.copyWith(color: theme.primarySwatch.shade400),
           textAlign: TextAlign.center,
         )
       ],

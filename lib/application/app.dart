@@ -38,6 +38,7 @@ class AppRoot extends StatelessWidget {
                   executionServices.overrideWithValue(state.executionServices),
                   progressServices.overrideWithValue(state.progressServices),
                   resourceServices.overrideWithValue(state.resourceServices),
+                  collectionPurchaseServices.overrideWithValue(state.collectionPurchaseServices)
                 ],
                 child: _LoadedAppRoot(),
               ),

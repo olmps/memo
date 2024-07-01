@@ -27,7 +27,7 @@ class SettingsPage extends ConsumerWidget {
           if (item is SettingsSectionItem) {
             return Text(
               strings.settingsDescriptionForSection(item.section),
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.titleMedium,
             ).withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.xxSmall);
           } else if (item is LinkSettingsItem) {
             return UrlLinkButton(

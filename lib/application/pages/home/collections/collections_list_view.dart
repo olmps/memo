@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/coordinator/routes_coordinator.dart';
 import 'package:memo/application/theme/theme_controller.dart';
+import 'package:memo/application/view-models/home/collections_vm.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
 import 'package:memo/application/widgets/theme/item_collection_card.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
@@ -14,25 +15,30 @@ class CollectionsListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        // Builds the respective widget based on the item's `ItemMetadata` subtype.
-        final item = items[index];
+    final vm = ref.watch(collectionsVM.notifier);
 
-        if (item is CollectionsCategoryMetadata) {
-          return _CollectionsSectionHeader(title: item.name)
-              .withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.small);
-        } else if (item is CollectionItem) {
-          return buildCollectionCardFromItem(
-            item,
-            padding: context.symmetricInsets(vertical: Spacing.large, horizontal: Spacing.small),
-            onTap: () => readCoordinator(ref).navigateToCollectionDetails(item.id),
-          ).withOnlyPadding(context, bottom: Spacing.medium);
-        }
+    return RefreshIndicator(
+      onRefresh: vm.onRefresh,
+      child: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          // Builds the respective widget based on the item's `ItemMetadata` subtype.
+          final item = items[index];
 
-        throw InconsistentStateError.layout('Unsupported subtype (${item.runtimeType}) of `CollectionItemMetadata`');
-      },
+          if (item is CollectionsCategoryMetadata) {
+            return _CollectionsSectionHeader(title: item.name)
+                .withOnlyPadding(context, top: Spacing.xLarge, bottom: Spacing.small);
+          } else if (item is CollectionItem) {
+            return buildCollectionCardFromItem(
+              item,
+              padding: context.symmetricInsets(vertical: Spacing.large, horizontal: Spacing.small),
+              onTap: () => readCoordinator(ref).navigateToCollectionDetails(item.id),
+            ).withOnlyPadding(context, bottom: Spacing.medium);
+          }
+
+          throw InconsistentStateError.layout('Unsupported subtype (${item.runtimeType}) of `CollectionItemMetadata`');
+        },
+      ),
     );
   }
 }
@@ -46,7 +52,7 @@ class _CollectionsSectionHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titleColor = ref.watch(themeController).neutralSwatch.shade300;
-    final sectionTitleStyle = Theme.of(context).textTheme.headline6?.copyWith(color: titleColor);
+    final sectionTitleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(color: titleColor);
     return Text(title, style: sectionTitleStyle);
   }
 }

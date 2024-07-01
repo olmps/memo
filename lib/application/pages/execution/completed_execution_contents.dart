@@ -51,7 +51,7 @@ class CompletedExecutionContents extends ConsumerWidget {
 
   Widget _buildSectionTitle(BuildContext context, MemoThemeData theme, String text) => Text(
         text,
-        style: Theme.of(context).textTheme.subtitle1?.copyWith(color: theme.neutralSwatch.shade300),
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: theme.neutralSwatch.shade300),
       );
 
   Widget _wrapInVerticalSection(Widget child, MemoThemeData theme) {
@@ -146,19 +146,19 @@ class _Header extends ConsumerWidget {
         context.verticalBox(Spacing.xLarge),
         Text(
           strings.executionWellDone,
-          style: textTheme.subtitle1?.copyWith(color: memoTheme.primarySwatch.shade400),
+          style: textTheme.titleMedium?.copyWith(color: memoTheme.primarySwatch.shade400),
           textAlign: TextAlign.center,
         ),
         context.verticalBox(Spacing.small),
         Text(
           strings.executionImprovedKnowledgeDescription,
-          style: textTheme.subtitle1?.copyWith(color: memoTheme.neutralSwatch.shade400),
+          style: textTheme.titleMedium?.copyWith(color: memoTheme.neutralSwatch.shade400),
           textAlign: TextAlign.center,
         ),
         context.verticalBox(Spacing.large),
         Text(
           '# $collectionName',
-          style: textTheme.headline6,
+          style: textTheme.headlineSmall,
           textAlign: TextAlign.center,
         ),
       ],
@@ -199,13 +199,13 @@ class _PerformanceIndicators extends ConsumerWidget {
           context.verticalBox(Spacing.small),
           Text(
             readableAnswersForDifficulty(difficulty) + strings.percentSymbol,
-            style: textTheme.subtitle1?.copyWith(color: memoTheme.secondarySwatch.shade400),
+            style: textTheme.titleMedium?.copyWith(color: memoTheme.secondarySwatch.shade400),
             textAlign: TextAlign.center,
           ),
           context.verticalBox(Spacing.xxSmall),
           Text(
             strings.answeredMemos(difficulty).toUpperCase(),
-            style: textTheme.caption,
+            style: textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
         ],

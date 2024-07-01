@@ -14,10 +14,14 @@ final collectionsVM = StateNotifierProvider<CollectionsVM, CollectionsState>((re
 
 /// Segment used to filter the current state of the [CollectionsVM].
 enum CollectionsSegment { explore, review }
+
 const availableSegments = CollectionsSegment.values;
 
 abstract class CollectionsVM extends StateNotifier<CollectionsState> {
   CollectionsVM(CollectionsState state) : super(state);
+
+  /// Updates the collections list when connected to the internet.
+  Future<void> onRefresh();
 
   /// Updates the current [state] with [segment].
   ///
@@ -34,6 +38,11 @@ class CollectionsVMImpl extends CollectionsVM {
 
   StreamSubscription<List<CollectionStatus>>? _statusListener;
   List<CollectionItem> _cachedCollectionItems = [];
+
+  @override
+  Future<void> onRefresh() async {
+    await _addCollectionsListeners();
+  }
 
   @override
   Future<void> updateCollectionsSegment(CollectionsSegment segment) async {

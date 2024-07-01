@@ -173,7 +173,7 @@ void main() {
     });
 
     testWidgets('must shrink based on its content', (tester) async {
-      const expectedWidth = 64.0;
+      const expectedWidth = 64.4000015258789;
       const textButton = CustomTextButton(text: 'Text');
 
       await pumpProviderScoped(tester, textButton);

@@ -4,8 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/application/view-models/app_vm.dart';
 import 'package:memo/application/view-models/item_metadata.dart';
+import 'package:memo/core/faults/exceptions/base_exception.dart';
 import 'package:memo/domain/enums/resource_type.dart';
 import 'package:memo/domain/models/resource.dart';
+import 'package:memo/domain/services/collection_purchase_services.dart';
 import 'package:memo/domain/services/collection_services.dart';
 import 'package:memo/domain/services/resource_services.dart';
 import 'package:memo/domain/transients/collection_status.dart';
@@ -15,11 +17,15 @@ final collectionDetailsVM = StateNotifierProvider.family<CollectionDetailsVM, Co
     collectionId: collectionId,
     collectionServices: ref.read(collectionServices),
     resourceServices: ref.read(resourceServices),
+    purchaseServices: ref.read(collectionPurchaseServices),
   ),
 );
 
 abstract class CollectionDetailsVM extends StateNotifier<CollectionDetailsState> {
   CollectionDetailsVM(CollectionDetailsState state) : super(state);
+
+  /// Purchase a deck, comparing its [id] and updating the isVisible state to `true`.
+  Future<void> purchaseCollection(String id);
 }
 
 class CollectionDetailsVMImpl extends CollectionDetailsVM {
@@ -27,6 +33,7 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
     required this.collectionId,
     required this.collectionServices,
     required this.resourceServices,
+    required this.purchaseServices,
   }) : super(LoadingCollectionDetailsState()) {
     _loadCollection();
   }
@@ -34,9 +41,10 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
   final String collectionId;
   final CollectionServices collectionServices;
   final ResourceServices resourceServices;
+  final CollectionPurchaseServices purchaseServices;
 
   List<Resource>? _associatedResources;
-  late final StreamSubscription<CollectionStatus> _listener;
+  late StreamSubscription<CollectionStatus> _listener;
 
   Future<void> _loadCollection() async {
     final stream = await collectionServices.listenToCollectionStatus(collectionId: collectionId);
@@ -82,6 +90,17 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
   void dispose() {
     _listener.cancel();
     super.dispose();
+  }
+
+  @override
+  Future<void> purchaseCollection(String id) async {
+    try {
+      await purchaseServices.purchaseCollection(id: id);
+      state = PurchaseCollectionSuccess();
+    } on BaseException catch (exception) {
+      state = PurchaseCollectionFailed(exception);
+    }
+    await _loadCollection();
   }
 }
 
@@ -129,3 +148,14 @@ class ContributorInfo extends Equatable {
   @override
   List<Object?> get props => [name, imageUrl, url];
 }
+
+class PurchaseCollectionFailed extends CollectionDetailsState {
+  PurchaseCollectionFailed(this.exception);
+
+  final BaseException exception;
+
+  @override
+  List<Object?> get props => [exception, ...super.props];
+}
+
+class PurchaseCollectionSuccess extends CollectionDetailsState {}

@@ -6,6 +6,7 @@ import 'package:layoutr/common_layout.dart';
 import 'package:memo/application/constants/animations.dart' as anims;
 import 'package:memo/application/constants/colors.dart' as colors;
 import 'package:memo/application/constants/dimensions.dart' as dimens;
+import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/theme/memo_theme_data.dart';
 import 'package:memo/application/theme/theme_controller.dart';
 import 'package:memo/application/widgets/animatable_progress.dart';
@@ -59,7 +60,7 @@ class CollectionCard extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(name, style: Theme.of(context).textTheme.headline6),
+        Text(name, style: Theme.of(context).textTheme.headlineSmall),
         context.verticalBox(Spacing.xSmall),
         Flexible(child: _buildTagsWrap(context)),
       ],
@@ -78,13 +79,15 @@ class CollectionCard extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Flexible(child: firstRowElements),
+                Flexible(
+                  child: firstRowElements,
+                ),
                 if (progressDescription != null && progressValue != null) ...[
                   context.verticalBox(Spacing.large),
                   _buildMemoryRecallTitle(context, theme),
                   context.verticalBox(Spacing.xSmall),
                   _buildMemoryRecallProgress(theme),
-                ]
+                ],
               ],
             ),
           ),
@@ -126,13 +129,19 @@ class CollectionCard extends ConsumerWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       spacing: tagsSpacing,
       runSpacing: tagsSpacing,
-      children: tags.map((tag) => PrimaryTextTag(tag.toUpperCase())).toList(),
+      children: tags
+          .map(
+            (tag) => tag.toUpperCase().contains(strings.premium)
+                ? SecondaryTextTag(tag.toUpperCase())
+                : PrimaryTextTag(tag.toUpperCase()),
+          )
+          .toList(),
     );
   }
 
   Text _buildMemoryRecallTitle(BuildContext context, MemoThemeData theme) {
     final captionColor = theme.neutralSwatch.shade200;
-    final captionStyle = Theme.of(context).textTheme.caption;
+    final captionStyle = Theme.of(context).textTheme.bodySmall;
     return Text(progressDescription!, style: captionStyle?.copyWith(color: captionColor));
   }
 

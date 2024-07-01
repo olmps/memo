@@ -21,11 +21,11 @@ class ExceptionRetryContainer extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(strings.oops, style: textTheme.headline4, textAlign: TextAlign.center),
+        Text(strings.oops, style: textTheme.headlineLarge, textAlign: TextAlign.center),
         context.verticalBox(Spacing.xSmall),
         Text(
           descriptionForException(exception),
-          style: textTheme.headline6,
+          style: textTheme.headlineSmall,
           textAlign: TextAlign.center,
         ),
         context.verticalBox(Spacing.large),

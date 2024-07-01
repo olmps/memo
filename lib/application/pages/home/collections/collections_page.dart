@@ -134,11 +134,11 @@ class _CollectionsEmptyState extends ConsumerWidget {
           color: theme.neutralSwatch.shade700,
         ),
         context.verticalBox(Spacing.xLarge),
-        Text(title, style: textTheme.headline6, textAlign: TextAlign.center),
+        Text(title, style: textTheme.headlineSmall, textAlign: TextAlign.center),
         context.verticalBox(Spacing.medium),
         Text(
           description,
-          style: textTheme.bodyText2?.copyWith(color: theme.neutralSwatch.shade400),
+          style: textTheme.bodyMedium?.copyWith(color: theme.neutralSwatch.shade400),
           textAlign: TextAlign.center,
         ),
         context.verticalBox(Spacing.xLarge),

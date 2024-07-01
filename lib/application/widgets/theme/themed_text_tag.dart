@@ -15,7 +15,7 @@ class PrimaryTextTag extends ConsumerWidget {
         text,
         backgroundColor: ref.watch(themeController).primarySwatch.shade600,
         padding: context.allInsets(Spacing.xxSmall),
-        textStyle: Theme.of(context).textTheme.overline,
+        textStyle: Theme.of(context).textTheme.labelSmall,
       );
 }
 
@@ -28,9 +28,9 @@ class SecondaryTextTag extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => TextTag(
         text,
-        backgroundColor: ref.watch(themeController).secondarySwatch.shade600,
+        backgroundColor: ref.watch(themeController).premiumSwatch,
         padding: context.allInsets(Spacing.xxSmall),
-        textStyle: Theme.of(context).textTheme.overline,
+        textStyle: Theme.of(context).textTheme.labelSmall,
       );
 }
 
@@ -45,6 +45,6 @@ class NeutralTextTag extends ConsumerWidget {
         text,
         backgroundColor: ref.watch(themeController).neutralSwatch.shade800,
         padding: context.allInsets(Spacing.xxSmall),
-        textStyle: Theme.of(context).textTheme.overline,
+        textStyle: Theme.of(context).textTheme.labelSmall,
       );
 }
