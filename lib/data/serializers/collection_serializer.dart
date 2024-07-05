@@ -81,5 +81,6 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
         CollectionKeys.timeSpentInMillis: collection.timeSpentInMillis,
         CollectionKeys.isPremium: collection.isPremium,
         CollectionKeys.appStoreId: collection.appStoreId,
+        CollectionKeys.playStoreId: collection.playStoreId,
       };
 }

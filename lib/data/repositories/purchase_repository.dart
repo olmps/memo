@@ -1,9 +1,7 @@
 import 'package:memo/data/gateways/purchase_gateway.dart';
 import 'package:memo/data/gateways/sembast_database.dart';
-import 'package:memo/data/repositories/collection_repository.dart';
-import 'package:memo/data/serializers/collection_serializer.dart';
 
-abstract class CollectionPurchaseRepository {
+abstract class PurchaseRepository {
   /// Purchase products in the app with the store ID [storeId] for the local user.
   Future<void> purchaseInApp({required String storeId});
 
@@ -14,18 +12,18 @@ abstract class CollectionPurchaseRepository {
   Future<List<String>> isAvailable();
 
   /// Updates the collection with the [id] to be premium or not.
-  Future<void> updatePurchaseCollection({required String id, required bool isPremium});
+  Future<void> updatePurchase({required String purchaseId});
+
+  Future<List<String>> getPurchaseProducts();
 }
 
-class CollectionPurchaseRepositoryImpl implements CollectionPurchaseRepository {
-  CollectionPurchaseRepositoryImpl(this._db, this._purchaseGateway, this.collectionRepo);
+class PurchaseRepositoryImpl implements PurchaseRepository {
+  PurchaseRepositoryImpl(this._db, this._purchaseGateway);
 
   final SembastDatabase _db;
-  final _collectionStore = 'collections';
+  final _purchasesStore = 'purchases';
 
   final PurchaseGateway _purchaseGateway;
-
-  final CollectionRepository collectionRepo;
 
   @override
   Future<void> purchaseInApp({required String storeId}) => _purchaseGateway.purchase(
@@ -45,11 +43,17 @@ class CollectionPurchaseRepositoryImpl implements CollectionPurchaseRepository {
   }
 
   @override
-  Future<void> updatePurchaseCollection({required String id, required bool isPremium}) => _db.put(
-        id: id,
+  Future<void> updatePurchase({required String purchaseId}) => _db.put(
+        id: purchaseId,
         object: <String, dynamic>{
-          CollectionKeys.isPremium: isPremium,
+          'purchasesId': purchaseId,
         },
-        store: _collectionStore,
+        store: _purchasesStore,
       );
+
+  @override
+  Future<List<String>> getPurchaseProducts() async {
+    final purchases = await _db.getAll(store: _purchasesStore);
+    return purchases.map((purchase) => purchase['purchasesId'] as String).toList();
+  }
 }

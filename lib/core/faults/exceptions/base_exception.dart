@@ -46,5 +46,5 @@ enum ExceptionType {
 
   // PurchaseException
   purchaseProductFailed,
-  failedPurchase,
+  failedToPurchase,
 }

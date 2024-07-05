@@ -6,7 +6,7 @@ import 'package:memo/data/gateways/application_bundle.dart';
 import 'package:memo/data/gateways/purchase_gateway.dart';
 import 'package:memo/data/gateways/sembast.dart' as sembast;
 import 'package:memo/data/gateways/sembast_database.dart';
-import 'package:memo/data/repositories/collection_purchase_repository.dart';
+import 'package:memo/data/repositories/purchase_repository.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_execution_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
@@ -79,7 +79,7 @@ class AppVMImpl extends AppVM {
     final userRepo = UserRepositoryImpl(dbRepo);
     final versionRepo = VersionRepositoryImpl(dbRepo);
     final resourceRepo = ResourceRepositoryImpl(dbRepo, appBundle);
-    final collectionPurchaseRepo = CollectionPurchaseRepositoryImpl(dbRepo, purchaseGateway, collectionRepo);
+    final purchaseRepo = PurchaseRepositoryImpl(dbRepo, purchaseGateway);
 
     final transactionHandler = TransactionHandlerImpl(dbRepo);
 
@@ -89,7 +89,7 @@ class AppVMImpl extends AppVM {
     // Services
     final collectionPurchaseServices = CollectionPurchaseServicesImpl(
       env: env,
-      collectionPurchaseRepo: collectionPurchaseRepo,
+      purchaseRepo: purchaseRepo,
       collectionRepo: collectionRepo,
     );
 
@@ -97,7 +97,7 @@ class AppVMImpl extends AppVM {
       collectionRepo: collectionRepo,
       memoRepo: memoRepo,
       memoryServices: memoryServices,
-      collectionPurchaseRepo: collectionPurchaseRepo,
+      purchaseRepo: purchaseRepo,
       collectionPurchaseServices: collectionPurchaseServices,
     );
 
@@ -172,6 +172,6 @@ final progressServices = Provider<ProgressServices>((_) {
 final resourceServices = Provider<ResourceServices>((_) {
   throw UnimplementedError('resourceServices Provider must be overridden');
 });
-final collectionPurchaseServices = Provider<CollectionPurchaseServices>((_) {
-  throw UnimplementedError('collectionPurchaseServices Provider must be overridden');
+final purchaseServices = Provider<CollectionPurchaseServices>((_) {
+  throw UnimplementedError('PurchaseServices Provider must be overridden');
 });

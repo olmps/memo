@@ -20,7 +20,7 @@ const availableSegments = CollectionsSegment.values;
 abstract class CollectionsVM extends StateNotifier<CollectionsState> {
   CollectionsVM(CollectionsState state) : super(state);
 
-  /// Updates the collections list when connected to the internet.
+  /// Updates the collections list.
   Future<void> onRefresh();
 
   /// Updates the current [state] with [segment].
@@ -41,6 +41,7 @@ class CollectionsVMImpl extends CollectionsVM {
 
   @override
   Future<void> onRefresh() async {
+    state = LoadingCollectionsState(state.currentSegment);
     await _addCollectionsListeners();
   }
 

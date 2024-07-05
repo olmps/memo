@@ -20,7 +20,7 @@ abstract class CollectionItem extends ItemMetadata {
     required this.name,
     required this.category,
     required this.tags,
-    required this.isVisible,
+    required this.isPremium,
   });
 
   final String id;
@@ -28,10 +28,10 @@ abstract class CollectionItem extends ItemMetadata {
   final String category;
   final List<String> tags;
 
-  final bool isVisible;
+  final bool isPremium;
 
   @override
-  List<Object?> get props => [id, name, category, tags, isVisible];
+  List<Object?> get props => [id, name, category, tags, isPremium];
 }
 
 /// Represents a collection that have been fully executed - where no pristine memos are left.
@@ -42,13 +42,13 @@ class CompletedCollectionItem extends CollectionItem {
     required String name,
     required String category,
     required List<String> tags,
-    required bool isVisible,
+    required bool isPremium,
   }) : super(
           id: id,
           name: name,
           category: category,
           tags: tags,
-          isVisible: isVisible,
+          isPremium: isPremium,
         );
 
   final double recallLevel;
@@ -67,13 +67,13 @@ class IncompleteCollectionItem extends CollectionItem {
     required String name,
     required String category,
     required List<String> tags,
-    required bool isVisibile,
+    required bool isPremium,
   }) : super(
           id: id,
           name: name,
           category: category,
           tags: tags,
-          isVisible: isVisibile,
+          isPremium: isPremium,
         );
 
   final int executedUniqueMemos;
@@ -97,7 +97,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       name: collection.name,
       category: collection.category,
       tags: collection.tags,
-      isVisible: status.isVisible,
+      isPremium: collection.isPremium,
     );
   } else {
     return IncompleteCollectionItem(
@@ -107,7 +107,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       name: collection.name,
       category: collection.category,
       tags: collection.tags,
-      isVisibile: status.isVisible,
+      isPremium: collection.isPremium,
     );
   }
 }

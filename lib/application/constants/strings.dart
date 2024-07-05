@@ -30,9 +30,11 @@ const collectionsSectionHeaderSeeAll = 'Ver todos';
 
 const collectionsStartNow = 'Começar Agora';
 
-const collectionPurchaseDeck = r'Comprar deck - R$ 0.99';
 const collectionPurchase = 'Deseja comprar este Deck?';
 const collectionSuccessPurchase = 'Deck comprado com sucesso!';
+String collectionPurchaseDeck(double price) => 'Comprar deck - R\$ ${price.toStringAsFixed(2)}';
+// TODO(joao): check the best place to store the const double.
+const double collectionPrice = 0.99;
 
 String collectionsEmptyTitleSegment(CollectionsSegment segment) {
   switch (segment) {

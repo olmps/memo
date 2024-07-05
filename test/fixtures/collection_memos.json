@@ -10,6 +10,6 @@
   ],
   "isPremium": false,
   "appStoreId": "appStoreId",
-  "playStoreId": null,
+  "playStoreId": "playStoreId",
   "memos": []
 }

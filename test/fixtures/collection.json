@@ -10,6 +10,7 @@
   ],
   "isPremium": false,
   "appStoreId": "appStoreId",
+  "playStoreId": "playStoreId",
   "uniqueMemosAmount": 1,
   "uniqueMemoExecutionsAmount": 0,
   "executionsAmounts": {

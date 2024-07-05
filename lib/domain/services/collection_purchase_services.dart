@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:memo/core/env.dart';
-import 'package:memo/data/repositories/collection_purchase_repository.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
+import 'package:memo/data/repositories/purchase_repository.dart';
 import 'package:memo/domain/models/collection.dart';
 
 abstract class CollectionPurchaseServices {
@@ -10,19 +10,19 @@ abstract class CollectionPurchaseServices {
   Future<void> purchaseCollection({required String id});
 
   /// Verifies if the collection - from [id] - is visible to the user.
-  Future<bool> isVisible({required String id});
+  Future<bool> isPurchased({required String id});
 }
 
 class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
   CollectionPurchaseServicesImpl({
     required this.env,
-    required this.collectionPurchaseRepo,
+    required this.purchaseRepo,
     required this.collectionRepo,
   });
 
   final EnvMetadata env;
 
-  final CollectionPurchaseRepository collectionPurchaseRepo;
+  final PurchaseRepository purchaseRepo;
 
   final CollectionRepository collectionRepo;
 
@@ -31,41 +31,43 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
     final collection = await collectionRepo.getCollection(id: id);
 
     await _purchaseInAppCollection(collection);
-    await _updatePurchaseCollection(id: id, isPremium: false);
+    await _updatePurchaseCollection(id: id);
   }
 
-  Future<void> _updatePurchaseCollection({required String id, required bool isPremium}) async {
+  Future<void> _updatePurchaseCollection({required String id}) async {
     final collection = await collectionRepo.getCollection(id: id);
-    final isPurchased = await collectionPurchaseRepo.getPurchasesInfo();
+    final isPurchased = await purchaseRepo.getPurchasesInfo();
 
-    if (isPurchased.contains(collection.appStoreId) || isPurchased.contains(collection.playStoreId)) {
-      await collectionPurchaseRepo.updatePurchaseCollection(id: id, isPremium: isPremium);
+    if (isPurchased.contains(_collectionStore(collection))) {
+      await purchaseRepo.updatePurchase(purchaseId: _collectionStore(collection));
     }
   }
 
   Future<void> _purchaseInAppCollection(Collection collection) async {
+    await purchaseRepo.purchaseInApp(storeId: _collectionStore(collection));
+  }
+
+  String _collectionStore(Collection collection) {
     switch (env.platform) {
       case SupportedPlatform.ios:
-        await collectionPurchaseRepo.purchaseInApp(storeId: collection.appStoreId);
-        break;
+        return collection.appStoreId;
       case SupportedPlatform.android:
-        await collectionPurchaseRepo.purchaseInApp(storeId: collection.playStoreId);
-        break;
+        return collection.playStoreId;
     }
   }
 
   @override
-  Future<bool> isVisible({required String id}) async {
+  Future<bool> isPurchased({required String id}) async {
     final collection = await collectionRepo.getCollection(id: id);
 
-    if (collection.isPremium) {
-      final isAvailable = await collectionPurchaseRepo.isAvailable();
-      final isPurchased = await collectionPurchaseRepo.getPurchasesInfo();
-
-      if (isAvailable.contains(collection.appStoreId) || isAvailable.contains(collection.playStoreId)) {
-        return !isPurchased.contains(collection.appStoreId) || !isPurchased.contains(collection.playStoreId);
-      }
+    if (!collection.isPremium) {
+      return true;
     }
-    return collection.isPremium;
+
+    final storeId = _collectionStore(collection);
+
+    final purchasedProductsList = await purchaseRepo.getPurchaseProducts();
+
+    return purchasedProductsList.contains(storeId);
   }
 }

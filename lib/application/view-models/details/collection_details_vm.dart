@@ -17,14 +17,14 @@ final collectionDetailsVM = StateNotifierProvider.family<CollectionDetailsVM, Co
     collectionId: collectionId,
     collectionServices: ref.read(collectionServices),
     resourceServices: ref.read(resourceServices),
-    purchaseServices: ref.read(collectionPurchaseServices),
+    purchaseServices: ref.read(purchaseServices),
   ),
 );
 
 abstract class CollectionDetailsVM extends StateNotifier<CollectionDetailsState> {
   CollectionDetailsVM(CollectionDetailsState state) : super(state);
 
-  /// Purchase a deck, comparing its [id] and updating the isVisible state to `true`.
+  /// Purchase a deck.
   Future<void> purchaseCollection(String id);
 }
 
@@ -47,6 +47,8 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
   late StreamSubscription<CollectionStatus> _listener;
 
   Future<void> _loadCollection() async {
+    final isPurchased = await purchaseServices.isPurchased(id: collectionId);
+
     final stream = await collectionServices.listenToCollectionStatus(collectionId: collectionId);
 
     _listener = stream.listen((collectionStatus) async {
@@ -82,6 +84,7 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
         memosAmount: memosAmount,
         resources: mappedResources,
         contributors: contributors,
+        isPurchased: isPurchased,
       );
     });
   }
@@ -97,10 +100,10 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
     try {
       await purchaseServices.purchaseCollection(id: id);
       state = PurchaseCollectionSuccess();
+      await _loadCollection();
     } on BaseException catch (exception) {
       state = PurchaseCollectionFailed(exception);
     }
-    await _loadCollection();
   }
 }
 
@@ -118,6 +121,7 @@ class LoadedCollectionDetailsState extends CollectionDetailsState {
     required this.memosAmount,
     required this.resources,
     required this.contributors,
+    required this.isPurchased,
   });
 
   final CollectionItem metadata;
@@ -125,6 +129,7 @@ class LoadedCollectionDetailsState extends CollectionDetailsState {
   final int memosAmount;
   final List<ResourceInfo> resources;
   final List<ContributorInfo> contributors;
+  final bool isPurchased;
 }
 
 class ResourceInfo extends Equatable {

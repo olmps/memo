@@ -31,7 +31,6 @@ abstract class SembastTransactionHandler implements DatabaseTransactionHandler {
       await db.transaction((transaction) async {
         currentTransaction = transaction;
         await run();
-        currentTransaction = null;
       });
       // ignore: avoid_catches_without_on_clauses
     } catch (error, stack) {
