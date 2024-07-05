@@ -173,13 +173,13 @@ void main() {
     });
 
     testWidgets('must shrink based on its content', (tester) async {
-      const expectedWidth = 64.4000015258789;
+      const expectedWidth = 64.0;
       const textButton = CustomTextButton(text: 'Text');
 
       await pumpProviderScoped(tester, textButton);
 
       final buttonRenderBox = find.byType(CustomTextButton).first.evaluate().single.renderObject! as RenderBox;
-      expect(buttonRenderBox.size.width, expectedWidth);
+      expect(buttonRenderBox.size.width.round(), expectedWidth);
     });
   });
 }

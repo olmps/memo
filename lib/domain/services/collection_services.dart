@@ -1,6 +1,5 @@
-import 'package:flutter/services.dart';
 import 'package:memo/core/faults/errors/inconsistent_state_error.dart';
-import 'package:memo/data/repositories/collection_purchase_repository.dart';
+import 'package:memo/data/repositories/purchase_repository.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/memo_repository.dart';
 import 'package:memo/domain/isolated_services/memory_recall_services.dart';
@@ -33,7 +32,7 @@ class CollectionServicesImpl implements CollectionServices {
     required this.collectionRepo,
     required this.memoRepo,
     required this.memoryServices,
-    required this.collectionPurchaseRepo,
+    required this.purchaseRepo,
     required this.collectionPurchaseServices,
   });
 
@@ -42,7 +41,7 @@ class CollectionServicesImpl implements CollectionServices {
 
   final MemoryRecallServices memoryServices;
 
-  final CollectionPurchaseRepository collectionPurchaseRepo;
+  final PurchaseRepository purchaseRepo;
   final CollectionPurchaseServices collectionPurchaseServices;
 
   @override
@@ -50,26 +49,12 @@ class CollectionServicesImpl implements CollectionServices {
     final collectionsStream = await collectionRepo.listenToAllCollections();
 
     // Asynchronously transform the stream due to the async calculations.
-    try {
-      final isAvailbleList = await collectionPurchaseRepo.isAvailable();
-      if (isAvailbleList.isNotEmpty) {
-        return collectionsStream.asyncMap(
-          (collections) {
-            final mappedStatuses = collections.map(_mapCollectionToCollectionStatus).toList();
-            return Future.wait(mappedStatuses);
-          },
-        );
-      }
-    } on PlatformException catch (_) {
-      return collectionsStream.asyncMap(
-        (collections) {
-          final offlineCollections = collections.where((collection) => !collection.isPremium).toList();
-          final mappedStatuses = offlineCollections.map(_mapCollectionToCollectionStatus).toList();
-          return Future.wait(mappedStatuses);
-        },
-      );
-    }
-    throw InconsistentStateError.service('Missing required collection purchase information');
+    return collectionsStream.asyncMap(
+      (collections) {
+        final mappedStatuses = collections.map(_mapCollectionToCollectionStatus).toList();
+        return Future.wait(mappedStatuses);
+      },
+    );
   }
 
   @override
@@ -92,12 +77,10 @@ class CollectionServicesImpl implements CollectionServices {
 
   Future<CollectionStatus> _mapCollectionToCollectionStatus(Collection collection) async {
     double? memoryRecall;
-    bool isVisible;
     if (collection.isCompleted) {
       memoryRecall = await _getMemosAverageMemoryRecall(collectionId: collection.id);
     }
-    isVisible = await collectionPurchaseServices.isVisible(id: collection.id);
-    return CollectionStatus(collection, memoryRecall, isVisible: isVisible);
+    return CollectionStatus(collection, memoryRecall);
   }
 
   @override

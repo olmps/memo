@@ -18,6 +18,7 @@ void main() {
       tags: const [],
       isPremium: false,
       appStoreId: 'appStoreId',
+      playStoreId: 'playStoreId',
       contributors: contributors ?? const [Contributor(name: 'name')],
       uniqueMemosAmount: uniqueMemosAmount,
       executionsAmounts: executionsAmounts,

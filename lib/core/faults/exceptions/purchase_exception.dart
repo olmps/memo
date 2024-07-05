@@ -5,5 +5,5 @@ class PurchaseException extends BaseException {
   PurchaseException.purchaseProductFailed({String? debugInfo})
       : super(type: ExceptionType.purchaseProductFailed, debugInfo: debugInfo);
 
-  PurchaseException.failedPurchase() : super(type: ExceptionType.failedPurchase);
+  PurchaseException.failedPurchase() : super(type: ExceptionType.failedToPurchase);
 }

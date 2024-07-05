@@ -4,8 +4,7 @@
     "description": "teste",
     "category": "Premium",
     "tags": [
-        "ChatGPT",
-        "Premium"
+        "ChatGPT"
     ],
     "isPremium": true,
     "appStoreId": "com.olmps.memo_099_in_app_purchase_deck",

@@ -97,28 +97,29 @@ class CollectionDetailsPage extends ConsumerWidget {
 
       sections.add(resourcesSection);
 
+      final studyNowButton = PrimaryElevatedButton(
+        onPressed: () => readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false),
+        text: strings.detailsStudyNow.toUpperCase(),
+      );
+
+      final purchaseDeckButton = SecondaryElevatedButton(
+        backgroundColor: memoTheme.secondarySwatch,
+        text: strings.collectionPurchaseDeck(strings.collectionPrice),
+        onPressed: () async => _collectionPurchaseBottomSheet(
+          context,
+          () => ref.watch(collectionDetailsVM(id).notifier).purchaseCollection(state.metadata.id),
+        ),
+      );
+
       final fixedBottomAction = ThemedBottomContainer(
-        child: Container(
+        child: ColoredBox(
           color: memoTheme.neutralSwatch.shade800,
           child: SafeArea(
-            child: !state.metadata.isVisible
-                ? PrimaryElevatedButton(
-                    onPressed: () {
-                      readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false);
-                    },
-                    text: strings.detailsStudyNow.toUpperCase(),
-                  ).withSymmetricalPadding(context, vertical: Spacing.small, horizontal: Spacing.medium)
-                : SecondaryElevatedButton(
-                    backgroundColor: memoTheme.secondarySwatch,
-                    text: strings.collectionPurchaseDeck,
-                    onPressed: () async => collectionPurchaseBottomSheet(context, () {
-                      ref.watch(collectionDetailsVM(id).notifier).purchaseCollection(state.metadata.id);
-                    }),
-                  ).withSymmetricalPadding(
-                    context,
-                    vertical: Spacing.small,
-                    horizontal: Spacing.medium,
-                  ),
+            child: (state.isPurchased ? studyNowButton : purchaseDeckButton),
+          ).withSymmetricalPadding(
+            context,
+            vertical: Spacing.small,
+            horizontal: Spacing.medium,
           ),
         ),
       );
@@ -158,20 +159,20 @@ class CollectionDetailsPage extends ConsumerWidget {
         style:
             Theme.of(context).textTheme.titleMedium?.copyWith(color: ref.watch(themeController).neutralSwatch.shade300),
       );
-}
 
-/// This Modal Bottom Sheet representing the option to purchase a specific `Collection`.
-Future<void> collectionPurchaseBottomSheet(BuildContext context, VoidCallback? onPressed) =>
-    showSnappableDraggableModalBottomSheet<void>(
-      context,
-      title: strings.collectionPurchase,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          context.verticalBox(Spacing.xLarge),
-          PrimaryElevatedButton(text: strings.purchase, onPressed: onPressed),
-          context.verticalBox(Spacing.medium),
-          SecondaryElevatedButton(text: strings.cancel, onPressed: Navigator.of(context).pop),
-        ],
-      ).withAllPadding(context, Spacing.medium),
-    );
+  /// This Modal Bottom Sheet representing the option to purchase a specific `Collection`.
+  Future<void> _collectionPurchaseBottomSheet(BuildContext context, VoidCallback? onPressed) =>
+      showSnappableDraggableModalBottomSheet<void>(
+        context,
+        title: strings.collectionPurchase,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            context.verticalBox(Spacing.xLarge),
+            PrimaryElevatedButton(text: strings.purchase, onPressed: onPressed),
+            context.verticalBox(Spacing.medium),
+            SecondaryElevatedButton(text: strings.cancel, onPressed: Navigator.of(context).pop),
+          ],
+        ).withAllPadding(context, Spacing.medium),
+      );
+}

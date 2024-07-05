@@ -17,6 +17,7 @@ void main() {
       tags: const [],
       isPremium: false,
       appStoreId: 'appStoreId',
+      playStoreId: 'playStoreId',
       contributors: contributors ?? const [Contributor(name: 'name')],
       memosMetadata:
           memosMetadata ?? [MemoCollectionMetadata(uniqueId: '1', rawAnswer: const [], rawQuestion: const [])],

@@ -15,7 +15,7 @@ String descriptionForException(BaseException exception) {
     case ExceptionType.failedToOpenUrl:
       return 'Algo deu errado ao tentar abrir o link!';
 
-    case ExceptionType.failedPurchase:
+    case ExceptionType.failedToPurchase:
       return 'Algo deu errado ao tentar realizar a compra!';
     default:
       return 'Algo deu errado. Por favor tente novamente';

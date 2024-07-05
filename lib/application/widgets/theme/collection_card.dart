@@ -21,6 +21,7 @@ class CollectionCard extends ConsumerWidget {
     required this.name,
     required this.tags,
     required this.padding,
+    required this.isPremium,
     this.hasBorder = true,
     this.progressDescription,
     this.progressValue,
@@ -35,6 +36,9 @@ class CollectionCard extends ConsumerWidget {
 
   /// List of tags associated with this collection.
   final List<String> tags;
+
+  ///
+  final bool isPremium;
 
   /// If this widget should draw a border for this card.
   final bool hasBorder;
@@ -129,13 +133,10 @@ class CollectionCard extends ConsumerWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       spacing: tagsSpacing,
       runSpacing: tagsSpacing,
-      children: tags
-          .map(
-            (tag) => tag.toUpperCase().contains(strings.premium)
-                ? SecondaryTextTag(tag.toUpperCase())
-                : PrimaryTextTag(tag.toUpperCase()),
-          )
-          .toList(),
+      children: [
+        ...tags.map((tag) => PrimaryTextTag(tag.toUpperCase())),
+        if (isPremium) SecondaryTextTag(strings.premium.toUpperCase()),
+      ],
     );
   }
 
