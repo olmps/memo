@@ -1,12 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
+import 'package:memo/domain/models/product_info.dart';
 import 'package:memo/domain/transients/collection_memos.dart';
 
 void main() {
   CollectionMemos newCollectionMemos({
     List<MemoCollectionMetadata>? memosMetadata,
     List<Contributor>? contributors,
+    ProductInfo? productInfo,
     int uniqueMemoExecutionsAmount = 0,
   }) {
     return CollectionMemos(
@@ -16,8 +18,7 @@ void main() {
       category: 'category',
       tags: const [],
       isPremium: false,
-      appStoreId: 'appStoreId',
-      playStoreId: 'playStoreId',
+      productInfo: productInfo ?? ProductInfo(price: 0.1, id: 'id'),
       contributors: contributors ?? const [Contributor(name: 'name')],
       memosMetadata:
           memosMetadata ?? [MemoCollectionMetadata(uniqueId: '1', rawAnswer: const [], rawQuestion: const [])],

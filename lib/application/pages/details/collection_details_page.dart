@@ -104,7 +104,7 @@ class CollectionDetailsPage extends ConsumerWidget {
 
       final purchaseDeckButton = SecondaryElevatedButton(
         backgroundColor: memoTheme.secondarySwatch,
-        text: strings.collectionPurchaseDeck(strings.collectionPrice),
+        text: strings.collectionPurchaseDeck(state.metadata.price),
         onPressed: () async => _collectionPurchaseBottomSheet(
           context,
           () => ref.watch(collectionDetailsVM(id).notifier).purchaseCollection(state.metadata.id),

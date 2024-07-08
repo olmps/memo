@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
+import 'package:memo/domain/models/product_info.dart';
 
 /// Groups a [CollectionMetadata] with its [memosMetadata].
 ///
@@ -15,8 +16,7 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
     required this.contributors,
     required this.memosMetadata,
     required this.isPremium,
-    required this.appStoreId,
-    required this.playStoreId,
+    required this.productInfo,
     int uniqueMemoExecutionsAmount = 0,
   })  : _uniqueMemoExecutionsAmount = uniqueMemoExecutionsAmount,
         assert(memosMetadata.isNotEmpty, 'must not be an empty list of memos'),
@@ -47,10 +47,7 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
   final bool isPremium;
 
   @override
-  final String appStoreId;
-
-  @override
-  final String playStoreId;
+  final ProductInfo productInfo;
 
   @override
   int get uniqueMemosAmount => memosMetadata.length;
@@ -77,7 +74,6 @@ class CollectionMemos extends CollectionMetadata with EquatableMixin {
         uniqueMemosAmount,
         memosMetadata,
         isPremium,
-        appStoreId,
-        playStoreId,
+        productInfo,
       ];
 }

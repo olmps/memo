@@ -1,5 +1,6 @@
 import 'package:memo/data/serializers/contributor_serializer.dart';
 import 'package:memo/data/serializers/memo_collection_metadata_serializer.dart';
+import 'package:memo/data/serializers/product_info_serializer.dart';
 import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/transients/collection_memos.dart';
 
@@ -12,13 +13,13 @@ class CollectionMemosKeys {
   static const tags = 'tags';
   static const memosMetadata = 'memos';
   static const isPremium = 'isPremium';
-  static const appStoreId = 'appStoreId';
-  static const playStoreId = 'playStoreId';
+  static const productInfo = 'productInfo';
 }
 
 class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<String, dynamic>> {
   final memoMetadataSerializer = MemoCollectionMetadataSerializer();
   final contributorSerializer = ContributorSerializer();
+  final productInfoSerializer = ProductInfoSerializer();
 
   @override
   CollectionMemos from(Map<String, dynamic> json) {
@@ -27,8 +28,8 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
     final description = json[CollectionMemosKeys.description] as String;
     final category = json[CollectionMemosKeys.category] as String;
     final isPremium = json[CollectionMemosKeys.isPremium] as bool?;
-    final appStoreId = json[CollectionMemosKeys.appStoreId] as String?;
-    final playStoreId = json[CollectionMemosKeys.playStoreId] as String?;
+
+    final productInfo = productInfoSerializer.from(json[CollectionMemosKeys.productInfo] as Map<String, dynamic>);
 
     final tags = List<String>.from(json[CollectionMemosKeys.tags] as List);
 
@@ -47,8 +48,7 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
       memosMetadata: memosMetadata,
       contributors: contributors,
       isPremium: isPremium ?? false,
-      appStoreId: appStoreId ?? '',
-      playStoreId: playStoreId ?? '',
+      productInfo: productInfo,
     );
   }
 
@@ -62,7 +62,6 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
         CollectionMemosKeys.memosMetadata: collection.memosMetadata.map(memoMetadataSerializer.to).toList(),
         CollectionMemosKeys.contributors: collection.contributors.map(contributorSerializer.to).toList(),
         CollectionMemosKeys.isPremium: collection.isPremium,
-        CollectionMemosKeys.appStoreId: collection.appStoreId,
-        CollectionMemosKeys.playStoreId: collection.playStoreId,
+        CollectionMemosKeys.productInfo: productInfoSerializer.to(collection.productInfo),
       };
 }

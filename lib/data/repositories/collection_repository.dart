@@ -7,6 +7,7 @@ import 'package:memo/data/serializers/collection_memos_serializer.dart';
 import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/data/serializers/contributor_serializer.dart';
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
+import 'package:memo/data/serializers/product_info_serializer.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/transients/collection_memos.dart';
@@ -52,6 +53,7 @@ class CollectionRepositoryImpl implements CollectionRepository {
   final _collectionsMemosSerializer = CollectionMemosSerializer();
   final _collectionSerializer = CollectionSerializer();
   final _contributorSerializer = ContributorSerializer();
+  final _productInfoSerializer = ProductInfoSerializer();
 
   @override
   Future<Collection> getCollection({required String id}) async {
@@ -91,8 +93,7 @@ class CollectionRepositoryImpl implements CollectionRepository {
               CollectionKeys.uniqueMemosAmount: collection.uniqueMemosAmount,
               CollectionKeys.uniqueMemoExecutionsAmount: collection.uniqueMemoExecutionsAmount,
               CollectionKeys.isPremium: collection.isPremium,
-              CollectionKeys.appStoreId: collection.appStoreId,
-              CollectionKeys.playStoreId: collection.playStoreId,
+              CollectionKeys.productInfo: _productInfoSerializer.to(collection.productInfo),
             },
           )
           .toList(),

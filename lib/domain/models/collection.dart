@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/memo_execution.dart';
+import 'package:memo/domain/models/product_info.dart';
 import 'package:meta/meta.dart';
 
 /// Metadata for a collection (group) of its associated `Memo`s.
@@ -17,8 +18,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
     required this.uniqueMemosAmount,
     required this.contributors,
     required this.isPremium,
-    required this.appStoreId,
-    required this.playStoreId,
+    required this.productInfo,
     this.uniqueMemoExecutionsAmount = 0,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
@@ -55,10 +55,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   final bool isPremium;
 
   @override
-  final String appStoreId;
-
-  @override
-  final String playStoreId;
+  final ProductInfo productInfo;
 
   @override
   final int uniqueMemosAmount;
@@ -81,8 +78,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
         tags,
         contributors,
         isPremium,
-        appStoreId,
-        playStoreId,
+        productInfo,
         uniqueMemoExecutionsAmount,
         uniqueMemosAmount,
         ...super.props,
@@ -105,11 +101,8 @@ abstract class CollectionMetadata {
   /// Informs whether the collection is premium or not.
   bool get isPremium;
 
-  /// App store id for this collection.
-  String get appStoreId;
-
-  /// Play store id for this collection.
-  String get playStoreId;
+  /// Informs the `productId` and `price` of the product associated with this collection.
+  ProductInfo get productInfo;
 
   /// Total amount of unique `Memo`s associated with this collection.
   int get uniqueMemosAmount;

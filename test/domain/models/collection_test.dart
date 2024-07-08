@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
+import 'package:memo/domain/models/product_info.dart';
 
 void main() {
   Collection newCollection({
@@ -9,6 +10,7 @@ void main() {
     int uniqueMemoExecutionsAmount = 0,
     int timeSpentInMillis = 0,
     List<Contributor>? contributors,
+    ProductInfo? productInfo,
   }) {
     return Collection(
       id: 'id',
@@ -17,8 +19,7 @@ void main() {
       category: 'category',
       tags: const [],
       isPremium: false,
-      appStoreId: 'appStoreId',
-      playStoreId: 'playStoreId',
+      productInfo: productInfo ?? ProductInfo(price: 0.1, id: 'id'),
       contributors: contributors ?? const [Contributor(name: 'name')],
       uniqueMemosAmount: uniqueMemosAmount,
       executionsAmounts: executionsAmounts,
