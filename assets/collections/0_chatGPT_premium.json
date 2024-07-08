@@ -7,8 +7,10 @@
         "ChatGPT"
     ],
     "isPremium": true,
-    "appStoreId": "com.olmps.memo_099_in_app_purchase_deck",
-    "playStoreId": "com.olmps.memo_099_in_app_purchase",
+    "productInfo": {
+        "price": 0.99,
+        "productId": "com.olmps.memo_099_in_app_purchase_deck"
+    },
     "contributors": [
         {
             "name": "chatGPT",

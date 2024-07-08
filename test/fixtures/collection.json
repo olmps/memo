@@ -4,13 +4,12 @@
   "description": "This collection represents a collection.",
   "category": "Category",
   "contributors": [],
+  "productInfo": {},
   "tags": [
     "Tag 1",
     "Tag 2"
   ],
   "isPremium": false,
-  "appStoreId": "appStoreId",
-  "playStoreId": "playStoreId",
   "uniqueMemosAmount": 1,
   "uniqueMemoExecutionsAmount": 0,
   "executionsAmounts": {

@@ -1,5 +1,6 @@
 import 'package:memo/data/serializers/contributor_serializer.dart';
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
+import 'package:memo/data/serializers/product_info_serializer.dart';
 import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/collection.dart';
 
@@ -15,12 +16,12 @@ class CollectionKeys {
   static const timeSpentInMillis = 'timeSpentInMillis';
   static const contributors = 'contributors';
   static const isPremium = 'isPremium';
-  static const appStoreId = 'appStoreId';
-  static const playStoreId = 'playStoreId';
+  static const productInfo = 'productInfo';
 }
 
 class CollectionSerializer implements Serializer<Collection, Map<String, dynamic>> {
   final contributorSerializer = ContributorSerializer();
+  final productInfoSerializar = ProductInfoSerializer();
 
   @override
   Collection from(Map<String, dynamic> json) {
@@ -46,9 +47,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
 
     final isPremium = json[CollectionKeys.isPremium] as bool;
 
-    final appStoreId = json[CollectionKeys.appStoreId] as String?;
-
-    final playStoreId = json[CollectionKeys.playStoreId] as String?;
+    final productInfo = productInfoSerializar.from(json[CollectionKeys.productInfo] as Map<String, dynamic>);
 
     return Collection(
       id: id,
@@ -62,8 +61,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
       timeSpentInMillis: timeSpentInMillis ?? 0,
       contributors: contributors,
       isPremium: isPremium,
-      appStoreId: appStoreId ?? '',
-      playStoreId: playStoreId ?? '',
+      productInfo: productInfo,
     );
   }
 
@@ -80,7 +78,6 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
         CollectionKeys.contributors: collection.contributors.map(contributorSerializer.to),
         CollectionKeys.timeSpentInMillis: collection.timeSpentInMillis,
         CollectionKeys.isPremium: collection.isPremium,
-        CollectionKeys.appStoreId: collection.appStoreId,
-        CollectionKeys.playStoreId: collection.playStoreId,
+        CollectionKeys.productInfo: productInfoSerializar.to(collection.productInfo),
       };
 }

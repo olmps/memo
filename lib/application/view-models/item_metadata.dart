@@ -21,6 +21,7 @@ abstract class CollectionItem extends ItemMetadata {
     required this.category,
     required this.tags,
     required this.isPremium,
+    required this.price,
   });
 
   final String id;
@@ -29,6 +30,7 @@ abstract class CollectionItem extends ItemMetadata {
   final List<String> tags;
 
   final bool isPremium;
+  final double price;
 
   @override
   List<Object?> get props => [id, name, category, tags, isPremium];
@@ -43,12 +45,14 @@ class CompletedCollectionItem extends CollectionItem {
     required String category,
     required List<String> tags,
     required bool isPremium,
+    required double price,
   }) : super(
           id: id,
           name: name,
           category: category,
           tags: tags,
           isPremium: isPremium,
+          price: price,
         );
 
   final double recallLevel;
@@ -68,12 +72,14 @@ class IncompleteCollectionItem extends CollectionItem {
     required String category,
     required List<String> tags,
     required bool isPremium,
+    required double price,
   }) : super(
           id: id,
           name: name,
           category: category,
           tags: tags,
           isPremium: isPremium,
+          price: price,
         );
 
   final int executedUniqueMemos;
@@ -98,6 +104,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       category: collection.category,
       tags: collection.tags,
       isPremium: collection.isPremium,
+      price: collection.productInfo.price,
     );
   } else {
     return IncompleteCollectionItem(
@@ -108,6 +115,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       category: collection.category,
       tags: collection.tags,
       isPremium: collection.isPremium,
+      price: collection.productInfo.price,
     );
   }
 }

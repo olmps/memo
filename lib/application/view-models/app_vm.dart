@@ -139,6 +139,10 @@ class AppVMImpl extends AppVM {
       splashMinDuration,
     ]);
 
+    await Future.wait<dynamic>([
+      collectionPurchaseServices.updatePurchasesIfNeeded(),
+    ]);
+
     value = AsyncValue.data(appState);
   }
 }

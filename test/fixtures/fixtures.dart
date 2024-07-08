@@ -14,3 +14,4 @@ Map<String, dynamic> memo() => _readFixture('memo.json');
 Map<String, dynamic> contributor() => _readFixture('contributor.json');
 Map<String, dynamic> resource() => _readFixture('resource.json');
 Map<String, dynamic> user() => _readFixture('user.json');
+Map<String, dynamic> productInfo() => _readFixture('product_info.json');

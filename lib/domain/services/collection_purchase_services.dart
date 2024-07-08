@@ -11,6 +11,11 @@ abstract class CollectionPurchaseServices {
 
   /// Verifies if the collection - from [id] - is visible to the user.
   Future<bool> isPurchased({required String id});
+
+  /// Compares all file-based collections (`CollectionMemos`) with collections stored in the user database (`Collection`).
+  ///
+  /// Updates purchased collections based on the RevenueCat backend.
+  Future<void> updatePurchasesIfNeeded();
 }
 
 class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
@@ -38,22 +43,13 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
     final collection = await collectionRepo.getCollection(id: id);
     final isPurchased = await purchaseRepo.getPurchasesInfo();
 
-    if (isPurchased.contains(_collectionStore(collection))) {
-      await purchaseRepo.updatePurchase(purchaseId: _collectionStore(collection));
+    if (isPurchased.contains(collection.productInfo.id)) {
+      await purchaseRepo.updatePurchase(purchaseId: collection.productInfo.id);
     }
   }
 
   Future<void> _purchaseInAppCollection(Collection collection) async {
-    await purchaseRepo.purchaseInApp(storeId: _collectionStore(collection));
-  }
-
-  String _collectionStore(Collection collection) {
-    switch (env.platform) {
-      case SupportedPlatform.ios:
-        return collection.appStoreId;
-      case SupportedPlatform.android:
-        return collection.playStoreId;
-    }
+    await purchaseRepo.purchaseInApp(storeId: collection.productInfo.id);
   }
 
   @override
@@ -64,10 +60,19 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
       return true;
     }
 
-    final storeId = _collectionStore(collection);
+    final storeId = collection.productInfo.id;
 
     final purchasedProductsList = await purchaseRepo.getPurchaseProducts();
 
     return purchasedProductsList.contains(storeId);
+  }
+
+  @override
+  Future<void> updatePurchasesIfNeeded() async {
+    final collections = await collectionRepo.getAllCollectionMemos();
+
+    for (final collection in collections) {
+      await _updatePurchaseCollection(id: collection.id);
+    }
   }
 }
