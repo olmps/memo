@@ -45,9 +45,10 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
     final rawContributors = List<Map<String, dynamic>>.from(json[CollectionKeys.contributors] as List);
     final contributors = rawContributors.map(contributorSerializer.from).toList();
 
-    final isPremium = json[CollectionKeys.isPremium] as bool;
+    final isPremium = json[CollectionKeys.isPremium] as bool?;
 
-    final productInfo = productInfoSerializar.from(json[CollectionKeys.productInfo] as Map<String, dynamic>);
+    final rawProductInfo = json[CollectionKeys.productInfo] as Map<String, dynamic>?;
+    final productInfo = rawProductInfo != null ? productInfoSerializar.from(rawProductInfo) : null;
 
     return Collection(
       id: id,
@@ -60,7 +61,7 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
       executionsAmounts: executionsAmounts ?? {},
       timeSpentInMillis: timeSpentInMillis ?? 0,
       contributors: contributors,
-      isPremium: isPremium,
+      isPremium: isPremium ?? false,
       productInfo: productInfo,
     );
   }
@@ -78,6 +79,6 @@ class CollectionSerializer implements Serializer<Collection, Map<String, dynamic
         CollectionKeys.contributors: collection.contributors.map(contributorSerializer.to),
         CollectionKeys.timeSpentInMillis: collection.timeSpentInMillis,
         CollectionKeys.isPremium: collection.isPremium,
-        CollectionKeys.productInfo: productInfoSerializar.to(collection.productInfo),
+        if (collection.isPremium) CollectionKeys.productInfo: productInfoSerializar.to(collection.productInfo!),
       };
 }

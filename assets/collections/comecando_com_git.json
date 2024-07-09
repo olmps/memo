@@ -7,10 +7,6 @@
     "git",
     "versionamento"
   ],
-  "productInfo": {
-    "price": null,
-    "productId": null
-  },
   "contributors": [
     {
       "name": "@matuella",

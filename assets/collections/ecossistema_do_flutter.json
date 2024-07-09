@@ -8,10 +8,6 @@
     "framework",
     "cross-platform"
   ],
-  "productInfo": {
-    "price": null,
-    "productId": null
-  },
   "contributors": [
     {
       "name": "@matuella",

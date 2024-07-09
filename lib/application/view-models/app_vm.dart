@@ -139,9 +139,8 @@ class AppVMImpl extends AppVM {
       splashMinDuration,
     ]);
 
-    await Future.wait<dynamic>([
-      collectionPurchaseServices.updatePurchasesIfNeeded(),
-    ]);
+    // This dependency needs to be loaded after the "dependent dependencies" as it depends on checking purchases that cannot be loaded in parallel.
+    await collectionPurchaseServices.updatePurchasesIfNeeded();
 
     value = AsyncValue.data(appState);
   }

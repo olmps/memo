@@ -33,8 +33,6 @@ const collectionsStartNow = 'Começar Agora';
 const collectionPurchase = 'Deseja comprar este Deck?';
 const collectionSuccessPurchase = 'Deck comprado com sucesso!';
 String collectionPurchaseDeck(double price) => 'Comprar deck - R\$ ${price.toStringAsFixed(2)}';
-// TODO(joao): check the best place to store the const double.
-const double collectionPrice = 0.99;
 
 String collectionsEmptyTitleSegment(CollectionsSegment segment) {
   switch (segment) {
@@ -100,7 +98,7 @@ const jumpTo = 'Pular para';
 // Tags Component
 //
 const tags = 'Tags';
-const premium = 'PREMIUM';
+const premium = 'Premium';
 const tagsHint = 'Adicione as tags...';
 const suggestions = 'Sugestões';
 const addTags = 'Adicionar Tags';
