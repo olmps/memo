@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:memo/core/env.dart';
 import 'package:memo/data/repositories/collection_repository.dart';
 import 'package:memo/data/repositories/purchase_repository.dart';
-import 'package:memo/domain/models/collection.dart';
 
 abstract class CollectionPurchaseServices {
   /// Purchases the collection - from [id].
@@ -35,21 +34,17 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
   Future<void> purchaseCollection({required String id}) async {
     final collection = await collectionRepo.getCollection(id: id);
 
-    await _purchaseInAppCollection(collection);
+    await purchaseRepo.purchaseInApp(storeId: collection.productInfo!.id);
     await _updatePurchaseCollection(id: id);
   }
 
   Future<void> _updatePurchaseCollection({required String id}) async {
     final collection = await collectionRepo.getCollection(id: id);
-    final isPurchased = await purchaseRepo.getPurchasesInfo();
+    final purchasesId = await purchaseRepo.getUserPurchases();
 
-    if (isPurchased.contains(collection.productInfo.id)) {
-      await purchaseRepo.updatePurchase(purchaseId: collection.productInfo.id);
+    if (purchasesId.contains(collection.productInfo!.id)) {
+      await purchaseRepo.updatePurchase(purchaseId: collection.productInfo!.id);
     }
-  }
-
-  Future<void> _purchaseInAppCollection(Collection collection) async {
-    await purchaseRepo.purchaseInApp(storeId: collection.productInfo.id);
   }
 
   @override
@@ -60,9 +55,9 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
       return true;
     }
 
-    final storeId = collection.productInfo.id;
+    final storeId = collection.productInfo!.id;
 
-    final purchasedProductsList = await purchaseRepo.getPurchaseProducts();
+    final purchasedProductsList = await purchaseRepo.getPurchasedProductsIds();
 
     return purchasedProductsList.contains(storeId);
   }
@@ -72,7 +67,9 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
     final collections = await collectionRepo.getAllCollectionMemos();
 
     for (final collection in collections) {
-      await _updatePurchaseCollection(id: collection.id);
+      if (collection.isPremium) {
+        await _updatePurchaseCollection(id: collection.id);
+      }
     }
   }
 }

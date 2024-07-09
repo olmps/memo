@@ -11,6 +11,10 @@ a beta or production release, they must be documented here).
 ## [Unreleased]
 
 ### Added
+- Creation of the structure for implementing paid decks.
+- Now the deck can be paid for, just add the `productInfo` and also if it is `isPremium`.
+
+### Added
 - Visually Opinionated Buttons (Primary, Secondary and Text).
 
 ## [0.2.0] - 2021-08-13

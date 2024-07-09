@@ -18,7 +18,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
     required this.uniqueMemosAmount,
     required this.contributors,
     required this.isPremium,
-    required this.productInfo,
+    this.productInfo,
     this.uniqueMemoExecutionsAmount = 0,
     Map<MemoDifficulty, int> executionsAmounts = const {},
     int timeSpentInMillis = 0,
@@ -55,7 +55,7 @@ class Collection extends MemoExecutionsMetadata with EquatableMixin implements C
   final bool isPremium;
 
   @override
-  final ProductInfo productInfo;
+  final ProductInfo? productInfo;
 
   @override
   final int uniqueMemosAmount;
@@ -101,8 +101,8 @@ abstract class CollectionMetadata {
   /// Informs whether the collection is premium or not.
   bool get isPremium;
 
-  /// Informs the `productId` and `price` of the product associated with this collection.
-  ProductInfo get productInfo;
+  /// Informs the `id` and `price` of the product associated with this collection.
+  ProductInfo? get productInfo;
 
   /// Total amount of unique `Memo`s associated with this collection.
   int get uniqueMemosAmount;

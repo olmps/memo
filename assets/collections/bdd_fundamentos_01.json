@@ -7,10 +7,6 @@
     "tests",
     "bdd"
   ],
-  "productInfo": {
-    "price": null,
-    "productId": null
-  },
   "contributors": [
     {
       "name": "Nicolas Nascimento",

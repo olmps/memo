@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/data/serializers/collection_memos_serializer.dart';
 import 'package:memo/domain/models/collection.dart';
 import 'package:memo/domain/models/memo_collection_metadata.dart';
-import 'package:memo/domain/models/product_info.dart';
 import 'package:memo/domain/transients/collection_memos.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
@@ -17,7 +16,6 @@ void main() {
     category: 'Category',
     tags: const ['Tag 1', 'Tag 2'],
     isPremium: false,
-    productInfo: ProductInfo(id: '', price: 0.0),
     contributors: [const Contributor(name: 'name')],
     memosMetadata: [
       MemoCollectionMetadata(
@@ -30,8 +28,7 @@ void main() {
 
   Map<String, dynamic> completeFixture() => fixtures.collectionMemos()
     ..[CollectionMemosKeys.memosMetadata] = [fixtures.memoCollectionMetadata()]
-    ..[CollectionMemosKeys.contributors] = [fixtures.contributor()]
-    ..[CollectionMemosKeys.productInfo] = fixtures.productInfo();
+    ..[CollectionMemosKeys.contributors] = [fixtures.contributor()];
 
   test('CollectionMemosSerializer should correctly encode/decode a CollectionMemos', () {
     final rawCollection = completeFixture();
@@ -82,13 +79,6 @@ void main() {
     expect(
       () {
         final rawCollection = completeFixture()..remove(CollectionMemosKeys.contributors);
-        serializer.from(rawCollection);
-      },
-      throwsA(isA<TypeError>()),
-    );
-    expect(
-      () {
-        final rawCollection = completeFixture()..remove(CollectionMemosKeys.productInfo);
         serializer.from(rawCollection);
       },
       throwsA(isA<TypeError>()),

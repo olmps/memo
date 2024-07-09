@@ -93,7 +93,7 @@ class CollectionRepositoryImpl implements CollectionRepository {
               CollectionKeys.uniqueMemosAmount: collection.uniqueMemosAmount,
               CollectionKeys.uniqueMemoExecutionsAmount: collection.uniqueMemoExecutionsAmount,
               CollectionKeys.isPremium: collection.isPremium,
-              CollectionKeys.productInfo: _productInfoSerializer.to(collection.productInfo),
+              if (collection.isPremium) CollectionKeys.productInfo: _productInfoSerializer.to(collection.productInfo!),
             },
           )
           .toList(),

@@ -37,7 +37,7 @@ class CollectionCard extends ConsumerWidget {
   /// List of tags associated with this collection.
   final List<String> tags;
 
-  ///
+  /// `true` If the collection is available for purchase.
   final bool isPremium;
 
   /// If this widget should draw a border for this card.

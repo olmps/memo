@@ -29,7 +29,8 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
     final category = json[CollectionMemosKeys.category] as String;
     final isPremium = json[CollectionMemosKeys.isPremium] as bool?;
 
-    final productInfo = productInfoSerializer.from(json[CollectionMemosKeys.productInfo] as Map<String, dynamic>);
+    final rawProductInfo = json[CollectionMemosKeys.productInfo] as Map<String, dynamic>?;
+    final productInfo = rawProductInfo != null ? productInfoSerializer.from(rawProductInfo) : null;
 
     final tags = List<String>.from(json[CollectionMemosKeys.tags] as List);
 
@@ -62,6 +63,6 @@ class CollectionMemosSerializer implements Serializer<CollectionMemos, Map<Strin
         CollectionMemosKeys.memosMetadata: collection.memosMetadata.map(memoMetadataSerializer.to).toList(),
         CollectionMemosKeys.contributors: collection.contributors.map(contributorSerializer.to).toList(),
         CollectionMemosKeys.isPremium: collection.isPremium,
-        CollectionMemosKeys.productInfo: productInfoSerializer.to(collection.productInfo),
+        if (collection.isPremium) CollectionMemosKeys.productInfo: productInfoSerializer.to(collection.productInfo!),
       };
 }

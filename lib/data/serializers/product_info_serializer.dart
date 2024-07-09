@@ -2,7 +2,7 @@ import 'package:memo/data/serializers/serializer.dart';
 import 'package:memo/domain/models/product_info.dart';
 
 class ProductInfoKeys {
-  static const id = 'productId';
+  static const id = 'id';
   static const price = 'price';
 }
 

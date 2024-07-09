@@ -21,7 +21,7 @@ abstract class CollectionItem extends ItemMetadata {
     required this.category,
     required this.tags,
     required this.isPremium,
-    required this.price,
+    this.price,
   });
 
   final String id;
@@ -30,7 +30,7 @@ abstract class CollectionItem extends ItemMetadata {
   final List<String> tags;
 
   final bool isPremium;
-  final double price;
+  final double? price;
 
   @override
   List<Object?> get props => [id, name, category, tags, isPremium];
@@ -45,7 +45,7 @@ class CompletedCollectionItem extends CollectionItem {
     required String category,
     required List<String> tags,
     required bool isPremium,
-    required double price,
+    double? price,
   }) : super(
           id: id,
           name: name,
@@ -72,7 +72,7 @@ class IncompleteCollectionItem extends CollectionItem {
     required String category,
     required List<String> tags,
     required bool isPremium,
-    required double price,
+    double? price,
   }) : super(
           id: id,
           name: name,
@@ -104,7 +104,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       category: collection.category,
       tags: collection.tags,
       isPremium: collection.isPremium,
-      price: collection.productInfo.price,
+      price: collection.productInfo?.price,
     );
   } else {
     return IncompleteCollectionItem(
@@ -115,7 +115,7 @@ CollectionItem mapStatusToMetadata(CollectionStatus status) {
       category: collection.category,
       tags: collection.tags,
       isPremium: collection.isPremium,
-      price: collection.productInfo.price,
+      price: collection.productInfo?.price,
     );
   }
 }

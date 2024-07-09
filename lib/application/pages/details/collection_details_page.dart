@@ -97,25 +97,29 @@ class CollectionDetailsPage extends ConsumerWidget {
 
       sections.add(resourcesSection);
 
-      final studyNowButton = PrimaryElevatedButton(
-        onPressed: () => readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false),
-        text: strings.detailsStudyNow.toUpperCase(),
-      );
-
-      final purchaseDeckButton = SecondaryElevatedButton(
-        backgroundColor: memoTheme.secondarySwatch,
-        text: strings.collectionPurchaseDeck(state.metadata.price),
-        onPressed: () async => _collectionPurchaseBottomSheet(
-          context,
-          () => ref.watch(collectionDetailsVM(id).notifier).purchaseCollection(state.metadata.id),
-        ),
-      );
+      Widget actionButton() {
+        if (state.isPurchased) {
+          return PrimaryElevatedButton(
+            onPressed: () => readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false),
+            text: strings.detailsStudyNow.toUpperCase(),
+          );
+        } else {
+          return SecondaryElevatedButton(
+            backgroundColor: memoTheme.secondarySwatch,
+            text: strings.collectionPurchaseDeck(state.metadata.price!),
+            onPressed: () async => _collectionPurchaseBottomSheet(
+              context,
+              () => ref.watch(collectionDetailsVM(id).notifier).purchaseCollection(state.metadata.id),
+            ),
+          );
+        }
+      }
 
       final fixedBottomAction = ThemedBottomContainer(
         child: ColoredBox(
           color: memoTheme.neutralSwatch.shade800,
           child: SafeArea(
-            child: (state.isPurchased ? studyNowButton : purchaseDeckButton),
+            child: actionButton(),
           ).withSymmetricalPadding(
             context,
             vertical: Spacing.small,

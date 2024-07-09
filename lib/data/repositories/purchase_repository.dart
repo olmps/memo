@@ -5,16 +5,23 @@ abstract class PurchaseRepository {
   /// Purchase products in the app with the store ID [storeId] for the local user.
   Future<void> purchaseInApp({required String storeId});
 
-  /// Receives purchase information made by the user.
-  Future<List<String>> getPurchasesInfo();
+  /// Fetches a list of RevenueCat purchase information strings by user id.
+  ///
+  /// This function retrieves purchase information asynchronously
+  /// and returns a list of strings, where each string represents a purchase.
+  Future<List<String>> getUserPurchases();
 
   /// Check which products are available for purchase.
   Future<List<String>> isAvailable();
 
-  /// Updates the collection with the [id] to be premium or not.
+  /// Updates the collection with the [purchaseId] to be premium or not.
   Future<void> updatePurchase({required String purchaseId});
 
-  Future<List<String>> getPurchaseProducts();
+  /// Fetches a list of purchased product IDs from the local database.
+  ///
+  /// This function asynchronously retrieves all the purchases stored in the local database
+  /// and extracts the product IDs from each purchase record.
+  Future<List<String>> getPurchasedProductsIds();
 }
 
 class PurchaseRepositoryImpl implements PurchaseRepository {
@@ -22,6 +29,7 @@ class PurchaseRepositoryImpl implements PurchaseRepository {
 
   final SembastDatabase _db;
   final _purchasesStore = 'purchases';
+  final _purchaseIdKey = 'purchasesId';
 
   final PurchaseGateway _purchaseGateway;
 
@@ -31,7 +39,7 @@ class PurchaseRepositoryImpl implements PurchaseRepository {
       );
 
   @override
-  Future<List<String>> getPurchasesInfo() async {
+  Future<List<String>> getUserPurchases() async {
     final info = await _purchaseGateway.purchasesInfo();
     return info.map((purchase) => purchase).toList();
   }
@@ -46,14 +54,14 @@ class PurchaseRepositoryImpl implements PurchaseRepository {
   Future<void> updatePurchase({required String purchaseId}) => _db.put(
         id: purchaseId,
         object: <String, dynamic>{
-          'purchasesId': purchaseId,
+          _purchaseIdKey: purchaseId,
         },
         store: _purchasesStore,
       );
 
   @override
-  Future<List<String>> getPurchaseProducts() async {
+  Future<List<String>> getPurchasedProductsIds() async {
     final purchases = await _db.getAll(store: _purchasesStore);
-    return purchases.map((purchase) => purchase['purchasesId'] as String).toList();
+    return purchases.map((purchase) => purchase[_purchaseIdKey] as String).toList();
   }
 }
