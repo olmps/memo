@@ -74,3 +74,7 @@ Este projeto foi construído com a ajuda dos patrocinadores abaixo:
 - [Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover): Aprenda programação na prática. E de graça.
 - [Startup Life Podcast](https://bit.ly/lucas-montano-startup-life): O seu podcast sobre negócios, tecnologia e inovação.
 - [Pingback](https://bit.ly/lucas-montano-pingback): Crie conteúdo com total liberdade.
+
+## Receita 
+
+No momento, estamos explorando novas abordagens para gerar receita com o aplicativo. A implementação do recurso de deck pago pode ser encontrada no código, junto com um exemplo de deck pago. Outros decks não estarão visíveis no GitHub para garantir que possamos validar adequadamente este modelo de receita.

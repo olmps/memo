@@ -74,3 +74,7 @@ This project was built with the help of the sponsors below:
 - [Maratona Discover](https://bit.ly/lucas-montano-maratonadiscover): Discover is a free way of learning how to code.
 - [Startup Life Podcast](https://bit.ly/lucas-montano-startup-life): Your tech, business, and innovation Podcast.
 - [Pingback](https://bit.ly/lucas-montano-pingback): Total freedom to create content.
+
+## Revenue
+
+We are currently exploring new approaches to generate revenue with the app. The implementation of the paid deck feature can be found in the code, along with an example of a paid deck. Other decks will not be visible on GitHub to ensure we can properly validate this revenue model.

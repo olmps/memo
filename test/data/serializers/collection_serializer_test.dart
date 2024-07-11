@@ -3,6 +3,7 @@ import 'package:memo/data/serializers/collection_serializer.dart';
 import 'package:memo/data/serializers/memo_difficulty_parser.dart';
 import 'package:memo/domain/enums/memo_difficulty.dart';
 import 'package:memo/domain/models/collection.dart';
+import 'package:memo/domain/models/product_info.dart';
 
 import '../../fixtures/fixtures.dart' as fixtures;
 
@@ -13,14 +14,16 @@ void main() {
     name: 'My Collection',
     description: 'This collection represents a collection.',
     category: 'Category',
-    isPremium: false,
+    isPremium: true,
+    productInfo: ProductInfo(id: '', price: 0.0),
     contributors: const [Contributor(name: 'name')],
     tags: const ['Tag 1', 'Tag 2'],
     uniqueMemosAmount: 1,
   );
 
-  Map<String, dynamic> completeFixture() =>
-      fixtures.collection()..[CollectionKeys.contributors] = [fixtures.contributor()];
+  Map<String, dynamic> completeFixture() => fixtures.collection()
+    ..[CollectionKeys.contributors] = [fixtures.contributor()]
+    ..[CollectionKeys.productInfo] = fixtures.productInfo();
 
   test('CollectionSerializer should correctly encode/decode a Collection', () {
     final rawCollection = completeFixture();
@@ -103,8 +106,8 @@ void main() {
       category: 'Category',
       contributors: const [Contributor(name: 'name')],
       tags: const ['Tag 1', 'Tag 2'],
-      isPremium: false,
-      // productInfo: ProductInfo(price: 0.0, id: ''),
+      isPremium: true,
+      productInfo: ProductInfo(price: 0.0, id: ''),
       uniqueMemosAmount: 1,
       uniqueMemoExecutionsAmount: 1,
       executionsAmounts: const {MemoDifficulty.easy: 1},

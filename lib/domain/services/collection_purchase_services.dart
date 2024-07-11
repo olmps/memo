@@ -40,9 +40,9 @@ class CollectionPurchaseServicesImpl implements CollectionPurchaseServices {
 
   Future<void> _updatePurchaseCollection({required String id}) async {
     final collection = await collectionRepo.getCollection(id: id);
-    final purchasesId = await purchaseRepo.getUserPurchases();
+    final purchasesIds = await purchaseRepo.getUserPurchases();
 
-    if (purchasesId.contains(collection.productInfo!.id)) {
+    if (purchasesIds.contains(collection.productInfo!.id)) {
       await purchaseRepo.updatePurchase(purchaseId: collection.productInfo!.id);
     }
   }

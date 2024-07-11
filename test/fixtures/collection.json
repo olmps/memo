@@ -8,7 +8,8 @@
     "Tag 1",
     "Tag 2"
   ],
-  "isPremium": false,
+  "isPremium": true,
+  "productInfo": [],
   "uniqueMemosAmount": 1,
   "uniqueMemoExecutionsAmount": 0,
   "executionsAmounts": {
