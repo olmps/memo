@@ -77,4 +77,4 @@ This project was built with the help of the sponsors below:
 
 ## Revenue
 
-We are currently exploring new approaches to generate revenue with the app. The implementation of the paid deck feature can be found in the code, along with an example of a paid deck. Other decks will not be visible on GitHub to ensure we can properly validate this revenue model.
+We are currently exploring new approaches to generate revenue with the app. The implementation of the paid collection feature can be found in the code, along with an example of a paid collection. Other collections will not be visible on GitHub to ensure we can properly validate this revenue model.
