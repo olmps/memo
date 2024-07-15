@@ -103,6 +103,7 @@ class CollectionDetailsVMImpl extends CollectionDetailsVM {
       await _loadCollection();
     } on BaseException catch (exception) {
       state = PurchaseCollectionFailed(exception);
+      await _loadCollection();
     }
   }
 }

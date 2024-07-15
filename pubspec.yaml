@@ -51,7 +51,7 @@ dependencies:
 
   # Keep dependency locked, as we need it to be the exact same in `memo-editor`
   flutter_quill: ^9.3.3
-  purchases_flutter: ^6.29.1
+  purchases_flutter: ^6.30.1
 
 dev_dependencies:
   flutter_test:
