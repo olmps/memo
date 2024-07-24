@@ -76,10 +76,26 @@ class CollectionsVMImpl extends CollectionsVM {
         case CollectionsSegment.review:
           return metadata is CompletedCollectionItem;
       }
-    }).toList();
+    }).toList()
+      ..sort(_premiumSort);
 
     final items = _mapMetadataToItems(filteredMetadata);
     state = LoadedCollectionsState(items, currentSegment: normalizedSegment);
+  }
+
+  /// Sorts the [CollectionItem]s by their premium status.
+  int _premiumSort(CollectionItem a, CollectionItem b) {
+    {
+      if (a.isPremium && b.isPremium) {
+        return 0;
+      }
+
+      if (b.isPremium) {
+        return 1;
+      }
+
+      return -1;
+    }
   }
 
   /// Maps all [metadata] to its sorted [ItemMetadata] list.
