@@ -24,6 +24,7 @@ const double smallIconSize = 16;
 //
 const double collectionsLinearProgressLineWidth = 12;
 const double collectionsEmptyStateSize = 96;
+const double collectionActionBarMaxHeight = 56;
 
 //
 // ProgressPage
