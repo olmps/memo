@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
+import 'package:memo/application/constants/dimensions.dart' as dimensions;
 import 'package:memo/application/constants/strings.dart' as strings;
 import 'package:memo/application/coordinator/routes_coordinator.dart';
+import 'package:memo/application/pages/details/collection_purchase_vm.dart';
 import 'package:memo/application/pages/details/contributor_view.dart';
 import 'package:memo/application/pages/details/details_providers.dart';
 import 'package:memo/application/theme/theme_controller.dart';
@@ -22,13 +24,20 @@ class CollectionDetailsPage extends ConsumerWidget {
     final state = watchCollectionDetailsState(ref);
     final id = ref.read(detailsCollectionId);
 
-    ref.listen(collectionDetailsVM(id), (_, state) {
-      if (state is PurchaseCollectionFailed) {
-        Navigator.of(context).pop();
+    ref.listen(collectionPurchaseVM(id), (_, state) {
+      if (state is PurchaseInfoLoadingFailed) {
         showExceptionSnackBar(ref, state.exception);
       }
-      if (state is PurchaseCollectionSuccess) {
+
+      if (state is ProcessingPurchase) {
         Navigator.of(context).pop();
+      }
+
+      if (state is PurchaseFailed) {
+        showExceptionSnackBar(ref, state.exception);
+      }
+
+      if (state is PurchaseSuccess) {
         showSnackBar(
           ref,
           const SnackBar(content: Text(strings.collectionSuccessPurchase)),
@@ -97,29 +106,15 @@ class CollectionDetailsPage extends ConsumerWidget {
 
       sections.add(resourcesSection);
 
-      Widget actionButton() {
-        if (state.isPurchased) {
-          return PrimaryElevatedButton(
-            onPressed: () => readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false),
-            text: strings.detailsStudyNow.toUpperCase(),
-          );
-        } else {
-          return SecondaryElevatedButton(
-            backgroundColor: memoTheme.secondarySwatch,
-            text: strings.collectionPurchaseDeck(state.metadata.price!),
-            onPressed: () async => _collectionPurchaseBottomSheet(
-              context,
-              () => ref.watch(collectionDetailsVM(id).notifier).purchaseCollection(state.metadata.id),
-            ),
-          );
-        }
-      }
-
       final fixedBottomAction = ThemedBottomContainer(
         child: ColoredBox(
           color: memoTheme.neutralSwatch.shade800,
           child: SafeArea(
-            child: actionButton(),
+            child: ConstrainedBox(
+                constraints: BoxConstraints.tight(
+                  const Size.fromHeight(dimensions.collectionActionBarMaxHeight),
+                ),
+                child: _CollectionAction(id: id, isPremium: state.metadata.isPremium, price: state.metadata.price)),
           ).withSymmetricalPadding(
             context,
             vertical: Spacing.small,
@@ -163,6 +158,60 @@ class CollectionDetailsPage extends ConsumerWidget {
         style:
             Theme.of(context).textTheme.titleMedium?.copyWith(color: ref.watch(themeController).neutralSwatch.shade300),
       );
+}
+
+class _CollectionAction extends ConsumerWidget {
+  const _CollectionAction({
+    required this.id,
+    required this.isPremium,
+    this.price,
+  });
+
+  final String id;
+  final bool isPremium;
+  final double? price;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final memoTheme = ref.watch(themeController);
+    final collectionExecutionAction = PrimaryElevatedButton(
+      onPressed: () => readCoordinator(ref).navigateToCollectionExecution(id, isNestedNavigation: false),
+      text: strings.detailsStudyNow.toUpperCase(),
+    );
+
+    if (!isPremium) {
+      return collectionExecutionAction;
+    }
+
+    final purchaseState = ref.watch(collectionPurchaseVM(id));
+
+    if (purchaseState is PurchaseInfoLoading || purchaseState is ProcessingPurchase) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // TODO(lucasbiancogs): Not the best approach to null-check the price here,
+    // should be revisited in the future along with the other purchase implementations.
+    Widget collectionPurchaseAction(VoidCallback? onPressed) => SecondaryElevatedButton(
+          backgroundColor: memoTheme.secondarySwatch,
+          text: strings.collectionPurchaseDeck(price!),
+          onPressed: onPressed,
+        );
+
+    if (purchaseState is PurchaseInfoLoadingFailed) {
+      return collectionPurchaseAction(null);
+    }
+
+    final currentState = purchaseState as PurchaseInfoLoaded;
+
+    return currentState.isPurchased
+        ? collectionExecutionAction
+        : collectionPurchaseAction(
+            () async => _collectionPurchaseBottomSheet(
+              context,
+              ref.read(collectionPurchaseVM(id).notifier).purchase,
+            ),
+          );
+  }
 
   /// This Modal Bottom Sheet representing the option to purchase a specific `Collection`.
   Future<void> _collectionPurchaseBottomSheet(BuildContext context, VoidCallback? onPressed) =>
