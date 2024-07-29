@@ -49,6 +49,6 @@ class ApplicationBundleImpl extends ApplicationBundle {
   Future<List<String>> loadAssetsListPath(String path) async {
     final rawManifest = await _assetBundle.loadString(_assetsManifest);
     final manifest = jsonDecode(rawManifest) as Map<String, dynamic>;
-    return manifest.keys.where((key) => key.startsWith(path)).toList();
+    return manifest.keys.where((key) => key.startsWith(path) && !key.contains('.DS_Store')).toList();
   }
 }
